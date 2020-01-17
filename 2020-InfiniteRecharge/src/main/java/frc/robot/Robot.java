@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Chassis;
 import io.github.oblarg.oblog.*;
 
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake; 
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -50,6 +52,8 @@ public class Robot extends TimedRobot {
     spark1 = new CANSparkMax(11, MotorType.kBrushless);
     spark2 = new CANSparkMax(12, MotorType.kBrushless);
     driveTrain = new Chassis(spark1, spark2);
+    leftStick = new Joystick();
+    rightStick = new Joystick();
   }
 
   /**
@@ -114,5 +118,13 @@ public class Robot extends TimedRobot {
   public void testPeriodic() 
   {
     driveTrain.DriveSystem();
+  }
+  @Override
+  public void disabledInit(){
+
+  }
+  @Override
+  public void disabledPeriodic(){
+
   }
 }

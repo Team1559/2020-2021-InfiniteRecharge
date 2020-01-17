@@ -11,15 +11,15 @@ import frc.robot.OperatorInterface;
 
 public class Shooter{
     public OperatorInterface oi;
-    public WPI_TalonSRX shooterMotor;
+    //public WPI_TalonSRX shooterMotor;
     
     public Shooter(OperatorInterface oi){
-    shooterMotor = new WPI_TalonSRX(Wiring.shooterMotor);
+    //shooterMotor = new WPI_TalonSRX(Wiring.shooterMotor);
 }
     
     
     public void shoot(){
-        shooterMotor.set(ControlMode.PercentOutput, 1);
+        //shooterMotor.set(ControlMode.PercentOutput, 1);
 
     }
 

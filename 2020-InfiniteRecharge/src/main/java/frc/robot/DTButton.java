@@ -23,12 +23,7 @@ public class DTButton {
         current = b;
     }
 
-    /**
-     * @return Rising edge of a button press
-     */
-    public boolean isPressed() {
-        return stick.getRawButton(button);
-    }
+    
 
     /**
      * @return if button is being held down

@@ -7,9 +7,15 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.Chassis;
 import io.github.oblarg.oblog.*;
 
 /**
@@ -24,6 +30,11 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private CANSparkMax spark1;
+  private CANSparkMax spark2;
+  private Chassis driveTrain;
+  private Joystick leftStick;
+  private Joystick rightStick;
 
 
   /**
@@ -36,6 +47,9 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
     Logger.configureLoggingAndConfig(this, false);
+    spark1 = new CANSparkMax(11, MotorType.kBrushless);
+    spark2 = new CANSparkMax(12, MotorType.kBrushless);
+    driveTrain = new Chassis(spark1, spark2);
   }
 
   /**
@@ -97,6 +111,8 @@ public class Robot extends TimedRobot {
    * This function is called periodically during test mode.
    */
   @Override
-  public void testPeriodic() {
+  public void testPeriodic() 
+  {
+    driveTrain.DriveSystem();
   }
 }

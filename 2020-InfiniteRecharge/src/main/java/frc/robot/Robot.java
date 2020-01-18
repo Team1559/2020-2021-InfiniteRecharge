@@ -33,8 +33,6 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  private CANSparkMax spark1;
-  private CANSparkMax spark2;
   private Chassis driveTrain;
   private OperatorInterface oi;
 
@@ -50,9 +48,9 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
     Logger.configureLoggingAndConfig(this, false);
-    spark1 = new CANSparkMax(11, MotorType.kBrushless);
-    spark2 = new CANSparkMax(12, MotorType.kBrushless);
-    driveTrain = new Chassis(spark1, spark2);
+    // spark1 = new CANSparkMax(11, MotorType.kBrushless);
+    // spark2 = new CANSparkMax(12, MotorType.kBrushless);
+    driveTrain = new Chassis();
     oi = new OperatorInterface();
 
   }
@@ -110,7 +108,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    driveTrain.DriveSystem(op.pilot);
+    driveTrain.DriveSystem(oi.pilot);
   }
 
   /**

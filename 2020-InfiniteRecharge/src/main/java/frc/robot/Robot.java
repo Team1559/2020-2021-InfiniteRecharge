@@ -19,7 +19,8 @@ import frc.robot.subsystems.Chassis;
 import io.github.oblarg.oblog.*;
 
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Intake; 
+import frc.robot.subsystems.Intake;
+import frc.robot.OperatorInterface;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -35,8 +36,8 @@ public class Robot extends TimedRobot {
   private CANSparkMax spark1;
   private CANSparkMax spark2;
   private Chassis driveTrain;
-  private Joystick leftStick;
-  private Joystick rightStick;
+  private OperatorInterface op;
+
 
 
   /**
@@ -52,8 +53,8 @@ public class Robot extends TimedRobot {
     spark1 = new CANSparkMax(11, MotorType.kBrushless);
     spark2 = new CANSparkMax(12, MotorType.kBrushless);
     driveTrain = new Chassis(spark1, spark2);
-    leftStick = new Joystick();
-    rightStick = new Joystick();
+    op = new OperatorInterface();
+
   }
 
   /**
@@ -117,7 +118,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() 
   {
-    driveTrain.DriveSystem();
+    driveTrain.DriveSystem(op.pilot);
   }
   @Override
   public void disabledInit(){

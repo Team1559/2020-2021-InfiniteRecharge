@@ -29,8 +29,36 @@ public class Chassis {
         driveTrain = new DifferentialDrive(leftMotors, rightMotors);
     }
 
-    public void DriveSystem(Joystick x, Joystick y)
+    public void DriveSystem(Joystick drive)
     {
-        driveTrain.tankDrive(x.getX(),y.getY());
+        int mode = 1;
+        //if(drive.getRawButton(1))
+            //mode++;
+        //if(mode > 3)
+            //mode = 1;
+        if(drive != null)
+            System.out.println("****************Drive isn't NULL dimwit!****************");
+        else
+            System.out.println("****************Drive is NULL dimwit!****************");
+        if(driveTrain == null)
+            System.out.println("****************driveTrain is NULL dimwit!****************");
+        else
+            System.out.println("****************driveTrain isn't NULL dimwit!****************");
+        driveTrain.tankDrive(-(drive.getRawAxis(1)),-(drive.getRawAxis(5)));
+        // switch(mode)
+        // {
+        //     case 1:
+        //     driveTrain.tankDrive(-(drive.getRawAxis(1)),-(drive.getRawAxis(5)));
+        //     break;
+
+        //     case 2:
+        //     driveTrain.arcadeDrive(-(drive.getRawAxis(1)), drive.getRawAxis(2));
+        //     break;
+
+        //     case 3:
+        //     driveTrain.curvatureDrive(-(drive.getRawAxis(1)), drive.getRawAxis(2), true);
+        //     break;
+        // }
+        
     }
 }

@@ -20,7 +20,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.Components.IMU;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import frc.robot.subsystems.Chassis;
+//import frc.robot.subsystems.Chassis;
 import io.github.oblarg.oblog.*;
 
 /**
@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
   public OperatorInterface oi;
   private CANSparkMax spark1;
   private CANSparkMax spark2;
-  private Chassis driveTrain;
+  //private Chassis driveTrain;
   
 
 
@@ -62,7 +62,7 @@ public class Robot extends TimedRobot {
     Logger.configureLoggingAndConfig(this, false);
     spark1 = new CANSparkMax(11, MotorType.kBrushless);
     spark2 = new CANSparkMax(12, MotorType.kBrushless);
-    driveTrain = new Chassis(spark1, spark2);
+    //driveTrain = new Chassis(spark1, spark2);
 
   }
 
@@ -122,9 +122,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-     //falcon1.set(ControlMode.PercentOutput, oi.pilot.getRawAxis(0));
-    // falcon2.set(ControlMode.PercentOutput, oi.getPilotZ());
-    System.out.println(oi.pilot.getRawAxis(0));
+    falcon1.set(ControlMode.PercentOutput, oi.getPilotX());
+    falcon2.set(ControlMode.PercentOutput, oi.getPilotZ());
+    
   }
   
   /**
@@ -133,7 +133,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() 
   {
-    driveTrain.DriveSystem(oi.pilot);
+    //driveTrain.DriveSystem(oi.pilot);
   }
   @Override
   public void disabledInit(){

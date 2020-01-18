@@ -13,18 +13,6 @@ public  class IMU {
     public double z_acceleration = 0;
     public void start(){
     try {
-        /***********************************************************************
-         * navX-MXP: - Communication via RoboRIO MXP (SPI, I2C) and USB. - See
-         * http://navx-mxp.kauailabs.com/guidance/selecting-an-interface.
-         * 
-         * navX-Micro: - Communication via I2C (RoboRIO MXP or Onboard) and USB. - See
-         * http://navx-micro.kauailabs.com/guidance/selecting-an-interface.
-         * 
-         * VMX-pi: - Communication via USB. - See
-         * https://vmx-pi.kauailabs.com/installation/roborio-installation/
-         * 
-         * Multiple navX-model devices on a single robot are supported.
-         ************************************************************************/
         ahrs = new AHRS(SPI.Port.kMXP);
         // ahrs = new AHRS(SerialPort.Port.kUSB1);
         ahrs.enableLogging(true);

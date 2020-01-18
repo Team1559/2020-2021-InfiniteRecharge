@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake; 
 import frc.robot.Components.IMU;
+import com.ctre.phoenix.motorcontrol.*;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -26,6 +28,8 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private IMU imu;
+  public TalonFX falcon;
+  public OperatorInterface oi;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -36,7 +40,8 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
     imu = new IMU();
-
+    oi = new OperatorInterface();
+    falcon = new TalonFX(21);
     imu.start();
   }
 
@@ -51,6 +56,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     imu.getvalues();
+    falcon.set(ControlMode.PercentOutput, oi.getPilotX());
   }
     
   /**

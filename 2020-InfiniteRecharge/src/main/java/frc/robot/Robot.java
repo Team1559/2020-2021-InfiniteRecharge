@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
   private CANSparkMax spark1;
   private CANSparkMax spark2;
   private Chassis driveTrain;
-  private OperatorInterface op;
+  private OperatorInterface oi;
 
 
 
@@ -46,7 +46,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    op = new OperatorInterface();
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -54,6 +53,7 @@ public class Robot extends TimedRobot {
     spark1 = new CANSparkMax(11, MotorType.kBrushless);
     spark2 = new CANSparkMax(12, MotorType.kBrushless);
     driveTrain = new Chassis(spark1, spark2);
+    oi = new OperatorInterface();
 
   }
 
@@ -126,7 +126,7 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() 
   {
-    driveTrain.DriveSystem(op.pilot);
+    driveTrain.DriveSystem(oi.pilot);
   }
   @Override
   public void disabledInit(){

@@ -17,25 +17,36 @@ public class Chassis {
     // private WPI_TalonSRX motorFR;
     private CANSparkMax sparkMax1; // TBD
     private CANSparkMax sparkMax2;
+    private CANSparkMax sparkMax3;
+    private CANSparkMax sparkMax4;
     private DifferentialDrive driveTrain;
 
 
     public Chassis() {
         sparkMax1 = new CANSparkMax(11, MotorType.kBrushless);
         sparkMax2 = new CANSparkMax(12, MotorType.kBrushless);
-        SpeedControllerGroup leftMotors = new SpeedControllerGroup(sparkMax1);
+        sparkMax3 = new CANSparkMax(13, MotorType.kBrushless);
+        sparkMax4 = new CANSparkMax(14, MotorType.kBrushless);
+        SpeedControllerGroup leftMotors = new SpeedControllerGroup(sparkMax1, sparkMax3);
         leftMotors.setInverted(true);
-        SpeedControllerGroup rightMotors = new SpeedControllerGroup(sparkMax2);
+        SpeedControllerGroup rightMotors = new SpeedControllerGroup(sparkMax2, sparkMax4);
         driveTrain = new DifferentialDrive(leftMotors, rightMotors);
     }
 
     public void DriveSystem(Joystick drive)
     {
         int mode = 1;
-        if(drive.getRawButton(1))
-            mode++;
+        int newMode = mode;
+        if(drive.getRawButtonPressed(1) && mode == newMode)
+        {
+            newMode++;
+            mode = newMode;
+        }
         if(mode > 3)
+        {
             mode = 1;
+            newMode = 1;
+        }
         System.out.println(mode);
         // if(drive != null)
         //     System.out.println("****************Drive isn't NULL dimwit!****************");

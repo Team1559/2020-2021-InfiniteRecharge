@@ -7,6 +7,11 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,6 +20,9 @@ import frc.robot.subsystems.Intake;
 import frc.robot.Components.IMU;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;;
+import frc.robot.subsystems.Chassis;
+import io.github.oblarg.oblog.*;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -30,6 +38,12 @@ public class Robot extends TimedRobot {
   private IMU imu;
   public TalonFX falcon;
   public OperatorInterface oi;
+  private CANSparkMax spark1;
+  private CANSparkMax spark2;
+  private Chassis driveTrain;
+
+
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -43,6 +57,11 @@ public class Robot extends TimedRobot {
     oi = new OperatorInterface();
     falcon = new TalonFX(21);
     imu.start();
+    Logger.configureLoggingAndConfig(this, false);
+    spark1 = new CANSparkMax(11, MotorType.kBrushless);
+    spark2 = new CANSparkMax(12, MotorType.kBrushless);
+    driveTrain = new Chassis(spark1, spark2);
+
   }
 
   /**
@@ -57,6 +76,9 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     imu.getvalues();
   
+ 
+  
+    Logger.updateEntries();
   }
     
   /**
@@ -104,8 +126,9 @@ public class Robot extends TimedRobot {
    * This function is called periodically during test mode.
    */
   @Override
-  public void testPeriodic() {
-  
+  public void testPeriodic() 
+  {
+    driveTrain.DriveSystem(oi.pilot);
   }
   @Override
   public void disabledInit(){

@@ -19,7 +19,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake; 
 import frc.robot.Components.IMU;
 import com.ctre.phoenix.motorcontrol.*;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import frc.robot.subsystems.Chassis;
 import io.github.oblarg.oblog.*;
 

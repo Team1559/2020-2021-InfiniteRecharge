@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     imu.getvalues();
-    falcon.set(ControlMode.PercentOutput, oi.getPilotX());
+  
   }
     
   /**

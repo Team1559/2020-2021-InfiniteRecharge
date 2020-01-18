@@ -37,8 +37,8 @@ public  class IMU {
     
         
     SmartDashboard.putNumber("IMU_Yaw", ahrs.getYaw());
-    SmartDashboard.putNumber("IMU_Pitch", ahrs.getPitch());
-    SmartDashboard.putNumber("IMU_Roll", ahrs.getRoll());
+    SmartDashboard.putNumber("IMU_Pitch", ahrs.getRoll());
+    SmartDashboard.putNumber("IMU_Roll", ahrs.getPitch());
     
     SmartDashboard.putNumber("IMU_CompassHeading", ahrs.getCompassHeading());
 
@@ -109,8 +109,8 @@ public  class IMU {
         x_acceleration = ahrs.getWorldLinearAccelX();
         y_acceleration = ahrs.getWorldLinearAccelY();
         z_acceleration = ahrs.getWorldLinearAccelZ();
-         roll = ahrs.getRoll();
-         pitch = ahrs.getPitch();
+         roll = ahrs.getPitch();
+         pitch = ahrs.getRoll();
          yaw = ahrs.getYaw();
 
    }

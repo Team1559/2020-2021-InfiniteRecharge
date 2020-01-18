@@ -8,6 +8,9 @@ public  class IMU {
     public double roll = 0;
     public double pitch = 0;
     public double yaw = 0;
+    public double x_acceleration = 0;
+    public double y_acceleration = 0;
+    public double z_acceleration = 0;
     public void start(){
     try {
         /***********************************************************************
@@ -51,6 +54,7 @@ public  class IMU {
     /* Display Processed Acceleration Data (Linear Acceleration, Motion Detect) */
 
     SmartDashboard.putNumber("IMU_Accel_X", ahrs.getWorldLinearAccelX());
+    SmartDashboard.putNumber("IMU_Accel_Z", ahrs.getWorldLinearAccelZ());
     SmartDashboard.putNumber("IMU_Accel_Y", ahrs.getWorldLinearAccelY());
     SmartDashboard.putBoolean("IMU_IsMoving", ahrs.isMoving());
     SmartDashboard.putBoolean("IMU_IsRotating", ahrs.isRotating());
@@ -102,6 +106,9 @@ public  class IMU {
     SmartDashboard.putNumber("QuaternionY", ahrs.getQuaternionY());
     SmartDashboard.putNumber("QuaternionZ", ahrs.getQuaternionZ());
 
+        x_acceleration = ahrs.getWorldLinearAccelX();
+        y_acceleration = ahrs.getWorldLinearAccelY();
+        z_acceleration = ahrs.getWorldLinearAccelZ();
          roll = ahrs.getRoll();
          pitch = ahrs.getPitch();
          yaw = ahrs.getYaw();

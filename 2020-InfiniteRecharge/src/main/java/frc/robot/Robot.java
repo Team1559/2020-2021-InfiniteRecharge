@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    op = new OperatorInterface();
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -53,7 +54,6 @@ public class Robot extends TimedRobot {
     spark1 = new CANSparkMax(11, MotorType.kBrushless);
     spark2 = new CANSparkMax(12, MotorType.kBrushless);
     driveTrain = new Chassis(spark1, spark2);
-    op = new OperatorInterface();
 
   }
 
@@ -110,11 +110,19 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    driveTrain.DriveSystem(op.pilot);
   }
 
   /**
    * This function is called periodically during test mode.
    */
+
+  @Override
+  public void testInit()
+  {
+
+  }
+
   @Override
   public void testPeriodic() 
   {

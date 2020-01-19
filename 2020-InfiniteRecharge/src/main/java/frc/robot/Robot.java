@@ -36,8 +36,6 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private IMU imu;
-  public TalonFX falcon1;
-  public TalonFX falcon2;
   public OperatorInterface oi;
   private CANSparkMax spark1;
   private CANSparkMax spark2;
@@ -56,8 +54,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
     imu = new IMU();
     oi = new OperatorInterface();
-    falcon1 = new TalonFX(21);
-    falcon2 = new TalonFX(22);
+    
     imu.start();
     Logger.configureLoggingAndConfig(this, false);
     spark1 = new CANSparkMax(11, MotorType.kBrushless);
@@ -122,8 +119,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    falcon1.set(ControlMode.PercentOutput, oi.getPilotX());
-    falcon2.set(ControlMode.PercentOutput, oi.getPilotZ());
+    
     
   }
   

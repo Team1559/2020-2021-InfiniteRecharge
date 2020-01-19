@@ -13,9 +13,11 @@ public  class IMU {
     public double x_acceleration = 0;
     public double y_acceleration = 0;
     public double z_acceleration = 0;
+    public Shuffleboard shuffleboard;
     public void start(){
     try {
         ahrs = new AHRS(SPI.Port.kMXP);
+        
         // ahrs = new AHRS(SerialPort.Port.kUSB1);
         ahrs.enableLogging(true);
       } catch (RuntimeException ex) {
@@ -25,7 +27,7 @@ public  class IMU {
     }
    public void getvalues(){
     
-    
+ 
     SmartDashboard.putNumber("IMU_Yaw", ahrs.getYaw());
     SmartDashboard.putNumber("IMU_Pitch", ahrs.getRoll());
     SmartDashboard.putNumber("IMU_Roll", ahrs.getPitch());

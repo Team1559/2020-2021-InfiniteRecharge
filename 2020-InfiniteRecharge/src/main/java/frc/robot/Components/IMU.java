@@ -4,16 +4,24 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.DriverStation;
-import io.github.oblarg.oblog.*;
-public  class IMU {
+import io.github.oblarg.oblog.annotations.Log;
+import io.github.oblarg.oblog.Loggable;
+public  class IMU implements Loggable{
     AHRS ahrs;
+    @Log.Graph
     public double roll = 0;
+    @Log.Graph
     public double pitch = 0;
+    @Log.Graph
     public double yaw = 0;
+    @Log.Graph
     public double x_acceleration = 0;
+    @Log.Graph
     public double y_acceleration = 0;
+    @Log.Graph
     public double z_acceleration = 0;
-    public Shuffleboard shuffleboard;
+
+
     public void start(){
     try {
         ahrs = new AHRS(SPI.Port.kMXP);
@@ -27,10 +35,10 @@ public  class IMU {
     }
    public void getvalues(){
     
- 
-    SmartDashboard.putNumber("IMU_Yaw", ahrs.getYaw());
-    SmartDashboard.putNumber("IMU_Pitch", ahrs.getRoll());
-    SmartDashboard.putNumber("IMU_Roll", ahrs.getPitch());
+    
+    ///////////////////////////////////////////////SmartDashboard.putNumber("IMU_Yaw", ahrs.getYaw());
+    ///////////////////////////////////////////////SmartDashboard.putNumber("IMU_Pitch", ahrs.getRoll());
+    ///////////////////////////////////////////////SmartDashboard.putNumber("IMU_Roll", ahrs.getPitch());
     
     //SmartDashboard.putNumber("IMU_CompassHeading", ahrs.getCompassHeading());
 
@@ -45,9 +53,9 @@ public  class IMU {
 
     /* Display Processed Acceleration Data (Linear Acceleration, Motion Detect) */
 
-    SmartDashboard.putNumber("IMU_Accel_X", ahrs.getWorldLinearAccelX());
-    SmartDashboard.putNumber("IMU_Accel_Z", ahrs.getWorldLinearAccelZ());
-    SmartDashboard.putNumber("IMU_Accel_Y", ahrs.getWorldLinearAccelY());
+    ///////////////////////////////////////////////SmartDashboard.putNumber("IMU_Accel_X", ahrs.getWorldLinearAccelX());
+    ///////////////////////////////////////////////SmartDashboard.putNumber("IMU_Accel_Z", ahrs.getWorldLinearAccelZ());
+    ///////////////////////////////////////////////SmartDashboard.putNumber("IMU_Accel_Y", ahrs.getWorldLinearAccelY());
     // SmartDashboard.putBoolean("IMU_IsMoving", ahrs.isMoving());
     // SmartDashboard.putBoolean("IMU_IsRotating", ahrs.isRotating());
 
@@ -104,6 +112,8 @@ public  class IMU {
          roll = ahrs.getPitch();
          pitch = ahrs.getRoll();
          yaw = ahrs.getYaw();
+         
+
 
    }
 }

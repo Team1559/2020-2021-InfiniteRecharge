@@ -10,7 +10,7 @@ package frc.robot;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import frc.robot.velocityControlTest;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
   public OperatorInterface oi;
   private CANSparkMax spark1;
   private CANSparkMax spark2;
+  private velocityControlTest vct;
   //private Chassis driveTrain;
   
 
@@ -54,12 +55,13 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
     imu = new IMU();
     oi = new OperatorInterface();
-    
+    vct = new velocityControlTest();
     imu.start();
     Logger.configureLoggingAndConfig(this, false);
-    spark1 = new CANSparkMax(11, MotorType.kBrushless);
-    spark2 = new CANSparkMax(12, MotorType.kBrushless);
+    //spark1 = new CANSparkMax(11, MotorType.kBrushless);
+    //spark2 = new CANSparkMax(12, MotorType.kBrushless);
     //driveTrain = new Chassis(spark1, spark2);
+    vct.start();
 
   }
 
@@ -74,7 +76,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     imu.getvalues();
-  
     
     Logger.updateEntries();
     
@@ -113,13 +114,24 @@ public class Robot extends TimedRobot {
         break;
     }
   }
-
+  @Override
+  public void teleopInit() {
+    
+    
+  }
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
-    
+    if (oi.copilot.getRawButton(1)){
+      System.out.println("Spinning");
+      vct.velocity();
+    }
+    else{
+      vct.stop();
+
+    }
     
   }
   

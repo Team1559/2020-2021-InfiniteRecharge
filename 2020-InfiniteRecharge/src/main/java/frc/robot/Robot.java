@@ -13,6 +13,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Chassis;
@@ -36,6 +38,14 @@ public class Robot extends TimedRobot {
   private Chassis driveTrain;
   private OperatorInterface oi;
 
+  private static final String kTankDrive = "Tank Drive";
+  private static final String kArcadeDrive = "Arcade Drive";
+  private static final String kCurvatureDrive = "Curvature Drive";
+  private String m_driveTrain;
+  private final SendableChooser<String> m_driveChooser = new SendableChooser<>();
+
+  private ShuffleboardTab driveTrainTab;
+
 
 
   /**
@@ -44,6 +54,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    driveTrainTab = Shuffleboard.getTab("Drive Train");
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -52,6 +63,10 @@ public class Robot extends TimedRobot {
     // spark2 = new CANSparkMax(12, MotorType.kBrushless);
     driveTrain = new Chassis();
     oi = new OperatorInterface();
+    m_driveChooser.setDefaultOption("Tank Drive",kTankDrive);
+    m_driveChooser.addOption("Arcade Drive", kArcadeDrive);
+    m_driveChooser.addOption("Curvature Drive", kCurvatureDrive);
+    driveTrainTab.add("Drive Train Choices", m_driveChooser);
 
   }
 
@@ -83,7 +98,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
+    m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
   }
 
@@ -118,13 +133,13 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit()
   {
-
+    m_driveTrain = m_driveChooser.getSelected();
   }
 
   @Override
   public void testPeriodic() 
   {
-    driveTrain.DriveSystem(oi.pilot);
+    driveTrain.DriveSystem(oi.pilot,m_driveTrain);
   }
   @Override
   public void disabledInit(){

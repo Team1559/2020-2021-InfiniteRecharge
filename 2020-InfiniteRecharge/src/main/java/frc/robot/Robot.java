@@ -53,12 +53,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     Logger.configureLoggingAndConfig(this, false);
+    oi = new OperatorInterface();
 
-    cameras = new Cameras();
+    cameras = new Cameras(oi);
     spark1 = new CANSparkMax(11, MotorType.kBrushless);
     spark2 = new CANSparkMax(12, MotorType.kBrushless);
     driveTrain = new Chassis(spark1, spark2);
-    oi = new OperatorInterface();
   }
 
   /**
@@ -73,7 +73,11 @@ public class Robot extends TimedRobot {
   public void robotPeriodic()
   {
     Logger.updateEntries();
+
+    cameras.cameraView();
+      
   }
+  
 
   /**
    * This autonomous (along with the chooser code above) shows how to select

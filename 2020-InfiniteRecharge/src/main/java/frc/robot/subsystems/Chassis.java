@@ -18,12 +18,20 @@ public class Chassis {
     // @Log.SpeedController
     // private WPI_TalonSRX motorFR;
     private CANSparkMax sparkMax1; // TBD
+    @Log.SpeedController
+    @Config.PIDController
     private CANPIDController sparkMax1PID;
     private CANSparkMax sparkMax2;
+    @Log.SpeedController
+    @Config.PIDController
     private CANPIDController sparkMax2PID;
     private CANSparkMax sparkMax3;
+    @Log.SpeedController
+    @Config.PIDController
     private CANPIDController sparkMax3PID;
     private CANSparkMax sparkMax4;
+    @Log.SpeedController
+    @Config.PIDController
     private CANPIDController sparkMax4PID;
     private DifferentialDrive driveTrain;
 
@@ -74,7 +82,8 @@ public class Chassis {
         switch(mode)
         {
              case "Tank Drive":
-             driveTrain.tankDrive(-(drive.getRawAxis(1)),-(drive.getRawAxis(5)));
+            driveTrain.tankDrive(-(drive.getRawAxis(1)),-(drive.getRawAxis(5)));
+            //driveTrain.tankDrive(0.01,0.01);
              break;
 
              case "Arcade Drive":

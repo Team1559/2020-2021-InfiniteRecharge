@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
   public OperatorInterface oi;
   private CANSparkMax spark1;
   private CANSparkMax spark2;
-  private velocityControlTest vct;
+  private velocityControlTest vct = new velocityControlTest();
   //private Chassis driveTrain;
   
 
@@ -55,7 +55,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
     imu = new IMU();
     oi = new OperatorInterface();
-    vct = new velocityControlTest();
     imu.start();
     Logger.configureLoggingAndConfig(this, false);
     //spark1 = new CANSparkMax(11, MotorType.kBrushless);

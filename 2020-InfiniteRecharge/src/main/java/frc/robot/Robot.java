@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
   public OperatorInterface oi;
   private CANSparkMax spark1;
   private CANSparkMax spark2;
-  private velocityControlTest vct = new velocityControlTest();
+  public velocityControlTest vct = new velocityControlTest();
   //private Chassis driveTrain;
   
 

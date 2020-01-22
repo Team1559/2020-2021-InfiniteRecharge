@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.widgets.MotorWidget;
@@ -106,6 +107,7 @@ public class Chassis {
              widget2.changeOutput();
              widget3.changeOutput();
              widget4.changeOutput();
+             tab.add("Drive Train",1.0).withWidget(BuiltInWidgets.kDifferentialDrive).getEntry();
         }
         
     }

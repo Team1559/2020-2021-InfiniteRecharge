@@ -22,7 +22,7 @@ public  class IMU implements Loggable{
     public double z_acceleration = 0;
 
 
-    public void start(){
+    public void init(){
     try {
         ahrs = new AHRS(SPI.Port.kMXP);
         
@@ -31,10 +31,21 @@ public  class IMU implements Loggable{
       } catch (RuntimeException ex) {
         DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
         }
-        ahrs.zeroYaw();
+        
+    }
+
+    public void zeroYaw(){
+      ahrs.zeroYaw();
     }
    public void getvalues(){
+    AHRS.BoardYawAxis yaw_axis = ahrs.getBoardYawAxis();
     
+    x_acceleration = ahrs.getWorldLinearAccelX();
+        y_acceleration = ahrs.getWorldLinearAccelY();
+        z_acceleration = ahrs.getWorldLinearAccelZ();
+         roll = ahrs.getPitch();
+         pitch = ahrs.getRoll();
+         yaw = ahrs.getYaw();
     
     ///////////////////////////////////////////////SmartDashboard.putNumber("IMU_Yaw", ahrs.getYaw());
     ///////////////////////////////////////////////SmartDashboard.putNumber("IMU_Pitch", ahrs.getRoll());
@@ -89,7 +100,7 @@ public  class IMU implements Loggable{
 
     /* Omnimount Yaw Axis Information */
     /* For more info, see http://navx-mxp.kauailabs.com/installation/omnimount */
-    AHRS.BoardYawAxis yaw_axis = ahrs.getBoardYawAxis();
+    
     // SmartDashboard.putString("YawAxisDirection", yaw_axis.up ? "Up" : "Down");
     // SmartDashboard.putNumber("YawAxis", yaw_axis.board_axis.getValue());
 
@@ -106,12 +117,7 @@ public  class IMU implements Loggable{
     //SmartDashboard.putNumber("QuaternionY", ahrs.getQuaternionY());
     //SmartDashboard.putNumber("QuaternionZ", ahrs.getQuaternionZ());
 
-        x_acceleration = ahrs.getWorldLinearAccelX();
-        y_acceleration = ahrs.getWorldLinearAccelY();
-        z_acceleration = ahrs.getWorldLinearAccelZ();
-         roll = ahrs.getPitch();
-         pitch = ahrs.getRoll();
-         yaw = ahrs.getYaw();
+        
          
 
 

@@ -20,8 +20,9 @@ import frc.robot.subsystems.Intake;
 import frc.robot.Components.IMU;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-//import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Chassis;
 import io.github.oblarg.oblog.*;
+import io.github.oblarg.oblog.annotations.Config;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,37 +32,35 @@ import io.github.oblarg.oblog.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
   private IMU imu;
   public OperatorInterface oi;
-  private CANSparkMax spark1;
-  private CANSparkMax spark2;
-  public velocityControlTest vct = new velocityControlTest();
-  //private Chassis driveTrain;
+  private Chassis driveTrain;
+  private boolean chassisEnable = false;
+  private boolean ImuEnable = false;
+  private boolean robotInitialized = false;
+  @Config
+  public void Enable_IMU(boolean enable){
+    ImuEnable = enable;
+  }
+  @Config
+  public void Enable_Chassis(boolean enable){
+    chassisEnable = enable;
+  }
   
-
-
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
     imu = new IMU();
     oi = new OperatorInterface();
-    imu.start();
     Logger.configureLoggingAndConfig(this, false);
-    //spark1 = new CANSparkMax(11, MotorType.kBrushless);
-    //spark2 = new CANSparkMax(12, MotorType.kBrushless);
-    //driveTrain = new Chassis(spark1, spark2);
-    vct.start();
-
+    
+    
+    
+    
   }
 
   /**
@@ -74,10 +73,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    imu.getvalues();
     
     Logger.updateEntries();
-    
+    System.out.println(ImuEnable);
   }
     
   /**
@@ -93,9 +91,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+    initialize();
+    
+    
+    
+    if(ImuEnable){
+    imu.zeroYaw();
+    
+  }
   }
 
   /**
@@ -103,15 +106,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
+    if(ImuEnable){
+      imu.getvalues();
     }
+    
   }
   @Override
   public void teleopInit() {
@@ -121,15 +119,17 @@ public class Robot extends TimedRobot {
   /**
    * This function is called periodically during operator control.
    */
+  
+  @Override
+  public void teleopInit() {
+    if(robotInitialized == false){
+      initialize();
+    }
+  }
   @Override
   public void teleopPeriodic() {
-    if (oi.copilot.getRawButton(1)){
-      System.out.println("Spinning");
-      vct.velocity();
-    }
-    else{
-      vct.stop();
-
+    if(ImuEnable){
+      imu.getvalues();
     }
     
   }
@@ -138,11 +138,17 @@ public class Robot extends TimedRobot {
    * This function is called periodically during test mode.
    */
   @Override
+  public void testInit() {
+    initialize();
+  }
+  @Override
   public void testPeriodic() 
   {
-    driveTrain.DriveSystem(oi.pilot);
-    PowerCell.intake();
+    if(chassisEnable){
+      driveTrain.DriveSystem(oi.pilot);
+    }
   }
+
   @Override
   public void disabledInit(){
 
@@ -150,5 +156,12 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic(){
 
+  }
+  public void initialize(){
+    robotInitialized = true;
+    if(ImuEnable){
+      imu.init();
+    }
+    System.out.println("Initilied");
   }
 }

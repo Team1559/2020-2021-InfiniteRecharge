@@ -140,7 +140,8 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() 
   {
-    //driveTrain.DriveSystem(oi.pilot);
+    driveTrain.DriveSystem(oi.pilot);
+    PowerCell.intake();
   }
   @Override
   public void disabledInit(){

@@ -13,16 +13,24 @@ public class velocityControlTest implements Loggable{
 public boolean skipLayout(){
     return true;
 }
+@Config
 public TalonFX falcon21; 
 private  final int TIMEOUT = 0;
     private  final double kF = 0; //F-gain = (100% X 1023) / 7350 F-gain = 0.139183673 - (7350 is max speed)
+    
 	private final double kP = 5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
 	private  final double kD = 0;
     private  final double cLR = 0.1;
-    int rpms = 0;
+    @Log
+    int rpms;
+    
 
-    @Config.NumberSlider(min = -6000, max = 6000, blockIncrement = 100)
-    public void set_rpms(int newrpms){
+    @Config.NumberSlider(min = -6000, max = 6000, blockIncrement = 10)
+    public void set_rpms_slider(int newrpms){
+        rpms = newrpms;
+    }
+    @Config
+    public void set_rpms_num(int newrpms){
         rpms = newrpms;
     }
     

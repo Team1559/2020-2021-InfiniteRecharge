@@ -9,6 +9,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.robot.widgets.MotorWidget;
 import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;;
 
@@ -18,24 +21,21 @@ public class Chassis {
     // @Log.SpeedController
     // private WPI_TalonSRX motorFR;
     private CANSparkMax sparkMax1; // TBD
-    @Log.SpeedController
-    @Config.PIDController
     private CANPIDController sparkMax1PID;
     private CANSparkMax sparkMax2;
-    @Log.SpeedController
-    @Config.PIDController
     private CANPIDController sparkMax2PID;
     private CANSparkMax sparkMax3;
-    @Log.SpeedController
-    @Config.PIDController
     private CANPIDController sparkMax3PID;
     private CANSparkMax sparkMax4;
-    @Log.SpeedController
-    @Config.PIDController
     private CANPIDController sparkMax4PID;
     private DifferentialDrive driveTrain;
 
+    private ShuffleboardTab tab;
 
+    private MotorWidget widget1;
+    private MotorWidget widget2;
+    private MotorWidget widget3;
+    private MotorWidget widget4;
     public Chassis() {
         sparkMax1 = new CANSparkMax(11, MotorType.kBrushless);
         sparkMax1PID = sparkMax1.getPIDController();
@@ -70,6 +70,13 @@ public class Chassis {
         leftMotors.setInverted(true);
         SpeedControllerGroup rightMotors = new SpeedControllerGroup(sparkMax2, sparkMax4);
         driveTrain = new DifferentialDrive(leftMotors, rightMotors);
+
+        tab = Shuffleboard.getTab("Drive Train");
+
+        widget1 = new MotorWidget(sparkMax1, "Motor 1");
+        widget2 = new MotorWidget(sparkMax2, "Motor 2");
+        widget3 = new MotorWidget(sparkMax3, "Motor 3");
+        widget4 = new MotorWidget(sparkMax4, "Motor 4");
     }
     public void DriveSystem(Joystick drive)
     {
@@ -93,6 +100,12 @@ public class Chassis {
              case "Curvature Drive":
              driveTrain.curvatureDrive(-(drive.getRawAxis(1)), drive.getRawAxis(2), true);
              break;
+
+             case "Shuffle Drive":
+             widget1.changeOutput();
+             widget2.changeOutput();
+             widget3.changeOutput();
+             widget4.changeOutput();
         }
         
     }

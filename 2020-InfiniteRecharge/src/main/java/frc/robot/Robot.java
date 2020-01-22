@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Components.IMU;
+import frc.robot.subsystems.PowerCell;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import frc.robot.subsystems.Chassis;
@@ -37,6 +38,12 @@ public class Robot extends TimedRobot {
   private boolean chassisEnable = false;
   private boolean ImuEnable = false;
   private boolean robotInitialized = false;
+  private boolean powerCellEnable = false;
+  private PowerCell powerCell;
+  @Config 
+  public void Enable_PowerCell(boolean enable){
+    powerCellEnable = enable;
+  }
   @Config
   public void Enable_IMU(boolean enable){
     ImuEnable = enable;
@@ -54,6 +61,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     imu = new IMU();
     oi = new OperatorInterface();
+    powerCell = new PowerCell();
     Logger.configureLoggingAndConfig(this, false);
     
     
@@ -94,9 +102,8 @@ public class Robot extends TimedRobot {
     
     
     if(ImuEnable){
-    imu.zeroYaw();
-    
-  }
+      imu.zeroYaw();
+    }
   }
 
   /**
@@ -109,11 +116,9 @@ public class Robot extends TimedRobot {
     }
     
   }
-  @Override
-  public void teleopInit() {
     
     
-  }
+  
   /**
    * This function is called periodically during operator control.
    */
@@ -124,12 +129,16 @@ public class Robot extends TimedRobot {
       initialize();
     }
   }
+
   @Override
   public void teleopPeriodic() {
     if(ImuEnable){
       imu.getvalues();
     }
-    
+    if(powerCellEnable){
+      powerCell.intake();
+      powerCell.shoot();
+    }
   }
   
   /**
@@ -161,5 +170,9 @@ public class Robot extends TimedRobot {
       imu.init();
     }
     System.out.println("Initilied");
+  
+  if(powerCellEnable){
+      powerCell.init();
+    }
   }
 }

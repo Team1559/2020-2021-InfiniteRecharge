@@ -25,6 +25,7 @@ import com.revrobotics.CANEncoder;
 public class PowerCell implements Loggable{
     //pid values
     private final int TIMEOUT = 0;
+    private final double cLR = 0.1;
     @Log
     private double intake_kP = 5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
     private double intake_kD = 0;
@@ -34,7 +35,13 @@ public class PowerCell implements Loggable{
     private double shooter_kP = 5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
     private double shooter_kD = 0;
     private double shooter_kI = 0;
-    private final double cLR = 0.1;
+    @Log
+    private double storage_kP = 5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
+    private double storage_kD = 0;
+    private double storage_kI = 0;
+    private double storage_kF = 0;
+    
+    
     //motors 
     private TalonSRX storageMotor;
     private CANSparkMax intakeMotor;
@@ -47,8 +54,10 @@ public class PowerCell implements Loggable{
     private int shooterRpms;
     @Log
     private int intakeRpms;
-	 
-
+    @Log
+    private int storageRpms; 
+        
+    
 
     @Config
     private void Intake_PID(double kP, double kI, double kD, int Rpms){
@@ -73,6 +82,18 @@ public class PowerCell implements Loggable{
         
     }
     
+    @Config
+    private void Storage_PID(double kP, double kI, double kD, int Rpms){
+        storageMotor.config_kP(0, kP);
+        storageMotor.config_kD(0, kD);
+        storageMotor.config_kI(0, kI);
+        storageRpms = Rpms;
+        
+         storage_kP = kP;
+       
+        
+    }
+
     public void init(){
         //Constructors
         oi = Robot.oi;
@@ -110,10 +131,10 @@ public class PowerCell implements Loggable{
         storageMotor.set(ControlMode.Velocity, 0);	
         storageMotor.configClosedloopRamp(cLR, TIMEOUT);
         storageMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        storageMotor.config_kF(0, shooter_kF);
-        storageMotor.config_kP(0, shooter_kP);
-        storageMotor.config_kD(0, shooter_kD);
-        storageMotor.config_kI(0, shooter_kI);
+        storageMotor.config_kF(0, storage_kF);
+        storageMotor.config_kP(0, storage_kP);
+        storageMotor.config_kD(0, storage_kD);
+        storageMotor.config_kI(0, storage_kI);
         storageMotor.configNominalOutputForward(0, TIMEOUT);
         storageMotor.configNominalOutputReverse(0, TIMEOUT);
         storageMotor.configPeakOutputForward(+1, TIMEOUT);
@@ -132,7 +153,7 @@ public class PowerCell implements Loggable{
     }
     public void storage(){
         if(oi.copilot.getRawButton(3)){
-            storageMotor.set(ControlMode.Position, 3);
+            storageMotor.set(ControlMode.Position, storageRpms);
         }
         else{
             storageMotor.set(ControlMode.Position, 0);

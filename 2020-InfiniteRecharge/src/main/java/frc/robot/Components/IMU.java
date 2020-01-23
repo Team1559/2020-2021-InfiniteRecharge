@@ -1,4 +1,4 @@
-package frc.robot.Components;
+package frc.robot.components;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;

@@ -6,6 +6,7 @@ public class Wiring
 //Power Cell
     public static final int intakeMotor = 22;
     public static final int shooterMotor = 21;
+    public static final int storageMotor = 10;
     // public static final int shooterMotor = 5;
 //Climber
 

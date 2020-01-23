@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.controller.PIDController;
-
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -32,6 +32,7 @@ public class PowerCell implements Loggable{
     private double shooter_kD = 0;
     private double shooter_kI = 0;
     private final double cLR = 0.1;
+    private TalonSRX storageMotor;
     private TalonFX intakeMotor;
     private TalonFX shooter;
     private OperatorInterface oi;
@@ -70,6 +71,7 @@ public class PowerCell implements Loggable{
         oi = Robot.oi;
         intakeMotor = new TalonFX(Wiring.intakeMotor);
         shooter = new TalonFX(Wiring.shooterMotor);
+        storageMotor = new TalonSRX(Wiring.storageMotor);
 
         //Intake Motor Config
         intakeMotor.setNeutralMode(NeutralMode.Brake);
@@ -100,13 +102,40 @@ public class PowerCell implements Loggable{
         shooter.configPeakOutputForward(+1, TIMEOUT);
         shooter.configPeakOutputReverse(-1, TIMEOUT);
         shooter.setNeutralMode(NeutralMode.Coast);
+    
+        
+        //Storage Motor Config
+        storageMotor.set(ControlMode.Velocity, 0);	
+        storageMotor.configClosedloopRamp(cLR, TIMEOUT);
+        storageMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        storageMotor.config_kF(0, shooter_kF);
+        storageMotor.config_kP(0, shooter_kP);
+        storageMotor.config_kD(0, shooter_kD);
+        storageMotor.config_kI(0, shooter_kI);
+        storageMotor.configNominalOutputForward(0, TIMEOUT);
+        storageMotor.configNominalOutputReverse(0, TIMEOUT);
+        storageMotor.configPeakOutputForward(+1, TIMEOUT);
+        storageMotor.configPeakOutputReverse(-1, TIMEOUT);
+        storageMotor.setNeutralMode(NeutralMode.Coast);
+ 
     }
-
+    public void stopStorage(){
+        storageMotor.set(ControlMode.Velocity, 0);
+    }
     public void stopIntake(){
         intakeMotor.set(ControlMode.Velocity, 0);
     }
     public void stopShooter(){
-        shooter.set(ControlMode.Velocity, 0);
+        shooter.set(TalonFXControlMode.Velocity, 0);
+    }
+    public void storage(){
+        if(oi.copilot.getRawButton(3)){
+            storageMotor.set(ControlMode.Position, 3);
+        }
+        else{
+            storageMotor.set(ControlMode.Position, 0);
+        }
+
     }
 	public void intake() {
         if(oi.copilot.getRawButton(1))

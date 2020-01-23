@@ -139,6 +139,7 @@ public class Robot extends TimedRobot {
     if(powerCellEnable){
       powerCell.intake();
       powerCell.shoot();
+      powerCell.storage();//for testing only will be changed
     }
   }
   

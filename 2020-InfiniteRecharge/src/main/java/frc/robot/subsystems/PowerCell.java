@@ -156,7 +156,7 @@ public class PowerCell implements Loggable{
             storageMotor.set(ControlMode.Position, storageRpms);
         }
         else{
-            storageMotor.set(ControlMode.Position, 0);
+           stopStorage();
         }
 
     }

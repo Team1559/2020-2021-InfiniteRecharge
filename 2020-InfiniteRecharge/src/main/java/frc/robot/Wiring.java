@@ -1,24 +1,12 @@
 package frc.robot;
-
-import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.annotations.Config;
-
-public class Wiring implements Loggable
+public class Wiring
 {
 //Drivetrain
 
 //Power Cell
-public static int intakeMotor = 6;
-    @Config
-    public void intakemotor(int newmotor){
-        intakeMotor = newmotor;
-    }
-    public static int shooterMotor = 6;
-    @Config
-    public void shootermotor(int newmotor){
-        intakeMotor = newmotor;
-    }
-    
+    public static final int intakeMotor = 22;
+    public static final int shooterMotor = 21;
+    // public static final int shooterMotor = 5;
 //Climber
 
 //Control Panel

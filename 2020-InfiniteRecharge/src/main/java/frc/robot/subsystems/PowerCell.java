@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+import frc.robot.OperatorInterface;
 import frc.robot.Robot;
 import frc.robot.Wiring;
 import io.github.oblarg.oblog.Loggable;
@@ -21,13 +22,12 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 public class PowerCell implements Loggable{
     private  final int TIMEOUT = 0;
     private  final double kF = 0; //F-gain = (100% X 1023) / 7350 F-gain = 0.139183673 - (7350 is max speed)
-    private Robot robot;
 	private final double kP = 5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
 	private  final double kD = 0;
     private  final double cLR = 0.1;
     private TalonFX intakeMotor;
     private TalonFX shooter;
-
+    private OperatorInterface oi;
     @Log
     private PIDController pidController = new PIDController(1, 0, 0);
     @Log
@@ -53,7 +53,7 @@ public class PowerCell implements Loggable{
     
     public void init(){
         //Constructors
-        robot = new Robot();
+        oi = Robot.oi;
         intakeMotor = new TalonFX(Wiring.intakeMotor);
         shooter = new TalonFX(Wiring.shooterMotor);
 
@@ -71,6 +71,7 @@ public class PowerCell implements Loggable{
         intakeMotor.configPeakOutputForward(+1, TIMEOUT);
         intakeMotor.configPeakOutputReverse(-1, TIMEOUT);
         intakeMotor.setNeutralMode(NeutralMode.Brake);
+
         //Shooter Motor Config
         shooter.set(TalonFXControlMode.Velocity, 0);	
         shooter.configClosedloopRamp(cLR, TIMEOUT);
@@ -86,23 +87,29 @@ public class PowerCell implements Loggable{
         shooter.setNeutralMode(NeutralMode.Coast);
     }
 
-    public void stop(){
+    public void stopIntake(){
         intakeMotor.set(ControlMode.Velocity, 0);
     }
+    public void stopShooter(){
+        shooter.set(ControlMode.Velocity, 0);
+    }
 	public void intake() {
-        if(robot.oi.pilot.getRawButton(1))
+        if(oi.copilot.getRawButton(1))
         {
             intakeMotor.set(ControlMode.Velocity, intakeRpms);
         }
         else
         {
-           stop();
+           stopIntake();
         }
 
     }
     public void shoot(){
-        if(robot.oi.pilot.getRawButton(2)){
+        if(oi.copilot.getRawButton(2)){
             shooter.set(ControlMode.Velocity, shooterrpms);
+        }
+        else{
+            stopShooter();
         }
     }
 }

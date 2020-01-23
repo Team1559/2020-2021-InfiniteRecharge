@@ -15,13 +15,16 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.Chassis;
-import io.github.oblarg.oblog.*;
-
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake; 
+import frc.robot.Components.IMU;
+import com.ctre.phoenix.motorcontrol.*;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import frc.robot.subsystems.Chassis;
+import io.github.oblarg.oblog.*;
+import io.github.oblarg.oblog.annotations.Config;
 import frc.robot.components.Cameras;
-import frc.robot.OperatorInterface;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -31,35 +34,33 @@ import frc.robot.OperatorInterface;
  */
 public class Robot extends TimedRobot {
   private Cameras cameras;
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  private CANSparkMax spark1;
-  private CANSparkMax spark2;
+
+  private IMU imu;
+  public OperatorInterface oi;
   private Chassis driveTrain;
-  private OperatorInterface oi;
-
-
-
+  private boolean chassisEnable = false;
+  private boolean ImuEnable = false;
+  private boolean robotInitialized = false;
+  @Config
+  public void Enable_IMU(boolean enable){
+    ImuEnable = enable;
+  }
+  @Config
+  public void Enable_Chassis(boolean enable){
+    chassisEnable = enable;
+  }
+  
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
-
-    Logger.configureLoggingAndConfig(this, false);
+    imu = new IMU();
     oi = new OperatorInterface();
-
-    cameras = new Cameras(oi);
-    spark1 = new CANSparkMax(11, MotorType.kBrushless);
-    spark2 = new CANSparkMax(12, MotorType.kBrushless);
-    driveTrain = new Chassis(spark1, spark2);
-  }
+    Logger.configureLoggingAndConfig(this, false);
+    cameras = new Cameras();
+}
 
   /**
    * This function is called every robot packet, no matter the mode. Use
@@ -70,15 +71,12 @@ public class Robot extends TimedRobot {
    * LiveWindow and SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic()
-  {
+  public void robotPeriodic() {
+    
     Logger.updateEntries();
-
-
-      
+    System.out.println(ImuEnable);
   }
-  
-
+    
   /**
    * This autonomous (along with the chooser code above) shows how to select
    * between different autonomous modes using the dashboard. The sendable
@@ -92,9 +90,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+    initialize();
+    
+    
+    
+    if(ImuEnable){
+    imu.zeroYaw();
+    
+  }
   }
 
   /**
@@ -102,34 +105,45 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
+    if(ImuEnable){
+      imu.getvalues();
     }
+    
   }
 
   /**
    * This function is called periodically during operator control.
    */
+  
+  @Override
+  public void teleopInit() {
+    if(robotInitialized == false){
+      initialize();
+    }
+  }
   @Override
   public void teleopPeriodic() {
-    cameras.cameraView();
-    System.out.println (oi.pilot.getPOV(0));
+    if(ImuEnable){
+      imu.getvalues();
+    }
+    
   }
-
+  
   /**
    * This function is called periodically during test mode.
    */
   @Override
+  public void testInit() {
+    initialize();
+  }
+  @Override
   public void testPeriodic() 
   {
-    driveTrain.DriveSystem(oi.pilot);
+    if(chassisEnable){
+      driveTrain.DriveSystem(oi.pilot);
+    }
   }
+
   @Override
   public void disabledInit(){
 
@@ -137,5 +151,12 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic(){
 
+  }
+  public void initialize(){
+    robotInitialized = true;
+    if(ImuEnable){
+      imu.init();
+    }
+    System.out.println("Initilied");
   }
 }

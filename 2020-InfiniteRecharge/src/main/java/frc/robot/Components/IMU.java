@@ -1,8 +1,6 @@
 package frc.robot.Components;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.DriverStation;
 import io.github.oblarg.oblog.annotations.Log;
 import io.github.oblarg.oblog.Loggable;
@@ -38,7 +36,7 @@ public  class IMU implements Loggable{
       ahrs.zeroYaw();
     }
    public void getvalues(){
-    AHRS.BoardYawAxis yaw_axis = ahrs.getBoardYawAxis();
+    //AHRS.BoardYawAxis yaw_axis = ahrs.getBoardYawAxis();
     
     x_acceleration = ahrs.getWorldLinearAccelX();
         y_acceleration = ahrs.getWorldLinearAccelY();

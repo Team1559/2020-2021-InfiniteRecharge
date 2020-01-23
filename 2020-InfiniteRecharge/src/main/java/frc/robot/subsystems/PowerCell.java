@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+
 import frc.robot.OperatorInterface;
 import frc.robot.Robot;
 import frc.robot.Wiring;
@@ -11,20 +12,19 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.revrobotics.CANEncoder;
 
 
  //intake has to go double the speed the shooter goes
 public class PowerCell implements Loggable{
     //pid values
     private final int TIMEOUT = 0;
-    private double intake_kF = 0; //F-gain = (100% X 1023) / 7350 F-gain = 0.139183673 - (7350 is max speed)
     @Log
     private double intake_kP = 5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
     private double intake_kD = 0;
@@ -37,21 +37,24 @@ public class PowerCell implements Loggable{
     private final double cLR = 0.1;
     //motors 
     private TalonSRX storageMotor;
-    private TalonFX intakeMotor;
+    private CANSparkMax intakeMotor;
     private TalonFX shooter;
     private OperatorInterface oi;
-   
+    private CANPIDController intakeMotorPID;   
+    private CANEncoder intakeEncoder;
+
     @Log
     private int shooterRpms;
     @Log
-    private int intakeRpms;    
+    private int intakeRpms;
+	 
 
 
     @Config
     private void Intake_PID(double kP, double kI, double kD, int Rpms){
-        intakeMotor.config_kP(0, kP);
-        intakeMotor.config_kD(0, kD);
-        intakeMotor.config_kI(0, kI);
+        intakeMotorPID.setP(kP);
+        intakeMotorPID.setI(kI);
+        intakeMotorPID.setD(kD);
         intakeRpms = Rpms;
 
          intake_kP = kP;
@@ -73,24 +76,19 @@ public class PowerCell implements Loggable{
     public void init(){
         //Constructors
         oi = Robot.oi;
-        intakeMotor = new TalonFX(Wiring.intakeMotor);
         shooter = new TalonFX(Wiring.shooterMotor);
+        intakeMotor = new CANSparkMax(Wiring.intakeMotor, MotorType.kBrushless);
+        intakeMotorPID = intakeMotor.getPIDController();
         storageMotor = new TalonSRX(Wiring.storageMotor);
+        intakeEncoder = new CANEncoder(intakeMotor);
 
         //Intake Motor Config
-        intakeMotor.setNeutralMode(NeutralMode.Brake);
-        intakeMotor.set(TalonFXControlMode.Velocity, 0);	
-        intakeMotor.configClosedloopRamp(cLR, TIMEOUT);
-        intakeMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        intakeMotor.config_kF(0, intake_kF);
-        intakeMotor.config_kP(0, intake_kP);
-        intakeMotor.config_kD(0, intake_kD);
-        intakeMotor.config_kI(0, intake_kI);
-        intakeMotor.configNominalOutputForward(0, TIMEOUT);
-        intakeMotor.configNominalOutputReverse(0, TIMEOUT);
-        intakeMotor.configPeakOutputForward(+1, TIMEOUT);
-        intakeMotor.configPeakOutputReverse(-1, TIMEOUT);
-        intakeMotor.setNeutralMode(NeutralMode.Brake);
+        intakeMotorPID.setP(intake_kP);
+        intakeMotorPID.setI(intake_kI);
+        intakeMotorPID.setD(intake_kD);
+        intakeMotorPID.setReference(0, ControlType.kVelocity);
+        intakeMotor.setIdleMode(IdleMode.kBrake);
+        intakeEncoder = intakeMotor.getEncoder();
         
 
         //Shooter Motor Config
@@ -127,7 +125,7 @@ public class PowerCell implements Loggable{
         storageMotor.set(ControlMode.Velocity, 0);
     }
     public void stopIntake(){
-        intakeMotor.set(ControlMode.Velocity, 0);
+        intakeMotor.set(1);
     }
     public void stopShooter(){
         shooter.set(TalonFXControlMode.Velocity, 0);
@@ -145,7 +143,7 @@ public class PowerCell implements Loggable{
         if(oi.copilot.getRawButton(1))
         {
             
-            intakeMotor.set(ControlMode.Velocity, intakeRpms);
+            intakeMotor.set(1);
         }
         else
         {

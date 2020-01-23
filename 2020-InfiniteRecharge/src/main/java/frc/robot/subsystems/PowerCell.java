@@ -114,7 +114,7 @@ public class PowerCell implements Loggable{
 	public void intake() {
         if(oi.copilot.getRawButton(1))
         {
-            System.out.println("Spinning intake");
+            //System.out.println("Spinning intake");
             intakeMotor.set(ControlMode.Velocity, intakeRpms);
         }
         else
@@ -125,7 +125,7 @@ public class PowerCell implements Loggable{
     }
     public void shoot(){
         if(oi.copilot.getRawButton(2)){
-            System.out.println("Spinning shooter");
+           // System.out.println("Spinning shooter");
             shooter.set(ControlMode.Velocity, shooterRpms);
         }
         else{

@@ -17,12 +17,15 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake; 
+import frc.robot.Components.IMU;
+import com.ctre.phoenix.motorcontrol.*;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import frc.robot.subsystems.Chassis;
 import io.github.oblarg.oblog.*;
+import io.github.oblarg.oblog.annotations.Config;
 
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Intake;
-import frc.robot.OperatorInterface;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -50,6 +53,19 @@ public class Robot extends TimedRobot {
 
 
 
+  private IMU imu;
+  private boolean chassisEnable = false;
+  private boolean ImuEnable = false;
+  private boolean robotInitialized = false;
+  @Config
+  public void Enable_IMU(boolean enable){
+    ImuEnable = enable;
+  }
+  @Config
+  public void Enable_Chassis(boolean enable){
+    chassisEnable = enable;
+  }
+  
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -72,6 +88,11 @@ public class Robot extends TimedRobot {
     m_driveChooser.addOption("Shuffle Drive Control Groups", kShuffleDriveGroups);
     driveTrainTab.add("Drive Train Choices", m_driveChooser);
 
+    imu = new IMU();
+    
+    
+    
+    
   }
 
   /**
@@ -86,8 +107,9 @@ public class Robot extends TimedRobot {
   public void robotPeriodic()
   {
     Logger.updateEntries();
+    System.out.println(ImuEnable);
   }
-
+    
   /**
    * This autonomous (along with the chooser code above) shows how to select
    * between different autonomous modes using the dashboard. The sendable
@@ -100,36 +122,52 @@ public class Robot extends TimedRobot {
    * SendableChooser make sure to add them to the chooser code above as well.
    */
   @Override
-  public void autonomousInit() {
+  public void autonomousInit()
+  {
     m_autoSelected = m_chooser.getSelected();
     m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+    initialize();
+    
+    
+    
+    if(ImuEnable)
+    {
+    imu.zeroYaw();
+    }
   }
 
   /**
    * This function is called periodically during autonomous.
    */
   @Override
-  public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
+  public void autonomousPeriodic()
+  {
+    if(ImuEnable){
+      imu.getvalues();
     }
   }
 
   /**
    * This function is called periodically during operator control.
    */
+  
   @Override
-  public void teleopPeriodic() {
-    driveTrain.DriveSystem(oi.pilot);
+  public void teleopInit()
+  {
+    if(robotInitialized == false){
+      initialize();
+    }
   }
-
+  @Override
+  public void teleopPeriodic()
+  {
+    driveTrain.DriveSystem(oi.pilot);
+    if(ImuEnable){
+      imu.getvalues();
+    }
+  }
+  
   /**
    * This function is called periodically during test mode.
    */
@@ -138,19 +176,33 @@ public class Robot extends TimedRobot {
   public void testInit()
   {
     m_driveTrain = m_driveChooser.getSelected();
+    initialize();
   }
 
   @Override
   public void testPeriodic() 
   {
-    driveTrain.DriveSystem(oi.pilot,m_driveTrain);
+    if(chassisEnable){
+      driveTrain.DriveSystem(oi.pilot,m_driveTrain);
+    }
   }
+
   @Override
-  public void disabledInit(){
+  public void disabledInit()
+  {
 
   }
   @Override
-  public void disabledPeriodic(){
+  public void disabledPeriodic()
+  {
 
+  }
+  public void initialize()
+  {
+    robotInitialized = true;
+    if(ImuEnable){
+      imu.init();
+    }
+    System.out.println("Initilied");
   }
 }

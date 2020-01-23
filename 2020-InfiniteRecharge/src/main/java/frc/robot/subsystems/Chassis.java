@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.widgets.MotorWidget;
 import frc.robot.widgets.SCGWidget;
 import io.github.oblarg.oblog.annotations.Config;
-import io.github.oblarg.oblog.annotations.Log;;
+import io.github.oblarg.oblog.annotations.Log;
 
 public class Chassis {
     // @Log.SpeedController

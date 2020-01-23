@@ -125,7 +125,7 @@ public class PowerCell implements Loggable{
         storageMotor.set(ControlMode.Velocity, 0);
     }
     public void stopIntake(){
-        intakeMotor.set(1);
+        intakeMotorPID.setReference(0, ControlType.kVelocity);
     }
     public void stopShooter(){
         shooter.set(TalonFXControlMode.Velocity, 0);
@@ -143,7 +143,7 @@ public class PowerCell implements Loggable{
         if(oi.copilot.getRawButton(1))
         {
             
-            intakeMotor.set(1);
+            intakeMotorPID.setReference(intakeRpms, ControlType.kVelocity);
         }
         else
         {

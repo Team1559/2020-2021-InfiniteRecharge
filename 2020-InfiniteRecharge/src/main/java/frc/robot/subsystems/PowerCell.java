@@ -50,8 +50,6 @@ public class PowerCell implements Loggable{
         intakeRpms = Rpms;
 
          intake_kP = kP;
-        // intake_kD = kD;
-        // intake_kI = kI;
         
     }
 
@@ -63,8 +61,7 @@ public class PowerCell implements Loggable{
         shooterRpms = Rpms;
         
          shooter_kP = kP;
-        // shooter_kD = kD;
-        // shooter_kI = kI;
+       
         
     }
     
@@ -114,7 +111,7 @@ public class PowerCell implements Loggable{
 	public void intake() {
         if(oi.copilot.getRawButton(1))
         {
-            //System.out.println("Spinning intake");
+            
             intakeMotor.set(ControlMode.Velocity, intakeRpms);
         }
         else
@@ -125,7 +122,7 @@ public class PowerCell implements Loggable{
     }
     public void shoot(){
         if(oi.copilot.getRawButton(2)){
-           // System.out.println("Spinning shooter");
+           
             shooter.set(ControlMode.Velocity, shooterRpms);
         }
         else{

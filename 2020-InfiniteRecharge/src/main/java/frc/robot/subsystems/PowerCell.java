@@ -20,35 +20,52 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 
  //intake has to go double the speed the shooter goes
 public class PowerCell implements Loggable{
-    private  final int TIMEOUT = 0;
-    private  final double kF = 0; //F-gain = (100% X 1023) / 7350 F-gain = 0.139183673 - (7350 is max speed)
-	private final double kP = 5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
-	private  final double kD = 0;
-    private  final double cLR = 0.1;
+    private final int TIMEOUT = 0;
+    private double intake_kF = 0; //F-gain = (100% X 1023) / 7350 F-gain = 0.139183673 - (7350 is max speed)
+    @Log
+    private double intake_kP = 5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
+    private double intake_kD = 0;
+    private double intake_kI = 0;
+    private double shooter_kF = 0; //F-gain = (100% X 1023) / 7350 F-gain = 0.139183673 - (7350 is max speed)
+    @Log
+    private double shooter_kP = 5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
+    private double shooter_kD = 0;
+    private double shooter_kI = 0;
+    private final double cLR = 0.1;
     private TalonFX intakeMotor;
     private TalonFX shooter;
     private OperatorInterface oi;
+   
     @Log
-    private PIDController pidController = new PIDController(1, 0, 0);
-    @Log
-    private int shooterrpms;
+    private int shooterRpms;
     @Log
     private int intakeRpms = 0;    
 
 
     @Config
-    private void PidControler(PIDController newpidcontroller){
-        pidController = newpidcontroller;
+    private void Intake_PID(double kP, double kI, double kD, int Rpms){
+        intakeMotor.config_kP(0, kP);
+        intakeMotor.config_kD(0, kD);
+        intakeMotor.config_kI(0, kI);
+        intakeRpms = Rpms;
+
+         intake_kP = kP;
+        // intake_kD = kD;
+        // intake_kI = kI;
+        
     }
 
     @Config
-    private void set_shooter_Rpms(int newrpms){
-        shooterrpms = newrpms;
-    } 
-    
-    @Config
-    private void set_intake_rpms(int newrpms){
-        intakeRpms = newrpms;
+    private void Shooter_PID(double kP, double kI, double kD, int Rpms){
+        shooter.config_kP(0, kP);
+        shooter.config_kD(0, kD);
+        shooter.config_kI(0, kI);
+        shooterRpms = Rpms;
+        
+         shooter_kP = kP;
+        // shooter_kD = kD;
+        // shooter_kI = kI;
+        
     }
     
     public void init(){
@@ -62,24 +79,25 @@ public class PowerCell implements Loggable{
         intakeMotor.set(TalonFXControlMode.Velocity, 0);	
         intakeMotor.configClosedloopRamp(cLR, TIMEOUT);
         intakeMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        intakeMotor.config_kF(0, kF);
-        intakeMotor.config_kP(0, kP);
-        intakeMotor.config_kD(0, kD);
-        intakeMotor.config_kI(0, 0);
+        intakeMotor.config_kF(0, intake_kF);
+        intakeMotor.config_kP(0, intake_kP);
+        intakeMotor.config_kD(0, intake_kD);
+        intakeMotor.config_kI(0, intake_kI);
         intakeMotor.configNominalOutputForward(0, TIMEOUT);
         intakeMotor.configNominalOutputReverse(0, TIMEOUT);
         intakeMotor.configPeakOutputForward(+1, TIMEOUT);
         intakeMotor.configPeakOutputReverse(-1, TIMEOUT);
         intakeMotor.setNeutralMode(NeutralMode.Brake);
+        
 
         //Shooter Motor Config
         shooter.set(TalonFXControlMode.Velocity, 0);	
         shooter.configClosedloopRamp(cLR, TIMEOUT);
         shooter.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        shooter.config_kF(0, kF);
-        shooter.config_kP(0, kP);
-        shooter.config_kD(0, kD);
-        shooter.config_kI(0, 0);
+        shooter.config_kF(0, shooter_kF);
+        shooter.config_kP(0, shooter_kP);
+        shooter.config_kD(0, shooter_kD);
+        shooter.config_kI(0, shooter_kI);
         shooter.configNominalOutputForward(0, TIMEOUT);
         shooter.configNominalOutputReverse(0, TIMEOUT);
         shooter.configPeakOutputForward(+1, TIMEOUT);
@@ -96,6 +114,7 @@ public class PowerCell implements Loggable{
 	public void intake() {
         if(oi.copilot.getRawButton(1))
         {
+            System.out.println("Spinning intake");
             intakeMotor.set(ControlMode.Velocity, intakeRpms);
         }
         else
@@ -106,7 +125,8 @@ public class PowerCell implements Loggable{
     }
     public void shoot(){
         if(oi.copilot.getRawButton(2)){
-            shooter.set(ControlMode.Velocity, shooterrpms);
+            System.out.println("Spinning shooter");
+            shooter.set(ControlMode.Velocity, shooterRpms);
         }
         else{
             stopShooter();

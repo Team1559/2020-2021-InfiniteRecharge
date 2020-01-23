@@ -16,7 +16,7 @@ public class MotorWidget
     {
         motor = inputMotor;
         tab = Shuffleboard.getTab("Drive Train");
-        widget = tab.add(widgetName, 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
+        widget = tab.add(widgetName, 0).withWidget(BuiltInWidgets.kTextView).getEntry();
     }
 
     public void setOutput()

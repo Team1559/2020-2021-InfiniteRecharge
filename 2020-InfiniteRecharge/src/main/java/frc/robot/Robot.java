@@ -41,7 +41,8 @@ public class Robot extends TimedRobot {
   private static final String kTankDrive = "Tank Drive";
   private static final String kArcadeDrive = "Arcade Drive";
   private static final String kCurvatureDrive = "Curvature Drive";
-  private static final String kShuffleDrive = "Shuffle Drive";
+  private static final String kShuffleDrive = "Shuffle Drive Individual";
+  private static final String kShuffleDriveGroups = "Shuffle Drive Control Groups";
   private String m_driveTrain;
   private final SendableChooser<String> m_driveChooser = new SendableChooser<>();
 
@@ -67,7 +68,8 @@ public class Robot extends TimedRobot {
     m_driveChooser.setDefaultOption("Tank Drive",kTankDrive);
     m_driveChooser.addOption("Arcade Drive", kArcadeDrive);
     m_driveChooser.addOption("Curvature Drive", kCurvatureDrive);
-    m_driveChooser.addOption("Shuffle Drive", kShuffleDrive);
+    m_driveChooser.addOption("Shuffle Drive Individual", kShuffleDrive);
+    m_driveChooser.addOption("Shuffle Drive Control Groups", kShuffleDriveGroups);
     driveTrainTab.add("Drive Train Choices", m_driveChooser);
 
   }

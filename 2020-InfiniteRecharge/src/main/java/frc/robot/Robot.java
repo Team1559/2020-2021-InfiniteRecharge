@@ -74,7 +74,7 @@ public class Robot extends TimedRobot {
   {
     Logger.updateEntries();
 
-    cameras.cameraView();
+
       
   }
   
@@ -118,6 +118,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    cameras.cameraView();
+    System.out.println (oi.pilot.getPOV(0));
   }
 
   /**

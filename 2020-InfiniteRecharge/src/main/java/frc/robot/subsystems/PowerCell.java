@@ -8,8 +8,10 @@ import io.github.oblarg.oblog.annotations.Log;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-import edu.wpi.first.wpilibj.Spark;
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -20,6 +22,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 
  //intake has to go double the speed the shooter goes
 public class PowerCell implements Loggable{
+    //pid values
     private final int TIMEOUT = 0;
     private double intake_kF = 0; //F-gain = (100% X 1023) / 7350 F-gain = 0.139183673 - (7350 is max speed)
     @Log
@@ -32,6 +35,7 @@ public class PowerCell implements Loggable{
     private double shooter_kD = 0;
     private double shooter_kI = 0;
     private final double cLR = 0.1;
+    //motors 
     private TalonSRX storageMotor;
     private TalonFX intakeMotor;
     private TalonFX shooter;
@@ -40,7 +44,7 @@ public class PowerCell implements Loggable{
     @Log
     private int shooterRpms;
     @Log
-    private int intakeRpms = 0;    
+    private int intakeRpms;    
 
 
     @Config

@@ -4,9 +4,9 @@ public class Wiring
 //Drivetrain
 
 //Power Cell
-    public static final int intakeMotor = 22;
-    public static final int shooterMotor = 21;
-    public static final int storageMotor = 10;
+    public static final int intakeMotor = 15;
+    public static final int shooterMotor = 23;
+    public static final int storageMotor = 3;
     // public static final int shooterMotor = 5;
 //Climber
 

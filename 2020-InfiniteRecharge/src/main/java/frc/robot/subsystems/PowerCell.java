@@ -49,18 +49,21 @@ public class PowerCell implements Loggable{
     private OperatorInterface oi;
     private CANPIDController intakeMotorPID;   
     private CANEncoder intakeEncoder;
+    @Log
+    private double shooterRpms;
+    @Log
+    private double intakeRpms;
+    @Log
+    private double storageRpms; 
+    @Log.Graph
+    private double intakeMotorOutputCurrent;
+    @Log.Graph
+    private double intakevelocity;
 
-    @Log
-    private int shooterRpms;
-    @Log
-    private int intakeRpms;
-    @Log
-    private int storageRpms; 
-        
     
 
     @Config
-    private void Intake_PID(double kP, double kI, double kD, int Rpms){
+    private void Intake_PID(double kP, double kI, double kD, double Rpms){
         intakeMotorPID.setP(kP);
         intakeMotorPID.setI(kI);
         intakeMotorPID.setD(kD);
@@ -71,7 +74,7 @@ public class PowerCell implements Loggable{
     }
 
     @Config
-    private void Shooter_PID(double kP, double kI, double kD, int Rpms){
+    private void Shooter_PID(double kP, double kI, double kD, double Rpms){
         shooter.config_kP(0, kP);
         shooter.config_kD(0, kD);
         shooter.config_kI(0, kI);
@@ -83,7 +86,7 @@ public class PowerCell implements Loggable{
     }
     
     @Config
-    private void Storage_PID(double kP, double kI, double kD, int Rpms){
+    private void Storage_PID(double kP, double kI, double kD, double Rpms){
         storageMotor.config_kP(0, kP);
         storageMotor.config_kD(0, kD);
         storageMotor.config_kI(0, kI);
@@ -107,7 +110,9 @@ public class PowerCell implements Loggable{
         intakeMotorPID.setP(intake_kP);
         intakeMotorPID.setI(intake_kI);
         intakeMotorPID.setD(intake_kD);
+        intakeMotorPID.setOutputRange(-1, 1);
         intakeMotorPID.setReference(0, ControlType.kVelocity);
+        intakeMotorPID.setFeedbackDevice(intakeEncoder);
         intakeMotor.setIdleMode(IdleMode.kBrake);
         intakeEncoder = intakeMotor.getEncoder();
         
@@ -163,11 +168,14 @@ public class PowerCell implements Loggable{
 	public void intake() {
         if(oi.copilot.getRawButton(1))
         {
-            
+            intakevelocity = intakeEncoder.getVelocity();
+            intakeMotorOutputCurrent = intakeMotor.getOutputCurrent();
             intakeMotorPID.setReference(intakeRpms, ControlType.kVelocity);
         }
         else
         {
+            intakevelocity = intakeEncoder.getVelocity();
+            intakeMotorOutputCurrent = intakeMotor.getOutputCurrent();
            stopIntake();
         }
 

@@ -27,7 +27,7 @@ public class MotorWidget
 
     public void changeOutput()
     {
-        double output = widget.getDouble(1.0);
+        double output = widget.getDouble(0.0);
         motor.set(output);
     }
 }

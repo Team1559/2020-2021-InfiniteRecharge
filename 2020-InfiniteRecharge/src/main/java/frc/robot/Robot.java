@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
 
 
   private IMU imu;
+
   private boolean chassisEnable = false;
   private boolean ImuEnable = false;
   private boolean robotInitialized = false;
@@ -61,9 +62,11 @@ public class Robot extends TimedRobot {
   public void Enable_IMU(boolean enable){
     ImuEnable = enable;
   }
-  @Config
+  @Config.ToggleButton
   public void Enable_Chassis(boolean enable){
     chassisEnable = enable;
+    System.out.println("Chassis Enable: " + chassisEnable);
+    System.out.println("Enable: " + enable);
   }
   
   /**
@@ -72,27 +75,26 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    driveTrainTab = Shuffleboard.getTab("Drive Train");
+    driveTrainTab = Shuffleboard.getTab("Drive Train"); //The Shuffleboard Tab for all Drive Train related stuff
+
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+
     Logger.configureLoggingAndConfig(this, false);
-    // spark1 = new CANSparkMax(11, MotorType.kBrushless);
-    // spark2 = new CANSparkMax(12, MotorType.kBrushless);
+
     driveTrain = new Chassis();
+
     oi = new OperatorInterface();
-    m_driveChooser.setDefaultOption("Tank Drive",kTankDrive);
-    m_driveChooser.addOption("Arcade Drive", kArcadeDrive);
-    m_driveChooser.addOption("Curvature Drive", kCurvatureDrive);
-    m_driveChooser.addOption("Shuffle Drive Individual", kShuffleDrive);
-    m_driveChooser.addOption("Shuffle Drive Control Groups", kShuffleDriveGroups);
-    driveTrainTab.add("Drive Train Choices", m_driveChooser);
+
+    m_driveChooser.setDefaultOption("Tank Drive",kTankDrive); //A Drive Train option
+    m_driveChooser.addOption("Arcade Drive", kArcadeDrive); //A Drive Train option
+    m_driveChooser.addOption("Curvature Drive", kCurvatureDrive); //A Drive Train option
+    m_driveChooser.addOption("Shuffle Drive Individual", kShuffleDrive); //A Drive Train option
+    m_driveChooser.addOption("Shuffle Drive Control Groups", kShuffleDriveGroups); //A Drive Train option
+    driveTrainTab.add("Drive Train Choices", m_driveChooser); //Allows you to pick a Drive Train option through Shuffleboard
 
     imu = new IMU();
-    
-    
-    
-    
   }
 
   /**
@@ -107,7 +109,8 @@ public class Robot extends TimedRobot {
   public void robotPeriodic()
   {
     Logger.updateEntries();
-    System.out.println(ImuEnable);
+
+    //System.out.println(ImuEnable);
   }
     
   /**
@@ -127,6 +130,7 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+
     initialize();
     
     
@@ -204,5 +208,10 @@ public class Robot extends TimedRobot {
       imu.init();
     }
     System.out.println("Initilied");
+    if(chassisEnable)
+    {
+      driveTrain.Init();
+    }
+    System.out.println("ChassisEnable: " + chassisEnable);
   }
 }

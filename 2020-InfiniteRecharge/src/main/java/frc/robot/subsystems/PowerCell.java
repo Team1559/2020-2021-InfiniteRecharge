@@ -44,18 +44,20 @@ public class PowerCell implements Loggable{
     
     
     //motors 
-    private TalonSRX storageMotor;
-    private CANSparkMax intakeMotor;
+    private TalonSRX storageMotorL;
+    private TalonSRX storageMotorH;
+    //private CANSparkMax intakeMotor;
     private TalonFX shooter;
     private OperatorInterface oi;
-    private CANPIDController intakeMotorPID;   
-    private CANEncoder intakeEncoder;
+    private TalonSRX intakeMotor;
+    //private CANPIDController intakeMotorPID;   
+    //private CANEncoder intakeEncoder;
     @Log
     private double shooterRpms;
     @Log
-    private double intakeRpms = 60;
+    private double intakeRpms = .4;
     @Log
-    private double storageRpms; 
+    private double storageRpms = .2; //%output for now
     @Log.Graph
     private double intakeMotorOutputCurrent;
     @Log.Graph
@@ -67,9 +69,9 @@ public class PowerCell implements Loggable{
 
     @Config
     private void Intake_PID(double kP, double kI, double kD, double Rpms){
-        intakeMotorPID.setP(kP);
-        intakeMotorPID.setI(kI);
-        intakeMotorPID.setD(kD);
+        //intakeMotorPID.setP(kP);
+        //intakeMotorPID.setI(kI);
+        //intakeMotorPID.setD(kD);
         intakeRpms = Rpms;
 
          intake_kP = kP;
@@ -90,9 +92,12 @@ public class PowerCell implements Loggable{
     
     @Config
     private void Storage_PID(double kP, double kI, double kD, double Rpms){
-        storageMotor.config_kP(0, kP);
-        storageMotor.config_kD(0, kD);
-        storageMotor.config_kI(0, kI);
+        storageMotorH.config_kP(0, kP);
+        storageMotorH.config_kD(0, kD);
+        storageMotorH.config_kI(0, kI);
+        storageMotorL.config_kP(0, kP);
+        storageMotorL.config_kD(0, kD);
+        storageMotorL.config_kI(0, kI);
         storageRpms = Rpms;
         
          storage_kP = kP;
@@ -104,23 +109,36 @@ public class PowerCell implements Loggable{
         //Constructors
         oi = Robot.oi;
         shooter = new TalonFX(Wiring.shooterMotor);
-        intakeMotor = new CANSparkMax(Wiring.intakeMotor, MotorType.kBrushless);
-        intakeMotorPID = intakeMotor.getPIDController();
-        storageMotor = new TalonSRX(Wiring.storageMotor);
-        intakeEncoder = new CANEncoder(intakeMotor);
+        //intakeMotor = new CANSparkMax(Wiring.intakeMotor, MotorType.kBrushless);
+        intakeMotor = new TalonSRX(Wiring.intakeMotor);
+        //intakeMotorPID = intakeMotor.getPIDController();
+        storageMotorH = new TalonSRX(Wiring.storageMotorH);
+        storageMotorL = new TalonSRX(Wiring.storageMotorL);
+        //intakeEncoder = new CANEncoder(intakeMotor);
 
         //Intake Motor Config
-        intakeEncoder = intakeMotor.getEncoder();
-        intakeMotorPID.setP(intake_kP);
-        intakeMotorPID.setI(intake_kI);
-        intakeMotorPID.setD(intake_kD);
-        intakeMotorPID.setOutputRange(-1, 1);
-        intakeMotorPID.setReference(0, ControlType.kVelocity);
-        intakeMotorPID.setFeedbackDevice(intakeEncoder);
-        intakeMotor.setIdleMode(IdleMode.kBrake);
-        intakeMotor.setSmartCurrentLimit(40);
-        intakeMotor.setClosedLoopRampRate(cLR);
-        
+        //intakeEncoder = intakeMotor.getEncoder();
+        //intakeMotorPID.setP(intake_kP);
+        //intakeMotorPID.setI(intake_kI);
+        //intakeMotorPID.setD(intake_kD);
+        //intakeMotorPID.setOutputRange(-1, 1);
+        //intakeMotorPID.setReference(0, ControlType.kVelocity);
+        //intakeMotorPID.setFeedbackDevice(intakeEncoder);
+        //intakeMotor.setIdleMode(IdleMode.kBrake);
+        //intakeMotor.setSmartCurrentLimit(40);
+        //intakeMotor.setClosedLoopRampRate(cLR);
+        intakeMotor.set(ControlMode.PercentOutput, 0);	
+        intakeMotor.configClosedloopRamp(cLR, TIMEOUT);
+        intakeMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        //intakeMotor.config_kF(0, intake_kF);
+        intakeMotor.config_kP(0, intake_kP);
+        intakeMotor.config_kD(0, intake_kD);
+        intakeMotor.config_kI(0, intake_kI);
+        intakeMotor.configNominalOutputForward(0, TIMEOUT);
+        intakeMotor.configNominalOutputReverse(0, TIMEOUT);
+        intakeMotor.configPeakOutputForward(+1, TIMEOUT);
+        intakeMotor.configPeakOutputReverse(-1, TIMEOUT);
+        intakeMotor.setNeutralMode(NeutralMode.Coast);
         
 
         //Shooter Motor Config
@@ -139,32 +157,48 @@ public class PowerCell implements Loggable{
     
         
         //Storage Motor Config
-        storageMotor.set(ControlMode.Velocity, 0);	
-        storageMotor.configClosedloopRamp(cLR, TIMEOUT);
-        storageMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        storageMotor.config_kF(0, storage_kF);
-        storageMotor.config_kP(0, storage_kP);
-        storageMotor.config_kD(0, storage_kD);
-        storageMotor.config_kI(0, storage_kI);
-        storageMotor.configNominalOutputForward(0, TIMEOUT);
-        storageMotor.configNominalOutputReverse(0, TIMEOUT);
-        storageMotor.configPeakOutputForward(+1, TIMEOUT);
-        storageMotor.configPeakOutputReverse(-1, TIMEOUT);
-        storageMotor.setNeutralMode(NeutralMode.Coast);
+        storageMotorH.set(ControlMode.PercentOutput, 0);	
+        storageMotorH.configClosedloopRamp(cLR, TIMEOUT);
+        storageMotorH.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        storageMotorH.config_kF(0, storage_kF);
+        storageMotorH.config_kP(0, storage_kP);
+        storageMotorH.config_kD(0, storage_kD);
+        storageMotorH.config_kI(0, storage_kI);
+        storageMotorH.configNominalOutputForward(0, TIMEOUT);
+        storageMotorH.configNominalOutputReverse(0, TIMEOUT);
+        storageMotorH.configPeakOutputForward(+1, TIMEOUT);
+        storageMotorH.configPeakOutputReverse(-1, TIMEOUT);
+        storageMotorH.setNeutralMode(NeutralMode.Coast);
+
+        storageMotorL.set(ControlMode.PercentOutput, 0);	
+        storageMotorL.configClosedloopRamp(cLR, TIMEOUT);
+        storageMotorL.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        storageMotorL.config_kF(0, storage_kF);
+        storageMotorL.config_kP(0, storage_kP);
+        storageMotorL.config_kD(0, storage_kD);
+        storageMotorL.config_kI(0, storage_kI);
+        storageMotorL.configNominalOutputForward(0, TIMEOUT);
+        storageMotorL.configNominalOutputReverse(0, TIMEOUT);
+        storageMotorL.configPeakOutputForward(+1, TIMEOUT);
+        storageMotorL.configPeakOutputReverse(-1, TIMEOUT);
+        storageMotorL.setNeutralMode(NeutralMode.Coast);
  
     }
     public void stopStorage(){
-        storageMotor.set(ControlMode.PercentOutput, 0);
+        storageMotorH.set(ControlMode.PercentOutput, 0);
+        storageMotorL.set(ControlMode.PercentOutput, 0);
     }
     public void stopIntake(){
-        intakeMotorPID.setReference(0, ControlType.kDutyCycle);
+        //intakeMotorPID.setReference(0, ControlType.kDutyCycle);
+        intakeMotor.set(ControlMode.PercentOutput, 0);
     }
     public void stopShooter(){
         shooter.set(TalonFXControlMode.PercentOutput, 0);
     }
     public void storage(){
         if(oi.copilot.getRawButton(3)){
-            storageMotor.set(ControlMode.PercentOutput, storageRpms);
+            storageMotorH.set(ControlMode.PercentOutput, -storageRpms);
+            storageMotorL.set(ControlMode.PercentOutput, storageRpms);
         }
         else{
            stopStorage();
@@ -173,6 +207,15 @@ public class PowerCell implements Loggable{
     }
 	public void intake() {
         if(oi.copilot.getRawButton(1))
+        {
+            intakeMotor.set(ControlMode.PercentOutput, intakeRpms);
+        }
+        else{
+            stopIntake();
+        }
+        
+        
+        /*if(oi.copilot.getRawButton(1))
         {
             motortemp = intakeMotor.getMotorTemperature();
             intakevelocity = intakeEncoder.getVelocity();
@@ -185,7 +228,7 @@ public class PowerCell implements Loggable{
             intakevelocity = intakeEncoder.getVelocity();
             intakeMotorOutputCurrent = intakeMotor.getOutputCurrent();
            stopIntake();
-        }
+        }*/
 
     }
     public void shoot(){

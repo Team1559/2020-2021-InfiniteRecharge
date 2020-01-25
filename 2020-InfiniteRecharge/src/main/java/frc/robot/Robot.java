@@ -16,11 +16,12 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Intake; 
+import frc.robot.subsystems.Intake;
 import frc.robot.components.IMU;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Climber;
 import io.github.oblarg.oblog.*;
 import io.github.oblarg.oblog.annotations.Config;
 import frc.robot.components.Camera;
@@ -43,6 +44,7 @@ public class Robot extends TimedRobot {
   private boolean ImuEnable = false;
   private boolean camera1Enable = false;
   private boolean camera2Enable = false;
+  private Climber climber;
 
   private boolean robotInitialized = false;
   @Config
@@ -70,6 +72,8 @@ public class Robot extends TimedRobot {
     Logger.configureLoggingAndConfig(this, false);
     camera1 = new Camera(0);
     camera2 = new Camera(1);
+    climber = new Climber(oi);
+    
 }
 
   /**
@@ -131,13 +135,20 @@ public class Robot extends TimedRobot {
       initialize();
     }
   }
+  
+  
   @Override
   public void teleopPeriodic() {
     if(ImuEnable){
       imu.getvalues();
     }
+
+    climber.drive();
     
   }
+
+
+
   
   /**
    * This function is called periodically during test mode.

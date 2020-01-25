@@ -29,6 +29,7 @@ public class Robot extends TimedRobot {
   private Chassis driveTrain;
   private boolean chassisEnable = false;
   private boolean ImuEnable = false;
+  @Log
   private boolean robotInitialized = false;
   private boolean powerCellEnable = false;
   private PowerCell powerCell;

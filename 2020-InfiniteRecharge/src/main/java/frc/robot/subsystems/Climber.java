@@ -31,7 +31,6 @@ public class Climber
     }
 
     /* Checks if joystick button pressed to determine if elevator extends up*/
-    /*All of the buttons are temporary and likely will be changed */
     public void extendUp()
     {
         if(oi.getCopilotButton(1).isDown())
@@ -59,7 +58,7 @@ public class Climber
         }
     }
     
-    /*Drives wheels on the bar to allow robot tobalance the bar*/
+    /*Drives wheels on the bar to allow robot to balance the bar*/
     public void Balance()
     {
         if(oi.DPad() == 90)

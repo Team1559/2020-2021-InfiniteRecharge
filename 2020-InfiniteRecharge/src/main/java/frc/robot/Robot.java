@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Spinner;
 import frc.robot.subsystems.Intake; 
 import frc.robot.components.IMU;
 import com.ctre.phoenix.motorcontrol.*;
@@ -63,6 +64,11 @@ public class Robot extends TimedRobot {
   private boolean camera2Enable = false;
 
   private boolean robotInitialized = false;
+private boolean colorEnable = false;
+
+public Spinner spinner = new Spinner();
+
+
   @Config
   public void Enable_IMU(boolean enable){
     ImuEnable = enable;
@@ -77,6 +83,10 @@ public class Robot extends TimedRobot {
   public void Enable_Cameras(boolean enable, boolean enable2){
     camera1Enable  = enable;
     camera2Enable = enable2;
+  }
+  @Config
+  public void Enable_Color(boolean enable){
+    colorEnable = enable;
   }
 
   /**
@@ -178,9 +188,13 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic()
   {
-    driveTrain.DriveSystem(oi.pilot);
+    //driveTrain.DriveSystem(oi.pilot);
     if(ImuEnable){
       imu.getvalues();
+    }
+     if(colorEnable){
+      spinner.spin();
+      spinner.updateColor();
     }
   }
   
@@ -233,6 +247,8 @@ public class Robot extends TimedRobot {
     if(camera2Enable){
       camera2.init();
     }
-
+    if(colorEnable){
+      spinner.init();
+    }
   }
 }

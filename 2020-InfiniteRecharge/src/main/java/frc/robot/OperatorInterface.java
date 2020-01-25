@@ -44,10 +44,10 @@ public class OperatorInterface {
 
     public double getPilotZ() {
         //gets the z axis on the ps4 controller (rotation)
-        if((pilot.getRawAxis(2))/(Math.abs(pilot.getRawAxis(2))) == 1) {
-            return (Math.pow(pilot.getRawAxis(2), 2));
+        if((pilot.getRawAxis(4))/(Math.abs(pilot.getRawAxis(4))) == 1) {
+            return (Math.pow(pilot.getRawAxis(4), 2));
         }
-            return (-1)*(Math.pow(pilot.getRawAxis(2), 2));
+            return (-1)*(Math.pow(pilot.getRawAxis(4), 2));
     }
 
     public DTButton getCopilotButton(int num) {

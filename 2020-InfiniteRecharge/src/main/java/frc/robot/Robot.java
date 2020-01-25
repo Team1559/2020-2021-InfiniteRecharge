@@ -105,7 +105,6 @@ public class Robot extends TimedRobot {
     driveTrainTab.add("Drive Train Choices", m_driveChooser); //Allows you to pick a Drive Train option through Shuffleboard
 
     imu = new IMU();
-  }
     camera1 = new Camera(0);
     camera2 = new Camera(1);
 }

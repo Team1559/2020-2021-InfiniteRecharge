@@ -46,9 +46,6 @@ public class Chassis {
 
     private SpeedControllerGroup leftMotors;
     private SpeedControllerGroup rightMotors;
-
-    private boolean isIndividualMotor = false;
-    private boolean isGroupControllerMotors = false;
     
     public Chassis()
     {
@@ -78,30 +75,21 @@ public class Chassis {
         
         sparkMax4PID = sparkMax4.getPIDController();
 
-        // sparkMax1PID.getSmartMotionMaxAccel(0);
-        // sparkMax2PID.getSmartMotionMaxAccel(0);
-        // sparkMax3PID.getSmartMotionMaxAccel(0);
-        // sparkMax4PID.getSmartMotionMaxAccel(0);
-
         sparkMax1PID.setP(1);
         sparkMax1PID.setI(0);
         sparkMax1PID.setD(0);
-        //sparkMax1PID.setReference(10, ControlType.kVelocity);
 
         sparkMax2PID.setP(1);
         sparkMax2PID.setI(0);
         sparkMax2PID.setD(0);
-        //sparkMax2PID.setReference(10, ControlType.kVelocity);
 
         sparkMax3PID.setP(1);
         sparkMax3PID.setI(0);
         sparkMax3PID.setD(0);
-        //sparkMax3PID.setReference(10, ControlType.kVelocity);
 
         sparkMax4PID.setP(1);
         sparkMax4PID.setI(0);
         sparkMax4PID.setD(0);
-        //sparkMax4PID.setReference(10, ControlType.kVelocity);
 
         
         leftMotors.setInverted(true);
@@ -114,7 +102,7 @@ public class Chassis {
     }
     public void DriveSystem(Joystick drive)
     {
-        DriveSystem(drive, "Tank Drive");
+        DriveSystem(drive, "Arcade Drive");
     }
 
     public void DriveSystem(Joystick drive, String mode)
@@ -124,7 +112,6 @@ public class Chassis {
         {
              case "Tank Drive":
             driveTrain.tankDrive(-(drive.getRawAxis(1)),-(drive.getRawAxis(5)));
-            //driveTrain.tankDrive(0.01,0.01);
             System.out.println(drive.getRawAxis(1));
             System.out.println(drive.getRawAxis(5));
              break;
@@ -152,37 +139,6 @@ public class Chassis {
              widget5.changeOutput();
              widget6.changeOutput();
              break;
-             //tab.add("Drive Train",1.0).withWidget(BuiltInWidgets.kDifferentialDrive).getEntry();
         }
     }
-    // @Config
-    // public void motor1Speed(double speed)
-    // {
-    //     sparkMax1.set(speed);
-    // }
-    // @Config
-    // public void motor2Speed(double speed)
-    // {
-    //     sparkMax2.set(speed);
-    // }
-    // @Config
-    // public void motor3Speed(double speed)
-    // {
-    //     sparkMax3.set(speed);
-    // }
-    // @Config
-    // public void motor4Speed(double speed)
-    // {
-    //     sparkMax4.set(speed);
-    // }
-    // @Config
-    // public void leftMotorGroupSpeed(double speed)
-    // {
-    //     leftMotors.set(speed);
-    // }
-    // @Config
-    // public void rightMotorGroupSpeed(double speed)
-    // {
-    //     rightMotors.set(speed);
-    // }
 }

@@ -7,15 +7,10 @@
 
 package frc.robot;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.robot.Wiring;
 import frc.robot.Components.IMU;
 import frc.robot.subsystems.PowerCell;
-import com.ctre.phoenix.motorcontrol.*;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import frc.robot.subsystems.Chassis;
 import io.github.oblarg.oblog.*;
 import io.github.oblarg.oblog.annotations.Config;
@@ -29,17 +24,12 @@ import io.github.oblarg.oblog.annotations.Log;
  * project.
  */
 public class Robot extends TimedRobot {
-  private Wiring wiring;
   private IMU imu;
   public static OperatorInterface oi;
   private Chassis driveTrain;
-  @Log
   private boolean chassisEnable = false;
-  @Log
   private boolean ImuEnable = false;
-  @Log
   private boolean robotInitialized = false;
-  @Log
   private boolean powerCellEnable = false;
   private PowerCell powerCell;
   @Config 

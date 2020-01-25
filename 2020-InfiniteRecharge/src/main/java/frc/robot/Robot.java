@@ -9,7 +9,7 @@ package frc.robot;
 
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.robot.Components.IMU;
+import frc.robot.components.IMU;
 import frc.robot.subsystems.PowerCell;
 import frc.robot.subsystems.Chassis;
 import io.github.oblarg.oblog.*;
@@ -45,11 +45,6 @@ public class Robot extends TimedRobot {
   @Config
   public void Enable_Chassis(boolean enable){
     chassisEnable = enable;
-  }
-  @Config
-  public void Enable_Cameras(boolean enable, boolean enable2){
-    camera1Enable  = enable;
-    camera2Enable = enable2;
   }
 
   /**

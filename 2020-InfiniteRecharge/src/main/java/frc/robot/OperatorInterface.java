@@ -75,5 +75,11 @@ public class OperatorInterface {
         return (copilot.getRawAxis(axis) == 1);
     }
 
+    public int DPad()
+    {
+        System.out.println(pilot.getPOV(0));
+        return pilot.getPOV(0);
+    }
+
     
 }

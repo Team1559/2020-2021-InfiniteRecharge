@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
   private boolean robotInitialized = false;
   private boolean powerCellEnable = false;
   private PowerCell powerCell;
+  
   @Config 
   public void Enable_PowerCell(boolean enable){
     powerCellEnable = enable;
@@ -44,7 +45,12 @@ public class Robot extends TimedRobot {
   public void Enable_Chassis(boolean enable){
     chassisEnable = enable;
   }
-  
+  @Config
+  public void Enable_Cameras(boolean enable, boolean enable2){
+    camera1Enable  = enable;
+    camera2Enable = enable2;
+  }
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -55,11 +61,8 @@ public class Robot extends TimedRobot {
     oi = new OperatorInterface();
     powerCell = new PowerCell();
     Logger.configureLoggingAndConfig(this, false);
-    
-    
-    
-    
-  }
+}
+
 
   /**
    * This function is called every robot packet, no matter the mode. Use

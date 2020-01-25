@@ -1,6 +1,8 @@
-package frc.robot.Components;
+package frc.robot.components;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.DriverStation;
 import io.github.oblarg.oblog.annotations.Log;
 import io.github.oblarg.oblog.Loggable;

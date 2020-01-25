@@ -2,25 +2,31 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.OperatorInterface;
+import frc.robot.Wiring;
 
 public class Climber
 {
     private CANSparkMax lifterMotor;
     private WPI_TalonSRX barRider;
     private CANSparkMax winch;
-    private int JacksIQ = 0;
     private OperatorInterface oi;
+    private CANPIDController lifterMotorPID;
+    private CANPIDController winchPID;
 
     public Climber(OperatorInterface OI)
     {
-        lifterMotor = new CANSparkMax(0, MotorType.kBrushless);// temporary numbers not the actual ones for the robot
+        lifterMotor = new CANSparkMax(Wiring.lifterMotor, MotorType.kBrushless);
         barRider = new WPI_TalonSRX(1);
-        winch = new CANSparkMax(2, MotorType.kBrushless);
+        winch = new CANSparkMax(Wiring.winch, MotorType.kBrushless);
         oi = OI;
+        lifterMotorPID = lifterMotor.getPIDController();
+         winchPID = winch.getPIDController();
 
     }
 
@@ -30,11 +36,11 @@ public class Climber
     {
         if(oi.getCopilotButton(1).isDown())
         {
-            lifterMotor.set(ControlMode.PercentOutput, 0.5);
+            lifterMotorPID.setReference(1, ControlType.kPosition);
         }
-        else
+        else if(oi.getCopilotButton(2).isDown())
         {
-            lifterMotor.set(ControlMode.PercentOutput, JacksIQ);
+            lifterMotorPID.setReference(0, ControlType.kPosition);
         }
     }
 
@@ -49,11 +55,7 @@ public class Climber
     {
         if(oi.getCocopilotButton(2).isDown())
         {
-            winch.set(ControlMode.PercentOutput, 1);
-        }
-        else
-        {
-            winch.set(ControlMode.PercentOutput, JacksIQ);
+            winchPID.setReference(1, ControlType.kPosition);
         }
     }
     
@@ -70,7 +72,7 @@ public class Climber
         }
         else
         {
-            barRider.set(ControlMode.PercentOutput, JacksIQ);
+            barRider.set(ControlMode.PercentOutput, 0);
         }
 
         

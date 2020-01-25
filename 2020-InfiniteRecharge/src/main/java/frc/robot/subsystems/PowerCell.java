@@ -159,7 +159,6 @@ public class PowerCell implements Loggable{
     public void storage(){
         if(oi.copilot.getRawButton(3)){
             storageMotor.set(ControlMode.PercentOutput, storageRpms);
-            System.out.println(oi.getPilotZ());
         }
         else{
            stopStorage();

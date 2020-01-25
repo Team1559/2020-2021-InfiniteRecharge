@@ -2,27 +2,30 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.OperatorInterface;
 
 public class Climber
 {
-    private WPI_TalonSRX lifterMotor;
+    private CANSparkMax lifterMotor;
     private WPI_TalonSRX barRider;
-    private WPI_TalonSRX winch;
-    private int JacksIQ = 0; //Ducktape to hold the neo motors...
+    private CANSparkMax winch;
+    private int JacksIQ = 0;
     private OperatorInterface oi;
 
     public Climber(OperatorInterface OI)
     {
-        lifterMotor = new WPI_TalonSRX(0);//temporary numbers ask mmarcheti what the real numbersnshould be
+        lifterMotor = new CANSparkMax(0, MotorType.kBrushless);// temporary numbers not the actual ones for the robot
         barRider = new WPI_TalonSRX(1);
-        winch = new WPI_TalonSRX(2);
+        winch = new CANSparkMax(2, MotorType.kBrushless);
         oi = OI;
-                                      //not relevent to code but can someone please tell @thadwojcik to stop spamming slack
+
     }
 
     /* Checks if joystick button pressed to determine if elevator extends up*/
+    /*All of the buttons are temporary and likely will be changed */
     public void extendUp()
     {
         if(oi.getCopilotButton(1).isDown())

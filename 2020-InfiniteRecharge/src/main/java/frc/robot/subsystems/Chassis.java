@@ -78,10 +78,10 @@ public class Chassis {
         
         sparkMax4PID = sparkMax4.getPIDController();
 
-        sparkMax1PID.getSmartMotionMaxAccel(0);
-        sparkMax2PID.getSmartMotionMaxAccel(0);
-        sparkMax3PID.getSmartMotionMaxAccel(0);
-        sparkMax4PID.getSmartMotionMaxAccel(0);
+        // sparkMax1PID.getSmartMotionMaxAccel(0);
+        // sparkMax2PID.getSmartMotionMaxAccel(0);
+        // sparkMax3PID.getSmartMotionMaxAccel(0);
+        // sparkMax4PID.getSmartMotionMaxAccel(0);
 
         sparkMax1PID.setP(1);
         sparkMax1PID.setI(0);
@@ -119,7 +119,7 @@ public class Chassis {
 
     public void DriveSystem(Joystick drive, String mode)
     {
-        System.out.println(mode);
+        //System.out.println(mode);
         switch(mode)
         {
              case "Tank Drive":

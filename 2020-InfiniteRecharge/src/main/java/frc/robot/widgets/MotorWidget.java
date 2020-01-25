@@ -29,5 +29,6 @@ public class MotorWidget
     {
         double output = widget.getDouble(0.0);
         motor.set(output);
+        //System.out.println(output);
     }
 }

@@ -117,9 +117,17 @@ public class Chassis {
              break;
 
              case "Arcade Drive":
-             driveTrain.arcadeDrive(-(drive.getRawAxis(1)), drive.getRawAxis(2));
-             System.out.println(drive.getRawAxis(1));
-             System.out.println(drive.getRawAxis(2));
+             if(drive == null)
+             {
+                 System.out.println("Your controller is Null dimwit!!!!");
+             }
+             else
+             {
+                driveTrain.arcadeDrive(-(drive.getRawAxis(1)), drive.getRawAxis(2));
+                System.out.println(drive.getRawAxis(1));
+                System.out.println(drive.getRawAxis(2));
+             }
+             
              break;
 
              case "Curvature Drive":

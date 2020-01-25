@@ -178,7 +178,11 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic()
   {
-    driveTrain.DriveSystem(oi.pilot);
+    if(chassisEnable)
+    {
+      driveTrain.DriveSystem(oi.pilot);
+    }
+
     if(ImuEnable){
       imu.getvalues();
     }

@@ -27,15 +27,15 @@ public class PowerCell implements Loggable{
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
     @Log
-    private double intake_kP = 5e-5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
+    private double intake_kP = 0.00005;//5e-5 // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
     private double intake_kD = 0;
     @Log
-    private double intake_kI = 1e-6;
+    private double intake_kI = 0.000001;//1e-6
     private double shooter_kF = 0; //F-gain = (100% X 1023) / 7350 F-gain = 0.139183673 - (7350 is max speed)
     @Log
     private double shooter_kP = 5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
     private double shooter_kD = 0;
-    private double shooter_kI = 1e-6;
+    private double shooter_kI = 0.000001;//1e-6
     @Log
     private double storage_kP = 5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
     private double storage_kD = 0;
@@ -53,13 +53,15 @@ public class PowerCell implements Loggable{
     @Log
     private double shooterRpms;
     @Log
-    private double intakeRpms = 120;
+    private double intakeRpms = 60;
     @Log
     private double storageRpms; 
     @Log.Graph
     private double intakeMotorOutputCurrent;
     @Log.Graph
     private double intakevelocity;
+    @Log.Graph
+    private double motortemp;
 
     
 
@@ -108,6 +110,7 @@ public class PowerCell implements Loggable{
         intakeEncoder = new CANEncoder(intakeMotor);
 
         //Intake Motor Config
+        intakeEncoder = intakeMotor.getEncoder();
         intakeMotorPID.setP(intake_kP);
         intakeMotorPID.setI(intake_kI);
         intakeMotorPID.setD(intake_kD);
@@ -115,7 +118,9 @@ public class PowerCell implements Loggable{
         intakeMotorPID.setReference(0, ControlType.kVelocity);
         intakeMotorPID.setFeedbackDevice(intakeEncoder);
         intakeMotor.setIdleMode(IdleMode.kBrake);
-        intakeEncoder = intakeMotor.getEncoder();
+        intakeMotor.setSmartCurrentLimit(40);
+        intakeMotor.setClosedLoopRampRate(cLR);
+        
         
 
         //Shooter Motor Config
@@ -169,12 +174,14 @@ public class PowerCell implements Loggable{
 	public void intake() {
         if(oi.copilot.getRawButton(1))
         {
+            motortemp = intakeMotor.getMotorTemperature();
             intakevelocity = intakeEncoder.getVelocity();
             intakeMotorOutputCurrent = intakeMotor.getOutputCurrent();
             intakeMotorPID.setReference(intakeRpms, ControlType.kVelocity);
         }
         else
         {
+            motortemp = intakeMotor.getMotorTemperature();
             intakevelocity = intakeEncoder.getVelocity();
             intakeMotorOutputCurrent = intakeMotor.getOutputCurrent();
            stopIntake();

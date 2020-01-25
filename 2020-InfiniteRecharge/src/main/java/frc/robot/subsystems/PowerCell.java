@@ -53,7 +53,7 @@ public class PowerCell implements Loggable{
     @Log
     private double shooterRpms;
     @Log
-    private double intakeRpms;
+    private double intakeRpms = 120;
     @Log
     private double storageRpms; 
     @Log.Graph

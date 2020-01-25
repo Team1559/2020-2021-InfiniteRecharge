@@ -19,12 +19,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake; 
-import frc.robot.Components.IMU;
+import frc.robot.components.IMU;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import frc.robot.subsystems.Chassis;
 import io.github.oblarg.oblog.*;
 import io.github.oblarg.oblog.annotations.Config;
+import frc.robot.components.Camera;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -51,12 +52,16 @@ public class Robot extends TimedRobot {
 
   private ShuffleboardTab driveTrainTab;
 
-
+  private Camera camera1;
+  private Camera camera2;
 
   private IMU imu;
 
   private boolean chassisEnable = false;
   private boolean ImuEnable = false;
+  private boolean camera1Enable = false;
+  private boolean camera2Enable = false;
+
   private boolean robotInitialized = false;
   @Config
   public void Enable_IMU(boolean enable){
@@ -68,7 +73,12 @@ public class Robot extends TimedRobot {
     System.out.println("Chassis Enable: " + chassisEnable);
     System.out.println("Enable: " + enable);
   }
-  
+  @Config
+  public void Enable_Cameras(boolean enable, boolean enable2){
+    camera1Enable  = enable;
+    camera2Enable = enable2;
+  }
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -96,6 +106,9 @@ public class Robot extends TimedRobot {
 
     imu = new IMU();
   }
+    camera1 = new Camera(0);
+    camera2 = new Camera(1);
+}
 
   /**
    * This function is called every robot packet, no matter the mode. Use
@@ -207,11 +220,20 @@ public class Robot extends TimedRobot {
     if(ImuEnable){
       imu.init();
     }
+
     System.out.println("Initilied");
     if(chassisEnable)
     {
       driveTrain.Init();
     }
     System.out.println("ChassisEnable: " + chassisEnable);
+
+    if(camera1Enable){
+      camera1.init();
+    }
+    if(camera2Enable){
+      camera2.init();
+    }
+
   }
 }

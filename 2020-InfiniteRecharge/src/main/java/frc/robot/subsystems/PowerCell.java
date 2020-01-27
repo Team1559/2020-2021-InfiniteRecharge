@@ -1,24 +1,24 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.ControlType;
+
 import frc.robot.OperatorInterface;
 import frc.robot.Robot;
 import frc.robot.Wiring;
 import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;
-
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.revrobotics.CANEncoder;
 
 
  //intake has to go double the speed the shooter goes
@@ -35,12 +35,20 @@ public class PowerCell implements Loggable{
     @Log
     private double shooter_kP = 5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
     private double shooter_kD = 0;
+    @Log
     private double shooter_kI = 0.000001;//1e-6
     @Log
     private double storage_kP = 5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
     private double storage_kD = 0;
+    @Log
     private double storage_kI = 0;
     private double storage_kF = 0;
+    @Log
+    private double feeder_kP = 0;//5e-5 // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
+    private double feeder_kD = 0;
+    @Log
+    private double feeder_kI = 0;//1e-6
+    private double feeder_kF = 0;
     
     
     //motors 
@@ -50,6 +58,7 @@ public class PowerCell implements Loggable{
     private TalonFX shooter;
     private OperatorInterface oi;
     private TalonSRX intakeMotor;
+    private TalonSRX feederMotor;
     //private CANPIDController intakeMotorPID;   
     //private CANEncoder intakeEncoder;
     @Log
@@ -105,7 +114,7 @@ public class PowerCell implements Loggable{
         
     }
 
-    public void init(){
+    public void init(){                                                                                                                                                                                                                                                                                                                                                        
         //Constructors
         oi = Robot.oi;
         shooter = new TalonFX(Wiring.shooterMotor);
@@ -114,6 +123,7 @@ public class PowerCell implements Loggable{
         //intakeMotorPID = intakeMotor.getPIDController();
         storageMotorH = new TalonSRX(Wiring.storageMotorH);
         storageMotorL = new TalonSRX(Wiring.storageMotorL);
+        feederMotor = new TalonSRX(Wiring.feederMotor);
         //intakeEncoder = new CANEncoder(intakeMotor);
 
         //Intake Motor Config
@@ -155,7 +165,20 @@ public class PowerCell implements Loggable{
         shooter.configPeakOutputReverse(-1, TIMEOUT);
         shooter.setNeutralMode(NeutralMode.Coast);
     
-        
+        //Feeder motor config
+        feederMotor.set(ControlMode.PercentOutput, 0);	
+        feederMotor.configClosedloopRamp(cLR, TIMEOUT);
+        feederMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        feederMotor.config_kF(0, storage_kF);
+        feederMotor.config_kP(0, storage_kP);
+        feederMotor.config_kD(0, storage_kD);
+        feederMotor.config_kI(0, storage_kI);
+        feederMotor.configNominalOutputForward(0, TIMEOUT);
+        feederMotor.configNominalOutputReverse(0, TIMEOUT);
+        feederMotor.configPeakOutputForward(+1, TIMEOUT);
+        feederMotor.configPeakOutputReverse(-1, TIMEOUT);
+        feederMotor.setNeutralMode(NeutralMode.Coast);
+
         //Storage Motor Config
         storageMotorH.set(ControlMode.PercentOutput, 0);	
         storageMotorH.configClosedloopRamp(cLR, TIMEOUT);

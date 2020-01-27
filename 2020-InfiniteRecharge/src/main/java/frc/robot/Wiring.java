@@ -8,6 +8,8 @@ public class Wiring
     public static final int shooterMotor = 21;
     public static final int storageMotorH = 3;
     public static final int storageMotorL = 2;
+
+    public static final int feederMotor = 7;
     // public static final int shooterMotor = 5;
 //Climber
 

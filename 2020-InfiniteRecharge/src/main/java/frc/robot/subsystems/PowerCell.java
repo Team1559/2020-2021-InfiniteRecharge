@@ -37,7 +37,7 @@ public class PowerCell implements Loggable{
     private double shooter_kP = 5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
     private double shooter_kD = 0;
     @Log
-    private double shooter_kI = 0.000001;//1e-6
+    private double shooter_kI = 0.00000;//1e-6
     @Log
     private double storage_kP = 5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
     private double storage_kD = 0;
@@ -63,11 +63,11 @@ public class PowerCell implements Loggable{
     //private CANPIDController intakeMotorPID;   
     //private CANEncoder intakeEncoder;
     @Log
-    private double shooterRpms;
+    private double shooterRpms = 100;
     @Log
     private double intakeRpms = .4;
     @Log
-    private double storageRpms = .2; //%output for now
+    private double storageRpms = -1; //%output for now
     private double feederRpms = 0;
     // @Log.Graph
     // private double intakeMotorOutputCurrent;
@@ -241,7 +241,7 @@ public class PowerCell implements Loggable{
         shooter.set(TalonFXControlMode.PercentOutput, 0);
     }
     public void feeder(){
-        if(oi.copilot.getRawButton(4)){
+        if(oi.pilot.getRawButton(1)){
             feederMotor.set(ControlMode.Velocity, feederRpms);
 
         }
@@ -252,8 +252,8 @@ public class PowerCell implements Loggable{
     }
     public void storage(){
         if(oi.copilot.getRawButton(3)){
-            storageMotorH.set(ControlMode.Velocity, storageRpms);
-            storageMotorL.set(ControlMode.Velocity, storageRpms);
+            storageMotorH.set(ControlMode.PercentOutput, -storageRpms);
+            storageMotorL.set(ControlMode.PercentOutput, storageRpms);
         }
         else{
            stopStorage();

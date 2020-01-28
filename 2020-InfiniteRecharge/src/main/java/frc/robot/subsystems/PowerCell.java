@@ -20,25 +20,25 @@ public class PowerCell implements Loggable{
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
     @Log
-    private double intake_kP = 0.00005;//5e-5 // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
+    private double intake_kP = 0.00005;//5e-5 
     private double intake_kD = 0;
     @Log
     private double intake_kI = 0.000001;//1e-6
     private double intake_kF = 0;
-    private double shooter_kF = 0; //F-gain = (100% X 1023) / 7350 F-gain = 0.139183673 - (7350 is max speed)
+    private double shooter_kF = 0; 
     @Log
-    private double shooter_kP = 5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
+    private double shooter_kP = 5; 
     private double shooter_kD = 0;
     @Log
     private double shooter_kI = 0.00000;//1e-6
     @Log
-    private double storage_kP = 5; // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
+    private double storage_kP = 5; 
     private double storage_kD = 0;
     @Log
     private double storage_kI = 0;
     private double storage_kF = 0;
     @Log
-    private double feeder_kP = 0;//5e-5 // P-gain = (.1*1023)/(155) = 0.66 - (350 is average error)
+    private double feeder_kP = 0;//5e-5 
     private double feeder_kD = 0;
     @Log
     private double feeder_kI = 0;//1e-6

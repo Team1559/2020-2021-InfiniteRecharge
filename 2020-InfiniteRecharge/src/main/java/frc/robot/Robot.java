@@ -96,20 +96,20 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    
+  Logger.configureLoggingAndConfig(this, false);
+
     
     oi = new OperatorInterface();
     powerCell = new PowerCell();
-    Logger.configureLoggingAndConfig(this, false);
+    driveTrain = new Chassis();
     driveTrainTab = Shuffleboard.getTab("Drive Train"); //The Shuffleboard Tab for all Drive Train related stuff
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    Logger.configureLoggingAndConfig(this, false);
 
-    driveTrain = new Chassis();
+    
 
     
 

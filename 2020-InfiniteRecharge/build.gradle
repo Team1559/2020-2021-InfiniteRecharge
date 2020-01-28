@@ -2,7 +2,10 @@ plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2020.1.2"
 }
-
+apply plugin: 'java'
+compileJava {
+    options.compilerArgs << '-parameters'
+}
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 

@@ -7,46 +7,31 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Talon;
 import frc.robot.OperatorInterface;
 import frc.robot.Wiring;
 
-public class Climber
-{
-    private CANSparkMax lifterMotor;
+public class Climber {
     private WPI_TalonSRX barRider;
-    private CANSparkMax winch;
+    private Talon winch;
     private OperatorInterface oi;
-    private CANPIDController lifterMotorPID;
-    private CANPIDController winchPID;
-
     public Climber(OperatorInterface OI)
     {
-        lifterMotor = new CANSparkMax(Wiring.lifterMotor, MotorType.kBrushless);
         barRider = new WPI_TalonSRX(1);
-        winch = new CANSparkMax(Wiring.winch, MotorType.kBrushless);
+        winch = new Talon(0);
         oi = OI;
-        lifterMotorPID = lifterMotor.getPIDController();
-         winchPID = winch.getPIDController();
-
     }
-
-    /* Checks if joystick button pressed to determine if elevator extends up*/
-    public void extendUp()
-    {
-        if(oi.getCopilotButton(1).isDown())
-        {
-            lifterMotorPID.setReference(1, ControlType.kPosition);
-        }
-        else if(oi.getCopilotButton(2).isDown())
-        {
-            lifterMotorPID.setReference(0, ControlType.kPosition);
-        }
-    }
-
     /*Main method of climber class operates all functions of climber*/
     public void drive()
     {
-        extendUp();
+        if(oi.coButtonIsPressed(3)){
+            climb();
+        }
+        else{
+           winch.set(0);
+        }
+        Balance();
+
     }
 
     /*Initializes robot's departure from the ground*/
@@ -54,7 +39,7 @@ public class Climber
     {
         if(oi.getCocopilotButton(2).isDown())
         {
-            winchPID.setReference(1, ControlType.kPosition);
+            winch.set(1);
         }
     }
     

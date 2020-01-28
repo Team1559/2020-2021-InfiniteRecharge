@@ -9,7 +9,12 @@ package frc.robot;
 
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.components.IMU;
+import frc.robot.components.Camera;
 import frc.robot.subsystems.PowerCell;
 import frc.robot.subsystems.Chassis;
 import io.github.oblarg.oblog.*;
@@ -24,9 +29,33 @@ import io.github.oblarg.oblog.annotations.Log;
  * project.
  */
 public class Robot extends TimedRobot {
-  private IMU imu;
-  public static OperatorInterface oi;
+
+  private static final String kDefaultAuto = "Default";
+  private static final String kCustomAuto = "My Auto";
+  private String m_autoSelected;
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private Chassis driveTrain;
+  public static OperatorInterface oi;
+
+  private static final String kTankDrive = "Tank Drive";
+  private static final String kArcadeDrive = "Arcade Drive";
+  private static final String kCurvatureDrive = "Curvature Drive";
+  private static final String kShuffleDrive = "Shuffle Drive Individual";
+  private static final String kShuffleDriveGroups = "Shuffle Drive Control Groups";
+  private String m_driveTrain;
+  private final SendableChooser<String> m_driveChooser = new SendableChooser<>();
+
+  private ShuffleboardTab driveTrainTab;
+
+  private Camera camera1;
+  private Camera camera2;
+  private boolean camera1Enable = false;
+  private boolean camera2Enable = false;
+
+  private IMU imu;
+
+  
+
   private boolean chassisEnable = false;
   private boolean ImuEnable = false;
   @Log
@@ -38,13 +67,27 @@ public class Robot extends TimedRobot {
   public void Enable_PowerCell(boolean enable){
     powerCellEnable = enable;
   }
+
+  @Config 
+  public void Enable_Camera1(boolean enable){
+    camera1Enable = enable;
+  }
+
+  @Config 
+  public void Enable_Camera2(boolean enable){
+    camera2Enable = enable;
+  }
+
   @Config
   public void Enable_IMU(boolean enable){
     ImuEnable = enable;
   }
-  @Config
+
+  @Config.ToggleButton
   public void Enable_Chassis(boolean enable){
     chassisEnable = enable;
+    System.out.println("Chassis Enable: " + chassisEnable);
+    System.out.println("Enable: " + enable);
   }
 
   /**
@@ -53,10 +96,33 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    imu = new IMU();
+    
+    
     oi = new OperatorInterface();
     powerCell = new PowerCell();
     Logger.configureLoggingAndConfig(this, false);
+    driveTrainTab = Shuffleboard.getTab("Drive Train"); //The Shuffleboard Tab for all Drive Train related stuff
+
+    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    m_chooser.addOption("My Auto", kCustomAuto);
+    SmartDashboard.putData("Auto choices", m_chooser);
+
+    Logger.configureLoggingAndConfig(this, false);
+
+    driveTrain = new Chassis();
+
+    
+
+    m_driveChooser.setDefaultOption("Tank Drive",kTankDrive); //A Drive Train option
+    m_driveChooser.addOption("Arcade Drive", kArcadeDrive); //A Drive Train option
+    m_driveChooser.addOption("Curvature Drive", kCurvatureDrive); //A Drive Train option
+    m_driveChooser.addOption("Shuffle Drive Individual", kShuffleDrive); //A Drive Train option
+    m_driveChooser.addOption("Shuffle Drive Control Groups", kShuffleDriveGroups); //A Drive Train option
+    driveTrainTab.add("Drive Train Choices", m_driveChooser); //Allows you to pick a Drive Train option through Shuffleboard
+
+    imu = new IMU();
+    camera1 = new Camera(0);
+    camera2 = new Camera(1);
 }
 
 
@@ -86,13 +152,18 @@ public class Robot extends TimedRobot {
    * SendableChooser make sure to add them to the chooser code above as well.
    */
   @Override
-  public void autonomousInit() {
+  public void autonomousInit()
+  {
+    m_autoSelected = m_chooser.getSelected();
+    m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
+    System.out.println("Auto selected: " + m_autoSelected);
+
     initialize();
     
     
     
     if(ImuEnable){
-      imu.zeroYaw();
+        imu.zeroYaw();
     }
   }
 
@@ -100,11 +171,11 @@ public class Robot extends TimedRobot {
    * This function is called periodically during autonomous.
    */
   @Override
-  public void autonomousPeriodic() {
+  public void autonomousPeriodic()
+  {
     if(ImuEnable){
       imu.getvalues();
     }
-    
   }
     
     
@@ -114,14 +185,17 @@ public class Robot extends TimedRobot {
    */
   
   @Override
-  public void teleopInit() {
+  public void teleopInit()
+  {
     if(robotInitialized == false){
       initialize();
     }
   }
 
   @Override
-  public void teleopPeriodic() {
+  public void teleopPeriodic()
+  {
+    driveTrain.DriveSystem(oi.pilot);
     if(ImuEnable){
       imu.getvalues();
     }
@@ -135,35 +209,56 @@ public class Robot extends TimedRobot {
   /**
    * This function is called periodically during test mode.
    */
+
   @Override
-  public void testInit() {
+  public void testInit()
+  {
+    m_driveTrain = m_driveChooser.getSelected();
     initialize();
   }
+
   @Override
   public void testPeriodic() 
   {
     if(chassisEnable){
-      driveTrain.DriveSystem(oi.pilot);
+      driveTrain.DriveSystem(oi.pilot,m_driveTrain);
     }
   }
 
   @Override
-  public void disabledInit(){
+  public void disabledInit()
+  {
 
   }
   @Override
-  public void disabledPeriodic(){
+  public void disabledPeriodic()
+  {
 
   }
-  public void initialize(){
+  public void initialize()
+  {
     robotInitialized = true;
     if(ImuEnable){
       imu.init();
     }
-    System.out.println("Initilied");
   
   if(powerCellEnable){
       powerCell.init();
     }
+
+    System.out.println("Initilied");
+    if(chassisEnable)
+    {
+      driveTrain.Init();
+    }
+    System.out.println("ChassisEnable: " + chassisEnable);
+
+    if(camera1Enable){
+      camera1.init();
+    }
+    if(camera2Enable){
+      camera2.init();
+    }
+
   }
 }

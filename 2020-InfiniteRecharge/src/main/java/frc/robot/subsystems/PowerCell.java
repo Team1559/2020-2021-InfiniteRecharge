@@ -68,9 +68,6 @@ public class PowerCell implements Loggable{
     private double storageRpms = -1; //%output for now
     private double feederRpms = 0;
     
-
-    
-
     @Config
     private void Intake_PID(double kP, double kI, double kD, double Rpms){
    
@@ -78,9 +75,7 @@ public class PowerCell implements Loggable{
         intakeMotor.config_kD(0, kD);
         intakeMotor.config_kI(0, kI);
         intakeRpms = Rpms;
-
-         intake_kP = kP;
-        
+        intake_kP = kP;
     }
 
     @Config
@@ -89,10 +84,7 @@ public class PowerCell implements Loggable{
         shooter.config_kD(0, kD);
         shooter.config_kI(0, kI);
         shooterRpms = Rpms;
-        
-         shooter_kP = kP;
-       
-        
+        shooter_kP = kP;
     }
     @Config
     private void Feeder_PID(double kP, double kI, double kD, double Rpms){
@@ -100,10 +92,7 @@ public class PowerCell implements Loggable{
         feederMotor.config_kD(0, kD);
         feederMotor.config_kI(0, kI);
         feederRpms = Rpms;
-        
-         feeder_kP = kP;
-       
-        
+        feeder_kP = kP;
     }
     
     @Config
@@ -115,10 +104,7 @@ public class PowerCell implements Loggable{
         storageMotorL.config_kD(0, kD);
         storageMotorL.config_kI(0, kI);
         storageRpms = Rpms;
-        
-         storage_kP = kP;
-       
-        
+        storage_kP = kP;
     }
 
     public void init(){                                                                                                                                                                                                                                                                                                                                                        
@@ -129,8 +115,6 @@ public class PowerCell implements Loggable{
         storageMotorH = new TalonSRX(Wiring.storageMotorH);
         storageMotorL = new TalonSRX(Wiring.storageMotorL);
         feederMotor = new TalonSRX(Wiring.feederMotor);
-       
-
 
         //Intake Motor Config
 
@@ -150,7 +134,6 @@ public class PowerCell implements Loggable{
 		intakeMotor.configContinuousCurrentLimit(40, TIMEOUT);
 		intakeMotor.configPeakCurrentDuration(1800,TIMEOUT);
         intakeMotor.setNeutralMode(NeutralMode.Coast);
-        
 
         //Shooter Motor Config
         shooter.set(TalonFXControlMode.Velocity, 0);	
@@ -214,7 +197,6 @@ public class PowerCell implements Loggable{
 		storageMotorL.configContinuousCurrentLimit(40, TIMEOUT);
 		storageMotorL.configPeakCurrentDuration(1800,TIMEOUT);
         storageMotorL.setNeutralMode(NeutralMode.Coast);
- 
     }
     public void stopfeeder(){
         feederMotor.set(ControlMode.PercentOutput, 0);
@@ -233,12 +215,10 @@ public class PowerCell implements Loggable{
     public void feeder(){
         if(oi.pilot.getRawButton(1)){
             feederMotor.set(ControlMode.Velocity, feederRpms);
-
         }
         else{
             stopfeeder();
         }
-
     }
     public void storage(){
         if(oi.copilot.getRawButton(3)){
@@ -248,18 +228,14 @@ public class PowerCell implements Loggable{
         else{
            stopStorage();
         }
-
     }
 	public void intake() {
-        if(oi.copilot.getRawButton(1))
-        {
+        if(oi.copilot.getRawButton(1)){
             intakeMotor.set(ControlMode.Velocity, intakeRpms);
         }
         else{
             stopIntake();
         }
-        
-
     }
     public void shoot(){
         if(oi.copilot.getRawButton(2)){

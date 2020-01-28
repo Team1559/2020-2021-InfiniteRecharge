@@ -6,13 +6,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-// import com.revrobotics.CANEncoder;
-// import com.revrobotics.CANPIDController;
-// import com.revrobotics.CANSparkMax;
-// import com.revrobotics.CANSparkMax.IdleMode;
-// import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-// import com.revrobotics.ControlType;
-
 import frc.robot.OperatorInterface;
 import frc.robot.Robot;
 import frc.robot.Wiring;

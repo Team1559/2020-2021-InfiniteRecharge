@@ -1,56 +1,50 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.Talon;
-import frc.robot.OperatorInterface;
+import frc.robot.Robot;
 import frc.robot.Wiring;
 
 public class Climber {
-    private WPI_TalonSRX barRider;
-    private Talon winch;
-    private OperatorInterface oi;
-    public Climber(OperatorInterface OI)
+    private TalonSRX barRider;
+    private TalonSRX winch;
+    private Robot robot;
+    public Climber()
     {
-        barRider = new WPI_TalonSRX(1);
-        winch = new Talon(0);
-        oi = OI;
+        barRider = new WPI_TalonSRX(Wiring.barRider);
+        winch = new TalonSRX(Wiring.winch);
     }
     /*Main method of climber class operates all functions of climber*/
     public void drive()
     {
-        if(oi.coButtonIsPressed(3)){
+        if(robot.oi.coButtonIsPressed(3)){
             climb();
         }
         else{
-           winch.set(0);
+           winch.set(ControlMode.PercentOutput, 0);
         }
         Balance();
-
+    
     }
 
     /*Initializes robot's departure from the ground*/
     public void climb()
     {
-        if(oi.getCocopilotButton(2).isDown())
+        if(robot.oi.getCocopilotButton(2).isDown())
         {
-            winch.set(1);
+            winch.set(ControlMode.PercentOutput, 1);
         }
     }
     
     /*Drives wheels on the bar to allow robot to balance the bar*/
     public void Balance()
     {
-        if(oi.DPad() == 90)
+        if(robot.oi.DPad() == 90)
         {
             barRider.set(ControlMode.PercentOutput, 1);
         }
-        else if(oi.DPad() == 270)
+        else if(robot.oi.DPad() == 270)
         {
             barRider.set(ControlMode.PercentOutput, -1);
         }
@@ -58,7 +52,7 @@ public class Climber {
         {
             barRider.set(ControlMode.PercentOutput, 0);
         }
-
+    
         
     }
 

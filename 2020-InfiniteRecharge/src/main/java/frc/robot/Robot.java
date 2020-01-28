@@ -72,7 +72,7 @@ public class Robot extends TimedRobot {
     Logger.configureLoggingAndConfig(this, false);
     camera1 = new Camera(0);
     camera2 = new Camera(1);
-    climber = new Climber(oi);
+    climber = new Climber();
     
 }
 

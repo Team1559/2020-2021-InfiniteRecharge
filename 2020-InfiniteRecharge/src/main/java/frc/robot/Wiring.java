@@ -8,8 +8,8 @@ public class Wiring
     // public static final int intakeMotor = 6;
     // public static final int shooterMotor = 5;
 //Climber
-public static final int lifterMotor = 7;
-public static final int winch = 8;
+public static final int winch = 0;
+public static final int barRider = 1;
 //Control Panel
 
 }

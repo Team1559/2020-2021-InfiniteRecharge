@@ -3,8 +3,14 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import frc.robot.OperatorInterface;
 import frc.robot.Robot;
 import frc.robot.Wiring;
+import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.annotations.Config;
+import io.github.oblarg.oblog.annotations.Log;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -12,19 +18,56 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 
-public class Climber {
+public class Climber implements Loggable {
     private TalonSRX barRider;
     private TalonFX winch;
+    private OperatorInterface oi;
+    @Log
+    private double winch_kP = 5; 
+    private double winch_kD = 0;
+    @Log
+    private double winch_kI = 0.00000;//1e-6
+    @Log
+    private double winchRpms = 0;
+    private final int TIMEOUT = 0;
     
-    public void ClimberInit()
+    @Config
+    private void Shooter_PID(double kP, double kI, double kD, double Rpms){
+        winch.config_kP(0, kP);
+        winch.config_kD(0, kD);
+        winch.config_kI(0, kI);
+        winchRpms = Rpms;
+        winch_kP = kP;
+    }
+    
+    public Climber()
+    {
+
+    }
+
+    public void ClimberInit(OperatorInterface OI)
     {
         barRider = new WPI_TalonSRX(Wiring.barRider);
         winch = new TalonFX(Wiring.winch);
+        oi = OI;
+
+        winch.set(TalonFXControlMode.Velocity, 0);	
+        winch.configClosedloopRamp(cLR, TIMEOUT);
+        winch.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        winch.config_kF(0, winch_kF);
+        winch.config_kP(0, winch_kP);
+        winch.config_kD(0, winch_kD);
+        winch.config_kI(0, winch_kI);
+        winch.configNominalOutputForward(0, TIMEOUT);
+        winch.configNominalOutputReverse(0, TIMEOUT);
+        winch.configPeakOutputForward(+1, TIMEOUT);
+        winch.configPeakOutputReverse(-1, TIMEOUT);
+        winch.setNeutralMode(NeutralMode.Coast);
     }
     /*Main method of climber class operates all functions of climber*/
     public void drive()
     {
-        if(Robot.oi.coButtonIsPressed(3)) {
+        if(oi.coButtonIsPressed(3)) {
             climb();
         }
         else{
@@ -37,7 +80,7 @@ public class Climber {
     /*Initializes robot's departure from the ground*/
     public void climb()
     {
-        if(Robot.oi.getCocopilotButton(2).isDown())
+        if(oi.getCocopilotButton(2).isDown())
         {
             winch.set(ControlMode.Velocity, 1);
         }
@@ -46,11 +89,11 @@ public class Climber {
     /*Drives wheels on the bar to allow robot to balance the bar*/
     public void Balance()
     {
-        if(Robot.oi.DPad() == 90)
+        if(oi.DPad() == 90)
         {
             barRider.set(ControlMode.PercentOutput, 1);
         }
-        else if(Robot.oi.DPad() == 270)
+        else if(oi.DPad() == 270)
         {
             barRider.set(ControlMode.PercentOutput, -1);
         }

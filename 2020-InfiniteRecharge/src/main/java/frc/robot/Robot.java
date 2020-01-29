@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Spinner;
+import frc.robot.subsystems.Intake; 
 import frc.robot.components.IMU;
 import frc.robot.components.Camera;
 import frc.robot.subsystems.PowerCell;
@@ -60,6 +63,11 @@ public class Robot extends TimedRobot {
   private boolean ImuEnable = false;
   @Log
   private boolean robotInitialized = false;
+
+private boolean colorEnable = false;
+
+public Spinner spinner = new Spinner();
+
   private boolean powerCellEnable = false;
   private PowerCell powerCell;
   
@@ -78,6 +86,7 @@ public class Robot extends TimedRobot {
     camera2Enable = enable;
   }
 
+
   @Config
   public void Enable_IMU(boolean enable){
     ImuEnable = enable;
@@ -88,6 +97,15 @@ public class Robot extends TimedRobot {
     chassisEnable = enable;
     System.out.println("Chassis Enable: " + chassisEnable);
     System.out.println("Enable: " + enable);
+  }
+  @Config
+  public void Enable_Cameras(boolean enable, boolean enable2){
+    camera1Enable  = enable;
+    camera2Enable = enable2;
+  }
+  @Config
+  public void Enable_Color(boolean enable){
+    colorEnable = enable;
   }
 
   /**
@@ -195,16 +213,24 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic()
   {
-    driveTrain.DriveSystem(oi.pilot);
+    //driveTrain.DriveSystem(oi.pilot);
     if(ImuEnable){
       imu.getvalues();
     }
+
+      //All spinner logic is in Spinner.java
+      spinner.spin(colorEnable);
+    
+    
+    }
+
     if(powerCellEnable){
       powerCell.intake();
       powerCell.shoot();
       powerCell.storage();//for testing only will be changed
     }
   }
+
   
   /**
    * This function is called periodically during test mode.
@@ -259,6 +285,8 @@ public class Robot extends TimedRobot {
     if(camera2Enable){
       camera2.init();
     }
-
+    if(colorEnable){
+      spinner.init();
+    }
   }
 }

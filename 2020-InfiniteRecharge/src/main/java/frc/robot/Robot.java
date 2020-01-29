@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private Chassis driveTrain;
-  public OperatorInterface oi;
+  public static OperatorInterface oi;
 
   private static final String kTankDrive = "Tank Drive";
   private static final String kArcadeDrive = "Arcade Drive";

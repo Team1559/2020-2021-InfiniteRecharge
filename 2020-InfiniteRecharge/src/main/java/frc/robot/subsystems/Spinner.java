@@ -34,9 +34,17 @@ public class Spinner implements Loggable {
         
     }
 
-    public void spin()
+    public void spin(boolean colorEnable)
     {
-        spinnerMotor.set(ControlMode.PercentOutput, .2);
+        if(colorEnable)
+        {
+            spinnerMotor.set(ControlMode.PercentOutput, .2);
+            updateColor();
+        }
+        else
+        {
+            spinnerMotor.set(ControlMode.PercentOutput, 0);
+        }
     }
 
     public Spinner() {
@@ -109,24 +117,19 @@ public class Spinner implements Loggable {
     //    {
     //      j++;
 
-    }
+        //}
     // spinnerMotor.set(ControlMode.PercentOutput, 0);
 
     //}
+
+
+
+
 
 
         
             SmartDashboard.putNumber("Red", redColor);
             SmartDashboard.putNumber("Green", greenColor);
             SmartDashboard.putNumber("Blue", blueColor);
-
-        
-        
-
-
-
     }
-
-
-
 }

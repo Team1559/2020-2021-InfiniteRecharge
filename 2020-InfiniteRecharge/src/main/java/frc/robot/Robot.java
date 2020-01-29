@@ -192,11 +192,11 @@ public Spinner spinner = new Spinner();
     if(ImuEnable){
       imu.getvalues();
     }
-     if(colorEnable){
-      spinner.spin();
-      spinner.updateColor();
+      //All spinner logic is in Spinner.java
+      spinner.spin(colorEnable);
+    
+    
     }
-  }
   
   /**
    * This function is called periodically during test mode.

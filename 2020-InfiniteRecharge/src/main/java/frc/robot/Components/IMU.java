@@ -38,7 +38,7 @@ public  class IMU implements Loggable{
       ahrs.zeroYaw();
     }
    public void getvalues(){
-    AHRS.BoardYawAxis yaw_axis = ahrs.getBoardYawAxis();
+    //AHRS.BoardYawAxis yaw_axis = ahrs.getBoardYawAxis();
     
     x_acceleration = ahrs.getWorldLinearAccelX();
         y_acceleration = ahrs.getWorldLinearAccelY();

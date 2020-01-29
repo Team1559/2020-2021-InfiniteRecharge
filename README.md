@@ -17,3 +17,6 @@ Download from http://revrobotics.com/content/sw/color-sensor-v3/sdk/Color-Sensor
 #### CTRE Phoenix Software (for Talon SRX)
 Download from https://github.com/CrossTheRoadElec/Phoenix-Releases/releases/download/v5.17.4.0/CTRE.Phoenix.Framework.v5.17.4.0.zip
 Unzip and run the installer.
+#### Imu Software
+download from https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
+click latest build and run the installer

@@ -13,9 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Spinner;
-import frc.robot.subsystems.Intake; 
 import frc.robot.components.IMU;
 import frc.robot.components.Camera;
 import frc.robot.subsystems.PowerCell;
@@ -221,8 +219,6 @@ public Spinner spinner = new Spinner();
       //All spinner logic is in Spinner.java
       spinner.spin(colorEnable);
     
-    
-    }
 
     if(powerCellEnable){
       powerCell.intake();
@@ -264,11 +260,13 @@ public Spinner spinner = new Spinner();
   public void initialize()
   {
     robotInitialized = true;
-    if(ImuEnable){
+    if(ImuEnable)
+    {
       imu.init();
     }
   
-  if(powerCellEnable){
+    if(powerCellEnable)
+    {
       powerCell.init();
     }
 
@@ -279,13 +277,16 @@ public Spinner spinner = new Spinner();
     }
     System.out.println("ChassisEnable: " + chassisEnable);
 
-    if(camera1Enable){
+    if(camera1Enable)
+    {
       camera1.init();
     }
-    if(camera2Enable){
+    if(camera2Enable)
+    {
       camera2.init();
     }
-    if(colorEnable){
+    if(colorEnable)
+    {
       spinner.init();
     }
   }

@@ -5,24 +5,30 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import frc.robot.Robot;
 import frc.robot.Wiring;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 
 public class Climber {
     private TalonSRX barRider;
-    private TalonSRX winch;
-    private Robot robot;
-    public Climber()
+    private TalonFX winch;
+    
+    public void ClimberInit()
     {
         barRider = new WPI_TalonSRX(Wiring.barRider);
-        winch = new TalonSRX(Wiring.winch);
+        winch = new TalonFX(Wiring.winch);
     }
     /*Main method of climber class operates all functions of climber*/
     public void drive()
     {
-        if(robot.oi.coButtonIsPressed(3)){
+        if(Robot.oi.coButtonIsPressed(3)) {
             climb();
         }
         else{
-           winch.set(ControlMode.PercentOutput, 0);
+           winch.set(ControlMode.Velocity, 0);
         }
         Balance();
     
@@ -31,20 +37,20 @@ public class Climber {
     /*Initializes robot's departure from the ground*/
     public void climb()
     {
-        if(robot.oi.getCocopilotButton(2).isDown())
+        if(Robot.oi.getCocopilotButton(2).isDown())
         {
-            winch.set(ControlMode.PercentOutput, 1);
+            winch.set(ControlMode.Velocity, 1);
         }
     }
     
     /*Drives wheels on the bar to allow robot to balance the bar*/
     public void Balance()
     {
-        if(robot.oi.DPad() == 90)
+        if(Robot.oi.DPad() == 90)
         {
             barRider.set(ControlMode.PercentOutput, 1);
         }
-        else if(robot.oi.DPad() == 270)
+        else if(Robot.oi.DPad() == 270)
         {
             barRider.set(ControlMode.PercentOutput, -1);
         }

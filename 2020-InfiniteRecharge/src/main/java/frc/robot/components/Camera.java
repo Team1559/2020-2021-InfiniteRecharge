@@ -4,7 +4,6 @@ import edu.wpi.first.cameraserver.CameraServer;
 
 public class Camera
 {
-    //UsbCamera cameras = CameraServer.getInstance().startAutomaticCapture(0);
     int cameraId;
     
     public Camera(int id) {

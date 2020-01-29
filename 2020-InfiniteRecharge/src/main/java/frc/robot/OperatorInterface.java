@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 
 public class OperatorInterface {
     public Joystick pilot, copilot;
-    private DTButton[] driverButtons, copilotButtons, cocopilotButtons;
+    private DTButton[] pilotButtons, copilotButtons, cocopilotButtons;
 
     public OperatorInterface() {
         pilot = new Joystick(Constants.PILOT_JOYSTICK);
@@ -19,6 +19,10 @@ public class OperatorInterface {
         copilotButtons = new DTButton[20];
         for(int i = 0; i < copilotButtons.length; i++) {
             copilotButtons[i] = new DTButton(copilot, i + 1);
+        }
+        pilotButtons = new DTButton[20];
+        for(int i = 0; i < pilotButtons.length; i++) {
+            pilotButtons[i] = new DTButton(pilot, i + 1);
         }
     }
 
@@ -40,10 +44,10 @@ public class OperatorInterface {
 
     public double getPilotZ() {
         //gets the z axis on the ps4 controller (rotation)
-        if((pilot.getRawAxis(2))/(Math.abs(pilot.getRawAxis(2))) == 1) {
-            return (Math.pow(pilot.getRawAxis(2), 2));
+        if((pilot.getRawAxis(4))/(Math.abs(pilot.getRawAxis(4))) == 1) {
+            return (Math.pow(pilot.getRawAxis(4), 2));
         }
-            return (-1)*(Math.pow(pilot.getRawAxis(2), 2));
+            return (-1)*(Math.pow(pilot.getRawAxis(4), 2));
     }
 
     public DTButton getCopilotButton(int num) {

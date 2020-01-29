@@ -7,25 +7,19 @@
 
 package frc.robot;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Intake; 
 import frc.robot.components.IMU;
-import com.ctre.phoenix.motorcontrol.*;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import frc.robot.components.Camera;
+import frc.robot.subsystems.PowerCell;
 import frc.robot.subsystems.Chassis;
 import io.github.oblarg.oblog.*;
 import io.github.oblarg.oblog.annotations.Config;
-import frc.robot.components.Camera;
+import io.github.oblarg.oblog.annotations.Log;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -35,12 +29,13 @@ import frc.robot.components.Camera;
  * project.
  */
 public class Robot extends TimedRobot {
+
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private Chassis driveTrain;
-  private OperatorInterface oi;
+  public static OperatorInterface oi;
 
   private static final String kTankDrive = "Tank Drive";
   private static final String kArcadeDrive = "Arcade Drive";
@@ -54,29 +49,45 @@ public class Robot extends TimedRobot {
 
   private Camera camera1;
   private Camera camera2;
-
-  private IMU imu;
-
-  private boolean chassisEnable = false;
-  private boolean ImuEnable = false;
   private boolean camera1Enable = false;
   private boolean camera2Enable = false;
 
+  private IMU imu;
+
+  
+
+  private boolean chassisEnable = false;
+  private boolean ImuEnable = false;
+  @Log
   private boolean robotInitialized = false;
+  private boolean powerCellEnable = false;
+  private PowerCell powerCell;
+  
+  @Config 
+  public void Enable_PowerCell(boolean enable){
+    powerCellEnable = enable;
+  }
+
+  @Config 
+  public void Enable_Camera1(boolean enable){
+    camera1Enable = enable;
+  }
+
+  @Config 
+  public void Enable_Camera2(boolean enable){
+    camera2Enable = enable;
+  }
+
   @Config
   public void Enable_IMU(boolean enable){
     ImuEnable = enable;
   }
+
   @Config.ToggleButton
   public void Enable_Chassis(boolean enable){
     chassisEnable = enable;
     System.out.println("Chassis Enable: " + chassisEnable);
     System.out.println("Enable: " + enable);
-  }
-  @Config
-  public void Enable_Cameras(boolean enable, boolean enable2){
-    camera1Enable  = enable;
-    camera2Enable = enable2;
   }
 
   /**
@@ -85,17 +96,22 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+  Logger.configureLoggingAndConfig(this, false);
+
+    
+    oi = new OperatorInterface();
+    powerCell = new PowerCell();
+    driveTrain = new Chassis();
     driveTrainTab = Shuffleboard.getTab("Drive Train"); //The Shuffleboard Tab for all Drive Train related stuff
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    Logger.configureLoggingAndConfig(this, false);
 
-    driveTrain = new Chassis();
+    
 
-    oi = new OperatorInterface();
+    
 
     m_driveChooser.setDefaultOption("Tank Drive",kTankDrive); //A Drive Train option
     m_driveChooser.addOption("Arcade Drive", kArcadeDrive); //A Drive Train option
@@ -109,6 +125,7 @@ public class Robot extends TimedRobot {
     camera2 = new Camera(1);
 }
 
+
   /**
    * This function is called every robot packet, no matter the mode. Use
    * this for items like diagnostics that you want ran during disabled,
@@ -118,11 +135,9 @@ public class Robot extends TimedRobot {
    * LiveWindow and SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic()
-  {
+  public void robotPeriodic() {
     Logger.updateEntries();
-
-    //System.out.println(ImuEnable);
+    
   }
     
   /**
@@ -147,9 +162,8 @@ public class Robot extends TimedRobot {
     
     
     
-    if(ImuEnable)
-    {
-    imu.zeroYaw();
+    if(ImuEnable){
+        imu.zeroYaw();
     }
   }
 
@@ -163,7 +177,9 @@ public class Robot extends TimedRobot {
       imu.getvalues();
     }
   }
-
+    
+    
+  
   /**
    * This function is called periodically during operator control.
    */
@@ -175,6 +191,7 @@ public class Robot extends TimedRobot {
       initialize();
     }
   }
+
   @Override
   public void teleopPeriodic()
   {
@@ -185,6 +202,11 @@ public class Robot extends TimedRobot {
 
     if(ImuEnable){
       imu.getvalues();
+    }
+    if(powerCellEnable){
+      powerCell.intake();
+      powerCell.shoot();
+      powerCell.storage();//for testing only will be changed
     }
   }
   
@@ -222,6 +244,10 @@ public class Robot extends TimedRobot {
     robotInitialized = true;
     if(ImuEnable){
       imu.init();
+    }
+  
+  if(powerCellEnable){
+      powerCell.init();
     }
 
     System.out.println("Initilied");

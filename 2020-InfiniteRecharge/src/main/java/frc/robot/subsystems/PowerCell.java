@@ -7,8 +7,8 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.robot.OperatorInterface;
-import frc.robot.Robot;
 import frc.robot.Wiring;
+import frc.robot.Robot;
 import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;
@@ -49,7 +49,6 @@ public class PowerCell implements Loggable{
     private TalonSRX storageMotorL;
     private TalonSRX storageMotorH;
     private TalonFX shooter;
-    private OperatorInterface oi;
     private TalonSRX intakeMotor;
     private TalonSRX feederMotor;
    
@@ -102,7 +101,6 @@ public class PowerCell implements Loggable{
 
     public void init(){                                                                                                                                                                                                                                                                                                                                                        
         //Constructors
-        oi = Robot.oi;
         shooter = new TalonFX(Wiring.shooterMotor);
         intakeMotor = new TalonSRX(Wiring.intakeMotor);
         storageMotorH = new TalonSRX(Wiring.storageMotorH);
@@ -206,7 +204,7 @@ public class PowerCell implements Loggable{
         shooter.set(TalonFXControlMode.PercentOutput, 0);
     }
     public void feeder(){
-        if(oi.pilot.getRawButton(1)){
+        if(Robot.oi.pilot.getRawButton(1)){
             feederMotor.set(ControlMode.Velocity, feederRpms);
         }
         else{
@@ -214,7 +212,7 @@ public class PowerCell implements Loggable{
         }
     }
     public void storage(){
-        if(oi.copilot.getRawButton(3)){
+        if(Robot.oi.copilot.getRawButton(3)){
             storageMotorH.set(ControlMode.PercentOutput, -storageRpms);
             storageMotorL.set(ControlMode.PercentOutput, storageRpms);
         }
@@ -223,7 +221,7 @@ public class PowerCell implements Loggable{
         }
     }
 	public void intake() {
-        if(oi.copilot.getRawButton(1)){
+        if(Robot.oi.copilot.getRawButton(1)){
             intakeMotor.set(ControlMode.Velocity, intakeRpms);
         }
         else{
@@ -231,7 +229,7 @@ public class PowerCell implements Loggable{
         }
     }
     public void shoot(){
-        if(oi.copilot.getRawButton(2)){
+        if(Robot.oi.copilot.getRawButton(2)){
            
             shooter.set(ControlMode.Velocity, shooterRpms);
         }

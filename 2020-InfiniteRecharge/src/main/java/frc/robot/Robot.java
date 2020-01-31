@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.Spinner;
 import frc.robot.components.IMU;
 import frc.robot.components.Camera;
 import frc.robot.subsystems.PowerCell;
@@ -60,6 +61,11 @@ public class Robot extends TimedRobot {
 
   @Log
   private boolean robotInitialized = false;
+
+private boolean colorEnable = false;
+
+public Spinner spinner = new Spinner();
+
   private boolean powerCellEnable = false;
   
   @Config 
@@ -82,6 +88,7 @@ public class Robot extends TimedRobot {
     camera2Enable = enable;
   }
 
+
   @Config
   public void Enable_IMU(boolean enable){
     ImuEnable = enable;
@@ -92,6 +99,15 @@ public class Robot extends TimedRobot {
     chassisEnable = enable;
     System.out.println("Chassis Enable: " + chassisEnable);
     System.out.println("Enable: " + enable);
+  }
+  @Config
+  public void Enable_Cameras(boolean enable, boolean enable2){
+    camera1Enable  = enable;
+    camera2Enable = enable2;
+  }
+  @Config
+  public void Enable_Color(boolean enable){
+    colorEnable = enable;
   }
 
   /**
@@ -211,14 +227,14 @@ public class Robot extends TimedRobot {
     if(climberEnable){
       climber.drive();
     }
-    
-    
+    spinner.spin(colorEnable);
     if(powerCellEnable){
       powerCell.intake();
       powerCell.shoot();
       powerCell.storage();//for testing only will be changed
-    }
   }
+
+}
 
 
 
@@ -255,7 +271,8 @@ public class Robot extends TimedRobot {
   public void initialize()
   {
     robotInitialized = true;
-    if(ImuEnable){
+    if(ImuEnable)
+    {
       imu.init();
     }
   
@@ -281,6 +298,9 @@ public class Robot extends TimedRobot {
     if(camera2Enable){
       camera2.init();
     }
-
+    if(colorEnable)
+    {
+      spinner.init();
+    }
   }
 }

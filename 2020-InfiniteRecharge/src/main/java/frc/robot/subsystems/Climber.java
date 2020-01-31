@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import frc.robot.OperatorInterface;
 import frc.robot.Robot;
 import frc.robot.Wiring;
 import io.github.oblarg.oblog.Loggable;
@@ -15,9 +17,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 
 public class Climber implements Loggable {
+    private OperatorInterface oi;
     private TalonSRX barRider;
     private TalonFX winch;
-    private boolean e_stopWinch = false;
     @Log
     private double winch_kP = 5; 
     private double winch_kD = 0;
@@ -32,12 +34,10 @@ public class Climber implements Loggable {
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
     
-    //Shuffleboard configs for winch and 
-    @Config 
-    public void e_stopWinch(boolean enable){
-        e_stopWinch = enable;
-    }
-    @Config
+	//Shuffleboard configs for winch and bar rider
+  
+	
+	@Config
     private void winch_PID(double kP, double kI, double kD, double Rpms){
         winch.config_kP(0, kP);
         winch.config_kD(0, kD);
@@ -52,7 +52,7 @@ public class Climber implements Loggable {
     
     
 
-    public void ClimberInit()
+    public void ClimberInit(OperatorInterface oi)
     {
         barRider = new WPI_TalonSRX(Wiring.barRider);
         winch = new TalonFX(Wiring.winch);
@@ -69,7 +69,7 @@ public class Climber implements Loggable {
     winch.configNominalOutputReverse(0, TIMEOUT);
     winch.configPeakOutputForward(+1, TIMEOUT);
     winch.configPeakOutputReverse(-1, TIMEOUT);
-    winch.setNeutralMode(NeutralMode.Coast);
+    winch.setNeutralMode(NeutralMode.Brake);
     }
 
     public void stopBarrider(){
@@ -82,23 +82,21 @@ public class Climber implements Loggable {
 
     public void holdwinch(){
        
-        winch.set(TalonFXControlMode.Velocity, 0);
+        winch.set(TalonFXControlMode.PercentOutput, 0);
     }
     /*Main method of climber class operates all functions of climber*/
     public void drive()    {
         Balance();
 
-         if(e_stopWinch){
-            e_stopWinch();
-        }
+         
 
-        if(Robot.oi.coButtonIsPressed(3) && e_stopWinch == false) {
+        if(oi.coButtonIsPressed(3)) {
             unwindWinch();
         }
-        else if(Robot.oi.copilot.getRawButton(2) && e_stopWinch == false){
+        else if(oi.copilot.getRawButton(2)){
             climbup();
         }
-        else if(e_stopWinch == false){         
+        else{         
            holdwinch();
         }      
     
@@ -114,11 +112,11 @@ public class Climber implements Loggable {
     
     /*Drives wheels on the bar to allow robot to balance the bar*/
     public void Balance(){
-        if(Robot.oi.DPad() == 90)
+        if(oi.DPad() == 90)
         {
             barRider.set(ControlMode.PercentOutput, balencerPercent);
         }
-        else if(Robot.oi.DPad() == 270)
+        else if(oi.DPad() == 270)
         {
             barRider.set(ControlMode.PercentOutput, -balencerPercent);
         }

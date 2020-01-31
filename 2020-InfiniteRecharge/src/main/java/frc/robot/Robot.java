@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private Chassis driveTrain;
-  public static OperatorInterface oi;
+  public OperatorInterface oi;
 
   private static final String kTankDrive = "Tank Drive";
   private static final String kArcadeDrive = "Arcade Drive";
@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
   private boolean camera2Enable = false;
   private boolean chassisEnable = false;
   private boolean ImuEnable = false;
+  private boolean climberEnable = false;
   private Climber climber;
 
   @Log
@@ -61,6 +62,11 @@ public class Robot extends TimedRobot {
   private boolean powerCellEnable = false;
   private PowerCell powerCell;
   
+  @Config 
+  public void Enable_Climber(boolean enable){
+    climberEnable = enable;
+  }
+
   @Config 
   public void Enable_PowerCell(boolean enable){
     powerCellEnable = enable;
@@ -100,6 +106,7 @@ public class Robot extends TimedRobot {
     oi = new OperatorInterface();
     powerCell = new PowerCell();
     driveTrain = new Chassis();
+    climber = new Climber();
     driveTrainTab = Shuffleboard.getTab("Drive Train"); //The Shuffleboard Tab for all Drive Train related stuff
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
@@ -121,7 +128,7 @@ public class Robot extends TimedRobot {
     imu = new IMU();
     camera1 = new Camera(0);
     camera2 = new Camera(1);
-    climber = new Climber();
+   
     
 }
 
@@ -248,7 +255,7 @@ public class Robot extends TimedRobot {
     }
   
   if(powerCellEnable){
-      powerCell.init();
+      powerCell.init(oi);
     }
 
     System.out.println("Initilied");
@@ -258,9 +265,14 @@ public class Robot extends TimedRobot {
     }
     System.out.println("ChassisEnable: " + chassisEnable);
 
+    if(climberEnable){
+      climber.ClimberInit(oi);
+    }
+
     if(camera1Enable){
       camera1.init();
     }
+    
     if(camera2Enable){
       camera2.init();
     }

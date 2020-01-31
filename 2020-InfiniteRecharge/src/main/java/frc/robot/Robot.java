@@ -30,7 +30,7 @@ import io.github.oblarg.oblog.annotations.Log;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends TimedRobot implements Loggable {
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -227,11 +227,12 @@ public Spinner spinner = new Spinner();
     if(climberEnable){
       climber.drive();
     }
-    spinner.spin(colorEnable);
+    //spinner.spin(colorEnable);
     if(powerCellEnable){
       powerCell.intake();
       powerCell.shoot();
       powerCell.storage();//for testing only will be changed
+      powerCell.feeder();
   }
 
 }

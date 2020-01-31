@@ -1,6 +1,7 @@
 package frc.robot;
 public class Wiring
 {
+    
 //Drivetrain
 
 //Power Cell
@@ -11,7 +12,8 @@ public class Wiring
     public static final int feederMotor = 6;
     // public static final int shooterMotor = 5;
 //Climber
-
+public static final int winch = 23;
+public static final int barRider = 2;
 //Control Panel
 
 }

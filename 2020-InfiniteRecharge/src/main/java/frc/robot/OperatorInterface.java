@@ -77,7 +77,6 @@ public class OperatorInterface {
 
     public int DPad()
     {
-        System.out.println(pilot.getPOV(0));
         return pilot.getPOV(0);
     }
 

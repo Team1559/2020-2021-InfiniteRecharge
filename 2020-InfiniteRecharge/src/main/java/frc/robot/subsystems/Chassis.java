@@ -52,13 +52,18 @@ public class Chassis {
     
     public Chassis()
     {
+       
+    }
+
+    public void Init() {
+        
         sparkMax1 = new CANSparkMax(11, MotorType.kBrushless);
         sparkMax2 = new CANSparkMax(12, MotorType.kBrushless);
         sparkMax3 = new CANSparkMax(13, MotorType.kBrushless);
         sparkMax4 = new CANSparkMax(14, MotorType.kBrushless);
 
-        leftMotors = new SpeedControllerGroup(sparkMax1, sparkMax3);
-        rightMotors = new SpeedControllerGroup(sparkMax2, sparkMax4);
+        // // leftMotors = new SpeedControllerGroup(sparkMax1, sparkMax3);
+        // // rightMotors = new SpeedControllerGroup(sparkMax2, sparkMax4);
         
         widget1 = new MotorWidget(sparkMax1, "Motor 1");
         widget2 = new MotorWidget(sparkMax2, "Motor 2");
@@ -66,10 +71,7 @@ public class Chassis {
         widget4 = new MotorWidget(sparkMax4, "Motor 4");
         widget5 = new SCGWidget(leftMotors, "Left Motors");
         widget6 = new SCGWidget(rightMotors, "Right Motors");
-    }
 
-    public void Init() {
-        
         sparkMax1PID = sparkMax1.getPIDController();
         
         sparkMax2PID = sparkMax2.getPIDController();
@@ -122,36 +124,36 @@ public class Chassis {
         //System.out.println(mode);
         switch(mode)
         {
-             case "Tank Drive":
-            driveTrain.tankDrive(-(drive.getRawAxis(1)),-(drive.getRawAxis(5)));
-            //driveTrain.tankDrive(0.01,0.01);
-            System.out.println(drive.getRawAxis(1));
-            System.out.println(drive.getRawAxis(5));
-             break;
+            // //  case "Tank Drive":
+            // // driveTrain.tankDrive(-(drive.getRawAxis(1)),-(drive.getRawAxis(5)));
+            // // //driveTrain.tankDrive(0.01,0.01);
+            // // System.out.println(drive.getRawAxis(1));
+            // // System.out.println(drive.getRawAxis(5));
+            // //  break;
 
-             case "Arcade Drive":
-             driveTrain.arcadeDrive(-(drive.getRawAxis(1)), drive.getRawAxis(2));
-             System.out.println(drive.getRawAxis(1));
-             System.out.println(drive.getRawAxis(2));
-             break;
+            // //  case "Arcade Drive":
+            // //  driveTrain.arcadeDrive(-(drive.getRawAxis(1)), drive.getRawAxis(2));
+            // //  System.out.println(drive.getRawAxis(1));
+            // //  System.out.println(drive.getRawAxis(2));
+            // //  break;
 
-             case "Curvature Drive":
-             driveTrain.curvatureDrive(-(drive.getRawAxis(1)), drive.getRawAxis(2), true);
-             System.out.println(drive.getRawAxis(1));
-             System.out.println(drive.getRawAxis(2));
-             break;
+            // //  case "Curvature Drive":
+            // //  driveTrain.curvatureDrive(-(drive.getRawAxis(1)), drive.getRawAxis(2), true);
+            // //  System.out.println(drive.getRawAxis(1));
+            // //  System.out.println(drive.getRawAxis(2));
+            // //  break;
 
-             case "Shuffle Drive Individual":
-             widget1.changeOutput();
-             widget2.changeOutput();
-             widget3.changeOutput();
-             widget4.changeOutput();
-             break;
+            // //  case "Shuffle Drive Individual":
+            // //  widget1.changeOutput();
+            // //  widget2.changeOutput();
+            // //  widget3.changeOutput();
+            // //  widget4.changeOutput();
+            // //  break;
 
-             case "Shuffle Drive Control Groups":
-             widget5.changeOutput();
-             widget6.changeOutput();
-             break;
+            // //  case "Shuffle Drive Control Groups":
+            // //  widget5.changeOutput();
+            // //  widget6.changeOutput();
+            // //  break;
              //tab.add("Drive Train",1.0).withWidget(BuiltInWidgets.kDifferentialDrive).getEntry();
         }
     }

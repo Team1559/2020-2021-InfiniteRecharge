@@ -35,8 +35,8 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  private Chassis driveTrain;
-  public OperatorInterface oi;
+  private Chassis driveTrain = new Chassis();
+  public OperatorInterface oi = new OperatorInterface();
 
   private static final String kTankDrive = "Tank Drive";
   private static final String kArcadeDrive = "Arcade Drive";
@@ -55,12 +55,12 @@ public class Robot extends TimedRobot {
   private boolean chassisEnable = false;
   private boolean ImuEnable = false;
   private boolean climberEnable = false;
-  private Climber climber;
+  private Climber climber = new Climber();
+  private PowerCell powerCell = new PowerCell();
 
   @Log
   private boolean robotInitialized = false;
   private boolean powerCellEnable = false;
-  private PowerCell powerCell;
   
   @Config 
   public void Enable_Climber(boolean enable){
@@ -103,10 +103,10 @@ public class Robot extends TimedRobot {
   Logger.configureLoggingAndConfig(this, false);
 
     
-    oi = new OperatorInterface();
-    powerCell = new PowerCell();
-    driveTrain = new Chassis();
-    climber = new Climber();
+    
+    
+    
+    
     driveTrainTab = Shuffleboard.getTab("Drive Train"); //The Shuffleboard Tab for all Drive Train related stuff
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
@@ -201,11 +201,16 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic()
   {
+    if(chassisEnable){    
     driveTrain.DriveSystem(oi.pilot);
+    }
+    
     if(ImuEnable){
       imu.getvalues();
     }
-
+    if(climberEnable){
+      climber.drive();
+    }
     
     
     if(powerCellEnable){

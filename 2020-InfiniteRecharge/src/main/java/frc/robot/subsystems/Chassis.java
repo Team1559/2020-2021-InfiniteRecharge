@@ -52,6 +52,11 @@ public class Chassis {
     
     public Chassis()
     {
+       
+    }
+
+    public void Init() {
+        
         sparkMax1 = new CANSparkMax(11, MotorType.kBrushless);
         sparkMax2 = new CANSparkMax(12, MotorType.kBrushless);
         sparkMax3 = new CANSparkMax(13, MotorType.kBrushless);
@@ -66,10 +71,7 @@ public class Chassis {
         widget4 = new MotorWidget(sparkMax4, "Motor 4");
         widget5 = new SCGWidget(leftMotors, "Left Motors");
         widget6 = new SCGWidget(rightMotors, "Right Motors");
-    }
 
-    public void Init() {
-        
         sparkMax1PID = sparkMax1.getPIDController();
         
         sparkMax2PID = sparkMax2.getPIDController();

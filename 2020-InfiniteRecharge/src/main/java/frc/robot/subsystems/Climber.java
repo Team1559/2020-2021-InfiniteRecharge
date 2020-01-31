@@ -50,11 +50,11 @@ public class Climber implements Loggable {
     
     
 
-    public void ClimberInit(OperatorInterface oi)
+    public void ClimberInit(OperatorInterface operatorinterface)
     {
         barRider = new WPI_TalonSRX(Wiring.barRider);
         winch = new TalonFX(Wiring.winch);
-        
+        oi = operatorinterface;
 
     winch.set(TalonFXControlMode.Velocity, 0);	
     winch.configClosedloopRamp(cLR, TIMEOUT);
@@ -74,10 +74,6 @@ public class Climber implements Loggable {
         barRider.set(ControlMode.PercentOutput, 0);
     }
 
-    public void e_stopWinch(){
-        winch.set(TalonFXControlMode.PercentOutput, 0);
-    }
-
     public void holdwinch(){
        
         winch.set(TalonFXControlMode.PercentOutput, 0);
@@ -88,11 +84,13 @@ public class Climber implements Loggable {
 
          
 
-        if(oi.coButtonIsPressed(3)) {
+        if(oi.copilot.getRawButton(3)) { //Told you Operator Interface button controls didn't work!
             unwindWinch();
+            System.out.println("unwinding");
         }
         else if(oi.copilot.getRawButton(2)){
             climbup();
+            System.out.println("winding");
         }
         else{         
            holdwinch();

@@ -18,6 +18,7 @@ import frc.robot.components.IMU;
 import frc.robot.components.Camera;
 import frc.robot.subsystems.PowerCell;
 import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Climber;
 import io.github.oblarg.oblog.*;
 import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;
@@ -35,8 +36,8 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  private Chassis driveTrain;
-  public static OperatorInterface oi;
+  private Chassis driveTrain = new Chassis();
+  public OperatorInterface oi = new OperatorInterface();
 
   private static final String kTankDrive = "Tank Drive";
   private static final String kArcadeDrive = "Arcade Drive";
@@ -47,18 +48,17 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_driveChooser = new SendableChooser<>();
 
   private ShuffleboardTab driveTrainTab;
-
+  private IMU imu;
   private Camera camera1;
   private Camera camera2;
   private boolean camera1Enable = false;
   private boolean camera2Enable = false;
-
-  private IMU imu;
-
-  
-
   private boolean chassisEnable = false;
   private boolean ImuEnable = false;
+  private boolean climberEnable = false;
+  private Climber climber = new Climber();
+  private PowerCell powerCell = new PowerCell();
+
   @Log
   private boolean robotInitialized = false;
 
@@ -67,8 +67,12 @@ private boolean colorEnable = false;
 public Spinner spinner = new Spinner();
 
   private boolean powerCellEnable = false;
-  private PowerCell powerCell;
   
+  @Config 
+  public void Enable_Climber(boolean enable){
+    climberEnable = enable;
+  }
+
   @Config 
   public void Enable_PowerCell(boolean enable){
     powerCellEnable = enable;
@@ -115,9 +119,10 @@ public Spinner spinner = new Spinner();
   Logger.configureLoggingAndConfig(this, false);
 
     
-    oi = new OperatorInterface();
-    powerCell = new PowerCell();
-    driveTrain = new Chassis();
+    
+    
+    
+    
     driveTrainTab = Shuffleboard.getTab("Drive Train"); //The Shuffleboard Tab for all Drive Train related stuff
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
@@ -139,6 +144,8 @@ public Spinner spinner = new Spinner();
     imu = new IMU();
     camera1 = new Camera(0);
     camera2 = new Camera(1);
+   
+    
 }
 
 
@@ -207,25 +214,29 @@ public Spinner spinner = new Spinner();
       initialize();
     }
   }
-
   @Override
   public void teleopPeriodic()
   {
-    //driveTrain.DriveSystem(oi.pilot);
+    if(chassisEnable){    
+    driveTrain.DriveSystem(oi.pilot);
+    }
+    
     if(ImuEnable){
       imu.getvalues();
     }
-
-      //All spinner logic is in Spinner.java
-      spinner.spin(colorEnable);
-    
-
+    if(climberEnable){
+      climber.drive();
+    }
+    spinner.spin(colorEnable);
     if(powerCellEnable){
       powerCell.intake();
       powerCell.shoot();
       powerCell.storage();//for testing only will be changed
-    }
   }
+
+}
+
+
 
   
   /**
@@ -265,9 +276,8 @@ public Spinner spinner = new Spinner();
       imu.init();
     }
   
-    if(powerCellEnable)
-    {
-      powerCell.init();
+  if(powerCellEnable){
+      powerCell.init(oi);
     }
 
     System.out.println("Initilied");
@@ -277,12 +287,15 @@ public Spinner spinner = new Spinner();
     }
     System.out.println("ChassisEnable: " + chassisEnable);
 
-    if(camera1Enable)
-    {
+    if(climberEnable){
+      climber.ClimberInit(oi);
+    }
+
+    if(camera1Enable){
       camera1.init();
     }
-    if(camera2Enable)
-    {
+    
+    if(camera2Enable){
       camera2.init();
     }
     if(colorEnable)

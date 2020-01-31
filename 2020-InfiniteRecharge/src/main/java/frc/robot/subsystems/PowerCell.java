@@ -7,7 +7,6 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.robot.OperatorInterface;
-import frc.robot.Robot;
 import frc.robot.Wiring;
 import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.annotations.Config;
@@ -16,6 +15,7 @@ import io.github.oblarg.oblog.annotations.Log;
 
  //intake has to go double the speed the shooter goes
 public class PowerCell implements Loggable{
+    private OperatorInterface oi;
     //pid values
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
@@ -49,7 +49,6 @@ public class PowerCell implements Loggable{
     private TalonSRX storageMotorL;
     private TalonSRX storageMotorH;
     private TalonFX shooter;
-    private OperatorInterface oi;
     private TalonSRX intakeMotor;
     private TalonSRX feederMotor;
    
@@ -60,8 +59,11 @@ public class PowerCell implements Loggable{
     @Log
     private double storageRpms = -1; //%output for now
     private double feederRpms = 0;
-    
-    @Config
+
+
+
+
+	@Config
     private void Intake_PID(double kP, double kI, double kD, double Rpms){
    
         intakeMotor.config_kP(0, kP);
@@ -100,15 +102,14 @@ public class PowerCell implements Loggable{
         storage_kP = kP;
     }
 
-    public void init(){                                                                                                                                                                                                                                                                                                                                                        
+    public void init(OperatorInterface operatorinterface){                                                                                                                                                                                                                                                                                                                                                        
         //Constructors
-        oi = Robot.oi;
         shooter = new TalonFX(Wiring.shooterMotor);
         intakeMotor = new TalonSRX(Wiring.intakeMotor);
         storageMotorH = new TalonSRX(Wiring.storageMotorH);
         storageMotorL = new TalonSRX(Wiring.storageMotorL);
         feederMotor = new TalonSRX(Wiring.feederMotor);
-
+        oi =operatorinterface;
         //Intake Motor Config
 
         intakeMotor.set(ControlMode.PercentOutput, 0);	

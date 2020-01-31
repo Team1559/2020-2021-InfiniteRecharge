@@ -52,24 +52,26 @@ public class Chassis {
     
     public Chassis()
     {
-        // // sparkMax1 = new CANSparkMax(11, MotorType.kBrushless);
-        // // sparkMax2 = new CANSparkMax(12, MotorType.kBrushless);
-        // // sparkMax3 = new CANSparkMax(13, MotorType.kBrushless);
-        // // sparkMax4 = new CANSparkMax(14, MotorType.kBrushless);
-
-        // // leftMotors = new SpeedControllerGroup(sparkMax1, sparkMax3);
-        // // rightMotors = new SpeedControllerGroup(sparkMax2, sparkMax4);
-        
-        // // widget1 = new MotorWidget(sparkMax1, "Motor 1");
-        // // widget2 = new MotorWidget(sparkMax2, "Motor 2");
-        // // widget3 = new MotorWidget(sparkMax3, "Motor 3");
-        // // widget4 = new MotorWidget(sparkMax4, "Motor 4");
-        // // widget5 = new SCGWidget(leftMotors, "Left Motors");
-        // // widget6 = new SCGWidget(rightMotors, "Right Motors");
+       
     }
 
     public void Init() {
         
+        sparkMax1 = new CANSparkMax(11, MotorType.kBrushless);
+        sparkMax2 = new CANSparkMax(12, MotorType.kBrushless);
+        sparkMax3 = new CANSparkMax(13, MotorType.kBrushless);
+        sparkMax4 = new CANSparkMax(14, MotorType.kBrushless);
+
+        // // leftMotors = new SpeedControllerGroup(sparkMax1, sparkMax3);
+        // // rightMotors = new SpeedControllerGroup(sparkMax2, sparkMax4);
+        
+        widget1 = new MotorWidget(sparkMax1, "Motor 1");
+        widget2 = new MotorWidget(sparkMax2, "Motor 2");
+        widget3 = new MotorWidget(sparkMax3, "Motor 3");
+        widget4 = new MotorWidget(sparkMax4, "Motor 4");
+        widget5 = new SCGWidget(leftMotors, "Left Motors");
+        widget6 = new SCGWidget(rightMotors, "Right Motors");
+
         sparkMax1PID = sparkMax1.getPIDController();
         
         sparkMax2PID = sparkMax2.getPIDController();

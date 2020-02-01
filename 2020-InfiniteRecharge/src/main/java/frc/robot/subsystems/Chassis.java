@@ -19,10 +19,11 @@ import frc.robot.Wiring;
 import frc.robot.widgets.MotorWidget;
 import frc.robot.widgets.SCGWidget;
 import edu.wpi.first.wpilibj.Solenoid;
+import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;
 
-public class Chassis {
+public class Chassis implements Loggable{
     // @Log.SpeedController
     // private WPI_TalonSRX motorFL;
     // @Log.SpeedController
@@ -77,9 +78,9 @@ public class Chassis {
     
     public Chassis()
     {
-        sparkMax1 = new CANSparkMax(15, MotorType.kBrushless); //ID 11
+        sparkMax1 = new CANSparkMax(11, MotorType.kBrushless); //ID 11
         sparkMax2 = new CANSparkMax(12, MotorType.kBrushless); //ID 12
-        sparkMax3 = new CANSparkMax(16, MotorType.kBrushless); //ID 13
+        sparkMax3 = new CANSparkMax(13, MotorType.kBrushless); //ID 13
         sparkMax4 = new CANSparkMax(14, MotorType.kBrushless); //ID 14
         lEncoder = new CANEncoder(sparkMax1);
         rEncoder = new CANEncoder(sparkMax2);
@@ -201,11 +202,11 @@ public class Chassis {
 
         velocity = Math.abs((leftVelocity + rightVelocity) /2);
 
-        if(velocity >= 4000){
+        if(velocity >= 2000){
             gearShifter.set(true);
             System.out.println("high gear");
         }
-        else if(velocity <= 3500){
+        else if(velocity <= 1500){
             gearShifter.set(false);
             System.out.println("low gear");
 

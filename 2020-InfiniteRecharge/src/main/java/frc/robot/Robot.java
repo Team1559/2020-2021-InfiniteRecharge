@@ -68,32 +68,32 @@ public Spinner spinner = new Spinner();
 
   private boolean powerCellEnable = false;
   
-  @Config 
+  @Config.ToggleSwitch 
   public void Enable_Climber(boolean enable){
     climberEnable = enable;
   }
 
-  @Config 
+  @Config.ToggleSwitch 
   public void Enable_PowerCell(boolean enable){
     powerCellEnable = enable;
   }
 
-  @Config 
+  @Config.ToggleSwitch 
   public void Enable_Camera1(boolean enable){
     camera1Enable = enable;
   }
 
-  @Config 
+  @Config.ToggleSwitch 
   public void Enable_Camera2(boolean enable){
     camera2Enable = enable;
   }
 
-  @Config
+  @Config.ToggleSwitch
   public void Enable_IMU(boolean enable){
     ImuEnable = enable;
   }
 
-  @Config.ToggleButton
+  @Config.ToggleSwitch
   public void Enable_Chassis(boolean enable){
     chassisEnable = enable;
     System.out.println("Chassis Enable: " + chassisEnable);

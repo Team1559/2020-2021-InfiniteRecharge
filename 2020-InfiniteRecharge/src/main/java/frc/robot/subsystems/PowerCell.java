@@ -77,7 +77,7 @@ public class PowerCell implements Loggable{
     }
 
     @Config
-    private void Shooter_PID(double kP, double kI, double kD, double Rpms){
+        private void Shooter_PID(double kP, double kI, double kD, double Rpms){
         shooter.config_kP(0, kP);
         shooter.config_kD(0, kD);
         shooter.config_kI(0, kI);

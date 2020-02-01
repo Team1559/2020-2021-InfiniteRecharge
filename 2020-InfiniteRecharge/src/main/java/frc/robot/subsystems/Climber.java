@@ -27,7 +27,7 @@ public class Climber implements Loggable {
     @Log
     private double winchRpms = 0;
     @Log
-    private double balencerPercent;
+    private double balancerPercent;
 
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
@@ -44,8 +44,8 @@ public class Climber implements Loggable {
         winch_kP = kP;
     }
     @Config
-    private void Balencer_RPMS( double OutputPercent){
-        balencerPercent = OutputPercent;
+    private void Balancer_RPMS( double OutputPercent){
+        balancerPercent = OutputPercent;
     }
     
     
@@ -110,11 +110,11 @@ public class Climber implements Loggable {
     public void Balance(){
         if(oi.DPad() == 90)
         {
-            barRider.set(ControlMode.PercentOutput, balencerPercent);
+            barRider.set(ControlMode.PercentOutput, balancerPercent);
         }
         else if(oi.DPad() == 270)
         {
-            barRider.set(ControlMode.PercentOutput, -balencerPercent);
+            barRider.set(ControlMode.PercentOutput, -balancerPercent);
         }
         else
         {

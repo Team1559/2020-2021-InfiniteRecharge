@@ -45,7 +45,7 @@ public class Climber implements Loggable {
         winch = new TalonFX(Wiring.winch);
         oi = operatorinterface;
 
-    winch.set(TalonFXControlMode.Velocity, 0);	
+    winch.set(TalonFXControlMode.PercentOutput, 0);	
     winch.configClosedloopRamp(cLR, TIMEOUT);
     winch.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
     winch.configNominalOutputForward(0, TIMEOUT);

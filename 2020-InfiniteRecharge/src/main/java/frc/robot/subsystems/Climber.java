@@ -19,12 +19,6 @@ public class Climber implements Loggable {
     private TalonSRX barRider;
     private TalonFX winch;
     @Log
-    private double winch_kP = 5; 
-    private double winch_kD = 0;
-    @Log
-    private double winch_kI = 0.00000;//1e-6
-    private double winch_kF = 0;
-    @Log
     private double winchRpms = 0;
     @Log
     private double balancerPercent;
@@ -36,19 +30,14 @@ public class Climber implements Loggable {
   
 	
 	@Config
-    private void winch_PID(double kP, double kI, double kD, double Rpms){
-        winch.config_kP(0, kP);
-        winch.config_kD(0, kD);
-        winch.config_kI(0, kI);
+    private void winch_PID(double Rpms){
+        
         winchRpms = Rpms;
-        winch_kP = kP;
     }
     @Config
     private void Balancer_RPMS( double OutputPercent){
         balancerPercent = OutputPercent;
     }
-    
-    
 
     public void ClimberInit(OperatorInterface operatorinterface)
     {
@@ -59,15 +48,25 @@ public class Climber implements Loggable {
     winch.set(TalonFXControlMode.Velocity, 0);	
     winch.configClosedloopRamp(cLR, TIMEOUT);
     winch.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-    winch.config_kF(0, winch_kF);
-    winch.config_kP(0, winch_kP);
-    winch.config_kD(0, winch_kD);
-    winch.config_kI(0, winch_kI);
     winch.configNominalOutputForward(0, TIMEOUT);
     winch.configNominalOutputReverse(0, TIMEOUT);
     winch.configPeakOutputForward(+1, TIMEOUT);
     winch.configPeakOutputReverse(-1, TIMEOUT);
     winch.setNeutralMode(NeutralMode.Brake);
+
+    barRider.set(ControlMode.PercentOutput, 0);	
+    barRider.configClosedloopRamp(cLR, TIMEOUT);
+    barRider.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+    barRider.configNominalOutputForward(0, TIMEOUT);
+    barRider.configNominalOutputReverse(0, TIMEOUT);
+    barRider.configPeakOutputForward(+1, TIMEOUT);
+    barRider.configPeakOutputReverse(-1, TIMEOUT);
+    barRider.setNeutralMode(NeutralMode.Brake);
+    barRider.enableCurrentLimit(true);
+	barRider.configPeakCurrentLimit(75,TIMEOUT);
+	barRider.configContinuousCurrentLimit(40, TIMEOUT);
+	barRider.configPeakCurrentDuration(1800,TIMEOUT);
+
     }
 
     public void stopBarrider(){
@@ -100,10 +99,10 @@ public class Climber implements Loggable {
     
     /*Initializes robot's departure from the ground*/
     public void climbup(){
-        winch.set(TalonFXControlMode.Velocity, winchRpms);
+        winch.set(TalonFXControlMode.PercentOutput, winchRpms);
     }
     public void unwindWinch(){
-        winch.set(TalonFXControlMode.Velocity, -winchRpms);
+        winch.set(TalonFXControlMode.PercentOutput, -winchRpms);
     }
     
     /*Drives wheels on the bar to allow robot to balance the bar*/

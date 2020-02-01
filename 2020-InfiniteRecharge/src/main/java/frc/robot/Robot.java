@@ -19,6 +19,7 @@ import frc.robot.components.Camera;
 import frc.robot.subsystems.PowerCell;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Climber;
+import frc.robot.components.CompressorControl;
 import io.github.oblarg.oblog.*;
 import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;
@@ -56,8 +57,10 @@ public class Robot extends TimedRobot implements Loggable {
   private boolean chassisEnable = false;
   private boolean ImuEnable = false;
   private boolean climberEnable = false;
+  private boolean compressorEnable = false;
   private Climber climber = new Climber();
   private PowerCell powerCell = new PowerCell();
+  private CompressorControl compressorControl = new CompressorControl();
 
   @Log
   private boolean robotInitialized = false;
@@ -68,6 +71,11 @@ public Spinner spinner = new Spinner();
 
   private boolean powerCellEnable = false;
   
+  @Config.ToggleSwitch 
+  public void Enable_Compressor(boolean enable){
+    compressorEnable = enable;
+  }
+
   @Config.ToggleSwitch 
   public void Enable_Climber(boolean enable){
     climberEnable = enable;
@@ -234,6 +242,13 @@ public Spinner spinner = new Spinner();
       powerCell.storage();//for testing only will be changed
       powerCell.feeder();
   }
+  //Compressor
+    if(compressorEnable){
+      compressorControl.enable();
+    }
+    else{
+      compressorControl.disable();
+    }
 
 }
 
@@ -302,6 +317,9 @@ public Spinner spinner = new Spinner();
     if(colorEnable)
     {
       spinner.init();
+    }
+    if(compressorEnable){
+      compressorControl.init();
     }
   }
 }

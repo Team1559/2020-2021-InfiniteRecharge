@@ -77,9 +77,9 @@ public class Chassis {
     
     public Chassis()
     {
-        sparkMax1 = new CANSparkMax(11, MotorType.kBrushless); //ID 11
+        sparkMax1 = new CANSparkMax(15, MotorType.kBrushless); //ID 11
         sparkMax2 = new CANSparkMax(12, MotorType.kBrushless); //ID 12
-        sparkMax3 = new CANSparkMax(13, MotorType.kBrushless); //ID 13
+        sparkMax3 = new CANSparkMax(16, MotorType.kBrushless); //ID 13
         sparkMax4 = new CANSparkMax(14, MotorType.kBrushless); //ID 14
         lEncoder = new CANEncoder(sparkMax1);
         rEncoder = new CANEncoder(sparkMax2);
@@ -108,6 +108,11 @@ public class Chassis {
         sparkMax3PID = sparkMax3.getPIDController();
         
         sparkMax4PID = sparkMax4.getPIDController();
+
+        sparkMax1.setOpenLoopRampRate(0.4);
+        sparkMax2.setOpenLoopRampRate(0.4);
+        sparkMax3.setOpenLoopRampRate(0.4);
+        sparkMax4.setOpenLoopRampRate(0.4);
 
         sparkMax1PID.setP(1);
         sparkMax1PID.setI(0);

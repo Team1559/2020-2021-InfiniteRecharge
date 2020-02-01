@@ -93,6 +93,7 @@ public class Chassis {
 
         
         leftMotors.setInverted(true);
+        rightMotors.setInverted(true);
         
         driveTrain = new DifferentialDrive(leftMotors, rightMotors);
 
@@ -123,17 +124,17 @@ public class Chassis {
              }
              else
              {
-                driveTrain.arcadeDrive(-(drive.getRawAxis(1)), drive.getRawAxis(2));
+                driveTrain.arcadeDrive(-(drive.getRawAxis(1)), drive.getRawAxis(4));
                 System.out.println(drive.getRawAxis(1));
-                System.out.println(drive.getRawAxis(2));
+                System.out.println(drive.getRawAxis(4));
              }
              
              break;
 
              case "Curvature Drive":
-             driveTrain.curvatureDrive(-(drive.getRawAxis(1)), drive.getRawAxis(2), true);
+             driveTrain.curvatureDrive(-(drive.getRawAxis(1)), drive.getRawAxis(4), true);
              System.out.println(drive.getRawAxis(1));
-             System.out.println(drive.getRawAxis(2));
+             System.out.println(drive.getRawAxis(4));
              break;
 
              case "Shuffle Drive Individual":

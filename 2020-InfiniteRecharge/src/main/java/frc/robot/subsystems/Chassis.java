@@ -38,7 +38,10 @@ public class Chassis implements Loggable{
     private CANPIDController sparkMax3PID;
     private CANSparkMax sparkMax4;
     private CANPIDController sparkMax4PID;
-    
+    @Log
+    private double shiftUp = 2500;
+    @Log
+    public double ShiftDown = 1500;
     private Solenoid gearShifter;
 
     private DifferentialDrive driveTrain;
@@ -74,6 +77,11 @@ public class Chassis implements Loggable{
     @Config.ToggleSwitch
     public void Enable_Shifting(boolean enable){
         shift = enable;
+    }
+    @Config
+    public void Shifting_points(double up, double down){
+        shiftUp = up;
+        ShiftDown = down;
     }
     
     public Chassis()
@@ -197,17 +205,17 @@ public class Chassis implements Loggable{
 
     public void gearShift()
     {
-        leftVelocity = lEncoder.getVelocity();
+        leftVelocity = -(lEncoder.getVelocity());
         rightVelocity = rEncoder.getVelocity();
 
         velocity = Math.abs((leftVelocity + rightVelocity) /2);
 
-        if(velocity >= 2000){
-            gearShifter.set(true);
+        if(velocity >= shiftUp){
+            gearShifter.set(false);
             System.out.println("high gear");
         }
-        else if(velocity <= 1500){
-            gearShifter.set(false);
+        else if(velocity <= ShiftDown){
+            gearShifter.set(true);
             System.out.println("low gear");
 
         }

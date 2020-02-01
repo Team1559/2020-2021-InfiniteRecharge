@@ -5,6 +5,7 @@ import javax.rmi.ssl.SslRMIClientSocketFactory;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -14,8 +15,10 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.robot.Wiring;
 import frc.robot.widgets.MotorWidget;
 import frc.robot.widgets.SCGWidget;
+import edu.wpi.first.wpilibj.Solenoid;
 import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;
 
@@ -24,6 +27,8 @@ public class Chassis {
     // private WPI_TalonSRX motorFL;
     // @Log.SpeedController
     // private WPI_TalonSRX motorFR;
+    private CANEncoder lEncoder;
+    private CANEncoder rEncoder;
     private CANSparkMax sparkMax1; // TBD
     private CANPIDController sparkMax1PID;
     private CANSparkMax sparkMax2;
@@ -33,6 +38,8 @@ public class Chassis {
     private CANSparkMax sparkMax4;
     private CANPIDController sparkMax4PID;
     
+    private Solenoid gearShifter;
+
     private DifferentialDrive driveTrain;
 
     private ShuffleboardTab tab;
@@ -46,16 +53,41 @@ public class Chassis {
 
     private SpeedControllerGroup leftMotors;
     private SpeedControllerGroup rightMotors;
+    @Log.Graph
+    private double leftVelocity;
+    @Log.Graph
+    private double rightVelocity;
+    @Log.Graph
+    private double velocity;
+
+    @Log.Graph
+    private double motor1Temp;
+    @Log.Graph
+    private double motor2Temp;
+    @Log.Graph
+    private double motor3Temp;
+    @Log.Graph
+    private double motor4Temp;
+
+    private boolean shift = false;
+    @Config.ToggleSwitch
+    public void Enable_Shifting(boolean enable){
+        shift = enable;
+    }
     
     public Chassis()
     {
-        sparkMax1 = new CANSparkMax(11, MotorType.kBrushless);
-        sparkMax2 = new CANSparkMax(12, MotorType.kBrushless);
-        sparkMax3 = new CANSparkMax(13, MotorType.kBrushless);
-        sparkMax4 = new CANSparkMax(14, MotorType.kBrushless);
+        sparkMax1 = new CANSparkMax(11, MotorType.kBrushless); //ID 11
+        sparkMax2 = new CANSparkMax(12, MotorType.kBrushless); //ID 12
+        sparkMax3 = new CANSparkMax(13, MotorType.kBrushless); //ID 13
+        sparkMax4 = new CANSparkMax(14, MotorType.kBrushless); //ID 14
+        lEncoder = new CANEncoder(sparkMax1);
+        rEncoder = new CANEncoder(sparkMax2);
+        sparkMax3.follow(sparkMax1);
+        sparkMax4.follow(sparkMax2);
 
-        leftMotors = new SpeedControllerGroup(sparkMax1, sparkMax3);
-        rightMotors = new SpeedControllerGroup(sparkMax2, sparkMax4);
+        leftMotors = new SpeedControllerGroup(sparkMax1); // (sparkMax1, sparkMax3) for working code
+        rightMotors = new SpeedControllerGroup(sparkMax2); // (sparkMax2, sparkMax4) for working code
         
         widget1 = new MotorWidget(sparkMax1, "Motor 1");
         widget2 = new MotorWidget(sparkMax2, "Motor 2");
@@ -63,6 +95,8 @@ public class Chassis {
         widget4 = new MotorWidget(sparkMax4, "Motor 4");
         widget5 = new SCGWidget(leftMotors, "Left Motors");
         widget6 = new SCGWidget(rightMotors, "Right Motors");
+
+        gearShifter = new Solenoid(Wiring.gearShifterSolenoid);
     }
 
     public void Init() {
@@ -107,8 +141,12 @@ public class Chassis {
     }
 
     public void DriveSystem(Joystick drive, String mode)
-    {
-        //System.out.println(mode);
+    {   
+        if(shift){
+        gearShift();        //System.out.println(mode);
+        }
+        else{gearShifter.set(false);
+        }
         switch(mode)
         {
              case "Tank Drive":
@@ -148,6 +186,24 @@ public class Chassis {
              widget5.changeOutput();
              widget6.changeOutput();
              break;
+        }
+    }
+
+    public void gearShift()
+    {
+        leftVelocity = lEncoder.getVelocity();
+        rightVelocity = rEncoder.getVelocity();
+
+        velocity = Math.abs((leftVelocity + rightVelocity) /2);
+
+        if(velocity >= 4000){
+            gearShifter.set(true);
+            System.out.println("high gear");
+        }
+        else if(velocity <= 3500){
+            gearShifter.set(false);
+            System.out.println("low gear");
+
         }
     }
 }

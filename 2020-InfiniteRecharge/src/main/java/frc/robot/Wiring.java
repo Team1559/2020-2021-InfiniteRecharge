@@ -2,7 +2,7 @@ package frc.robot;
 public class Wiring
 {
 //Drivetrain
-
+public static final int gearShifterSolenoid = 1;
 //Power Cell
     public static final int intakeMotor = 8;
     public static final int shooterMotor = 21;

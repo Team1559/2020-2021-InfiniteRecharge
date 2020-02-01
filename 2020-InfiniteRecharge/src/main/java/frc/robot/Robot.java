@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  private Chassis driveTrain;
+  private Chassis driveTrain = new Chassis();
   public static OperatorInterface oi;
 
   private static final String kTankDrive = "Tank Drive";
@@ -91,7 +91,7 @@ public class Robot extends TimedRobot {
 
     Logger.configureLoggingAndConfig(this, false);
 
-    driveTrain = new Chassis();
+    
 
     oi = new OperatorInterface();
 

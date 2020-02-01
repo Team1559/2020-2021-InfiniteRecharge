@@ -178,8 +178,8 @@ public class PowerCell implements Loggable{
         storageMotorH.configPeakOutputForward(+1, TIMEOUT);
         storageMotorH.configPeakOutputReverse(-1, TIMEOUT);
         storageMotorH.enableCurrentLimit(true);
-		storageMotorH.configPeakCurrentLimit(2,TIMEOUT);
-		storageMotorH.configContinuousCurrentLimit(2, TIMEOUT);
+		storageMotorH.configPeakCurrentLimit(1,TIMEOUT);
+		storageMotorH.configContinuousCurrentLimit(1, TIMEOUT);
 		storageMotorH.configPeakCurrentDuration(1800,TIMEOUT);
         storageMotorH.setNeutralMode(NeutralMode.Brake);
 
@@ -195,8 +195,8 @@ public class PowerCell implements Loggable{
         storageMotorL.configPeakOutputForward(+1, TIMEOUT);
         storageMotorL.configPeakOutputReverse(-1, TIMEOUT);
         storageMotorL.enableCurrentLimit(true);
-		storageMotorL.configPeakCurrentLimit(2,TIMEOUT);
-		storageMotorL.configContinuousCurrentLimit(2, TIMEOUT);
+		storageMotorL.configPeakCurrentLimit(1,TIMEOUT);
+		storageMotorL.configContinuousCurrentLimit(1, TIMEOUT);
 		storageMotorL.configPeakCurrentDuration(1800,TIMEOUT);
         storageMotorL.setNeutralMode(NeutralMode.Brake);
     }

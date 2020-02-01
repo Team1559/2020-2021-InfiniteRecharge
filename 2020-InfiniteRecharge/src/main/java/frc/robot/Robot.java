@@ -30,7 +30,7 @@ import io.github.oblarg.oblog.annotations.Log;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends TimedRobot implements Loggable {
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -68,33 +68,32 @@ public Spinner spinner = new Spinner();
 
   private boolean powerCellEnable = false;
   
-  @Config 
+  @Config.ToggleSwitch 
   public void Enable_Climber(boolean enable){
     climberEnable = enable;
   }
 
-  @Config 
+  @Config.ToggleSwitch 
   public void Enable_PowerCell(boolean enable){
     powerCellEnable = enable;
   }
 
-  @Config 
+  @Config.ToggleSwitch 
   public void Enable_Camera1(boolean enable){
     camera1Enable = enable;
   }
 
-  @Config 
+  @Config.ToggleSwitch 
   public void Enable_Camera2(boolean enable){
     camera2Enable = enable;
   }
 
-
-  @Config
+  @Config.ToggleSwitch
   public void Enable_IMU(boolean enable){
     ImuEnable = enable;
   }
 
-  @Config.ToggleButton
+  @Config.ToggleSwitch
   public void Enable_Chassis(boolean enable){
     chassisEnable = enable;
     System.out.println("Chassis Enable: " + chassisEnable);
@@ -214,6 +213,7 @@ public Spinner spinner = new Spinner();
       initialize();
     }
   }
+
   @Override
   public void teleopPeriodic()
   {
@@ -227,11 +227,12 @@ public Spinner spinner = new Spinner();
     if(climberEnable){
       climber.drive();
     }
-    spinner.spin(colorEnable);
+    //spinner.spin(colorEnable);
     if(powerCellEnable){
       powerCell.intake();
       powerCell.shoot();
       powerCell.storage();//for testing only will be changed
+      powerCell.feeder();
   }
 
 }

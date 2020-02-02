@@ -246,9 +246,9 @@ public Spinner spinner = new Spinner();
     if(compressorEnable){
       compressorControl.enable();
     }
-    else{
-      compressorControl.disable();
-    }
+  
+    
+    
 
 }
 

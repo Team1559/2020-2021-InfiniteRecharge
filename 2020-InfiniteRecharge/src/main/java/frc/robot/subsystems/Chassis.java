@@ -1,8 +1,5 @@
 package frc.robot.subsystems;
 
-import javax.rmi.ssl.SslRMIClientSocketFactory;
-
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANEncoder;
@@ -12,7 +9,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Wiring;
@@ -24,10 +20,9 @@ import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;
 
 public class Chassis implements Loggable{
-    // @Log.SpeedController
-    // private WPI_TalonSRX motorFL;
-    // @Log.SpeedController
-    // private WPI_TalonSRX motorFR;
+
+    @Log
+    private String Gear = "Low";
     private CANEncoder lEncoder;
     private CANEncoder rEncoder;
     private CANSparkMax sparkMax1; // TBD
@@ -74,6 +69,7 @@ public class Chassis implements Loggable{
     private double motor4Temp;
 
     private boolean shift = false;
+
     @Config.ToggleSwitch
     public void Enable_Shifting(boolean enable){
         shift = enable;
@@ -145,7 +141,7 @@ public class Chassis implements Loggable{
         
         driveTrain = new DifferentialDrive(leftMotors, rightMotors);
 
-        tab = Shuffleboard.getTab("Drive Train");
+        tab = Shuffleboard.getTab("Chassis");
 
         
     }
@@ -205,18 +201,18 @@ public class Chassis implements Loggable{
 
     public void gearShift()
     {
-        leftVelocity = -(lEncoder.getVelocity());
-        rightVelocity = rEncoder.getVelocity();
+        leftVelocity = lEncoder.getVelocity();
+        rightVelocity = -(rEncoder.getVelocity());
 
         velocity = Math.abs((leftVelocity + rightVelocity) /2);
 
         if(velocity >= shiftUp){
             gearShifter.set(false);
-            System.out.println("high gear");
+            Gear = "High";
         }
         else if(velocity <= ShiftDown){
             gearShifter.set(true);
-            System.out.println("low gear");
+            Gear = "Low";
 
         }
     }

@@ -160,9 +160,8 @@ public class Chassis implements Loggable{
         switch(mode)
         {
              case "Tank Drive":
-            driveTrain.tankDrive(-(drive.getRawAxis(1)),-(drive.getRawAxis(5)));
-            System.out.println(drive.getRawAxis(1));
-            System.out.println(drive.getRawAxis(5));
+            driveTrain.tankDrive(-(oi.getPilotX()),-(oi.pilot.getRawAxis(5)));
+            
              break;
 
              case "Arcade Drive":
@@ -172,17 +171,15 @@ public class Chassis implements Loggable{
              }
              else
              {
-                driveTrain.arcadeDrive(-(drive.getRawAxis(1)), drive.getRawAxis(4));
-                System.out.println(drive.getRawAxis(1));
-                System.out.println(drive.getRawAxis(4));
+                driveTrain.arcadeDrive(-(oi.getPilotY()), oi.getPilotZ());
+                
              }
              
              break;
 
              case "Curvature Drive":
-             driveTrain.curvatureDrive(-(drive.getRawAxis(1)), drive.getRawAxis(4), true);
-             System.out.println(drive.getRawAxis(1));
-             System.out.println(drive.getRawAxis(4));
+             driveTrain.curvatureDrive(-(oi.getPilotY()), oi.getPilotZ(), true);
+             
              break;
 
              case "Shuffle Drive Individual":

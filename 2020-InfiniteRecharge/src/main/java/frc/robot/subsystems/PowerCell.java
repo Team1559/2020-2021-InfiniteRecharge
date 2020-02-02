@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -44,6 +46,8 @@ public class PowerCell implements Loggable{
     private double feeder_kI = 0;//1e-6
     private double feeder_kF = 0;
     
+    StatorCurrentLimitConfiguration statorCurrentLimitConfiguration;
+    SupplyCurrentLimitConfiguration supplyCurrentLimitConfiguration;
     
     //motors 
     private TalonSRX storageMotorL;
@@ -106,7 +110,7 @@ public class PowerCell implements Loggable{
         storage_kP = kP;
     }
 
-    public void init(OperatorInterface operatorinterface){                                                                                                                                                                                                                                                                                                                                                        
+    public void init(OperatorInterface operatorinterface) {
         //Constructors
         shooter = new TalonFX(Wiring.shooterMotor);
         intakeMotor = new TalonSRX(Wiring.intakeMotor);
@@ -145,6 +149,8 @@ public class PowerCell implements Loggable{
         shooter.configNominalOutputReverse(0, TIMEOUT);
         shooter.configPeakOutputForward(+1, TIMEOUT);
         shooter.configPeakOutputReverse(-1, TIMEOUT);
+        shooter.configStatorCurrentLimit(statorCurrentLimitConfiguration, TIMEOUT);
+        shooter.configSupplyCurrentLimit(supplyCurrentLimitConfiguration, TIMEOUT);
         shooter.setNeutralMode(NeutralMode.Coast);
     
         //Feeder motor config

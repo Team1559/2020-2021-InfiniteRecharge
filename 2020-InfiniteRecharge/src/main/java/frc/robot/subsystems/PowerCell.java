@@ -20,10 +20,10 @@ public class PowerCell implements Loggable{
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
     @Log
-    private double intake_kP = 0.00005;//5e-5 
+    private double intake_kP = 5;//5e-5 
     private double intake_kD = 0;
     @Log
-    private double intake_kI = 0.000001;//1e-6
+    private double intake_kI = 0.00000;//1e-6
     private double intake_kF = 0;
     private double shooter_kF = 0; 
     @Log
@@ -55,11 +55,11 @@ public class PowerCell implements Loggable{
     @Log
     private double shooterRpms = 100;
     @Log
-    private double intakeRpms = .4;
+    private double intakeRpms = 0.4;
     @Log
-    private double storageRpms = 0.2; //%output for now
+    private double storageRpms = 0.8; //%output for now
     @Log
-    private double feederRpms = 0.1;
+    private double feederRpms = 0.5;
     @Log 
     double feederIdleSpeed = 0.0;
 
@@ -178,8 +178,8 @@ public class PowerCell implements Loggable{
         storageMotorH.configPeakOutputForward(+1, TIMEOUT);
         storageMotorH.configPeakOutputReverse(-1, TIMEOUT);
         storageMotorH.enableCurrentLimit(true);
-		storageMotorH.configPeakCurrentLimit(1,TIMEOUT);
-		storageMotorH.configContinuousCurrentLimit(1, TIMEOUT);
+		storageMotorH.configPeakCurrentLimit(5,TIMEOUT);
+		storageMotorH.configContinuousCurrentLimit(2, TIMEOUT);
 		storageMotorH.configPeakCurrentDuration(1800,TIMEOUT);
         storageMotorH.setNeutralMode(NeutralMode.Brake);
 
@@ -195,8 +195,8 @@ public class PowerCell implements Loggable{
         storageMotorL.configPeakOutputForward(+1, TIMEOUT);
         storageMotorL.configPeakOutputReverse(-1, TIMEOUT);
         storageMotorL.enableCurrentLimit(true);
-		storageMotorL.configPeakCurrentLimit(1,TIMEOUT);
-		storageMotorL.configContinuousCurrentLimit(1, TIMEOUT);
+		storageMotorL.configPeakCurrentLimit(5, TIMEOUT);
+		storageMotorL.configContinuousCurrentLimit(2, TIMEOUT);
 		storageMotorL.configPeakCurrentDuration(1800,TIMEOUT);
         storageMotorL.setNeutralMode(NeutralMode.Brake);
     }

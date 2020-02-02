@@ -19,7 +19,7 @@ import io.github.oblarg.oblog.annotations.Log;
 public class PowerCell implements Loggable{
     private OperatorInterface oi;
     //pid values
-    private final int TIMEOUT = 0;
+    private final int TIMEOUT = 50;
     private final double cLR = 0.1;
     @Log
     private double intake_kP = 0.00005;//5e-5 

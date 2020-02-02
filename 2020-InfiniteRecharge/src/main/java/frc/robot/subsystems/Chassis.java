@@ -102,10 +102,8 @@ public class Chassis implements Loggable{
         widget6 = new SCGWidget(rightMotors, "Right Motors");
 
         gearShifter = new Solenoid(Wiring.gearShifterSolenoid);
-    }
+    
 
-    public void Init() {
-        
         sparkMax1PID = sparkMax1.getPIDController();
         
         sparkMax2PID = sparkMax2.getPIDController();

@@ -17,28 +17,25 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.Spinner;
 import frc.robot.components.Camera;
 import frc.robot.components.IMU;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import frc.robot.subsystems.Chassis;
-import io.github.oblarg.oblog.*;
+import frc.robot.subsystems.Climber;
+import frc.robot.components.CompressorControl;
+import io.github.oblarg.oblog.Log;
 import io.github.oblarg.oblog.annotations.Config;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.gradle file in the
- * project.
- */
-public class Robot extends TimedRobot implements Loggable{
+
+public class Robot extends TimedRobot implements Loggable {
+
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  private Chassis driveTrain = new Chassis();
-  public static OperatorInterface oi;
+  
 
   private static final String kTankDrive = "Tank Drive";
   private static final String kArcadeDrive = "Arcade Drive";
@@ -49,111 +46,108 @@ public class Robot extends TimedRobot implements Loggable{
   private final SendableChooser<String> m_driveChooser = new SendableChooser<>();
 
   private ShuffleboardTab driveTrainTab;
-
-  private Camera camera1;
-  private Camera camera2;
-
-  private IMU imu;
-
-  private boolean chassisEnable = false;
-  private boolean ImuEnable = false;
+  
+  //feature flags booleans
   private boolean camera1Enable = false;
   private boolean camera2Enable = false;
-
+  private boolean chassisEnable = false;
+  private boolean ImuEnable = false;
+  private boolean climberEnable = false;
+  private boolean compressorEnable = false;
+  @Log
   private boolean robotInitialized = false;
-  @Config
+  private boolean colorEnable = false;
+  private boolean powerCellEnable = false;
+  //constructors
+  public Climber climber = new Climber();
+  public PowerCell powerCell = new PowerCell();
+  private CompressorControl compressorControl = new CompressorControl();
+  public Spinner spinner = new Spinner();
+  public Chassis driveTrain = new Chassis();
+  public OperatorInterface oi = new OperatorInterface();
+  private IMU imu = new IMU();
+  private Camera camera1 = new Camera(0);
+  private Camera camera2 = new Camera(1);
+  
+  //oblog feature flags
+  @Config.ToggleSwitch 
+  public void Enable_Compressor(boolean enable){
+    compressorEnable = enable;
+  }
+
+  @Config.ToggleSwitch 
+  public void Enable_Climber(boolean enable){
+    climberEnable = enable;
+  }
+
+  @Config.ToggleSwitch 
+  public void Enable_PowerCell(boolean enable){
+    powerCellEnable = enable;
+  }
+
+  @Config.ToggleSwitch 
+  public void Enable_Camera1(boolean enable){
+    camera1Enable = enable;
+  }
+
+  @Config.ToggleSwitch 
+  public void Enable_Camera2(boolean enable){
+    camera2Enable = enable;
+  }
+
+  @Config.ToggleSwitch
   public void Enable_IMU(boolean enable){
     ImuEnable = enable;
   }
-  @Config.ToggleButton
+
+  @Config.ToggleSwitch
   public void Enable_Chassis(boolean enable){
     chassisEnable = enable;
     System.out.println("Chassis Enable: " + chassisEnable);
     System.out.println("Enable: " + enable);
   }
-  @Config
+  @Config.ToggleSwitch
   public void Enable_Cameras(boolean enable, boolean enable2){
     camera1Enable  = enable;
     camera2Enable = enable2;
   }
-
-  /**
-   * This function is run when the robot is first started up and should be
-   * used for any initialization code.
-   */
+  @Config
+  public void Enable_Color(boolean enable){
+    colorEnable = enable;
+  
   @Override
   public void robotInit() {
+  Logger.configureLoggingAndConfig(this, false); 
     driveTrainTab = Shuffleboard.getTab("Drive Train"); //The Shuffleboard Tab for all Drive Train related stuff
-
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-
-    Logger.configureLoggingAndConfig(this, false);
-
-    
-
-    oi = new OperatorInterface();
-
     m_driveChooser.setDefaultOption("Tank Drive",kTankDrive); //A Drive Train option
     m_driveChooser.addOption("Arcade Drive", kArcadeDrive); //A Drive Train option
     m_driveChooser.addOption("Curvature Drive", kCurvatureDrive); //A Drive Train option
     m_driveChooser.addOption("Shuffle Drive Individual", kShuffleDrive); //A Drive Train option
     m_driveChooser.addOption("Shuffle Drive Control Groups", kShuffleDriveGroups); //A Drive Train option
-    driveTrainTab.add("Drive Train Choices", m_driveChooser); //Allows you to pick a Drive Train option through Shuffleboard
-
-    imu = new IMU();
-    camera1 = new Camera(0);
-    camera2 = new Camera(1);
+    driveTrainTab.add("Drive Train Choices", m_driveChooser); //Allows you to pick a Drive Train option through Shuffleboard   
 }
 
-  /**
-   * This function is called every robot packet, no matter the mode. Use
-   * this for items like diagnostics that you want ran during disabled,
-   * autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before
-   * LiveWindow and SmartDashboard integrated updating.
-   */
   @Override
   public void robotPeriodic()
   {
     Logger.updateEntries();
-
-    //System.out.println(ImuEnable);
   }
-    
-  /**
-   * This autonomous (along with the chooser code above) shows how to select
-   * between different autonomous modes using the dashboard. The sendable
-   * chooser code works with the Java SmartDashboard. If you prefer the
-   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-   * getString line to get the auto name from the text box below the Gyro
-   *
-   * <p>You can add additional auto modes by adding additional comparisons to
-   * the switch structure below with additional strings. If using the
-   * SendableChooser make sure to add them to the chooser code above as well.
-   */
+
   @Override
   public void autonomousInit()
   {
     m_autoSelected = m_chooser.getSelected();
     m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
-
     initialize();
-    
-    
-    
-    if(ImuEnable)
-    {
-    imu.zeroYaw();
+    if(ImuEnable){
+      imu.zeroYaw();
     }
   }
 
-  /**
-   * This function is called periodically during autonomous.
-   */
   @Override
   public void autonomousPeriodic()
   {
@@ -162,10 +156,6 @@ public class Robot extends TimedRobot implements Loggable{
     }
   }
 
-  /**
-   * This function is called periodically during operator control.
-   */
-  
   @Override
   public void teleopInit()
   {
@@ -173,23 +163,34 @@ public class Robot extends TimedRobot implements Loggable{
       initialize();
     }
   }
+
   @Override
   public void teleopPeriodic()
   {
-    if(chassisEnable)
-    {
-      driveTrain.DriveSystem(oi.pilot);
+    if(chassisEnable){    
+    driveTrain.DriveSystem(oi.pilot);
     }
-
+    
     if(ImuEnable){
       imu.getvalues();
     }
+    if(climberEnable){
+      climber.drive();
+    }
+    if(powerCellEnable){
+      powerCell.intake();
+      powerCell.shoot();
+      powerCell.storage();
+      powerCell.feeder();
   }
-  
-  /**
-   * This function is called periodically during test mode.
-   */
+  //Compressor
+    if(compressorEnable){
+      compressorControl.enable();
+    }
+    
 
+}
+ 
   @Override
   public void testInit()
   {
@@ -210,16 +211,23 @@ public class Robot extends TimedRobot implements Loggable{
   {
 
   }
+
   @Override
   public void disabledPeriodic()
   {
 
   }
+  
   public void initialize()
   {
     robotInitialized = true;
-    if(ImuEnable){
+    if(ImuEnable)
+    {
       imu.init();
+    }
+  
+  if(powerCellEnable){
+      powerCell.init(oi);
     }
 
     System.out.println("Initilied");
@@ -229,12 +237,23 @@ public class Robot extends TimedRobot implements Loggable{
     }
     System.out.println("ChassisEnable: " + chassisEnable);
 
+    if(climberEnable){
+      climber.ClimberInit(oi);
+    }
+
     if(camera1Enable){
       camera1.init();
     }
+    
     if(camera2Enable){
       camera2.init();
     }
-
+    if(colorEnable)
+    {
+      spinner.init();
+    }
+    if(compressorEnable){
+      compressorControl.init();
+    }
   }
 }

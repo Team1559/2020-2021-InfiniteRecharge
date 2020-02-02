@@ -10,7 +10,7 @@ package frc.robot;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import frc.robot.subsystems.PowerCell;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -25,9 +25,11 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Climber;
 import frc.robot.components.CompressorControl;
-import io.github.oblarg.oblog.Log;
+import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.Logger;
 import io.github.oblarg.oblog.annotations.Config;
-
+import io.github.oblarg.oblog.annotations.Log;
+import io.github.oblarg.oblog.annotations.Log.Logs;
 
 public class Robot extends TimedRobot implements Loggable {
 
@@ -35,7 +37,6 @@ public class Robot extends TimedRobot implements Loggable {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  
 
   private static final String kTankDrive = "Tank Drive";
   private static final String kArcadeDrive = "Arcade Drive";
@@ -46,8 +47,8 @@ public class Robot extends TimedRobot implements Loggable {
   private final SendableChooser<String> m_driveChooser = new SendableChooser<>();
 
   private ShuffleboardTab driveTrainTab;
-  
-  //feature flags booleans
+
+  // feature flags booleans
   private boolean camera1Enable = false;
   private boolean camera2Enable = false;
   private boolean chassisEnable = false;
@@ -114,7 +115,7 @@ public class Robot extends TimedRobot implements Loggable {
   @Config
   public void Enable_Color(boolean enable){
     colorEnable = enable;
-  
+  }
   @Override
   public void robotInit() {
   Logger.configureLoggingAndConfig(this, false); 
@@ -233,7 +234,7 @@ public class Robot extends TimedRobot implements Loggable {
     System.out.println("Initilied");
     if(chassisEnable)
     {
-      driveTrain.Init();
+      driveTrain.Init(oi);
     }
     System.out.println("ChassisEnable: " + chassisEnable);
 

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.robot.OperatorInterface;
 import frc.robot.Wiring;
 import frc.robot.widgets.MotorWidget;
 import frc.robot.widgets.SCGWidget;
@@ -38,7 +39,7 @@ public class Chassis implements Loggable{
     @Log
     public double ShiftDown = 1500;
     private Solenoid gearShifter;
-
+    private OperatorInterface oi;
     private DifferentialDrive driveTrain;
 
     private ShuffleboardTab tab;
@@ -80,8 +81,9 @@ public class Chassis implements Loggable{
         ShiftDown = down;
     }
     
-    public Chassis()
+    public void Init(OperatorInterface oInterface)
     {
+        oi = oInterface;
         sparkMax1 = new CANSparkMax(11, MotorType.kBrushless); //ID 11
         sparkMax2 = new CANSparkMax(12, MotorType.kBrushless); //ID 12
         sparkMax3 = new CANSparkMax(13, MotorType.kBrushless); //ID 13

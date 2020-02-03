@@ -204,11 +204,11 @@ public class Chassis implements Loggable{
         velocity = Math.abs((leftVelocity + rightVelocity) /2);
 
         if(velocity >= shiftUp){
-            gearShifter.set(false);
+            gearShifter.set(true);
             Gear = "High";
         }
         else if(velocity <= ShiftDown){
-            gearShifter.set(true);
+            gearShifter.set(false);
             Gear = "Low";
 
         }

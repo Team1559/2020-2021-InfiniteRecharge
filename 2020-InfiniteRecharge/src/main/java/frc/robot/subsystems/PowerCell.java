@@ -46,8 +46,7 @@ public class PowerCell implements Loggable{
     private double feeder_kI = 0;//1e-6
     private double feeder_kF = 0;
     
-    StatorCurrentLimitConfiguration statorCurrentLimitConfiguration;
-    SupplyCurrentLimitConfiguration supplyCurrentLimitConfiguration;
+    private SupplyCurrentLimitConfiguration supplyCurrentLimitConfiguration = new SupplyCurrentLimitConfiguration();
     
     //motors 
     private TalonSRX storageMotorL;
@@ -149,7 +148,6 @@ public class PowerCell implements Loggable{
         shooter.configNominalOutputReverse(0, TIMEOUT);
         shooter.configPeakOutputForward(+1, TIMEOUT);
         shooter.configPeakOutputReverse(-1, TIMEOUT);
-        shooter.configStatorCurrentLimit(statorCurrentLimitConfiguration, TIMEOUT);
         shooter.configSupplyCurrentLimit(supplyCurrentLimitConfiguration, TIMEOUT);
         shooter.setNeutralMode(NeutralMode.Coast);
     

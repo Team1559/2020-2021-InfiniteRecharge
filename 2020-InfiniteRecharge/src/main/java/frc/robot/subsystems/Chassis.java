@@ -35,7 +35,7 @@ public class Chassis implements Loggable{
     private CANSparkMax sparkMax4;
     private CANPIDController sparkMax4PID;
     @Log
-    private double shiftUp = 2500;
+    private double shiftUp = 3500;
     @Log
     public double ShiftDown = 1500;
     private Solenoid gearShifter;
@@ -57,16 +57,16 @@ public class Chassis implements Loggable{
     private double leftVelocity;
     @Log.Graph
     private double rightVelocity;
-    @Log.Graph
+    @Log.Dial(max = 6000, min = 0)
     private double velocity;
 
-    @Log.Graph
+    @Log.Dial
     private double motor1Temp;
-    @Log.Graph
+    @Log.Dial
     private double motor2Temp;
-    @Log.Graph
+    @Log.Dial
     private double motor3Temp;
-    @Log.Graph
+    @Log.Dial
     private double motor4Temp;
 
     private boolean shift = false;
@@ -152,6 +152,10 @@ public class Chassis implements Loggable{
 
     public void DriveSystem(Joystick drive, String mode)
     {   
+        motor1Temp = sparkMax1.getMotorTemperature();
+        motor2Temp = sparkMax2.getMotorTemperature();
+        motor3Temp = sparkMax3.getMotorTemperature();
+        motor4Temp = sparkMax4.getMotorTemperature();
         if(shift){
         gearShift();        //System.out.println(mode);
         }

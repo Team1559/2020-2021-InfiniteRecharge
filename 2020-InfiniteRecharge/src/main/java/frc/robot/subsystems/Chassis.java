@@ -35,9 +35,9 @@ public class Chassis implements Loggable{
     private CANSparkMax sparkMax4;
     private CANPIDController sparkMax4PID;
     @Log
-    private double shiftUp = 3500;
+    private double shiftUp;
     @Log
-    public double ShiftDown = 1500;
+    public double ShiftDown;
     private Solenoid gearShifter;
     private OperatorInterface oi;
     private DifferentialDrive driveTrain;
@@ -83,6 +83,8 @@ public class Chassis implements Loggable{
     
     public void Init(OperatorInterface oInterface)
     {
+        shiftUp  =5000;
+        ShiftDown = 3500;
         oi = oInterface;
         sparkMax1 = new CANSparkMax(11, MotorType.kBrushless); //ID 11
         sparkMax2 = new CANSparkMax(12, MotorType.kBrushless); //ID 12

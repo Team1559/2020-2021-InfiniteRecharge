@@ -155,7 +155,12 @@ public class Robot extends TimedRobot implements Loggable {
     if(ImuEnable){
       imu.getvalues();
     }
+    //Compressor
+    if(compressorEnable){
+      compressorControl.enable();
+    }
   }
+  
 
   @Override
   public void teleopInit()
@@ -163,6 +168,7 @@ public class Robot extends TimedRobot implements Loggable {
     if(robotInitialized == false){
       initialize();
     }
+     
   }
 
   @Override
@@ -184,8 +190,8 @@ public class Robot extends TimedRobot implements Loggable {
       powerCell.storage();
       powerCell.feeder();
   }
-  //Compressor
-    if(compressorEnable){
+      //Compressor
+     if(compressorEnable){
       compressorControl.enable();
     }
     
@@ -210,7 +216,9 @@ public class Robot extends TimedRobot implements Loggable {
   @Override
   public void disabledInit()
   {
-
+    if(compressorEnable){
+      compressorControl.disable();
+    }
   }
 
   @Override

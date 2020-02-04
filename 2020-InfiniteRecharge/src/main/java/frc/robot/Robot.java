@@ -8,37 +8,30 @@
 package frc.robot;
 
 
+import frc.robot.subsystems.PowerCell;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Spinner;
-import frc.robot.components.IMU;
 import frc.robot.components.Camera;
-import frc.robot.subsystems.PowerCell;
+import frc.robot.components.IMU;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Climber;
 import frc.robot.components.CompressorControl;
-import io.github.oblarg.oblog.*;
+import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.Logger;
 import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;
+import io.github.oblarg.oblog.annotations.Log.Logs;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.gradle file in the
- * project.
- */
 public class Robot extends TimedRobot implements Loggable {
 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  private Chassis driveTrain = new Chassis();
-  public OperatorInterface oi = new OperatorInterface();
 
   private static final String kTankDrive = "Tank Drive";
   private static final String kArcadeDrive = "Arcade Drive";
@@ -49,28 +42,30 @@ public class Robot extends TimedRobot implements Loggable {
   private final SendableChooser<String> m_driveChooser = new SendableChooser<>();
 
   private ShuffleboardTab driveTrainTab;
-  private IMU imu;
-  private Camera camera1;
-  private Camera camera2;
+
+  // feature flags booleans
   private boolean camera1Enable = false;
   private boolean camera2Enable = false;
   private boolean chassisEnable = false;
   private boolean ImuEnable = false;
   private boolean climberEnable = false;
   private boolean compressorEnable = false;
-  private Climber climber = new Climber();
-  private PowerCell powerCell = new PowerCell();
-  private CompressorControl compressorControl = new CompressorControl();
-
   @Log
   private boolean robotInitialized = false;
-
-private boolean colorEnable = false;
-
-public Spinner spinner = new Spinner();
-
+  private boolean colorEnable = false;
   private boolean powerCellEnable = false;
+  //constructors
+  public Climber climber = new Climber();
+  public PowerCell powerCell = new PowerCell();
+  private CompressorControl compressorControl = new CompressorControl();
+  public Spinner spinner = new Spinner();
+  public Chassis driveTrain = new Chassis();
+  public OperatorInterface oi = new OperatorInterface();
+  private IMU imu = new IMU();
+  private Camera camera1 = new Camera(0);
+  private Camera camera2 = new Camera(1);
   
+  //oblog feature flags
   @Config.ToggleSwitch 
   public void Enable_Compressor(boolean enable){
     compressorEnable = enable;
@@ -107,7 +102,7 @@ public Spinner spinner = new Spinner();
     System.out.println("Chassis Enable: " + chassisEnable);
     System.out.println("Enable: " + enable);
   }
-  @Config
+  @Config.ToggleSwitch
   public void Enable_Cameras(boolean enable, boolean enable2){
     camera1Enable  = enable;
     camera2Enable = enable2;
@@ -116,110 +111,59 @@ public Spinner spinner = new Spinner();
   public void Enable_Color(boolean enable){
     colorEnable = enable;
   }
-
-  /**
-   * This function is run when the robot is first started up and should be
-   * used for any initialization code.
-   */
   @Override
   public void robotInit() {
-  Logger.configureLoggingAndConfig(this, false);
-
-    
-    
-    
-    
-    
+  Logger.configureLoggingAndConfig(this, false); 
     driveTrainTab = Shuffleboard.getTab("Drive Train"); //The Shuffleboard Tab for all Drive Train related stuff
-
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-
-
-    
-
-    
-
     m_driveChooser.setDefaultOption("Tank Drive",kTankDrive); //A Drive Train option
     m_driveChooser.addOption("Arcade Drive", kArcadeDrive); //A Drive Train option
     m_driveChooser.addOption("Curvature Drive", kCurvatureDrive); //A Drive Train option
     m_driveChooser.addOption("Shuffle Drive Individual", kShuffleDrive); //A Drive Train option
     m_driveChooser.addOption("Shuffle Drive Control Groups", kShuffleDriveGroups); //A Drive Train option
-    driveTrainTab.add("Drive Train Choices", m_driveChooser); //Allows you to pick a Drive Train option through Shuffleboard
-
-    imu = new IMU();
-    camera1 = new Camera(0);
-    camera2 = new Camera(1);
-   
-    
+    driveTrainTab.add("Drive Train Choices", m_driveChooser); //Allows you to pick a Drive Train option through Shuffleboard   
 }
 
-
-  /**
-   * This function is called every robot packet, no matter the mode. Use
-   * this for items like diagnostics that you want ran during disabled,
-   * autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before
-   * LiveWindow and SmartDashboard integrated updating.
-   */
   @Override
-  public void robotPeriodic() {
+  public void robotPeriodic()
+  {
     Logger.updateEntries();
-    
   }
-    
-  /**
-   * This autonomous (along with the chooser code above) shows how to select
-   * between different autonomous modes using the dashboard. The sendable
-   * chooser code works with the Java SmartDashboard. If you prefer the
-   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-   * getString line to get the auto name from the text box below the Gyro
-   *
-   * <p>You can add additional auto modes by adding additional comparisons to
-   * the switch structure below with additional strings. If using the
-   * SendableChooser make sure to add them to the chooser code above as well.
-   */
+
   @Override
   public void autonomousInit()
   {
     m_autoSelected = m_chooser.getSelected();
     m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
-
     initialize();
-    
-    
-    
     if(ImuEnable){
-        imu.zeroYaw();
+      imu.zeroYaw();
     }
   }
 
-  /**
-   * This function is called periodically during autonomous.
-   */
   @Override
   public void autonomousPeriodic()
   {
     if(ImuEnable){
       imu.getvalues();
     }
+    //Compressor
+    if(compressorEnable){
+      compressorControl.enable();
+    }
   }
-    
-    
   
-  /**
-   * This function is called periodically during operator control.
-   */
-  
+
   @Override
   public void teleopInit()
   {
     if(robotInitialized == false){
       initialize();
     }
+     
   }
 
   @Override
@@ -235,30 +179,20 @@ public Spinner spinner = new Spinner();
     if(climberEnable){
       climber.drive();
     }
-    //spinner.spin(colorEnable);
     if(powerCellEnable){
       powerCell.intake();
       powerCell.shoot();
-      powerCell.storage();//for testing only will be changed
+      powerCell.storage();
       powerCell.feeder();
   }
-  //Compressor
-    if(compressorEnable){
+      //Compressor
+     if(compressorEnable){
       compressorControl.enable();
     }
-    else{
-      compressorControl.disable();
-    }
+    
 
 }
-
-
-
-  
-  /**
-   * This function is called periodically during test mode.
-   */
-
+ 
   @Override
   public void testInit()
   {
@@ -277,13 +211,17 @@ public Spinner spinner = new Spinner();
   @Override
   public void disabledInit()
   {
-
+    if(compressorEnable){
+      compressorControl.disable();
+    }
   }
+
   @Override
   public void disabledPeriodic()
   {
 
   }
+  
   public void initialize()
   {
     robotInitialized = true;
@@ -299,7 +237,7 @@ public Spinner spinner = new Spinner();
     System.out.println("Initilied");
     if(chassisEnable)
     {
-      driveTrain.Init();
+      driveTrain.Init(oi);
     }
     System.out.println("ChassisEnable: " + chassisEnable);
 

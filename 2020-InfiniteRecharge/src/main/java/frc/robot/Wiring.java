@@ -1,10 +1,13 @@
 package frc.robot;
 public class Wiring
 {
+    //compressor
+    public static final int compressor = 0;
     
 //Drivetrain
-
+public static final int gearShifterSolenoid = 1;
 //Power Cell
+
     public static final int intakeMotor = 8;
     public static final int shooterMotor = 21;
     public static final int storageMotorH = 10;

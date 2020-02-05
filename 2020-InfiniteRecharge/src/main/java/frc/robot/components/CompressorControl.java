@@ -7,11 +7,9 @@ public class CompressorControl{
     public Compressor airCompressor;
 
     public void init(){
-        airCompressor = new Compressor();
+        airCompressor = new Compressor(Wiring.compressor);
     }
     public void enable(){
-        System.out.println(airCompressor.getCompressorNotConnectedFault() + "       *" + airCompressor.getCompressorShortedFault()+ airCompressor.getPressureSwitchValue() );
-        System.out.println(airCompressor.enabled() );
         airCompressor.setClosedLoopControl(true);
     }
     public void disable(){

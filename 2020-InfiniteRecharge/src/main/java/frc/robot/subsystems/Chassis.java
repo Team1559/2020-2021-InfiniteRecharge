@@ -109,12 +109,13 @@ public class Chassis implements Loggable{
     
 
         sparkMax1PID = sparkMax1.getPIDController();
-        
+        sparkMax1PID.setReference(0, ControlType.kVelocity);
         sparkMax2PID = sparkMax2.getPIDController();
-        
+        sparkMax2PID.setReference(0, ControlType.kVelocity);
         sparkMax3PID = sparkMax3.getPIDController();
-        
+        sparkMax3PID.setReference(0, ControlType.kVelocity);
         sparkMax4PID = sparkMax4.getPIDController();
+        sparkMax4PID.setReference(0, ControlType.kVelocity);
 
         sparkMax1.setOpenLoopRampRate(0.4);
         sparkMax2.setOpenLoopRampRate(0.4);
@@ -140,8 +141,10 @@ public class Chassis implements Loggable{
         
         leftMotors.setInverted(true);
         rightMotors.setInverted(true);
+
         
         driveTrain = new DifferentialDrive(leftMotors, rightMotors);
+        driveTrain.setMaxOutput(5600); //NEO free speed 5700 RPM
 
         tab = Shuffleboard.getTab("Chassis");
 
@@ -198,6 +201,10 @@ public class Chassis implements Loggable{
              case "Shuffle Drive Control Groups":
              widget5.changeOutput();
              widget6.changeOutput();
+             break;
+
+             case "Scott Drive":
+
              break;
         }
     }

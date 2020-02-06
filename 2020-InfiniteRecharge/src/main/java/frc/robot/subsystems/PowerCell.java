@@ -38,7 +38,7 @@ public class PowerCell implements Loggable{
     private double storage_kI = 0;
     private double storage_kF = 0;
     @Log
-    private double feederP_kP = 0;//5e-5 
+    private double feederP_kP = .0001;//5e-5 
     private double feederP_kD = 0;
     @Log
     private double feederP_kI = 0;

@@ -179,7 +179,7 @@ public class PowerCell implements Loggable{
         storageMotorH.configPeakOutputReverse(-1, TIMEOUT);
         storageMotorH.enableCurrentLimit(true);
 		storageMotorH.configPeakCurrentLimit(5,TIMEOUT);
-		storageMotorH.configContinuousCurrentLimit(2, TIMEOUT);
+		storageMotorH.configContinuousCurrentLimit(5, TIMEOUT);
 		storageMotorH.configPeakCurrentDuration(1800,TIMEOUT);
         storageMotorH.setNeutralMode(NeutralMode.Brake);
 
@@ -196,7 +196,7 @@ public class PowerCell implements Loggable{
         storageMotorL.configPeakOutputReverse(-1, TIMEOUT);
         storageMotorL.enableCurrentLimit(true);
 		storageMotorL.configPeakCurrentLimit(5, TIMEOUT);
-		storageMotorL.configContinuousCurrentLimit(2, TIMEOUT);
+		storageMotorL.configContinuousCurrentLimit(5, TIMEOUT);
 		storageMotorL.configPeakCurrentDuration(1800,TIMEOUT);
         storageMotorL.setNeutralMode(NeutralMode.Brake);
     }
@@ -215,6 +215,8 @@ public class PowerCell implements Loggable{
         shooter.set(TalonFXControlMode.PercentOutput, 0);
     }
     public void feeder(){
+        
+        
         if(oi.pilot.getRawButton(1)){
             feederMotor.set(ControlMode.PercentOutput, feederRpms);// Will need to be velocity
         }

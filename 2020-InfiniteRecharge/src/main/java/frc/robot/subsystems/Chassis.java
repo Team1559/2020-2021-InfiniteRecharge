@@ -167,10 +167,10 @@ public class Chassis implements Loggable{
         motor2Temp = sparkMax2.getMotorTemperature();
         motor3Temp = sparkMax3.getMotorTemperature();
         motor4Temp = sparkMax4.getMotorTemperature();
-        motor1Temp = sparkMax1.getOutputCurrent();
-        motor2Temp = sparkMax2.getOutputCurrent();
-        motor3Temp = sparkMax3.getOutputCurrent();
-        motor4Temp = sparkMax4.getOutputCurrent();
+        motor1Current = sparkMax1.getOutputCurrent();
+        motor2Current = sparkMax2.getOutputCurrent();
+        motor3Current = sparkMax3.getOutputCurrent();
+        motor4Current = sparkMax4.getOutputCurrent();
         if(shift){
         gearShift();        //System.out.println(mode);
         }

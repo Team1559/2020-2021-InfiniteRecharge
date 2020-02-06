@@ -60,13 +60,13 @@ public class Chassis implements Loggable{
     @Log.Dial(max = 6000, min = 0)
     private double velocity;
     @Log.Graph
-    public double motor1current;
+    public double motor1Current;
     @Log.Graph
-    public double motor2current;
+    public double motor2Current;
     @Log.Graph
-    public double motor3current;
+    public double motor3Current;
     @Log.Graph
-    public double motor4current;
+    public double motor4Current;
 
     @Log.Dial
     private double motor1Temp;

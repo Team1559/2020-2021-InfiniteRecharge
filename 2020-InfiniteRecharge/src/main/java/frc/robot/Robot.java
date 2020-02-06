@@ -151,7 +151,7 @@ public class Robot extends TimedRobot implements Loggable {
       imu.getvalues();
     }
     //Compressor
-    if(compressorEnable){
+    if(compressorEnable && compressorControl.useCompressor){
       compressorControl.enable();
     }
   }
@@ -186,8 +186,11 @@ public class Robot extends TimedRobot implements Loggable {
       powerCell.feeder();
   }
       //Compressor
-     if(compressorEnable){
+     if(compressorEnable && compressorControl.useCompressor){
       compressorControl.enable();
+    }
+    else if(compressorEnable){
+      compressorControl.disable();
     }
     
 
@@ -225,38 +228,38 @@ public class Robot extends TimedRobot implements Loggable {
   public void initialize()
   {
     robotInitialized = true;
-    if(ImuEnable)
+    if(ImuEnable && robotInitialized != false)
     {
       imu.init();
     }
   
-  if(powerCellEnable){
+  if(powerCellEnable && robotInitialized != false){
       powerCell.init(oi);
     }
 
     System.out.println("Initilied");
-    if(chassisEnable)
+    if(chassisEnable && robotInitialized != false)
     {
       driveTrain.Init(oi);
     }
     System.out.println("ChassisEnable: " + chassisEnable);
 
-    if(climberEnable){
+    if(climberEnable && robotInitialized != false){
       climber.ClimberInit(oi);
     }
 
-    if(camera1Enable){
+    if(camera1Enable && robotInitialized != false){
       camera1.init();
     }
     
-    if(camera2Enable){
+    if(camera2Enable && robotInitialized != false){
       camera2.init();
     }
-    if(colorEnable)
+    if(colorEnable && robotInitialized != false)
     {
       spinner.init();
     }
-    if(compressorEnable){
+    if(compressorEnable && robotInitialized != false){
       compressorControl.init();
     }
   }

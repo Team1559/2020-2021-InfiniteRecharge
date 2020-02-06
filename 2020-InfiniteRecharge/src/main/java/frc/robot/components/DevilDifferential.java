@@ -93,7 +93,7 @@ import edu.wpi.first.wpiutil.math.MathUtil;
  * {@link edu.wpi.first.wpilibj.RobotDrive#drive(double, double)} with the addition of a quick turn
  * mode. However, it is not designed to give exactly the same response.
  */
-public class DevilDifferential extends RobotDriveBase implements Sendable, AutoCloseable {
+public class DevilDifferential extends RobotDriveBase implements AutoCloseable {
   public static final double kDefaultQuickStopThreshold = 0.2;
   public static final double kDefaultQuickStopAlpha = 0.1;
 
@@ -118,15 +118,13 @@ public class DevilDifferential extends RobotDriveBase implements Sendable, AutoC
     verify(leftMotor, rightMotor);
     m_leftMotor = leftMotor;
     m_rightMotor = rightMotor;
-    SendableRegistry.addChild(this, m_leftMotor);
-    SendableRegistry.addChild(this, m_rightMotor);
     instances++;
-    SendableRegistry.addLW(this, "DifferentialDrive", instances);
+    
   }
 
   @Override
   public void close() {
-    SendableRegistry.remove(this);
+    
   }
 
   /**
@@ -304,8 +302,8 @@ public class DevilDifferential extends RobotDriveBase implements Sendable, AutoC
       rightMotorOutput /= maxMagnitude;
     }
 
-    m_leftMotor.set(leftMotorOutput * m_maxOutput);
-    m_rightMotor.set(rightMotorOutput * m_maxOutput * m_rightSideInvertMultiplier);
+    m_leftMotor.setReference(leftMotorOutput * m_maxOutput, ControlType.kVelocity);
+    m_rightMotor.setReference(rightMotorOutput * m_maxOutput * m_rightSideInvertMultiplier, ControlType.kVelocity);
 
     feed();
   }
@@ -352,8 +350,8 @@ public class DevilDifferential extends RobotDriveBase implements Sendable, AutoC
       rightSpeed = Math.copySign(rightSpeed * rightSpeed, rightSpeed);
     }
 
-    m_leftMotor.set(leftSpeed * m_maxOutput);
-    m_rightMotor.set(rightSpeed * m_maxOutput * m_rightSideInvertMultiplier);
+    m_leftMotor.setReference(leftSpeed * m_maxOutput, ControlType.kVelocity);
+    m_rightMotor.setReference(rightSpeed * m_maxOutput * m_rightSideInvertMultiplier, ControlType.kVelocity);
 
     feed();
   }
@@ -409,25 +407,13 @@ public class DevilDifferential extends RobotDriveBase implements Sendable, AutoC
 
   @Override
   public void stopMotor() {
-    m_leftMotor.stopMotor();
-    m_rightMotor.stopMotor();
+    m_leftMotor.setReference(0,ControlType.kVelocity);
+    m_rightMotor.setReference(0,ControlType.kVelocity);
     feed();
   }
 
   @Override
   public String getDescription() {
     return "DifferentialDrive";
-  }
-
-  @Override
-  public void initSendable(SendableBuilder builder) {
-    builder.setSmartDashboardType("DifferentialDrive");
-    builder.setActuator(true);
-    builder.setSafeState(this::stopMotor);
-    builder.addDoubleProperty("Left Motor Speed", m_leftMotor::get, m_leftMotor::set);
-    builder.addDoubleProperty(
-        "Right Motor Speed",
-        () -> m_rightMotor.get() * m_rightSideInvertMultiplier,
-        x -> m_rightMotor.set(x * m_rightSideInvertMultiplier));
   }
 }

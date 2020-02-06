@@ -8,7 +8,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.components.DevilDifferential;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.OperatorInterface;
@@ -40,7 +40,7 @@ public class Chassis implements Loggable{
     public double ShiftDown;
     private Solenoid gearShifter;
     private OperatorInterface oi;
-    private DifferentialDrive driveTrain;
+    private DevilDifferential driveTrain;
 
     private ShuffleboardTab tab;
 
@@ -143,7 +143,7 @@ public class Chassis implements Loggable{
         rightMotors.setInverted(true);
 
         
-        driveTrain = new DifferentialDrive(leftMotors, rightMotors);
+        driveTrain = new DevilDifferential(sparkMax1PID, sparkMax2PID);
         driveTrain.setMaxOutput(5600); //NEO free speed 5700 RPM
 
         tab = Shuffleboard.getTab("Chassis");

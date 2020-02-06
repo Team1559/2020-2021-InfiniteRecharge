@@ -244,22 +244,22 @@ public class Robot extends TimedRobot implements Loggable {
     }
     System.out.println("ChassisEnable: " + chassisEnable);
 
-    if(climberEnable && robotInitialized != false){
+    if(climberEnable && robotInitialized == false){
       climber.ClimberInit(oi);
     }
 
-    if(camera1Enable && robotInitialized != false){
+    if(camera1Enable && robotInitialized == false){
       camera1.init();
     }
     
-    if(camera2Enable && robotInitialized != false){
+    if(camera2Enable && robotInitialized == false){
       camera2.init();
     }
-    if(colorEnable && robotInitialized != false)
+    if(colorEnable && robotInitialized == false)
     {
       spinner.init();
     }
-    if(compressorEnable && robotInitialized != false){
+    if(compressorEnable && robotInitialized == false){
       compressorControl.init();
     }
   }

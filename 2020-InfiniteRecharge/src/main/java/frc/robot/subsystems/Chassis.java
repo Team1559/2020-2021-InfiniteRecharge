@@ -162,6 +162,7 @@ public class Chassis implements Loggable{
 
     public void DriveSystem(Joystick drive, String mode)
     {   
+        // graphing the motor parameters
         motor1Temp = sparkMax1.getMotorTemperature();
         motor2Temp = sparkMax2.getMotorTemperature();
         motor3Temp = sparkMax3.getMotorTemperature();

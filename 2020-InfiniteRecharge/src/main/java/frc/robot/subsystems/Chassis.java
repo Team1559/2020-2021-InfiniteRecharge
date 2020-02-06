@@ -59,6 +59,14 @@ public class Chassis implements Loggable{
     private double rightVelocity;
     @Log.Dial(max = 6000, min = 0)
     private double velocity;
+    @Log.Graph
+    public double motor1Current;
+    @Log.Graph
+    public double motor2Current;
+    @Log.Graph
+    public double motor3Current;
+    @Log.Graph
+    public double motor4Current;
 
     @Log.Dial
     private double motor1Temp;
@@ -154,10 +162,15 @@ public class Chassis implements Loggable{
 
     public void DriveSystem(Joystick drive, String mode)
     {   
+        // graphing the motor parameters
         motor1Temp = sparkMax1.getMotorTemperature();
         motor2Temp = sparkMax2.getMotorTemperature();
         motor3Temp = sparkMax3.getMotorTemperature();
         motor4Temp = sparkMax4.getMotorTemperature();
+        motor1Current = sparkMax1.getOutputCurrent();
+        motor2Current = sparkMax2.getOutputCurrent();
+        motor3Current = sparkMax3.getOutputCurrent();
+        motor4Current = sparkMax4.getOutputCurrent();
         if(shift){
         gearShift();        //System.out.println(mode);
         }

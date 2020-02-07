@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.robot.OperatorInterface;
 import frc.robot.Wiring;
@@ -66,7 +67,7 @@ public class PowerCell implements Loggable{
     private double feederRpms = 0.5;
     @Log 
     double feederIdleSpeed = 0.0;
-
+    private TalonFXConfiguration allConfigs;
 
 
 
@@ -151,6 +152,7 @@ public class PowerCell implements Loggable{
         shooter.configPeakOutputReverse(-1, TIMEOUT);
         shooter.setNeutralMode(NeutralMode.Coast);
         
+		shooter.configAllSettings(allConfigs);
         //Feeder motor config
         feederMotor.set(ControlMode.PercentOutput, 0);	
         feederMotor.configClosedloopRamp(cLR, TIMEOUT);
@@ -243,8 +245,8 @@ public class PowerCell implements Loggable{
         }
     }
     public void shoot(){
-        shooterTemp = shooter.;
-        shooterCurrent = shooter.;
+        shooterTemp = shooter.getTemperature();
+        shooterCurrent = shooter.getSupplyCurrent();
         if(oi.pilot.getRawButton(6)){
            
             shooter.set(ControlMode.Velocity, shooterRpms);

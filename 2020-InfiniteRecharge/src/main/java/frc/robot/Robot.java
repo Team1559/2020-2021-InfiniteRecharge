@@ -38,6 +38,7 @@ public class Robot extends TimedRobot implements Loggable {
   private static final String kCurvatureDrive = "Curvature Drive";
   private static final String kShuffleDrive = "Shuffle Drive Individual";
   private static final String kShuffleDriveGroups = "Shuffle Drive Control Groups";
+  private static final String kScottDrive = "Scott Drive";
   private String m_driveTrain;
   private final SendableChooser<String> m_driveChooser = new SendableChooser<>();
 
@@ -123,6 +124,7 @@ public class Robot extends TimedRobot implements Loggable {
     m_driveChooser.addOption("Curvature Drive", kCurvatureDrive); //A Drive Train option
     m_driveChooser.addOption("Shuffle Drive Individual", kShuffleDrive); //A Drive Train option
     m_driveChooser.addOption("Shuffle Drive Control Groups", kShuffleDriveGroups); //A Drive Train option
+    m_driveChooser.addOption("Scott Drive", kScottDrive); //Scott's Drive Train Option
     driveTrainTab.add("Drive Train Choices", m_driveChooser); //Allows you to pick a Drive Train option through Shuffleboard   
 }
 

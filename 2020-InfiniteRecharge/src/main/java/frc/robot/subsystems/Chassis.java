@@ -204,7 +204,10 @@ public class Chassis implements Loggable{
              break;
 
              case "Scott Drive":
-
+             //Axis 0 for right joystick left to right
+             //Axis 2 for left bumper
+             //Axis 3 for right bumper
+             driveTrain.arcadeDrive(oi.pilot.getRawAxis(3)-oi.pilot.getRawAxis(2), oi.getPilotX());
              break;
         }
     }

@@ -227,7 +227,7 @@ public class Robot extends TimedRobot implements Loggable {
   
   public void initialize()
   {
-    robotInitialized = true;
+
     if(ImuEnable && robotInitialized != false)
     {
       imu.init();
@@ -262,5 +262,6 @@ public class Robot extends TimedRobot implements Loggable {
     if(compressorEnable && robotInitialized == false){
       compressorControl.init();
     }
+    robotInitialized = true;
   }
 }

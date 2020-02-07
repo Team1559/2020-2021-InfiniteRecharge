@@ -125,19 +125,26 @@ public class Chassis implements Loggable{
         sparkMax1PID.setP(0.00005);
         sparkMax1PID.setI(0.000001);
         sparkMax1PID.setD(0);
+        sparkMax1PID.setIZone(30, 20);
+        sparkMax1PID.setIMaxAccum(20, 0);
 
         sparkMax2PID.setP(0.00005);
         sparkMax2PID.setI(0.000001);
         sparkMax2PID.setD(0);
+        sparkMax2PID.setIZone(30, 20);
+        sparkMax2PID.setIMaxAccum(20, 0);
 
         sparkMax3PID.setP(0.00005);
         sparkMax3PID.setI(0.000001);
         sparkMax3PID.setD(0);
+        sparkMax3PID.setIZone(30, 20);
+        sparkMax3PID.setIMaxAccum(20, 0);
 
         sparkMax4PID.setP(0.00005);
         sparkMax4PID.setI(0.000001);
         sparkMax4PID.setD(0);
-
+        sparkMax4PID.setIZone(30, 20);
+        sparkMax4PID.setIMaxAccum(20, 0);
         
         leftMotors.setInverted(true);
         rightMotors.setInverted(true);

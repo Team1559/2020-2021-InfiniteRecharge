@@ -142,6 +142,11 @@ public class Chassis implements Loggable{
         leftMotors.setInverted(true);
         rightMotors.setInverted(true);
 
+        sparkMax1.setSmartCurrentLimit(5);
+        sparkMax2.setSmartCurrentLimit(5);
+        sparkMax3.setSmartCurrentLimit(5);
+        sparkMax4.setSmartCurrentLimit(5);
+
         
         driveTrain = new DevilDifferential(sparkMax1PID, sparkMax2PID);
         driveTrain.setMaxOutput(5600); //NEO free speed 5700 RPM

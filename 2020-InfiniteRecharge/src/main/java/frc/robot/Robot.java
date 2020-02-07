@@ -45,15 +45,27 @@ public class Robot extends TimedRobot implements Loggable {
 
   // feature flags booleans
   private boolean camera1Enable = false;
+  private boolean camera1Enabled = false;
   private boolean camera2Enable = false;
+  private boolean camera2Enabled = false;
+
   private boolean chassisEnable = false;
+  private boolean chassisEnabled = false;
+
   private boolean ImuEnable = false;
+  private boolean ImuEnabled = false;
   private boolean climberEnable = false;
+  private boolean climberEnabled = false;
   private boolean compressorEnable = false;
+  private boolean compressorEnabled = false;
   @Log
   private boolean robotInitialized = false;
   private boolean colorEnable = false;
+  private boolean colorEnabled = false;
+
   private boolean powerCellEnable = false;
+  private boolean powerCellEnabled = false;
+
   //constructors
   public Climber climber = new Climber();
   public PowerCell powerCell = new PowerCell();
@@ -224,39 +236,44 @@ public class Robot extends TimedRobot implements Loggable {
   public void initialize()
   {
 
-    if(ImuEnable && robotInitialized != false)
+    if(ImuEnable && ImuEnabled == false)
     {
       imu.init();
     }
   
-  if(powerCellEnable && robotInitialized != false){
+  if(powerCellEnable && powerCellEnabled == false){
       powerCell.init(oi);
+      powerCellEnabled = true;
     }
-
-    System.out.println("Initilied");
-    if(chassisEnable && robotInitialized != false)
+    if(chassisEnable)
     {
       driveTrain.Init(oi);
-    }
-    System.out.println("ChassisEnable: " + chassisEnable);
-
-    if(climberEnable && robotInitialized == false){
-      climber.ClimberInit(oi);
-    }
-
-    if(camera1Enable && robotInitialized == false){
-      camera1.init();
+      chassisEnabled = true;
     }
     
-    if(camera2Enable && robotInitialized == false){
-      camera2.init();
+
+    if(climberEnable && climberEnabled == false){
+      climber.ClimberInit(oi);
+      climberEnabled = true;
     }
-    if(colorEnable && robotInitialized == false)
+
+    if(camera1Enable && camera1Enabled == false){
+      camera1.init();
+      camera1Enable = true;
+    }
+    
+    if(camera2Enable && camera2Enabled== false){
+      camera2.init();
+      camera2Enabled = true;
+    }
+    if(colorEnable && colorEnabled == false)
     {
       spinner.init();
+      colorEnabled = true;
     }
-    if(compressorEnable && robotInitialized == false){
+    if(compressorEnable && compressorEnabled == false){
       compressorControl.init();
+      compressorEnabled = true;
     }
     robotInitialized = true;
   }

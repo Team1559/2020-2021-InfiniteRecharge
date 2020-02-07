@@ -15,8 +15,14 @@ public class CompressorControl implements Loggable{
     public void init(){
         airCompressor = new Compressor(Wiring.compressor);
     }
-    public void enable(){
-        airCompressor.setClosedLoopControl(true);
+    public void run(){
+        if(useCompressor){
+            airCompressor.setClosedLoopControl(true);
+          }
+          else {
+            disable();
+          }
+        
     }
     public void disable(){
         airCompressor.setClosedLoopControl(false);

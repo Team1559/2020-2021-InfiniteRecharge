@@ -151,8 +151,8 @@ public class Robot extends TimedRobot implements Loggable {
       imu.getvalues();
     }
     //Compressor
-    if(compressorEnable && compressorControl.useCompressor){
-      compressorControl.enable();
+    if(compressorEnable){
+      compressorControl.run();
     }
   }
   
@@ -186,15 +186,11 @@ public class Robot extends TimedRobot implements Loggable {
       powerCell.feeder();
   }
       //Compressor
-     if(compressorEnable && compressorControl.useCompressor){
-      compressorControl.enable();
-    }
-    else if(compressorEnable){
-      compressorControl.disable();
-    }
-    
+  if(compressorEnable){
+    compressorControl.run();
+  }
 
-}
+  }
  
   @Override
   public void testInit()

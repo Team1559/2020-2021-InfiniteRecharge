@@ -45,26 +45,27 @@ public class Robot extends TimedRobot implements Loggable {
 
   // feature flags booleans
   private boolean camera1Enable = false;
-  private boolean camera1Enabled = false;
+  private boolean camera1Initialized = false;
   private boolean camera2Enable = false;
-  private boolean camera2Enabled = false;
+  private boolean camera2Initialized = false;
 
   private boolean chassisEnable = false;
-  private boolean chassisEnabled = false;
+  private boolean chassisInitialized = false;
 
   private boolean ImuEnable = false;
-  private boolean ImuEnabled = false;
+  private boolean ImuInitialized = false;
+
   private boolean climberEnable = false;
-  private boolean climberEnabled = false;
+  private boolean climberInitialized = false;
+
   private boolean compressorEnable = false;
-  private boolean compressorEnabled = false;
-  @Log
-  private boolean robotInitialized = false;
+  private boolean compressorInitialized = false;
+  
   private boolean colorEnable = false;
-  private boolean colorEnabled = false;
+  private boolean colorInitialized = false;
 
   private boolean powerCellEnable = false;
-  private boolean powerCellEnabled = false;
+  private boolean powerCellInitialized = false;
 
   //constructors
   public Climber climber = new Climber();
@@ -172,9 +173,7 @@ public class Robot extends TimedRobot implements Loggable {
   @Override
   public void teleopInit()
   {
-    if(robotInitialized == false){
       initialize();
-    }
      
   }
 
@@ -236,45 +235,45 @@ public class Robot extends TimedRobot implements Loggable {
   public void initialize()
   {
 
-    if(ImuEnable && ImuEnabled == false)
+    if(ImuEnable && ImuInitialized == false)
     {
       imu.init();
+      ImuInitialized = true;
     }
   
-  if(powerCellEnable && powerCellEnabled == false){
+  if(powerCellEnable && powerCellInitialized == false){
       powerCell.init(oi);
-      powerCellEnabled = true;
+      powerCellInitialized = true;
     }
     if(chassisEnable)
     {
       driveTrain.Init(oi);
-      chassisEnabled = true;
+      chassisInitialized = true;
     }
     
 
-    if(climberEnable && climberEnabled == false){
+    if(climberEnable && climberInitialized == false){
       climber.ClimberInit(oi);
-      climberEnabled = true;
+      climberInitialized = true;
     }
 
-    if(camera1Enable && camera1Enabled == false){
+    if(camera1Enable && camera1Initialized == false){
       camera1.init();
       camera1Enable = true;
     }
     
-    if(camera2Enable && camera2Enabled== false){
+    if(camera2Enable && camera2Initialized == false){
       camera2.init();
-      camera2Enabled = true;
+      camera2Initialized = true;
     }
-    if(colorEnable && colorEnabled == false)
+    if(colorEnable && colorInitialized == false)
     {
       spinner.init();
-      colorEnabled = true;
+      colorInitialized = true;
     }
-    if(compressorEnable && compressorEnabled == false){
+    if(compressorEnable && compressorInitialized == false){
       compressorControl.init();
-      compressorEnabled = true;
+      compressorInitialized = true;
     }
-    robotInitialized = true;
   }
 }

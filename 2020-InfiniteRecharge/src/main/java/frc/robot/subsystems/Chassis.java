@@ -42,7 +42,7 @@ public class Chassis implements Loggable{
     private OperatorInterface oi;
     private DevilDifferential driveTrain;
 
-    private ShuffleboardTab tab;
+    private ShuffleboardTab tab; //Is used, just isn't recognizing that it is being used
 
     private MotorWidget widget1;
     private MotorWidget widget2;

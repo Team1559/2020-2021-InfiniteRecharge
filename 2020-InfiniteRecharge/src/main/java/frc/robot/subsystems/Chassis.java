@@ -122,20 +122,20 @@ public class Chassis implements Loggable{
         sparkMax3.setOpenLoopRampRate(0.4);
         sparkMax4.setOpenLoopRampRate(0.4);
 
-        sparkMax1PID.setP(1);
-        sparkMax1PID.setI(0);
+        sparkMax1PID.setP(0.00005);
+        sparkMax1PID.setI(0.000001);
         sparkMax1PID.setD(0);
 
-        sparkMax2PID.setP(1);
-        sparkMax2PID.setI(0);
+        sparkMax2PID.setP(0.00005);
+        sparkMax2PID.setI(0.000001);
         sparkMax2PID.setD(0);
 
-        sparkMax3PID.setP(1);
-        sparkMax3PID.setI(0);
+        sparkMax3PID.setP(0.00005);
+        sparkMax3PID.setI(0.000001);
         sparkMax3PID.setD(0);
 
-        sparkMax4PID.setP(1);
-        sparkMax4PID.setI(0);
+        sparkMax4PID.setP(0.00005);
+        sparkMax4PID.setI(0.000001);
         sparkMax4PID.setD(0);
 
         

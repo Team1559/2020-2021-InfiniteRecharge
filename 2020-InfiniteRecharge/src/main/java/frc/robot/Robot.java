@@ -120,7 +120,7 @@ public class Robot extends TimedRobot implements Loggable {
     camera1Enable  = enable;
     camera2Enable = enable2;
   }
-  @Config
+  @Config.ToggleSwitch
   public void Enable_Color(boolean enable){
     colorEnable = enable;
   }

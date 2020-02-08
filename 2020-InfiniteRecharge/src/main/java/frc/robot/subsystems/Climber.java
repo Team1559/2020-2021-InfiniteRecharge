@@ -10,6 +10,7 @@ import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -22,7 +23,7 @@ public class Climber implements Loggable {
     private double winchRpms = 0;
     @Log
     private double balancerPercent;
-
+    private SupplyCurrentLimitConfiguration scl = new SupplyCurrentLimitConfiguration(true, 100, 40, 1000);
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
     
@@ -52,6 +53,7 @@ public class Climber implements Loggable {
     winch.configNominalOutputReverse(0, TIMEOUT);
     winch.configPeakOutputForward(+1, TIMEOUT);
     winch.configPeakOutputReverse(-1, TIMEOUT);
+    winch.configSupplyCurrentLimit(scl, TIMEOUT);
     winch.setNeutralMode(NeutralMode.Brake);
 
     barRider.set(ControlMode.PercentOutput, 0);	

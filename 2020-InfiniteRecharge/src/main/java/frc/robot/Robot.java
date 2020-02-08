@@ -152,7 +152,7 @@ public class Robot extends TimedRobot implements Loggable {
     m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
     initialize();
-    if(ImuEnable){
+    if(ImuEnable && ImuInitialized){
       imu.zeroYaw();
     }
   }
@@ -160,11 +160,11 @@ public class Robot extends TimedRobot implements Loggable {
   @Override
   public void autonomousPeriodic()
   {
-    if(ImuEnable){
+    if(ImuEnable && ImuInitialized){
       imu.getvalues();
     }
     //Compressor
-    if(compressorEnable){
+    if(compressorEnable && compressorInitialized){
       compressorControl.run();
     }
   }
@@ -180,28 +180,28 @@ public class Robot extends TimedRobot implements Loggable {
   @Override
   public void teleopPeriodic()
   {
-    if(chassisEnable){    
+    if(chassisEnable && chassisInitialized){    
     driveTrain.DriveSystem(oi.pilot);
     }
     
-    if(ImuEnable){
+    if(ImuEnable && ImuInitialized){
       imu.getvalues();
     }
-    if(climberEnable){
+    if(climberEnable && climberInitialized){
       climber.drive();
     }
-    if(powerCellEnable){
+    if(powerCellEnable && powerCellInitialized){
       powerCell.intake();
       powerCell.shoot();
       powerCell.storage();
       powerCell.feeder();
   }
       //Compressor
-     if(compressorEnable){
+     if(compressorEnable && compressorInitialized){
       compressorControl.run();
     }
     //All spinner logic is in Spinner.java
-    if(colorEnable){
+    if(colorEnable && colorInitialized){
       spinner.spin(compressorEnable);
     }
     
@@ -218,7 +218,7 @@ public class Robot extends TimedRobot implements Loggable {
   @Override
   public void testPeriodic() 
   {
-    if(chassisEnable){
+    if(chassisEnable && chassisInitialized){
       driveTrain.DriveSystem(oi.pilot,m_driveTrain);
     }
   }
@@ -226,7 +226,7 @@ public class Robot extends TimedRobot implements Loggable {
   @Override
   public void disabledInit()
   {
-    if(compressorEnable){
+    if(compressorEnable && compressorInitialized){
       compressorControl.disable();
     }
   }

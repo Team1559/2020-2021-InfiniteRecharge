@@ -128,6 +128,15 @@ public class Chassis implements Loggable{
     {
         deadband = dB;
     }
+
+    @Log
+    private double setSpeed = 0;
+
+    @Config
+    public void setSpeed(double sS)
+    {
+        setSpeed = sS;
+    }
     
     public void Init(OperatorInterface oInterface)
     {
@@ -241,7 +250,15 @@ public class Chassis implements Loggable{
              }
              else
              {
-                driveTrain.arcadeDrive(-(oi.getPilotY()), oi.getPilotZ());
+                double forwardSpeed = -(oi.getPilotY());
+                double turnSpeed = oi.getPilotZ();
+                if(forwardSpeed >= 0.5)
+                    forwardSpeed = setSpeed;
+                else if(forwardSpeed <= -0.5)
+                    forwardSpeed = -setSpeed;
+                else
+                    forwardSpeed = 0;
+                driveTrain.arcadeDrive(forwardSpeed, turnSpeed);
                 
              }
              

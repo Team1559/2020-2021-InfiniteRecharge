@@ -44,7 +44,7 @@ public class PowerCell implements Loggable{
     @Log
     private double feeder_kI = 0;//1e-6
     private double feeder_kF = 0;
-    private SupplyCurrentLimitConfiguration supplyCurrentLimitConfiguration = new SupplyCurrentLimitConfiguration(true, 10, 15, 1000);
+    private SupplyCurrentLimitConfiguration supplyCurrentLimitConfiguration = new SupplyCurrentLimitConfiguration(true, 100, 20, 1000);
     
     //motors 
     private TalonSRX storageMotorL;

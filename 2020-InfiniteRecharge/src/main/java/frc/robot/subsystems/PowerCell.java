@@ -177,8 +177,8 @@ public class PowerCell implements Loggable{
         storageMotorH.configPeakOutputForward(+1, TIMEOUT);
         storageMotorH.configPeakOutputReverse(-1, TIMEOUT);
         storageMotorH.enableCurrentLimit(true);
-		storageMotorH.configPeakCurrentLimit(5,TIMEOUT);
-		storageMotorH.configContinuousCurrentLimit(5, TIMEOUT);
+		storageMotorH.configPeakCurrentLimit(10,TIMEOUT);
+		storageMotorH.configContinuousCurrentLimit(10, TIMEOUT);
 		storageMotorH.configPeakCurrentDuration(1800,TIMEOUT);
         storageMotorH.setNeutralMode(NeutralMode.Brake);
 
@@ -194,10 +194,11 @@ public class PowerCell implements Loggable{
         storageMotorL.configPeakOutputForward(+1, TIMEOUT);
         storageMotorL.configPeakOutputReverse(-1, TIMEOUT);
         storageMotorL.enableCurrentLimit(true);
-		storageMotorL.configPeakCurrentLimit(5, TIMEOUT);
-		storageMotorL.configContinuousCurrentLimit(5, TIMEOUT);
+		storageMotorL.configPeakCurrentLimit(10, TIMEOUT);
+		storageMotorL.configContinuousCurrentLimit(10, TIMEOUT);
 		storageMotorL.configPeakCurrentDuration(1800,TIMEOUT);
         storageMotorL.setNeutralMode(NeutralMode.Brake);
+        stopfeeder();
     }
     public void stopfeeder(){
         feederPosition = feederMotor.getSelectedSensorPosition();
@@ -219,7 +220,7 @@ public class PowerCell implements Loggable{
         {
            if(!feederButton)
            {
-                feederMotor.set(ControlMode.Velocity, feederRpms);
+                feederMotor.set(ControlMode.PercentOutput, feederRpms);
                 feederButton = true;
            }
         }

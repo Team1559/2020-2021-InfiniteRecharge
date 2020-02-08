@@ -102,7 +102,7 @@ public class Spinner implements Loggable {
           //Code for no data received yet
         }
 
-        //This will run when the "colorEnable" futureflag is enabled
+        //This will run when the "colorEnable" feature flag is enabled
         if(colorEnable){
             updateColor();
            

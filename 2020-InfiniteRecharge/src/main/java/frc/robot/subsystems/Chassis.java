@@ -85,6 +85,8 @@ public class Chassis implements Loggable{
     private double kI = 0.0000001;
     @Log
     private double kD = 0.0000;
+    @Log
+    private double kF = 0.000125; //0.000125
 
     @Log
     private double deadband = 0.01;
@@ -100,11 +102,12 @@ public class Chassis implements Loggable{
     }
 
     @Config
-    public void set_PID(double P, double I, double D, double imax, double izone)
+    public void set_PID(double P, double I, double D, double F, double imax, double izone)
     {
         kP = P;
         kI = I;
         kD = D;
+        kF = F;
         
         sparkMax1PID.setP(P);
         sparkMax2PID.setP(P);
@@ -120,6 +123,11 @@ public class Chassis implements Loggable{
         sparkMax2PID.setD(D);
         sparkMax3PID.setD(D);
         sparkMax4PID.setD(D);
+
+        sparkMax1PID.setFF(F);
+        sparkMax2PID.setFF(F);
+        sparkMax3PID.setFF(F);
+        sparkMax4PID.setFF(F);
 
         sparkMax1PID.setIZone(izone, 0);
         sparkMax1PID.setIMaxAccum(imax, 0);
@@ -141,7 +149,7 @@ public class Chassis implements Loggable{
     private double setSpeed = 0;
 
     @Config
-    public void setSpeed(double sS)
+    public void setMySpeed(double sS)
     {
         setSpeed = sS;
     }
@@ -186,6 +194,11 @@ public class Chassis implements Loggable{
         sparkMax2.setOpenLoopRampRate(0.4);
         sparkMax3.setOpenLoopRampRate(0.4);
         sparkMax4.setOpenLoopRampRate(0.4);
+
+        sparkMax1.setClosedLoopRampRate(0.5);
+        sparkMax2.setClosedLoopRampRate(0.5);
+        sparkMax3.setClosedLoopRampRate(0.5);
+        sparkMax4.setClosedLoopRampRate(0.5);
 
         sparkMax1PID.setP(0.00001);
         sparkMax1PID.setI(0.0000001);

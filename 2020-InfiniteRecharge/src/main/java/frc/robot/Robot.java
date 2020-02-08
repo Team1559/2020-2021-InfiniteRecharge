@@ -189,6 +189,10 @@ public class Robot extends TimedRobot implements Loggable {
      if(compressorEnable){
       compressorControl.enable();
     }
+    //All spinner logic is in Spinner.java
+    if(colorEnable){
+      spinner.spin(compressorEnable);
+    }
     
 
 }

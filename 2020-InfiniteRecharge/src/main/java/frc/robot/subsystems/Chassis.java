@@ -83,7 +83,7 @@ public class Chassis implements Loggable{
     
     public void Init(OperatorInterface oInterface)
     {
-        shiftUp  =5000;
+        shiftUp = 5000;
         ShiftDown = 3500;
         oi = oInterface;
         sparkMax1 = new CANSparkMax(11, MotorType.kBrushless); //ID 11
@@ -149,10 +149,10 @@ public class Chassis implements Loggable{
         leftMotors.setInverted(true);
         rightMotors.setInverted(true);
 
-        sparkMax1.setSmartCurrentLimit(5);
-        sparkMax2.setSmartCurrentLimit(5);
-        sparkMax3.setSmartCurrentLimit(5);
-        sparkMax4.setSmartCurrentLimit(5);
+        sparkMax1.setSmartCurrentLimit(40);
+        sparkMax2.setSmartCurrentLimit(40);
+        sparkMax3.setSmartCurrentLimit(40);
+        sparkMax4.setSmartCurrentLimit(40);
 
         
         driveTrain = new DevilDifferential(sparkMax1PID, sparkMax2PID);

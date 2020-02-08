@@ -81,29 +81,11 @@ public class Spinner implements Loggable {
 
         /// This is the Field Management system code, which was found on docs.wpilib.org
         String gameData;
+        String FMScolor = "";
         gameData = DriverStation.getInstance().getGameSpecificMessage();
         if (gameData.length() > 0) {
-            switch (gameData.charAt(0)) {
-            case 'B':
-                // Blue case code
-                break;
-            case 'G':
-                // Green case code
-                break;
-            case 'R':
-                // Red case code
-                break;
-            case 'Y':
-                // Yellow case code
-                break;
-            default:
-                // This is corrupt data
-                break;
-            }
-        } else {
-            // Code for no data received yet
+            FMScolor = gameData.substring(0, 1);
         }
-
         // This will run when the "colorEnable" feature flag is enabled
         updateColor();
 
@@ -126,22 +108,22 @@ public class Spinner implements Loggable {
             // when pushing down the A button, this runs the stage 3 code
             if (oi.pilot.getRawButton(1)) {
                 spinnerMotor.set(ControlMode.PercentOutput, 0.10);
-                if (gameData.equals("Y")) {
+                if (FMScolor.equals("Y")) {
                     if (currentColor.equals("G")) {
                         spinnerMotor.set(ControlMode.PercentOutput, 0);
                     }
                 }
-                if (gameData.equals("B")) {
+                if (FMScolor.equals("B")) {
                     if (currentColor.equals("R")) {
                         spinnerMotor.set(ControlMode.PercentOutput, 0);
                     }
                 }
-                if (gameData.equals("G")) {
+                if (FMScolor.equals("G")) {
                     if (currentColor.equals("Y")) {
                         spinnerMotor.set(ControlMode.PercentOutput, 0);
                     }
                 }
-                if (gameData.equals("R")) {
+                if (FMScolor.equals("R")) {
                     if (currentColor.equals("B")) {
                         spinnerMotor.set(ControlMode.PercentOutput, 0);
                     }

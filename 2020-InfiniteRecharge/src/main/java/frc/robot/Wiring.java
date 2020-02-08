@@ -19,4 +19,6 @@ public static final int winch = 23;
 public static final int barRider = 2;
 //Control Panel
 
+public static int spinnerLauncher;
+
 }

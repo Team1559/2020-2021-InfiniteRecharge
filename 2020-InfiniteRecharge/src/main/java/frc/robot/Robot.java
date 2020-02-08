@@ -254,7 +254,7 @@ public class Robot extends TimedRobot implements Loggable {
     }
     if(colorEnable)
     {
-      spinner.init();
+      spinner.init(oi);
     }
     if(compressorEnable){
       compressorControl.init();

@@ -120,7 +120,7 @@ public class Robot extends TimedRobot implements Loggable {
     camera1Enable  = enable;
     camera2Enable = enable2;
   }
-  @Config
+  @Config.ToggleSwitch
   public void Enable_Color(boolean enable){
     colorEnable = enable;
   }
@@ -197,9 +197,14 @@ public class Robot extends TimedRobot implements Loggable {
       powerCell.feeder();
   }
       //Compressor
-  if(compressorEnable){
-    compressorControl.run();
-  }
+     if(compressorEnable){
+      compressorControl.run();
+    }
+    //All spinner logic is in Spinner.java
+    if(colorEnable){
+      spinner.spin(compressorEnable);
+    }
+    
 
   }
  
@@ -268,7 +273,7 @@ public class Robot extends TimedRobot implements Loggable {
     }
     if(colorEnable && colorInitialized == false)
     {
-      spinner.init();
+      spinner.init(oi);
       colorInitialized = true;
     }
     if(compressorEnable && compressorInitialized == false){

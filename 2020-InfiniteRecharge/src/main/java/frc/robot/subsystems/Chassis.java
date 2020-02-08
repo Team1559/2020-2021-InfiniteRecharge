@@ -71,6 +71,16 @@ public class Chassis implements Loggable{
 
     private boolean shift = false;
 
+    @Log
+    private double kP = 0.0001;
+    @Log
+    private double kI = 0.0000001;
+    @Log
+    private double kD = 0.0000;
+
+    @Log
+    private double deadband = 0.01;
+
     @Config.ToggleSwitch
     public void Enable_Shifting(boolean enable){
         shift = enable;
@@ -79,6 +89,44 @@ public class Chassis implements Loggable{
     public void Shifting_points(double up, double down){
         shiftUp = up;
         ShiftDown = down;
+    }
+
+    @Config
+    public void set_PID(double P, double I, double D, double imax, double izone)
+    {
+        kP = P;
+        kI = I;
+        kD = D;
+        
+        sparkMax1PID.setP(P);
+        sparkMax2PID.setP(P);
+        sparkMax3PID.setP(P);
+        sparkMax4PID.setP(P);
+
+        sparkMax1PID.setI(I);
+        sparkMax2PID.setI(I);
+        sparkMax3PID.setI(I);
+        sparkMax4PID.setI(I);
+
+        sparkMax1PID.setD(D);
+        sparkMax2PID.setD(D);
+        sparkMax3PID.setD(D);
+        sparkMax4PID.setD(D);
+
+        sparkMax1PID.setIZone(izone, 0);
+        sparkMax1PID.setIMaxAccum(imax, 0);
+        sparkMax2PID.setIZone(izone, 0);
+        sparkMax2PID.setIMaxAccum(imax, 0);
+        sparkMax3PID.setIZone(izone, 0);
+        sparkMax3PID.setIMaxAccum(imax, 0);
+        sparkMax4PID.setIZone(izone, 0);
+        sparkMax4PID.setIMaxAccum(imax, 0);
+    }
+
+    @Config
+    public void setDeadband(double dB)
+    {
+        deadband = dB;
     }
     
     public void Init(OperatorInterface oInterface)
@@ -123,27 +171,28 @@ public class Chassis implements Loggable{
         sparkMax4.setOpenLoopRampRate(0.4);
 
         sparkMax1PID.setP(0.00001);
-        sparkMax1PID.setI(0.000001);
+        sparkMax1PID.setI(0.0000001);
         sparkMax1PID.setD(0);
-        sparkMax1PID.setIZone(30, 20);
+        sparkMax1PID.setIZone(10, 0);
         sparkMax1PID.setIMaxAccum(20, 0);
+        //sparkMax1PID.setIAccum(0); //may need to be set\\
 
         sparkMax2PID.setP(0.00001);
-        sparkMax2PID.setI(0.000001);
+        sparkMax2PID.setI(0.000000);
         sparkMax2PID.setD(0);
-        sparkMax2PID.setIZone(30, 20);
+        sparkMax2PID.setIZone(10, 0);
         sparkMax2PID.setIMaxAccum(20, 0);
 
         sparkMax3PID.setP(0.00001);
-        sparkMax3PID.setI(0.000001);
+        sparkMax3PID.setI(0.000000);
         sparkMax3PID.setD(0);
-        sparkMax3PID.setIZone(30, 20);
+        sparkMax3PID.setIZone(10, 0);
         sparkMax3PID.setIMaxAccum(20, 0);
 
         sparkMax4PID.setP(0.00001);
-        sparkMax4PID.setI(0.000001);
+        sparkMax4PID.setI(0.000000);
         sparkMax4PID.setD(0);
-        sparkMax4PID.setIZone(30, 20);
+        sparkMax4PID.setIZone(10, 0);
         sparkMax4PID.setIMaxAccum(20, 0);
         
         leftMotors.setInverted(true);
@@ -219,20 +268,24 @@ public class Chassis implements Loggable{
              //Axis 0 for left joystick left to right
              //Axis 2 for left bumper
              //Axis 3 for right bumper
-             double forwardSpeed = -oi.pilot.getRawAxis(3);
-             double backwardSpeed = -oi.pilot.getRawAxis(2);
+             double forwardSpeed = oi.pilot.getRawAxis(3);
+             double backwardSpeed = oi.pilot.getRawAxis(2);
              double sideSpeed = -oi.getPilotX();
-             if(forwardSpeed <= 0.05)
+             if(forwardSpeed <= deadband)
              {
                  forwardSpeed = 0;
              }
-             if(backwardSpeed <= 0)
+             if(backwardSpeed <= deadband)
              {
                  backwardSpeed = 0;
              }
-             if(sideSpeed >= -0.05 && sideSpeed <= 0.05)
+             if(sideSpeed >= -deadband && sideSpeed <= deadband)
              {
                  sideSpeed = 0;
+             }
+             if(backwardSpeed > forwardSpeed)
+             {
+                 sideSpeed = -sideSpeed;
              }
              driveTrain.arcadeDrive(forwardSpeed-backwardSpeed, sideSpeed);
              break;

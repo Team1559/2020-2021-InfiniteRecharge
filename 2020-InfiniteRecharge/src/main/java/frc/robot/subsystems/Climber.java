@@ -20,23 +20,20 @@ public class Climber implements Loggable {
     private TalonSRX barRider;
     private TalonFX winch;
     @Log
-    private double winchRpms = 0;
+    private double winchRpms = 0.6;
     @Log
-    private double balancerPercent;
+    private double balancerPercent = 0.8;
     private SupplyCurrentLimitConfiguration scl = new SupplyCurrentLimitConfiguration(true, 100, 40, 1000);
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
     
 	//Shuffleboard configs for winch and bar rider
-  
-	
 	@Config
-    private void winch_PID(double Rpms){
-        
+    private void winch_percent(double Rpms){
         winchRpms = Rpms;
     }
     @Config
-    private void Balancer_RPMS( double OutputPercent){
+    private void Balancer_percent( double OutputPercent){
         balancerPercent = OutputPercent;
     }
 

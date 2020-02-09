@@ -55,7 +55,9 @@ public class PowerCell implements Loggable{
     @Log.Graph
     private double shooterTemp;
     @Log.Graph
-    private double shooterCurrent;
+    private double supplyCurrent;
+    @Log.Graph
+    private double statorCurrent;    
     @Log
     private double shooterRpms = 100;
     @Log
@@ -245,7 +247,8 @@ public class PowerCell implements Loggable{
     }
     public void shoot(){
         shooterTemp = shooter.getTemperature();
-        shooterCurrent = shooter.getSupplyCurrent();
+        supplyCurrent = shooter.getSupplyCurrent();
+        statorCurrent = shooter.getStatorCurrent();
         if(oi.pilot.getRawButton(6)){
            
             shooter.set(ControlMode.Velocity, shooterRpms);

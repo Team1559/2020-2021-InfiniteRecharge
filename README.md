@@ -19,4 +19,4 @@ Download from https://github.com/CrossTheRoadElec/Phoenix-Releases/releases/down
 Unzip and run the installer.
 #### Imu Software
 download from https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
-click latest build and run the installer
+* click latest build and run the installer

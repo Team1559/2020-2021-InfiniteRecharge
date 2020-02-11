@@ -62,9 +62,12 @@ public class PowerCell implements Loggable{
     private double feederRpms = 0.5;
     @Log 
     double feederPosition = 0.0;
+    private boolean shooterOn = false;
 
-
-
+    @Config.ToggleSwitch
+    private void shooter_toggle(boolean on){
+        shooterOn = on;
+    }
 
 	@Config
     private void Intake_PID(double kP, double kI, double kD, double Rpms){
@@ -251,7 +254,7 @@ public class PowerCell implements Loggable{
         }
     }
     public void shoot(){
-        if(oi.pilot.getRawButton(6)){
+        if(shooterOn){
            
             shooter.set(ControlMode.Velocity, shooterRpms);
         }

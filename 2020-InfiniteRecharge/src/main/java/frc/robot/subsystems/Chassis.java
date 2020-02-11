@@ -9,12 +9,16 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.OperatorInterface;
 import frc.robot.Wiring;
 import frc.robot.widgets.MotorWidget;
 import frc.robot.widgets.SCGWidget;
+import frc.robot.components.IMU;
 import edu.wpi.first.wpilibj.Solenoid;
 import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.annotations.Config;
@@ -40,7 +44,9 @@ public class Chassis implements Loggable{
     public double ShiftDown;
     private Solenoid gearShifter;
     private OperatorInterface oi;
+    private IMU imu;
     private DifferentialDrive driveTrain;
+    private DifferentialDriveOdometry m_odometry;
 
     private ShuffleboardTab tab;
 
@@ -81,8 +87,9 @@ public class Chassis implements Loggable{
         ShiftDown = down;
     }
     
-    public void Init(OperatorInterface oInterface)
+    public void Init(OperatorInterface oInterface, IMU Imu)
     {
+        imu = Imu;
         shiftUp  =5000;
         ShiftDown = 3500;
         oi = oInterface;
@@ -219,4 +226,28 @@ public class Chassis implements Loggable{
 
         }
     }
+    public void move(double speed, double rotation)
+    {
+            driveTrain.arcadeDrive(speed,rotation);
+    }
+
+    public void initOdometry()
+    {
+        imu.zeroYaw();
+        Rotation2d yaw = new Rotation2d(imu.getYaw());
+        m_odometry = new DifferentialDriveOdometry(yaw);
+        //Neccessary for advanced auto new Pose2d(0,0 new Rotation2d())
+    }
+
+    public double R2M(double rotations)             //gear ratio: 15.2:1
+    {                                               //wheel diameter 5.8in
+        double out = rotations/15.2*5.8*Math.PI/39.37;
+        return out;
+    }
+
+    public Pose2d updateOdometry()
+    {
+        return m_odometry.update(new Rotation2d(imu.getYaw()), R2M(lEncoder.getPosition()), R2M(rEncoder.getPosition()));
+    }
 }
+

@@ -200,37 +200,60 @@ public class PowerCell implements Loggable{
 		storageMotorL.configPeakCurrentDuration(1800,TIMEOUT);
         storageMotorL.setNeutralMode(NeutralMode.Brake);
     }
+
     public void stopfeeder(){
         feederMotor.set(ControlMode.PercentOutput, feederIdleSpeed);
     }
+
     public void stopStorage(){
         storageMotorH.set(ControlMode.PercentOutput, 0);
         storageMotorL.set(ControlMode.PercentOutput, 0);
     }
+
     public void stopIntake(){
         //intakeMotorPID.setReference(0, ControlType.kDutyCycle);
         intakeMotor.set(ControlMode.PercentOutput, 0);
     }
+
     public void stopShooter(){
         shooter.set(TalonFXControlMode.PercentOutput, 0);
     }
+
+    public void startIntake(){
+
+    }
+
+    public void startStorage(){
+        storageMotorH.set(ControlMode.PercentOutput, -storageRpms);// Will need to be velocity
+        storageMotorL.set(ControlMode.PercentOutput, storageRpms);
+    }
+
+    public void startFeeder(){
+        feederMotor.set(ControlMode.PercentOutput, feederRpms);
+    }
+
+    public void startShooter(){
+        shooter.set(ControlMode.Velocity, shooterRpms);
+    }
+
     public void feeder(){
         if(oi.pilot.getRawButton(1)){
-            feederMotor.set(ControlMode.PercentOutput, feederRpms);// Will need to be velocity
+            startFeeder();// Will need to be velocity
         }
         else{
             stopfeeder();
         }
     }
+
     public void storage(){
         if(oi.copilot.getRawButton(3)){
-            storageMotorH.set(ControlMode.PercentOutput, -storageRpms);// Will need to be velocity
-            storageMotorL.set(ControlMode.PercentOutput, storageRpms);// Will need to be velocity
+            startStorage();
         }
         else{
            stopStorage();
         }
     }
+
 	public void intake() {
         if(oi.copilot.getRawButton(3)){
             intakeMotor.set(ControlMode.PercentOutput, intakeRpms);// Will need to be velocity
@@ -239,13 +262,25 @@ public class PowerCell implements Loggable{
             stopIntake();
         }
     }
+
     public void shoot(){
         if(oi.pilot.getRawButton(6)){
-           
-            shooter.set(ControlMode.Velocity, shooterRpms);
+            startShooter();
         }
         else{
             stopShooter();
         }
+    }
+
+    public void startWithoutButton(){
+        startStorage();
+        startFeeder();
+        startShooter();
+    }
+
+    public void stopWithoutButton(){
+        stopfeeder();
+        stopShooter();
+        stopStorage();
     }
 }

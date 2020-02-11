@@ -39,12 +39,13 @@ public class PowerCell implements Loggable{
     private double storage_kI = 0;
     private double storage_kF = 0;
     @Log
-    private double feeder_kP = 0;//5e-5 
-    private double feeder_kD = 0;
+    private double feederP_kP = .0001;//5e-5 
+    private double feederP_kD = 0;
     @Log
     private double feeder_kI = 0;//1e-6
     private double feeder_kF = 0;
     private SupplyCurrentLimitConfiguration supplyCurrentLimitConfiguration = new SupplyCurrentLimitConfiguration(true, 100, 20, 1000);
+    private boolean feederButton = false;
     
     //motors 
     private TalonSRX storageMotorL;
@@ -67,7 +68,7 @@ public class PowerCell implements Loggable{
     @Log
     private double feederRpms = 0.5;
     @Log 
-    double feederIdleSpeed = 0.0;
+    double feederPosition = 0.0;
 
 
 	@Config
@@ -94,8 +95,7 @@ public class PowerCell implements Loggable{
         feederMotor.config_kD(0, kD);
         feederMotor.config_kI(0, kI);
         feederRpms = Rpms;
-        feederIdleSpeed = idleSpeed;
-        feeder_kP = kP;
+        feederP_kP = kP;
     }
     
     @Config
@@ -158,10 +158,10 @@ public class PowerCell implements Loggable{
         feederMotor.set(ControlMode.PercentOutput, 0);	
         feederMotor.configClosedloopRamp(cLR, TIMEOUT);
         feederMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        feederMotor.config_kF(0, feeder_kF);
-        feederMotor.config_kP(0, feeder_kP);
-        feederMotor.config_kD(0, feeder_kD);
-        feederMotor.config_kI(0, feeder_kI);
+        feederMotor.config_kF(0, feederP_kF);
+        feederMotor.config_kP(0, feederP_kP);
+        feederMotor.config_kD(0, feederP_kD);
+        feederMotor.config_kI(0, feederP_kI);
         feederMotor.configNominalOutputForward(0, TIMEOUT);
         feederMotor.configNominalOutputReverse(0, TIMEOUT);
         feederMotor.configPeakOutputForward(+1, TIMEOUT);
@@ -185,8 +185,8 @@ public class PowerCell implements Loggable{
         storageMotorH.configPeakOutputForward(+1, TIMEOUT);
         storageMotorH.configPeakOutputReverse(-1, TIMEOUT);
         storageMotorH.enableCurrentLimit(true);
-		storageMotorH.configPeakCurrentLimit(5,TIMEOUT);
-		storageMotorH.configContinuousCurrentLimit(2, TIMEOUT);
+		storageMotorH.configPeakCurrentLimit(10,TIMEOUT);
+		storageMotorH.configContinuousCurrentLimit(10, TIMEOUT);
 		storageMotorH.configPeakCurrentDuration(1800,TIMEOUT);
         storageMotorH.setNeutralMode(NeutralMode.Brake);
 
@@ -202,13 +202,15 @@ public class PowerCell implements Loggable{
         storageMotorL.configPeakOutputForward(+1, TIMEOUT);
         storageMotorL.configPeakOutputReverse(-1, TIMEOUT);
         storageMotorL.enableCurrentLimit(true);
-		storageMotorL.configPeakCurrentLimit(5, TIMEOUT);
-		storageMotorL.configContinuousCurrentLimit(2, TIMEOUT);
+		storageMotorL.configPeakCurrentLimit(10, TIMEOUT);
+		storageMotorL.configContinuousCurrentLimit(10, TIMEOUT);
 		storageMotorL.configPeakCurrentDuration(1800,TIMEOUT);
         storageMotorL.setNeutralMode(NeutralMode.Brake);
+        stopfeeder();
     }
     public void stopfeeder(){
-        feederMotor.set(ControlMode.PercentOutput, feederIdleSpeed);
+        feederPosition = feederMotor.getSelectedSensorPosition();
+        feederMotor.set(ControlMode.Position, feederPosition);
     }
     public void stopStorage(){
         storageMotorH.set(ControlMode.PercentOutput, 0);
@@ -220,12 +222,22 @@ public class PowerCell implements Loggable{
     public void stopShooter(){
         shooter.set(TalonFXControlMode.PercentOutput, 0);
     }
-    public void feeder(){
-        if(oi.pilot.getRawButton(1)){
-            feederMotor.set(ControlMode.PercentOutput, feederRpms);// Will need to be velocity
+    public void feeder(){   
+        if(oi.pilot.getRawButton(1))
+        {
+           if(!feederButton)
+           {
+                feederMotor.set(ControlMode.PercentOutput, feederRpms);
+                feederButton = true;
+           }
         }
-        else{
-            stopfeeder();
+        else
+        {
+            if(feederButton)
+            {
+                stopfeeder();
+                feederButton = false;
+            }
         }
     }
     public void storage(){

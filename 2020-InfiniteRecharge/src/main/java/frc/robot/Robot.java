@@ -176,7 +176,6 @@ public class Robot extends TimedRobot implements Loggable {
       initialize();
      
   }
-
   @Override
   public void teleopPeriodic()
   {

@@ -38,6 +38,7 @@ public class Robot extends TimedRobot implements Loggable {
   private static final String kCurvatureDrive = "Curvature Drive";
   private static final String kShuffleDrive = "Shuffle Drive Individual";
   private static final String kShuffleDriveGroups = "Shuffle Drive Control Groups";
+  private static final String kScottDrive = "Scott Drive";
   private String m_driveTrain;
   private final SendableChooser<String> m_driveChooser = new SendableChooser<>();
 
@@ -45,15 +46,28 @@ public class Robot extends TimedRobot implements Loggable {
 
   // feature flags booleans
   private boolean camera1Enable = false;
+  private boolean camera1Initialized = false;
   private boolean camera2Enable = false;
+  private boolean camera2Initialized = false;
+
   private boolean chassisEnable = false;
+  private boolean chassisInitialized = false;
+
   private boolean ImuEnable = false;
+  private boolean ImuInitialized = false;
+
   private boolean climberEnable = false;
+  private boolean climberInitialized = false;
+
   private boolean compressorEnable = false;
-  @Log
-  private boolean robotInitialized = false;
+  private boolean compressorInitialized = false;
+  
   private boolean colorEnable = false;
+  private boolean colorInitialized = false;
+
   private boolean powerCellEnable = false;
+  private boolean powerCellInitialized = false;
+
   //constructors
   public Climber climber = new Climber();
   public PowerCell powerCell = new PowerCell();
@@ -107,7 +121,7 @@ public class Robot extends TimedRobot implements Loggable {
     camera1Enable  = enable;
     camera2Enable = enable2;
   }
-  @Config
+  @Config.ToggleSwitch
   public void Enable_Color(boolean enable){
     colorEnable = enable;
   }
@@ -123,6 +137,7 @@ public class Robot extends TimedRobot implements Loggable {
     m_driveChooser.addOption("Curvature Drive", kCurvatureDrive); //A Drive Train option
     m_driveChooser.addOption("Shuffle Drive Individual", kShuffleDrive); //A Drive Train option
     m_driveChooser.addOption("Shuffle Drive Control Groups", kShuffleDriveGroups); //A Drive Train option
+    m_driveChooser.addOption("Scott Drive", kScottDrive); //Scott's Drive Train Option
     driveTrainTab.add("Drive Train Choices", m_driveChooser); //Allows you to pick a Drive Train option through Shuffleboard   
 }
 
@@ -152,7 +167,7 @@ public class Robot extends TimedRobot implements Loggable {
     }
     //Compressor
     if(compressorEnable){
-      compressorControl.enable();
+      compressorControl.run();
     }
   }
   
@@ -160,9 +175,7 @@ public class Robot extends TimedRobot implements Loggable {
   @Override
   public void teleopInit()
   {
-    if(robotInitialized == false){
       initialize();
-    }
      
   }
 
@@ -187,11 +200,15 @@ public class Robot extends TimedRobot implements Loggable {
   }
       //Compressor
      if(compressorEnable){
-      compressorControl.enable();
+      compressorControl.run();
+    }
+    //All spinner logic is in Spinner.java
+    if(colorEnable){
+      spinner.spin(compressorEnable);
     }
     
 
-}
+  }
  
   @Override
   public void testInit()
@@ -224,40 +241,46 @@ public class Robot extends TimedRobot implements Loggable {
   
   public void initialize()
   {
-    robotInitialized = true;
-    if(ImuEnable)
+
+    if(ImuEnable && ImuInitialized == false)
     {
       imu.init();
+      ImuInitialized = true;
     }
   
-  if(powerCellEnable){
+  if(powerCellEnable && powerCellInitialized == false){
       powerCell.init(oi);
+      powerCellInitialized = true;
     }
-
-    System.out.println("Initilied");
     if(chassisEnable)
     {
       driveTrain.Init(oi);
-    }
-    System.out.println("ChassisEnable: " + chassisEnable);
-
-    if(climberEnable){
-      climber.ClimberInit(oi);
-    }
-
-    if(camera1Enable){
-      camera1.init();
+      chassisInitialized = true;
     }
     
-    if(camera2Enable){
+
+    if(climberEnable && climberInitialized == false){
+      climber.ClimberInit(oi);
+      climberInitialized = true;
+    }
+
+    if(camera1Enable && camera1Initialized == false){
+      camera1.init();
+      camera1Enable = true;
+    }
+    
+    if(camera2Enable && camera2Initialized == false){
       camera2.init();
+      camera2Initialized = true;
     }
-    if(colorEnable)
+    if(colorEnable && colorInitialized == false)
     {
-      spinner.init();
+      spinner.init(oi);
+      colorInitialized = true;
     }
-    if(compressorEnable){
+    if(compressorEnable && compressorInitialized == false){
       compressorControl.init();
+      compressorInitialized = true;
     }
   }
 }

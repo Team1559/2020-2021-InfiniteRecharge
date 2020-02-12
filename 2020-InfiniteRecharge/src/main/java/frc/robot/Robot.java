@@ -249,7 +249,7 @@ public class Robot extends TimedRobot implements Loggable {
       powerCell.init(oi);
       powerCellInitialized = true;
     }
-    if(chassisEnable && chassisInitialized)
+    if(chassisEnable && chassisInitialized == false)
     {
       driveTrain.Init(oi);
       chassisInitialized = true;

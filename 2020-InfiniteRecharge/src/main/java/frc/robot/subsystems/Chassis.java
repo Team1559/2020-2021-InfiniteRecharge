@@ -154,6 +154,14 @@ public class Chassis implements Loggable{
         setSpeed = sS;
     }
     
+    @Log
+    private boolean isSquaredInputs;
+
+    @Config
+    public void wantInputsSquared(boolean iS)
+    {
+        isSquaredInputs = iS;
+    }
     public void Init(OperatorInterface oInterface)
     {
         shiftUp = 5000;
@@ -265,7 +273,7 @@ public class Chassis implements Loggable{
         switch(mode)
         {
              case "Tank Drive":
-            driveTrain.tankDrive(-(oi.getPilotX()),-(oi.pilot.getRawAxis(5)));
+            driveTrain.tankDrive(-(oi.getPilotX()),-(oi.pilot.getRawAxis(5)), isSquaredInputs);
             
              break;
 
@@ -284,7 +292,7 @@ public class Chassis implements Loggable{
                     forwardSpeed = -setSpeed;
                 else
                     forwardSpeed = 0;
-                driveTrain.arcadeDrive(forwardSpeed, turnSpeed);
+                driveTrain.arcadeDrive(forwardSpeed, turnSpeed, isSquaredInputs);
                 
              }
              
@@ -330,7 +338,7 @@ public class Chassis implements Loggable{
              {
                  sideSpeed = -sideSpeed;
              }
-             driveTrain.arcadeDrive(forwardSpeed-backwardSpeed, sideSpeed);
+             driveTrain.arcadeDrive(forwardSpeed-backwardSpeed, sideSpeed, isSquaredInputs);
              break;
         }
     }

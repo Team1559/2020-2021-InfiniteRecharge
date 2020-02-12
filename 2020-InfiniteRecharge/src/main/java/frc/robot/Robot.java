@@ -254,7 +254,7 @@ public class Robot extends TimedRobot implements Loggable {
     }
     if(chassisEnable)
     {
-      driveTrain.Init(oi);
+      driveTrain.Init(oi, imu);
       chassisInitialized = true;
     }
     

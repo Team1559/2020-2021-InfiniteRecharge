@@ -164,7 +164,7 @@ public class PowerCell implements Loggable{
 		feederMotor.configContinuousCurrentLimit(40, TIMEOUT);
 		feederMotor.configPeakCurrentDuration(1800,TIMEOUT);
         feederMotor.setNeutralMode(NeutralMode.Brake);
-
+        
         //Storage Motor Config
         storageMotorH.set(ControlMode.PercentOutput, 0);	
         storageMotorH.configClosedloopRamp(cLR, TIMEOUT);

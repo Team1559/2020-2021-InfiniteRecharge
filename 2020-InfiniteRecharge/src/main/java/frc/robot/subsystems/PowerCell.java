@@ -42,8 +42,8 @@ public class PowerCell implements Loggable{
     private double feederP_kP = .0001;//5e-5 
     private double feederP_kD = 0;
     @Log
-    private double feeder_kI = 0;//1e-6
-    private double feeder_kF = 0;
+    private double feederP_kI = 0;//1e-6
+    private double feederP_kF = 0;
     private SupplyCurrentLimitConfiguration supplyCurrentLimitConfiguration = new SupplyCurrentLimitConfiguration(true, 100, 20, 1000);
     private boolean feederButton = false;
     

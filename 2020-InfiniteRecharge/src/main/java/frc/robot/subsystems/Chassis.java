@@ -80,9 +80,9 @@ public class Chassis implements Loggable{
     private boolean shift = false;
 
     @Log
-    private double kP = 0.0001;
+    private double kP = 0.0001; //0.0001
     @Log
-    private double kI = 0.0000001;
+    private double kI = 0.0000001; //0.0 (We don't really need I for now, maybe later)
     @Log
     private double kD = 0.0000;
     @Log
@@ -101,9 +101,20 @@ public class Chassis implements Loggable{
         ShiftDown = down;
     }
 
+    @Log
+    private boolean allowPIDChanges;
+
+    @Config
+    public void changeAllThePIDs(boolean cATPIDs)
+    {
+        allowPIDChanges = cATPIDs;
+    }
+
     @Config
     public void set_PID(double P, double I, double D, double F, double imax, double izone)
     {
+        if(allowPIDChanges)
+        {
         kP = P;
         kI = I;
         kD = D;
@@ -137,6 +148,7 @@ public class Chassis implements Loggable{
         sparkMax3PID.setIMaxAccum(imax, 0);
         sparkMax4PID.setIZone(izone, 0);
         sparkMax4PID.setIMaxAccum(imax, 0);
+        }
     }
 
     @Config

@@ -168,7 +168,7 @@ public class Robot extends TimedRobot implements Loggable {
     m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
     initialize();
-    if(ImuEnable && ImuInitialized){
+    if(ImuEnable){
       imu.zeroYaw();
     }
   }
@@ -196,31 +196,32 @@ public class Robot extends TimedRobot implements Loggable {
       initialize();
      
   }
+
   @Override
   public void teleopPeriodic()
   {
-    if(chassisEnable && chassisInitialized){    
+    if(chassisEnable){    
     driveTrain.DriveSystem(oi.pilot);
     }
     
-    if(ImuEnable && ImuInitialized){
+    if(ImuEnable){
       imu.getvalues();
     }
-    if(climberEnable && climberInitialized){
+    if(climberEnable){
       climber.drive();
     }
-    if(powerCellEnable && powerCellInitialized){
+    if(powerCellEnable){
       powerCell.intake();
       powerCell.shoot();
       powerCell.storage();
       powerCell.feeder();
   }
       //Compressor
-     if(compressorEnable && compressorInitialized){
+     if(compressorEnable){
       compressorControl.run();
     }
     //All spinner logic is in Spinner.java
-    if(colorEnable && colorInitialized){
+    if(colorEnable){
       spinner.spin(compressorEnable);
     }
     
@@ -237,7 +238,7 @@ public class Robot extends TimedRobot implements Loggable {
   @Override
   public void testPeriodic() 
   {
-    if(chassisEnable && chassisInitialized){
+    if(chassisEnable){
       driveTrain.DriveSystem(oi.pilot,m_driveTrain);
     }
   }
@@ -245,7 +246,7 @@ public class Robot extends TimedRobot implements Loggable {
   @Override
   public void disabledInit()
   {
-    if(compressorEnable && compressorInitialized){
+    if(compressorEnable){
       compressorControl.disable();
     }
   }
@@ -270,7 +271,7 @@ public class Robot extends TimedRobot implements Loggable {
       powerCell.init(oi);
       powerCellInitialized = true;
     }
-    if(chassisEnable && chassisInitialized == false)
+    if(chassisEnable)
     {
       driveTrain.Init(oi, imu);
       chassisInitialized = true;
@@ -284,7 +285,7 @@ public class Robot extends TimedRobot implements Loggable {
 
     if(camera1Enable && camera1Initialized == false){
       camera1.init();
-      camera1Initialized = true;
+      camera1Enable = true;
     }
     
     if(camera2Enable && camera2Initialized == false){

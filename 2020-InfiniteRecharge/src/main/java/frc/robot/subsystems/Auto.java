@@ -34,10 +34,12 @@ public class Auto implements Loggable {
     }
 
     public void AutoPeriodic(Chassis driveTrain, PowerCell powerCell) {
+        
         timer++;
         Pose2d odometry = driveTrain.updateOdometry();
         switch (state) {
         case Wait:
+            System.out.println("We're waiting");
             if (timer / 50.0 >= initialWait) {
                 timer = 0;
                 state = State.DriveToGoal;
@@ -45,6 +47,7 @@ public class Auto implements Loggable {
             break;
 
         case DriveToGoal:
+            System.out.println("Driving to Goal");
             driveTrain.move(.1, 0);
             powerCell.startShooter();
             if (odometry.getTranslation().getX() >= 3 || timer / 50.0 >= 4) {
@@ -54,6 +57,7 @@ public class Auto implements Loggable {
             break;
 
         case Shoot:
+        System.out.println("It's Shootin Time");
             driveTrain.move(0, 0);
             powerCell.startWithoutButton();
             if (timer / 50.0 >= 2.0) {
@@ -64,6 +68,7 @@ public class Auto implements Loggable {
             break;
 
         case Stop:
+        System.out.println("It's Stopped");
             driveTrain.move(0, 0);
             break;
         }

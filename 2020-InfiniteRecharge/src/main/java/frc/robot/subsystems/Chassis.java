@@ -42,6 +42,9 @@ public class Chassis implements Loggable{
     private double shiftUp;
     @Log
     public double ShiftDown;
+    private boolean isShifted;
+    @Log
+    private boolean manualShift;
     private Solenoid gearShifter;
     private OperatorInterface oi;
     private IMU imu;
@@ -56,7 +59,8 @@ public class Chassis implements Loggable{
     private MotorWidget widget4;
     private SCGWidget widget5;
     private SCGWidget widget6;
-
+    private boolean button6 = false;
+    
     private SpeedControllerGroup leftMotors;
     private SpeedControllerGroup rightMotors;
     @Log.Graph
@@ -96,6 +100,10 @@ public class Chassis implements Loggable{
 
     @Log
     private double deadband = 0.01;
+    @Config.ToggleSwitch
+    public void Manual_Shifting(boolean enable){
+        manualShift = enable;
+    }
 
     @Config.ToggleSwitch
     public void Enable_Shifting(boolean enable){
@@ -264,10 +272,15 @@ public class Chassis implements Loggable{
         motor2Current = sparkMax2.getOutputCurrent();
         motor3Current = sparkMax3.getOutputCurrent();
         motor4Current = sparkMax4.getOutputCurrent();
-        if(shift){
-        gearShift();        //System.out.println(mode);
+
+       if(shift && manualShift){
+            manualShift();
         }
-        else{gearShifter.set(false);
+        else if(shift){
+            gearShift();    
+        }
+        else{
+            gearShifter.set(false);
         }
         switch(mode)
         {
@@ -341,6 +354,26 @@ public class Chassis implements Loggable{
              break;
         }
     }
+
+    public void manualShift(){
+        button6 = oi.pilot.getRawButtonPressed(6);
+        if(button6 && isShifted){
+            isShifted= false;
+        }
+        else if(button6){
+            isShifted = true;
+        }
+        if(isShifted){
+            gearShifter.set(true);
+        } 
+        else{
+            gearShifter.set(false);
+        }
+    }
+
+
+
+
 
     public void gearShift()
     {

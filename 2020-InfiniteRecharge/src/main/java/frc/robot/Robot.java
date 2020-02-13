@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Spinner;
 import frc.robot.components.Camera;
 import frc.robot.components.IMU;
+import frc.robot.subsystems.Auto;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Climber;
 import frc.robot.components.CompressorControl;
@@ -68,6 +69,9 @@ public class Robot extends TimedRobot implements Loggable {
   private boolean powerCellEnable = false;
   private boolean powerCellInitialized = false;
 
+  private boolean autoEnable = false;
+  private boolean autoInitialized = false;
+
   //constructors
   public Climber climber = new Climber();
   public PowerCell powerCell = new PowerCell();
@@ -78,8 +82,15 @@ public class Robot extends TimedRobot implements Loggable {
   private IMU imu = new IMU();
   private Camera camera1 = new Camera(0);
   private Camera camera2 = new Camera(1);
+  private Auto auto = new Auto();
   
   //oblog feature flags
+  @Config.ToggleSwitch
+  public void Enable_Auto(boolean enable){
+  autoEnable = enable;
+
+  }
+
   @Config.ToggleSwitch 
   public void Enable_Compressor(boolean enable){
     compressorEnable = enable;
@@ -125,6 +136,8 @@ public class Robot extends TimedRobot implements Loggable {
   public void Enable_Color(boolean enable){
     colorEnable = enable;
   }
+  @Log
+  private String autoStatice = "Not Initialised";
   @Override
   public void robotInit() {
   Logger.configureLoggingAndConfig(this, false); 
@@ -150,6 +163,7 @@ public class Robot extends TimedRobot implements Loggable {
   @Override
   public void autonomousInit()
   {
+    
     m_autoSelected = m_chooser.getSelected();
     m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
@@ -162,11 +176,15 @@ public class Robot extends TimedRobot implements Loggable {
   @Override
   public void autonomousPeriodic()
   {
-    if(ImuEnable){
+    if(autoInitialized && autoEnable){
+      auto.AutoPeriodic(driveTrain, powerCell);
+    }
+
+    if(ImuEnable && ImuInitialized){
       imu.getvalues();
     }
     //Compressor
-    if(compressorEnable){
+    if(compressorEnable && compressorInitialized){
       compressorControl.run();
     }
   }
@@ -241,6 +259,7 @@ public class Robot extends TimedRobot implements Loggable {
   
   public void initialize()
   {
+    
 
     if(ImuEnable && ImuInitialized == false)
     {
@@ -282,5 +301,13 @@ public class Robot extends TimedRobot implements Loggable {
       compressorControl.init();
       compressorInitialized = true;
     }
+    if(autoEnable && autoInitialized == false && ImuInitialized && chassisInitialized){
+      auto.AutoInit(driveTrain);
+      autoStatice = "Auto initialised";
+      autoInitialized = true;
+    }
+    else if(ImuInitialized == false || chassisInitialized == false){
+      autoStatice = "Either the IMU or the drive train aren't initialized";
+  }
   }
 }

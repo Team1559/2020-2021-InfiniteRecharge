@@ -45,6 +45,7 @@ public class Chassis implements Loggable{
     private boolean isShifted;
     @Log
     private boolean manualShift;
+    @Log.Exclude
     private Solenoid gearShifter;
     private OperatorInterface oi;
     private IMU imu;
@@ -90,13 +91,13 @@ public class Chassis implements Loggable{
     private boolean shift = false;
 
     @Log
-    private double kP = 0.0001;
+    private double kP = 5e-4;
     @Log
     private double kI = 0.0000001;
     @Log
     private double kD = 0.0000;
     @Log
-    private double kF = 0.000125; //0.000125
+    private double kF = 0; //0.000125
 
     @Log
     private double deadband = 0.01;
@@ -115,7 +116,7 @@ public class Chassis implements Loggable{
         ShiftDown = down;
     }
 
-    @Config
+    //@Config
     public void set_PID(double P, double I, double D, double F, double imax, double izone)
     {
         kP = P;
@@ -174,8 +175,8 @@ public class Chassis implements Loggable{
         shiftUp  =5000;
         ShiftDown = 3500;
         oi = oInterface;
-        sparkMax1 = new CANSparkMax(11, MotorType.kBrushless); //ID 11
-        sparkMax2 = new CANSparkMax(12, MotorType.kBrushless); //ID 12
+        sparkMax1 = new CANSparkMax(16, MotorType.kBrushless); //ID 11
+        sparkMax2 = new CANSparkMax(15, MotorType.kBrushless); //ID 12
         // sparkMax3 = new CANSparkMax(13, MotorType.kBrushless); //ID 13
         // sparkMax4 = new CANSparkMax(14, MotorType.kBrushless); //ID 14
         lEncoder = new CANEncoder(sparkMax1);
@@ -394,7 +395,7 @@ public class Chassis implements Loggable{
     }
     public void move(double speed, double rotation)
     {
-            driveTrain.arcadeDrive(speed,rotation);
+            driveTrain.arcadeDrive(speed,rotation, false);
     }
 
     public void initOdometry()

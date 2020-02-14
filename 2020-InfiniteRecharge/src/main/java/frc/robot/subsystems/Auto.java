@@ -27,6 +27,10 @@ public class Auto implements Loggable {
     private void setInitialWait(double newWait) {
         initialWait = newWait;
     }
+    @Config
+    public void setState(State chrisIsAwesome) {
+        state = chrisIsAwesome;
+    }
 
     public void AutoInit(Chassis driveTrain) {
 
@@ -48,8 +52,8 @@ public class Auto implements Loggable {
 
         case DriveToGoal:
             System.out.println("Driving to Goal");
-            driveTrain.move(.1, 0);
-            powerCell.startShooter();
+            driveTrain.move(.2, 0);
+            //powerCell.startShooter();
             if (odometry.getTranslation().getX() >= 3 || timer / 50.0 >= 4) {
                 timer = 0;
                 state = State.Shoot;
@@ -59,17 +63,22 @@ public class Auto implements Loggable {
         case Shoot:
         System.out.println("It's Shootin Time");
             driveTrain.move(0, 0);
-            powerCell.startWithoutButton();
+           // powerCell.startWithoutButton();
             if (timer / 50.0 >= 2.0) {
                 timer = 0;
                 state = State.Stop;
-                powerCell.stopWithoutButton();
+                //powerCell.stopWithoutButton();
             }
             break;
 
         case Stop:
         System.out.println("It's Stopped");
             driveTrain.move(0, 0);
+            if(timer/50.0>=5)
+            {
+                timer = 0;
+                state = State.Wait;
+            }
             break;
         }
     }

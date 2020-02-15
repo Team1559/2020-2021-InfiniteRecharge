@@ -54,7 +54,7 @@ public class PowerCell implements Loggable{
     private TalonSRX storageMotorH;
     private TalonFX shooter;
     private TalonSRX intakeMotor;
-    private TalonSRX feederMotor;
+    private TalonFX feederMotor;
     @Log.Graph
     private double shooterTemp;
     @Log.Graph
@@ -123,7 +123,7 @@ public class PowerCell implements Loggable{
         intakeMotor = new TalonSRX(Wiring.intakeMotor);
         storageMotorH = new TalonSRX(Wiring.storageMotorH);
         storageMotorL = new TalonSRX(Wiring.storageMotorL);
-        feederMotor = new TalonSRX(Wiring.feederMotor);
+        feederMotor = new TalonFX(Wiring.feederMotor);
         oi = operatorinterface;
         //Intake Motor Config
 
@@ -173,10 +173,6 @@ public class PowerCell implements Loggable{
         feederMotor.configNominalOutputReverse(0, TIMEOUT);
         feederMotor.configPeakOutputForward(+1, TIMEOUT);
         feederMotor.configPeakOutputReverse(-1, TIMEOUT);
-        feederMotor.enableCurrentLimit(true);
-		feederMotor.configPeakCurrentLimit(75,TIMEOUT);
-		feederMotor.configContinuousCurrentLimit(40, TIMEOUT);
-		feederMotor.configPeakCurrentDuration(1800,TIMEOUT);
         feederMotor.setNeutralMode(NeutralMode.Brake);
         feederMotor.configSupplyCurrentLimit(feederLimit);
 

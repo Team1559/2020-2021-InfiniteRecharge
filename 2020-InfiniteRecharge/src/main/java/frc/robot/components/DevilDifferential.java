@@ -103,6 +103,7 @@ public class DevilDifferential extends RobotDriveBase implements AutoCloseable {
   private double m_quickStopAccumulator;
   private double m_rightSideInvertMultiplier = -1.0;
   private boolean m_reported;
+  private double maxOutput = 0.0;
 
   /**
    * Construct a DifferentialDrive.
@@ -177,6 +178,7 @@ public class DevilDifferential extends RobotDriveBase implements AutoCloseable {
 
     xSpeed = MathUtil.clamp(xSpeed, -1.0, 1.0);
     xSpeed = applyDeadband(xSpeed, m_deadband);
+    
 
     zRotation = MathUtil.clamp(zRotation, -1.0, 1.0);
     zRotation = applyDeadband(zRotation, m_deadband);
@@ -190,6 +192,8 @@ public class DevilDifferential extends RobotDriveBase implements AutoCloseable {
 
     double leftMotorOutput;
     double rightMotorOutput;
+
+    
 
     double maxInput = Math.copySign(Math.max(Math.abs(xSpeed), Math.abs(zRotation)), xSpeed);
 
@@ -212,11 +216,14 @@ public class DevilDifferential extends RobotDriveBase implements AutoCloseable {
         rightMotorOutput = xSpeed - zRotation;
       }
     }
+    System.out.println("leftMotorOutput: " + leftMotorOutput);
+    System.out.println("rightMotorOutput: " + rightMotorOutput);
 
     m_leftMotor.setReference(MathUtil.clamp(leftMotorOutput, -1.0, 1.0) * m_maxOutput,ControlType.kVelocity);
-    double maxOutput = m_maxOutput * m_rightSideInvertMultiplier;
+    maxOutput = m_maxOutput * m_rightSideInvertMultiplier;
     m_rightMotor.setReference(MathUtil.clamp(rightMotorOutput, -1.0, 1.0) * maxOutput,ControlType.kVelocity);
-    System.out.println(MathUtil.clamp(rightMotorOutput, -1.0, 1.0) * maxOutput);
+    System.out.println("Actual Right Motor Command" + MathUtil.clamp(rightMotorOutput, -1.0, 1.0) * maxOutput);
+    System.out.println("Actual Left Motor Command" + MathUtil.clamp(leftMotorOutput, -1.0, 1.0) * m_maxOutput);
     feed();
   }
 

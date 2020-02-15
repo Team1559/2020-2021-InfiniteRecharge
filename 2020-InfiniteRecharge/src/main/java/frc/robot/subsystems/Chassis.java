@@ -116,7 +116,7 @@ public class Chassis implements Loggable{
         ShiftDown = down;
     }
 
-    //@Config
+    @Config
     public void set_PID(double P, double I, double D, double F, double imax, double izone)
     {
         kP = P;
@@ -161,12 +161,12 @@ public class Chassis implements Loggable{
     }
 
     @Log
-    private double setSpeed = 0;
+    private double setSpeed;
 
     @Config
     public void setMySpeed(double sS)
     {
-        setSpeed = sS;
+        setSpeed = sS/5600; //Divided by max output revolutions
     }
     
     public void Init(OperatorInterface oInterface, IMU Imu)
@@ -297,15 +297,18 @@ public class Chassis implements Loggable{
              }
              else
              {
-                double forwardSpeed = -(oi.getPilotY());
-                double turnSpeed = oi.getPilotZ();
-                if(forwardSpeed >= 0.5)
+                double forwardSpeedJoystick = -(oi.getPilotY());
+                double forwardSpeed;
+                double turnSpeedJoystick = 0;//oi.getPilotZ();
+                double turnSpeed;
+                if(forwardSpeedJoystick >= 0.5)
                     forwardSpeed = setSpeed;
-                else if(forwardSpeed <= -0.5)
+                else if(forwardSpeedJoystick <= -0.5)
                     forwardSpeed = -setSpeed;
                 else
                     forwardSpeed = 0;
-                driveTrain.arcadeDrive(forwardSpeed, turnSpeed);
+                //System.out.println("forwardSpeed: " + forwardSpeed);
+                driveTrain.arcadeDrive(forwardSpeed, turnSpeedJoystick,false);
                 
              }
              

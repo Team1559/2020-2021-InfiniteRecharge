@@ -30,7 +30,7 @@ public class Chassis implements Loggable{
     private String Gear = "Low";
     private CANEncoder lEncoder;
     private CANEncoder rEncoder;
-    private CANSparkMax sparkMax1; // TBD
+    private CANSparkMax sparkMax1;
     private CANPIDController sparkMax1PID;
     private CANSparkMax sparkMax2;
     private CANPIDController sparkMax2PID;

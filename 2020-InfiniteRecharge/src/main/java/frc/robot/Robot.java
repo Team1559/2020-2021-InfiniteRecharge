@@ -181,6 +181,7 @@ public class Robot extends TimedRobot implements Loggable {
   @Override
   public void teleopPeriodic()
   {
+    m_driveTrain = m_driveChooser.getSelected();
     if(chassisEnable && chassisInitialized){    
     driveTrain.DriveSystem(oi.pilot);
     }

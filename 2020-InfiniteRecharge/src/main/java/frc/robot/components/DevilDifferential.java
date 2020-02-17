@@ -213,8 +213,9 @@ public class DevilDifferential extends RobotDriveBase implements AutoCloseable {
       }
     }
 
-    m_leftMotor.setReference(MathUtil.clamp(leftMotorOutput, -1.0, 1.0) * m_maxOutput,ControlType.kVelocity);
     double maxOutput = m_maxOutput * m_rightSideInvertMultiplier;
+    System.out.println(MathUtil.clamp(leftMotorOutput, -1.0, 1.0) * m_maxOutput+ " "+ MathUtil.clamp(rightMotorOutput, -1.0, 1.0) * maxOutput);
+    m_leftMotor.setReference(MathUtil.clamp(leftMotorOutput, -1.0, 1.0) * m_maxOutput,ControlType.kVelocity);
     m_rightMotor.setReference(MathUtil.clamp(rightMotorOutput, -1.0, 1.0) * maxOutput,ControlType.kVelocity);
 
     feed();

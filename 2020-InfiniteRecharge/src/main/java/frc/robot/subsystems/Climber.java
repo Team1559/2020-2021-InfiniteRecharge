@@ -54,7 +54,7 @@ public class Climber implements Loggable {
     winch.setNeutralMode(NeutralMode.Brake);
 
     barRider.set(ControlMode.PercentOutput, 0);	
-    barRider.configClosedloopRamp(cLR, TIMEOUT);
+    barRider.configClosedloopRamp(cLR, TIMEOUT);     
     barRider.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
     barRider.configNominalOutputForward(0, TIMEOUT);
     barRider.configNominalOutputReverse(0, TIMEOUT);

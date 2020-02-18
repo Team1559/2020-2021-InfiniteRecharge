@@ -40,7 +40,7 @@ public class PowerCell implements Loggable{
     private double storage_kI = 0;
     private double storage_kF = 0;
     @Log
-    private double feederP_kP = .0001;//5e-5 
+    private double feederP_kP = 0.001;//5e-5 
     private double feederP_kD = 0;
     @Log
     private double feederP_kI = 0;//1e-6
@@ -64,11 +64,11 @@ public class PowerCell implements Loggable{
     @Log
     private double shooterRpms = 100;
     @Log
-    private double intakeRpms = 0.4;
+    private double intakeRpms = 1;
     @Log
     private double storageRpms = 0.8; //%output for now
     @Log
-    private double feederRpms = 0.5;
+    private double feederRpms = 0.2;
     @Log 
     double feederPosition = 0.0;
     private boolean shooterOn = false;
@@ -189,8 +189,8 @@ public class PowerCell implements Loggable{
         storageMotorH.configPeakOutputForward(+1, TIMEOUT);
         storageMotorH.configPeakOutputReverse(-1, TIMEOUT);
         storageMotorH.enableCurrentLimit(true);
-		storageMotorH.configPeakCurrentLimit(10,TIMEOUT);
-		storageMotorH.configContinuousCurrentLimit(10, TIMEOUT);
+		storageMotorH.configPeakCurrentLimit(30,TIMEOUT);
+		storageMotorH.configContinuousCurrentLimit(30, TIMEOUT);
 		storageMotorH.configPeakCurrentDuration(1800,TIMEOUT);
         storageMotorH.setNeutralMode(NeutralMode.Brake);
 
@@ -206,15 +206,15 @@ public class PowerCell implements Loggable{
         storageMotorL.configPeakOutputForward(+1, TIMEOUT);
         storageMotorL.configPeakOutputReverse(-1, TIMEOUT);
         storageMotorL.enableCurrentLimit(true);
-		storageMotorL.configPeakCurrentLimit(10, TIMEOUT);
-		storageMotorL.configContinuousCurrentLimit(10, TIMEOUT);
+		storageMotorL.configPeakCurrentLimit(30, TIMEOUT);
+		storageMotorL.configContinuousCurrentLimit(30, TIMEOUT);
 		storageMotorL.configPeakCurrentDuration(1800,TIMEOUT);
         storageMotorL.setNeutralMode(NeutralMode.Brake);
         stopfeeder();
     }
     public void stopfeeder(){
         feederPosition = feederMotor.getSelectedSensorPosition();
-        feederMotor.set(ControlMode.Position, feederPosition);
+        feederMotor.set(TalonFXControlMode.Position, feederPosition);
     }
     public void stopStorage(){
         storageMotorH.set(ControlMode.PercentOutput, 0);
@@ -231,7 +231,7 @@ public class PowerCell implements Loggable{
         {
            if(!feederButton)
            {
-                feederMotor.set(ControlMode.PercentOutput, feederRpms);
+                feederMotor.set(TalonFXControlMode.PercentOutput, -feederRpms);
                 feederButton = true;
            }
         }
@@ -239,6 +239,7 @@ public class PowerCell implements Loggable{
         {
             if(feederButton)
             {
+                System.out.println("Stopped");
                 stopfeeder();
                 feederButton = false;
             }
@@ -246,8 +247,8 @@ public class PowerCell implements Loggable{
     }
     public void storage(){
         if(oi.copilot.getRawButton(3)){
-            storageMotorH.set(ControlMode.PercentOutput, -storageRpms);// Will need to be velocity
-            storageMotorL.set(ControlMode.PercentOutput, storageRpms);// Will need to be velocity
+            storageMotorH.set(ControlMode.PercentOutput, (2.0/3.0)*(storageRpms));// Will need to be velocity
+            storageMotorL.set(ControlMode.PercentOutput, -storageRpms);// Will need to be velocity
         }
         else{
            stopStorage();
@@ -255,7 +256,7 @@ public class PowerCell implements Loggable{
     }
 	public void intake() {
         if(oi.copilot.getRawButton(3)){
-            intakeMotor.set(ControlMode.PercentOutput, intakeRpms);// Will need to be velocity
+            intakeMotor.set(ControlMode.PercentOutput, -intakeRpms);// Will need to be velocity
         }
         else{
             stopIntake();
@@ -268,7 +269,7 @@ public class PowerCell implements Loggable{
         statorCurrent = shooter.getStatorCurrent();
         if(oi.pilot.getRawButton(6)){
            
-            shooter.set(ControlMode.Velocity, shooterRpms);
+            shooter.set(ControlMode.Velocity, -shooterRpms);
         }
         else{
             stopShooter();

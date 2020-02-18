@@ -24,7 +24,7 @@ import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;
 
-public class Chassis implements Loggable{
+public class Chassis implements Loggable {
 
     @Log
     private String Gear = "Low";
@@ -52,7 +52,7 @@ public class Chassis implements Loggable{
     private DifferentialDriveOdometry m_odometry;
     private DevilDifferential driveTrain;
 
-    private ShuffleboardTab tab; //Is used, just isn't recognizing that it is being used
+    private ShuffleboardTab tab; // Is used, just isn't recognizing that it is being used
 
     private MotorWidget widget1;
     private MotorWidget widget2;
@@ -61,7 +61,7 @@ public class Chassis implements Loggable{
     private SCGWidget widget5;
     private SCGWidget widget6;
     private boolean button6 = false;
-    
+
     private SpeedControllerGroup leftMotors;
     private SpeedControllerGroup rightMotors;
     @Log.Graph
@@ -91,46 +91,35 @@ public class Chassis implements Loggable{
     private boolean shift = false;
 
     @Log
-    private double kP = 0.0001; //0.0001
+    private double kP = 0.0002;
     @Log
-    private double kI = 0.0000001; //0.0 (We don't really need I for now, maybe later)
+    private double kI = 0.0;
     @Log
     private double kD = 0.0000;
     @Log
-    private double kF = 0.000125; //0.000125
+    private double kF = 0.00018;
 
     @Log
     private double deadband = 0.01;
 
     @Config.ToggleSwitch
-    public void Enable_Shifting(boolean enable){
+    public void Enable_Shifting(boolean enable) {
         shift = enable;
     }
+
     @Config
-    public void Shifting_points(double up, double down){
+    public void Shifting_points(double up, double down) {
         shiftUp = up;
         ShiftDown = down;
     }
 
-    @Log
-    private boolean allowPIDChanges = true;
-
-    @Config.ToggleSwitch
-    public void changeAllThePIDs(boolean cATPIDs)
-    {
-        allowPIDChanges = cATPIDs;
-    }
-
     @Config
-    public void set_PID(double P, double I, double D, double F, double imax, double izone)
-    {
-        if(allowPIDChanges)
-        {
+    public void set_PID(double P, double I, double D, double F, double imax, double izone) {
         kP = P;
         kI = I;
         kD = D;
         kF = F;
-        
+
         sparkMax1PID.setP(P);
         sparkMax2PID.setP(P);
         sparkMax3PID.setP(P);
@@ -159,12 +148,10 @@ public class Chassis implements Loggable{
         sparkMax3PID.setIMaxAccum(imax, 0);
         sparkMax4PID.setIZone(izone, 0);
         sparkMax4PID.setIMaxAccum(imax, 0);
-        }
     }
 
     @Config
-    public void setDeadband(double dB)
-    {
+    public void setDeadband(double dB) {
         deadband = dB;
     }
 
@@ -172,31 +159,29 @@ public class Chassis implements Loggable{
     private double setSpeed = 0;
 
     @Config
-    public void setMySpeed(double sS)
-    {
-        setSpeed = sS/5600; //Divided by max output revolutions
+    public void setMySpeed(double sS) {
+        setSpeed = sS / 5600; // Divided by max output revolutions
     }
-    
+
     @Log
     private boolean isSquaredInputs;
 
     @Config
-    public void wantInputsSquared(boolean iS)
-    {
+    public void wantInputsSquared(boolean iS) {
         isSquaredInputs = iS;
     }
-    public void Init(OperatorInterface oInterface, IMU Imu)
-    {
+
+    public void Init(OperatorInterface oInterface, IMU Imu) {
         imu = Imu;
-        shiftUp  =5000;
-        //setSpeed = sS;
+        shiftUp = 5000;
+        // setSpeed = sS;
         shiftUp = 5000;
         ShiftDown = 3500;
         oi = oInterface;
-        sparkMax1 = new CANSparkMax(16, MotorType.kBrushless); //ID 11
-        sparkMax2 = new CANSparkMax(15, MotorType.kBrushless); //ID 12
-        sparkMax3 = new CANSparkMax(13, MotorType.kBrushless); //ID 13
-        sparkMax4 = new CANSparkMax(14, MotorType.kBrushless); //ID 14
+        sparkMax1 = new CANSparkMax(11, MotorType.kBrushless); // ID 11
+        sparkMax2 = new CANSparkMax(12, MotorType.kBrushless); // ID 12
+        sparkMax3 = new CANSparkMax(13, MotorType.kBrushless); // ID 13
+        sparkMax4 = new CANSparkMax(14, MotorType.kBrushless); // ID 14
         lEncoder = new CANEncoder(sparkMax1);
         rEncoder = new CANEncoder(sparkMax2);
         sparkMax3.follow(sparkMax1);
@@ -204,7 +189,7 @@ public class Chassis implements Loggable{
 
         leftMotors = new SpeedControllerGroup(sparkMax1); // (sparkMax1, sparkMax3) for working code
         rightMotors = new SpeedControllerGroup(sparkMax2); // (sparkMax2, sparkMax4) for working code
-        
+
         widget1 = new MotorWidget(sparkMax1, "Motor 1");
         widget2 = new MotorWidget(sparkMax2, "Motor 2");
         widget3 = new MotorWidget(sparkMax3, "Motor 3");
@@ -213,7 +198,6 @@ public class Chassis implements Loggable{
         widget6 = new SCGWidget(rightMotors, "Right Motors");
 
         gearShifter = new Solenoid(Wiring.gearShifterSolenoid);
-    
 
         sparkMax1PID = sparkMax1.getPIDController();
         sparkMax1PID.setReference(0, ControlType.kVelocity);
@@ -239,31 +223,35 @@ public class Chassis implements Loggable{
         sparkMax3.setClosedLoopRampRate(1);
         sparkMax4.setClosedLoopRampRate(1);
 
-        sparkMax1PID.setP(0.00001);
-        sparkMax1PID.setI(0.0000001);
-        sparkMax1PID.setD(0);
+        sparkMax1PID.setP(kP);
+        sparkMax1PID.setI(kI);
+        sparkMax1PID.setD(kD);
+        sparkMax1PID.setFF(kF);
         sparkMax1PID.setIZone(10, 0);
         sparkMax1PID.setIMaxAccum(20, 0);
-        sparkMax1PID.setIAccum(0); //may need to be set\\
+        sparkMax1PID.setIAccum(0); // may need to be set
 
-        sparkMax2PID.setP(0.00001);
-        sparkMax2PID.setI(0.000000);
-        sparkMax2PID.setD(0);
+        sparkMax2PID.setP(kP);
+        sparkMax2PID.setI(kI);
+        sparkMax2PID.setD(kD);
+        sparkMax2PID.setFF(kF);
         sparkMax2PID.setIZone(10, 0);
         sparkMax2PID.setIMaxAccum(20, 0);
 
-        sparkMax3PID.setP(0.00001);
-        sparkMax3PID.setI(0.000000);
-        sparkMax3PID.setD(0);
+        sparkMax3PID.setP(kP);
+        sparkMax3PID.setI(kI);
+        sparkMax3PID.setD(kD);
+        sparkMax3PID.setFF(kF);
         sparkMax3PID.setIZone(10, 0);
         sparkMax3PID.setIMaxAccum(20, 0);
 
-        sparkMax4PID.setP(0.00001);
-        sparkMax4PID.setI(0.000000);
-        sparkMax4PID.setD(0);
+        sparkMax4PID.setP(kP);
+        sparkMax4PID.setI(kI);
+        sparkMax4PID.setD(kD);
+        sparkMax4PID.setFF(kF);
         sparkMax4PID.setIZone(10, 0);
         sparkMax4PID.setIMaxAccum(20, 0);
-        
+
         leftMotors.setInverted(true);
         rightMotors.setInverted(true);
 
@@ -272,21 +260,18 @@ public class Chassis implements Loggable{
         sparkMax3.setSmartCurrentLimit(40);
         sparkMax4.setSmartCurrentLimit(40);
 
-        
         driveTrain = new DevilDifferential(sparkMax1PID, sparkMax2PID);
-        driveTrain.setMaxOutput(5600); //NEO free speed 5700 RPM
+        driveTrain.setMaxOutput(5600); // NEO free speed 5700 RPM
 
         tab = Shuffleboard.getTab("Chassis");
 
-        
     }
-    public void DriveSystem(Joystick drive)
-    {
+
+    public void DriveSystem(Joystick drive) {
         DriveSystem(drive, "Arcade Drive");
     }
 
-    public void DriveSystem(Joystick drive, String mode)
-    {   
+    public void DriveSystem(Joystick drive, String mode) {
         // graphing the motor parameters
         motor1Temp = sparkMax1.getMotorTemperature();
         motor2Temp = sparkMax2.getMotorTemperature();
@@ -297,147 +282,128 @@ public class Chassis implements Loggable{
         motor3Current = sparkMax3.getOutputCurrent();
         motor4Current = sparkMax4.getOutputCurrent();
 
-       if(shift && manualShift){
+        if (shift && manualShift) {
             manualShift();
-        }
-        else if(shift){
-            gearShift();    
-        }
-        else{
+        } else if (shift) {
+            gearShift();
+        } else {
             gearShifter.set(false);
         }
-        switch(mode)
-        {
-             case "Tank Drive":
-            driveTrain.tankDrive(-(oi.getPilotX()),-(oi.pilot.getRawAxis(5)), isSquaredInputs);
-            
-             break;
+        switch (mode) {
+        case "Tank Drive":
+            driveTrain.tankDrive(-(oi.getPilotX()), -(oi.pilot.getRawAxis(5)), isSquaredInputs);
 
-             case "Arcade Drive":
-             if(drive == null)
-             {
-                 System.out.println("Your controller is Null dimwit!!!!");
-             }
-             else
-             {
+            break;
+
+        case "Arcade Drive":
+            if (drive == null) {
+                System.out.println("Your controller is Null dimwit!!!!");
+            } else {
                 double forwardSpeed = (oi.getPilotY());
                 double turnSpeed = -(oi.getPilotZ());
-                //if(forwardSpeed >= 0.5)
-                    //forwardSpeed = setSpeed;
-                //else if(forwardSpeed <= -0.5)
-                    //forwardSpeed = -setSpeed;
-                //else
-                    //forwardSpeed = 0;
+                // if(forwardSpeed >= 0.5)
+                // forwardSpeed = setSpeed;
+                // else if(forwardSpeed <= -0.5)
+                // forwardSpeed = -setSpeed;
+                // else
+                // forwardSpeed = 0;
                 driveTrain.arcadeDrive(forwardSpeed, turnSpeed, isSquaredInputs);
-                
-             }
-             
-             break;
 
-             case "Curvature Drive":
-             driveTrain.curvatureDrive(-(oi.getPilotY()), oi.getPilotZ(), true);
-             
-             break;
+            }
 
-             case "Shuffle Drive Individual":
-             widget1.changeOutput();
-             widget2.changeOutput();
-             widget3.changeOutput();
-             widget4.changeOutput();
-             break;
+            break;
 
-             case "Shuffle Drive Control Groups":
-             widget5.changeOutput();
-             widget6.changeOutput();
-             break;
+        case "Curvature Drive":
+            driveTrain.curvatureDrive(-(oi.getPilotY()), oi.getPilotZ(), true);
 
-             case "Scott Drive":
-             //Axis 0 for left joystick left to right
-             //Axis 2 for left bumper
-             //Axis 3 for right bumper
-             double forwardSpeed = oi.pilot.getRawAxis(3);
-             double backwardSpeed = oi.pilot.getRawAxis(2);
-             double sideSpeed = -oi.getPilotX();
-             if(forwardSpeed <= deadband)
-             {
-                 forwardSpeed = 0;
-             }
-             if(backwardSpeed <= deadband)
-             {
-                 backwardSpeed = 0;
-             }
-             if(sideSpeed >= -deadband && sideSpeed <= deadband)
-             {
-                 sideSpeed = 0;
-             }
-             if(backwardSpeed > forwardSpeed)
-             {
-                 sideSpeed = -sideSpeed;
-             }
-             driveTrain.arcadeDrive(forwardSpeed-backwardSpeed, sideSpeed);
-             break;
+            break;
+
+        case "Shuffle Drive Individual":
+            widget1.changeOutput();
+            widget2.changeOutput();
+            widget3.changeOutput();
+            widget4.changeOutput();
+            break;
+
+        case "Shuffle Drive Control Groups":
+            widget5.changeOutput();
+            widget6.changeOutput();
+            break;
+
+        case "Scott Drive":
+            // Axis 0 for left joystick left to right
+            // Axis 2 for left bumper
+            // Axis 3 for right bumper
+            double forwardSpeed = oi.pilot.getRawAxis(3);
+            double backwardSpeed = oi.pilot.getRawAxis(2);
+            double sideSpeed = -oi.getPilotX();
+            if (forwardSpeed <= deadband) {
+                forwardSpeed = 0;
+            }
+            if (backwardSpeed <= deadband) {
+                backwardSpeed = 0;
+            }
+            if (sideSpeed >= -deadband && sideSpeed <= deadband) {
+                sideSpeed = 0;
+            }
+            if (backwardSpeed > forwardSpeed) {
+                sideSpeed = -sideSpeed;
+            }
+            driveTrain.arcadeDrive(forwardSpeed - backwardSpeed, sideSpeed);
+            break;
         }
     }
 
-    public void manualShift(){
+    public void manualShift() {
         button6 = oi.pilot.getRawButtonPressed(6);
-        if(button6 && isShifted){
-            isShifted= false;
-        }
-        else if(button6){
+        if (button6 && isShifted) {
+            isShifted = false;
+        } else if (button6) {
             isShifted = true;
         }
-        if(isShifted){
+        if (isShifted) {
             gearShifter.set(true);
-        } 
-        else{
+        } else {
             gearShifter.set(false);
         }
     }
 
-
-
-
-
-    public void gearShift()
-    {
+    public void gearShift() {
         leftVelocity = lEncoder.getVelocity();
         rightVelocity = -(rEncoder.getVelocity());
 
-        velocity = Math.abs((leftVelocity + rightVelocity) /2);
+        velocity = Math.abs((leftVelocity + rightVelocity) / 2);
 
-        if(velocity >= shiftUp){
+        if (velocity >= shiftUp) {
             gearShifter.set(true);
             Gear = "High";
-        }
-        else if(velocity <= ShiftDown){
+        } else if (velocity <= ShiftDown) {
             gearShifter.set(false);
             Gear = "Low";
 
         }
     }
-    public void move(double speed, double rotation)
-    {
-            driveTrain.arcadeDrive(speed,rotation, false);
+
+    public void move(double speed, double rotation) {
+        sparkMax1.set(speed);
+        sparkMax2.set(-speed);
     }
 
-    public void initOdometry()
-    {
+    public void initOdometry() {
         imu.zeroYaw();
         Rotation2d yaw = new Rotation2d(imu.getYaw());
         m_odometry = new DifferentialDriveOdometry(yaw);
-        //Neccessary for advanced auto new Pose2d(0,0 new Rotation2d())
+        // Neccessary for advanced auto new Pose2d(0,0 new Rotation2d())
     }
 
-    public double R2M(double rotations)             //gear ratio: 15.2:1
-    {                                               //wheel diameter 5.8in
-        double out = rotations/15.2*5.8*Math.PI/39.37;
+    public double R2M(double rotations) // gear ratio: 15.2:1
+    { // wheel diameter 5.8in
+        double out = rotations / 15.2 * 5.8 * Math.PI / 39.37;
         return out;
     }
 
-    public Pose2d updateOdometry()
-    {
-        return m_odometry.update(new Rotation2d(imu.getYaw()), R2M(lEncoder.getPosition()), R2M(rEncoder.getPosition()));
+    public Pose2d updateOdometry() {
+        return m_odometry.update(new Rotation2d(imu.getYaw()), R2M(lEncoder.getPosition()),
+                R2M(rEncoder.getPosition()));
     }
 }
-

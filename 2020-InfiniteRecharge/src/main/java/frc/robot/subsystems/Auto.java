@@ -33,8 +33,9 @@ public class Auto implements Loggable {
     }
 
     public void AutoInit(Chassis driveTrain) {
-
+        //driveTrain.set_PID(.0002, 0, 0, .00018, 0, 0);
         driveTrain.initOdometry();
+
     }
 
     public void AutoPeriodic(Chassis driveTrain, PowerCell powerCell) {

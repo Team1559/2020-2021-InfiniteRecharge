@@ -78,43 +78,53 @@ public class PowerCell implements Loggable{
 
 	@Config
     private void Intake_PID(double kP, double kI, double kD, double Rpms){
-   
+        if(intakeMotor != null)
+        {
         intakeMotor.config_kP(0, kP);
         intakeMotor.config_kD(0, kD);
         intakeMotor.config_kI(0, kI);
         intakeRpms = Rpms;
         intake_kP = kP;
+        }
     }
 
     @Config
-        private void Shooter_PID(double kP, double kI, double kD, double Rpms){
-        shooter.config_kP(0, kP);
-        shooter.config_kD(0, kD);
-        shooter.config_kI(0, kI);
-        shooterRpms = Rpms;
-        shooter_kP = kP;
+    private void Shooter_PID(double kP, double kI, double kD, double Rpms){
+        if(shooter != null)
+        {
+            shooter.config_kP(0, kP);
+            shooter.config_kD(0, kD);
+            shooter.config_kI(0, kI);
+            shooterRpms = Rpms;
+            shooter_kP = kP;
+        }
     }
     @Config
     private void Feeder_PID(double kP, double kI, double kD, double Rpms, double idleSpeed){
-        feederMotor.config_kP(0, kP);
-        feederMotor.config_kD(0, kD);
-        feederMotor.config_kI(0, kI);
-        feederRpms = Rpms;
-        feederP_kP = kP;
+        if(feederMotor != null)
+        {
+            feederMotor.config_kP(0, kP);
+            feederMotor.config_kD(0, kD);
+            feederMotor.config_kI(0, kI);
+            feederRpms = Rpms;
+            feederP_kP = kP;
+        }
     }
     
     @Config
     private void Storage_PID(double kP, double kI, double kD, double Rpms){
-        storageMotorH.config_kP(0, kP);
-        storageMotorH.config_kD(0, kD);
-        storageMotorH.config_kI(0, kI);
-        storageMotorL.config_kP(0, kP);
-        storageMotorL.config_kD(0, kD);
-        storageMotorL.config_kI(0, kI);
-        storageRpms = Rpms;
-        storage_kP = kP;
+        if(storageMotorH != null && storageMotorL != null)
+        {
+            storageMotorH.config_kP(0, kP);
+            storageMotorH.config_kD(0, kD);
+            storageMotorH.config_kI(0, kI);
+            storageMotorL.config_kP(0, kP);
+            storageMotorL.config_kD(0, kD);
+            storageMotorL.config_kI(0, kI);
+            storageRpms = Rpms;
+            storage_kP = kP;
+        }
     }
-
     public void init(OperatorInterface operatorinterface){                                                                                                                                                                                                                                                                                                                                                        
         //Constructors
         shooter = new TalonFX(Wiring.shooterMotor);

@@ -91,20 +91,16 @@ public class Chassis implements Loggable{
     private boolean shift = false;
 
     @Log
-    private double kP = 5e-4;
+    private double kP = 0.0001; //0.0001
     @Log
-    private double kI = 0.0000001;
+    private double kI = 0.0000001; //0.0 (We don't really need I for now, maybe later)
     @Log
     private double kD = 0.0000;
     @Log
-    private double kF = 0; //0.000125
+    private double kF = 0.000125; //0.000125
 
     @Log
     private double deadband = 0.01;
-    @Config.ToggleSwitch
-    public void Manual_Shifting(boolean enable){
-        manualShift = enable;
-    }
 
     @Config.ToggleSwitch
     public void Enable_Shifting(boolean enable){
@@ -116,9 +112,20 @@ public class Chassis implements Loggable{
         ShiftDown = down;
     }
 
+    @Log
+    private boolean allowPIDChanges = true;
+
+    @Config.ToggleSwitch
+    public void changeAllThePIDs(boolean cATPIDs)
+    {
+        allowPIDChanges = cATPIDs;
+    }
+
     @Config
     public void set_PID(double P, double I, double D, double F, double imax, double izone)
     {
+        if(allowPIDChanges)
+        {
         kP = P;
         kI = I;
         kD = D;
@@ -126,32 +133,33 @@ public class Chassis implements Loggable{
         
         sparkMax1PID.setP(P);
         sparkMax2PID.setP(P);
-        // sparkMax3PID.setP(P);
-        // sparkMax4PID.setP(P);
+        sparkMax3PID.setP(P);
+        sparkMax4PID.setP(P);
 
         sparkMax1PID.setI(I);
         sparkMax2PID.setI(I);
-        // sparkMax3PID.setI(I);
-        // sparkMax4PID.setI(I);
+        sparkMax3PID.setI(I);
+        sparkMax4PID.setI(I);
 
         sparkMax1PID.setD(D);
         sparkMax2PID.setD(D);
-        // sparkMax3PID.setD(D);
-        // sparkMax4PID.setD(D);
+        sparkMax3PID.setD(D);
+        sparkMax4PID.setD(D);
 
         sparkMax1PID.setFF(F);
         sparkMax2PID.setFF(F);
-        // sparkMax3PID.setFF(F);
-        // sparkMax4PID.setFF(F);
+        sparkMax3PID.setFF(F);
+        sparkMax4PID.setFF(F);
 
         sparkMax1PID.setIZone(izone, 0);
         sparkMax1PID.setIMaxAccum(imax, 0);
         sparkMax2PID.setIZone(izone, 0);
         sparkMax2PID.setIMaxAccum(imax, 0);
-        // sparkMax3PID.setIZone(izone, 0);
-        // sparkMax3PID.setIMaxAccum(imax, 0);
-        // sparkMax4PID.setIZone(izone, 0);
-        // sparkMax4PID.setIMaxAccum(imax, 0);
+        sparkMax3PID.setIZone(izone, 0);
+        sparkMax3PID.setIMaxAccum(imax, 0);
+        sparkMax4PID.setIZone(izone, 0);
+        sparkMax4PID.setIMaxAccum(imax, 0);
+        }
     }
 
     @Config
@@ -161,7 +169,7 @@ public class Chassis implements Loggable{
     }
 
     @Log
-    private double setSpeed;
+    private double setSpeed = 0;
 
     @Config
     public void setMySpeed(double sS)
@@ -169,10 +177,20 @@ public class Chassis implements Loggable{
         setSpeed = sS/5600; //Divided by max output revolutions
     }
     
-    public void Init(OperatorInterface oInterface, IMU Imu)
+    @Log
+    private boolean isSquaredInputs;
+
+    @Config
+    public void wantInputsSquared(boolean iS)
+    {
+        isSquaredInputs = iS;
+    }
+    public void Init(OperatorInterface oInterface)
     {
         imu = Imu;
         shiftUp  =5000;
+        setSpeed = sS;
+        shiftUp = 5000;
         ShiftDown = 3500;
         oi = oInterface;
         sparkMax1 = new CANSparkMax(16, MotorType.kBrushless); //ID 11
@@ -201,10 +219,10 @@ public class Chassis implements Loggable{
         sparkMax1PID.setReference(0, ControlType.kVelocity);
         sparkMax2PID = sparkMax2.getPIDController();
         sparkMax2PID.setReference(0, ControlType.kVelocity);
-        // sparkMax3PID = sparkMax3.getPIDController();
-        // sparkMax3PID.setReference(0, ControlType.kVelocity);
-        // sparkMax4PID = sparkMax4.getPIDController();
-        // sparkMax4PID.setReference(0, ControlType.kVelocity);
+        sparkMax3PID = sparkMax3.getPIDController();
+        sparkMax3PID.setReference(0, ControlType.kVelocity);
+        sparkMax4PID = sparkMax4.getPIDController();
+        sparkMax4PID.setReference(0, ControlType.kVelocity);
 
         sparkMax1.setOpenLoopRampRate(0.4);
         sparkMax2.setOpenLoopRampRate(0.4);
@@ -215,6 +233,11 @@ public class Chassis implements Loggable{
         sparkMax2.setClosedLoopRampRate(0.5);
         // sparkMax3.setClosedLoopRampRate(0.5);
         // sparkMax4.setClosedLoopRampRate(0.5);
+
+        sparkMax1.setClosedLoopRampRate(1);
+        sparkMax2.setClosedLoopRampRate(1);
+        sparkMax3.setClosedLoopRampRate(1);
+        sparkMax4.setClosedLoopRampRate(1);
 
         sparkMax1PID.setP(0.00001);
         sparkMax1PID.setI(0.0000001);
@@ -229,25 +252,25 @@ public class Chassis implements Loggable{
         sparkMax2PID.setIZone(10, 0);
         sparkMax2PID.setIMaxAccum(20, 0);
 
-        // sparkMax3PID.setP(0.00001);
-        // sparkMax3PID.setI(0.000000);
-        // sparkMax3PID.setD(0);
-        // sparkMax3PID.setIZone(10, 0);
-        // sparkMax3PID.setIMaxAccum(20, 0);
+        sparkMax3PID.setP(0.00001);
+        sparkMax3PID.setI(0.000000);
+        sparkMax3PID.setD(0);
+        sparkMax3PID.setIZone(10, 0);
+        sparkMax3PID.setIMaxAccum(20, 0);
 
-        // sparkMax4PID.setP(0.00001);
-        // sparkMax4PID.setI(0.000000);
-        // sparkMax4PID.setD(0);
-        // sparkMax4PID.setIZone(10, 0);
-        // sparkMax4PID.setIMaxAccum(20, 0);
+        sparkMax4PID.setP(0.00001);
+        sparkMax4PID.setI(0.000000);
+        sparkMax4PID.setD(0);
+        sparkMax4PID.setIZone(10, 0);
+        sparkMax4PID.setIMaxAccum(20, 0);
         
         leftMotors.setInverted(true);
         rightMotors.setInverted(true);
 
         sparkMax1.setSmartCurrentLimit(40);
         sparkMax2.setSmartCurrentLimit(40);
-        // sparkMax3.setSmartCurrentLimit(40);
-        // sparkMax4.setSmartCurrentLimit(40);
+        sparkMax3.setSmartCurrentLimit(40);
+        sparkMax4.setSmartCurrentLimit(40);
 
         
         driveTrain = new DevilDifferential(sparkMax1PID, sparkMax2PID);
@@ -286,7 +309,7 @@ public class Chassis implements Loggable{
         switch(mode)
         {
              case "Tank Drive":
-            driveTrain.tankDrive(-(oi.getPilotX()),-(oi.pilot.getRawAxis(5)));
+            driveTrain.tankDrive(-(oi.getPilotX()),-(oi.pilot.getRawAxis(5)), isSquaredInputs);
             
              break;
 
@@ -297,18 +320,15 @@ public class Chassis implements Loggable{
              }
              else
              {
-                double forwardSpeedJoystick = -(oi.getPilotY());
-                double forwardSpeed;
-                double turnSpeedJoystick = 0;//oi.getPilotZ();
-                double turnSpeed;
-                if(forwardSpeedJoystick >= 0.5)
-                    forwardSpeed = setSpeed;
-                else if(forwardSpeedJoystick <= -0.5)
-                    forwardSpeed = -setSpeed;
-                else
-                    forwardSpeed = 0;
-                //System.out.println("forwardSpeed: " + forwardSpeed);
-                driveTrain.arcadeDrive(forwardSpeed, turnSpeedJoystick,false);
+                double forwardSpeed = (oi.getPilotY());
+                double turnSpeed = -(oi.getPilotZ());
+                //if(forwardSpeed >= 0.5)
+                    //forwardSpeed = setSpeed;
+                //else if(forwardSpeed <= -0.5)
+                    //forwardSpeed = -setSpeed;
+                //else
+                    //forwardSpeed = 0;
+                driveTrain.arcadeDrive(forwardSpeed, turnSpeed, isSquaredInputs);
                 
              }
              

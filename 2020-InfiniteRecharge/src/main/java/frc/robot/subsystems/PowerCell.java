@@ -64,11 +64,11 @@ public class PowerCell implements Loggable{
     @Log
     private double shooterRpms = 100;
     @Log
-    private double intakeRpms = 0.4;
+    private double intakeRpms = 1;
     @Log
-    private double storageRpms = 0.8; //%output for now
+    private double storageRpms = 0.6; //%output for now
     @Log
-    private double feederRpms = 0.5;
+    private double feederRpms = 0.2;
     @Log 
     double feederPosition = 0.0;
     private boolean shooterOn = false;
@@ -78,7 +78,7 @@ public class PowerCell implements Loggable{
         shooterOn = on;
     }
 
-	@Config
+	//@Config
     private void Intake_PID(double kP, double kI, double kD, double Rpms){
    
         intakeMotor.config_kP(0, kP);
@@ -89,15 +89,11 @@ public class PowerCell implements Loggable{
     }
 
     @Config
-        private void Shooter_PID(double kP, double kI, double kD, double Rpms){
-        shooter.config_kP(0, kP);
-        shooter.config_kD(0, kD);
-        shooter.config_kI(0, kI);
+        private void Shooter_RPMS(double Rpms){
         shooterRpms = Rpms;
-        shooter_kP = kP;
     }
     @Config
-    private void Feeder_PID(double kP, double kI, double kD, double Rpms, double idleSpeed){
+    private void Feeder_PID(double kP, double kI, double kD, double Rpms){
         feederMotor.config_kP(0, kP);
         feederMotor.config_kD(0, kD);
         feederMotor.config_kI(0, kI);
@@ -105,7 +101,7 @@ public class PowerCell implements Loggable{
         feederP_kP = kP;
     }
     
-    @Config
+    //@Config
     private void Storage_PID(double kP, double kI, double kD, double Rpms){
         storageMotorH.config_kP(0, kP);
         storageMotorH.config_kD(0, kD);
@@ -262,17 +258,15 @@ public class PowerCell implements Loggable{
         }
     }
     public void shoot(){
-        if(shooterOn){
         shooterTemp = shooter.getTemperature();
         supplyCurrent = shooter.getSupplyCurrent();
         statorCurrent = shooter.getStatorCurrent();
-        if(oi.pilot.getRawButton(6)){
-           
+        if(shooterOn){
+        
             shooter.set(ControlMode.Velocity, shooterRpms);
         }
         else{
             stopShooter();
         }
-    }
     }
 }

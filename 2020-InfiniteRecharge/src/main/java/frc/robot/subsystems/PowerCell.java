@@ -78,14 +78,11 @@ public class PowerCell implements Loggable{
         shooterOn = on;
     }
 
-	//@Config
-    private void Intake_PID(double kP, double kI, double kD, double Rpms){
-   
-        intakeMotor.config_kP(0, kP);
-        intakeMotor.config_kD(0, kD);
-        intakeMotor.config_kI(0, kI);
+	@Config
+    private void Intake_RPMS(double Rpms){
+
         intakeRpms = Rpms;
-        intake_kP = kP;
+        
     }
 
     @Config
@@ -101,16 +98,9 @@ public class PowerCell implements Loggable{
         feederP_kP = kP;
     }
     
-    //@Config
-    private void Storage_PID(double kP, double kI, double kD, double Rpms){
-        storageMotorH.config_kP(0, kP);
-        storageMotorH.config_kD(0, kD);
-        storageMotorH.config_kI(0, kI);
-        storageMotorL.config_kP(0, kP);
-        storageMotorL.config_kD(0, kD);
-        storageMotorL.config_kI(0, kI);
+    @Config
+    private void Storage_RPMS(double Rpms){
         storageRpms = Rpms;
-        storage_kP = kP;
     }
 
     public void init(OperatorInterface operatorinterface){                                                                                                                                                                                                                                                                                                                                                        

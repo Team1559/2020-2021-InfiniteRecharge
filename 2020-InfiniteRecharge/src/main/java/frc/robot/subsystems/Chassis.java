@@ -185,30 +185,30 @@ public class Chassis implements Loggable{
     {
         isSquaredInputs = iS;
     }
-    public void Init(OperatorInterface oInterface)
+    public void Init(OperatorInterface oInterface, IMU Imu)
     {
         imu = Imu;
         shiftUp  =5000;
-        setSpeed = sS;
+        //setSpeed = sS;
         shiftUp = 5000;
         ShiftDown = 3500;
         oi = oInterface;
         sparkMax1 = new CANSparkMax(16, MotorType.kBrushless); //ID 11
         sparkMax2 = new CANSparkMax(15, MotorType.kBrushless); //ID 12
-        // sparkMax3 = new CANSparkMax(13, MotorType.kBrushless); //ID 13
-        // sparkMax4 = new CANSparkMax(14, MotorType.kBrushless); //ID 14
+        sparkMax3 = new CANSparkMax(13, MotorType.kBrushless); //ID 13
+        sparkMax4 = new CANSparkMax(14, MotorType.kBrushless); //ID 14
         lEncoder = new CANEncoder(sparkMax1);
         rEncoder = new CANEncoder(sparkMax2);
-        // sparkMax3.follow(sparkMax1);
-        // sparkMax4.follow(sparkMax2);
+        sparkMax3.follow(sparkMax1);
+        sparkMax4.follow(sparkMax2);
 
         leftMotors = new SpeedControllerGroup(sparkMax1); // (sparkMax1, sparkMax3) for working code
         rightMotors = new SpeedControllerGroup(sparkMax2); // (sparkMax2, sparkMax4) for working code
         
         widget1 = new MotorWidget(sparkMax1, "Motor 1");
         widget2 = new MotorWidget(sparkMax2, "Motor 2");
-        // widget3 = new MotorWidget(sparkMax3, "Motor 3");
-        // widget4 = new MotorWidget(sparkMax4, "Motor 4");
+        widget3 = new MotorWidget(sparkMax3, "Motor 3");
+        widget4 = new MotorWidget(sparkMax4, "Motor 4");
         widget5 = new SCGWidget(leftMotors, "Left Motors");
         widget6 = new SCGWidget(rightMotors, "Right Motors");
 
@@ -226,13 +226,13 @@ public class Chassis implements Loggable{
 
         sparkMax1.setOpenLoopRampRate(0.4);
         sparkMax2.setOpenLoopRampRate(0.4);
-        // sparkMax3.setOpenLoopRampRate(0.4);
-        // sparkMax4.setOpenLoopRampRate(0.4);
+        sparkMax3.setOpenLoopRampRate(0.4);
+        sparkMax4.setOpenLoopRampRate(0.4);
 
         sparkMax1.setClosedLoopRampRate(0.5);
         sparkMax2.setClosedLoopRampRate(0.5);
-        // sparkMax3.setClosedLoopRampRate(0.5);
-        // sparkMax4.setClosedLoopRampRate(0.5);
+        sparkMax3.setClosedLoopRampRate(0.5);
+        sparkMax4.setClosedLoopRampRate(0.5);
 
         sparkMax1.setClosedLoopRampRate(1);
         sparkMax2.setClosedLoopRampRate(1);
@@ -244,7 +244,7 @@ public class Chassis implements Loggable{
         sparkMax1PID.setD(0);
         sparkMax1PID.setIZone(10, 0);
         sparkMax1PID.setIMaxAccum(20, 0);
-        //sparkMax1PID.setIAccum(0); //may need to be set\\
+        sparkMax1PID.setIAccum(0); //may need to be set\\
 
         sparkMax2PID.setP(0.00001);
         sparkMax2PID.setI(0.000000);
@@ -290,12 +290,12 @@ public class Chassis implements Loggable{
         // graphing the motor parameters
         motor1Temp = sparkMax1.getMotorTemperature();
         motor2Temp = sparkMax2.getMotorTemperature();
-        // motor3Temp = sparkMax3.getMotorTemperature();
-        // motor4Temp = sparkMax4.getMotorTemperature();
+        motor3Temp = sparkMax3.getMotorTemperature();
+        motor4Temp = sparkMax4.getMotorTemperature();
         motor1Current = sparkMax1.getOutputCurrent();
         motor2Current = sparkMax2.getOutputCurrent();
-        // motor3Current = sparkMax3.getOutputCurrent();
-        // motor4Current = sparkMax4.getOutputCurrent();
+        motor3Current = sparkMax3.getOutputCurrent();
+        motor4Current = sparkMax4.getOutputCurrent();
 
        if(shift && manualShift){
             manualShift();

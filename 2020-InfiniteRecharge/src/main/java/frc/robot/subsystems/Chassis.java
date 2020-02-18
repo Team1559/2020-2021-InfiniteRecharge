@@ -102,9 +102,9 @@ public class Chassis implements Loggable{
     }
 
     @Log
-    private boolean allowPIDChanges;
+    private boolean allowPIDChanges = true;
 
-    @Config
+    @Config.ToggleSwitch
     public void changeAllThePIDs(boolean cATPIDs)
     {
         allowPIDChanges = cATPIDs;
@@ -215,10 +215,10 @@ public class Chassis implements Loggable{
         sparkMax3.setOpenLoopRampRate(0.4);
         sparkMax4.setOpenLoopRampRate(0.4);
 
-        sparkMax1.setClosedLoopRampRate(0.5);
-        sparkMax2.setClosedLoopRampRate(0.5);
-        sparkMax3.setClosedLoopRampRate(0.5);
-        sparkMax4.setClosedLoopRampRate(0.5);
+        sparkMax1.setClosedLoopRampRate(1);
+        sparkMax2.setClosedLoopRampRate(1);
+        sparkMax3.setClosedLoopRampRate(1);
+        sparkMax4.setClosedLoopRampRate(1);
 
         sparkMax1PID.setP(0.00001);
         sparkMax1PID.setI(0.0000001);
@@ -296,14 +296,14 @@ public class Chassis implements Loggable{
              }
              else
              {
-                double forwardSpeed = -(oi.getPilotY());
-                double turnSpeed = oi.getPilotZ();
-                if(forwardSpeed >= 0.5)
-                    forwardSpeed = setSpeed;
-                else if(forwardSpeed <= -0.5)
-                    forwardSpeed = -setSpeed;
-                else
-                    forwardSpeed = 0;
+                double forwardSpeed = (oi.getPilotY());
+                double turnSpeed = -(oi.getPilotZ());
+                //if(forwardSpeed >= 0.5)
+                    //forwardSpeed = setSpeed;
+                //else if(forwardSpeed <= -0.5)
+                    //forwardSpeed = -setSpeed;
+                //else
+                    //forwardSpeed = 0;
                 driveTrain.arcadeDrive(forwardSpeed, turnSpeed, isSquaredInputs);
                 
              }

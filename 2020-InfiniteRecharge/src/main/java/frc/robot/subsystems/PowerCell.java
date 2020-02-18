@@ -89,14 +89,19 @@ public class PowerCell implements Loggable{
         private void Shooter_RPMS(double Rpms){
         shooterRpms = Rpms;
     }
+
     @Config
     private void Feeder_PID(double kP, double kI, double kD, double Rpms){
+        if(feederMotor != null){
         feederMotor.config_kP(0, kP);
         feederMotor.config_kD(0, kD);
         feederMotor.config_kI(0, kI);
         feederRpms = Rpms;
         feederP_kP = kP;
+        }
     }
+
+
     
     @Config
     private void Storage_RPMS(double Rpms){

@@ -48,7 +48,7 @@ public class Spinner implements Loggable {
     @Log
     int colorCount = 0;
 
-    @Config // (max = 1 , min = -1 , blockIncrement = .05)
+    @Config(defaultValueNumeric = 0.2) // (max = 1 , min = -1 , blockIncrement = .05)
     public void configSpinner(double output) {
         spinnerOutput = output;
     }

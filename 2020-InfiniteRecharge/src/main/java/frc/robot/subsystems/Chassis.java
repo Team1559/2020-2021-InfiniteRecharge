@@ -88,7 +88,7 @@ public class Chassis implements Loggable {
     @Log.Dial
     private double motor4Temp;
 
-    private boolean shift = false;
+    private boolean shift = true;
 
     @Log
     private double kP = 0.0002;
@@ -102,19 +102,20 @@ public class Chassis implements Loggable {
     @Log
     private double deadband = 0.01;
 
-    @Config.ToggleSwitch
-    public void Enable_Shifting(boolean enable) {
+   // @Config.ToggleSwitch(defaultValue = true)
+    public void Enable_Shifting(boolean enable){
         shift = enable;
     }
-
-    @Config
-    public void Shifting_points(double up, double down) {
+    //@Config
+    public void Shifting_points(double up, double down){
         shiftUp = up;
         ShiftDown = down;
     }
 
-    @Config
-    public void set_PID(double P, double I, double D, double F, double imax, double izone) {
+    //@Config
+    public void set_PID(double P, double I, double D, double F, double imax, double izone)
+    {
+        
         kP = P;
         kI = I;
         kD = D;
@@ -148,26 +149,30 @@ public class Chassis implements Loggable {
         sparkMax3PID.setIMaxAccum(imax, 0);
         sparkMax4PID.setIZone(izone, 0);
         sparkMax4PID.setIMaxAccum(imax, 0);
+        
     }
 
-    @Config
-    public void setDeadband(double dB) {
+    //@Config
+    public void setDeadband(double dB)
+    {
         deadband = dB;
     }
 
     @Log
     private double setSpeed = 0;
 
-    @Config
-    public void setMySpeed(double sS) {
-        setSpeed = sS / 5600; // Divided by max output revolutions
+    //@Config
+    public void setMySpeed(double sS)
+    {
+        setSpeed = sS;
     }
 
     @Log
-    private boolean isSquaredInputs;
+    private boolean isSquaredInputs = true;
 
-    @Config
-    public void wantInputsSquared(boolean iS) {
+    //@Config
+    public void wantInputsSquared(boolean iS)
+    {
         isSquaredInputs = iS;
     }
 
@@ -229,7 +234,7 @@ public class Chassis implements Loggable {
         sparkMax1PID.setFF(kF);
         sparkMax1PID.setIZone(10, 0);
         sparkMax1PID.setIMaxAccum(20, 0);
-        sparkMax1PID.setIAccum(0); // may need to be set
+        sparkMax1PID.setIAccum(0); //may need to be set\\
 
         sparkMax2PID.setP(kP);
         sparkMax2PID.setI(kI);
@@ -281,13 +286,10 @@ public class Chassis implements Loggable {
         motor2Current = sparkMax2.getOutputCurrent();
         motor3Current = sparkMax3.getOutputCurrent();
         motor4Current = sparkMax4.getOutputCurrent();
-
-        if (shift && manualShift) {
-            manualShift();
-        } else if (shift) {
-            gearShift();
-        } else {
-            gearShifter.set(false);
+        if(shift){
+        gearShift();        
+        }
+        else{gearShifter.set(false);
         }
         switch(mode)
         {
@@ -305,12 +307,7 @@ public class Chassis implements Loggable {
              {
                 double forwardSpeed = (oi.getPilotY());
                 double turnSpeed = -(oi.getPilotZ());
-                //if(forwardSpeed >= 0.5)
-                    //forwardSpeed = setSpeed;
-                //else if(forwardSpeed <= -0.5)
-                    //forwardSpeed = -setSpeed;
-                //else
-                    //forwardSpeed = 0;
+     
                 driveTrain.arcadeDrive(forwardSpeed, turnSpeed, isSquaredInputs);
 
             }

@@ -91,48 +91,48 @@ public class Robot extends TimedRobot implements Loggable {
 
   }
 
-  @Config.ToggleSwitch 
+  @Config.ToggleSwitch(defaultValue = true)
   public void Enable_Compressor(boolean enable){
     compressorEnable = enable;
   }
 
-  @Config.ToggleSwitch 
+  @Config.ToggleSwitch(defaultValue = true)
   public void Enable_Climber(boolean enable){
     climberEnable = enable;
   }
 
-  @Config.ToggleSwitch 
+  @Config.ToggleSwitch(defaultValue = true) 
   public void Enable_PowerCell(boolean enable){
     powerCellEnable = enable;
   }
 
-  @Config.ToggleSwitch 
+  @Config.ToggleSwitch(defaultValue = true)
   public void Enable_Camera1(boolean enable){
     camera1Enable = enable;
   }
 
-  @Config.ToggleSwitch 
+  @Config.ToggleSwitch(defaultValue = true) 
   public void Enable_Camera2(boolean enable){
     camera2Enable = enable;
   }
 
-  @Config.ToggleSwitch
+  @Config.ToggleSwitch(defaultValue = true)
   public void Enable_IMU(boolean enable){
     ImuEnable = enable;
   }
 
-  @Config.ToggleSwitch
+  @Config.ToggleSwitch(defaultValue = true)
   public void Enable_Chassis(boolean enable){
     chassisEnable = enable;
     System.out.println("Chassis Enable: " + chassisEnable);
     System.out.println("Enable: " + enable);
   }
-  @Config.ToggleSwitch
+  @Config.ToggleSwitch(defaultValue = true)
   public void Enable_Cameras(boolean enable, boolean enable2){
     camera1Enable  = enable;
     camera2Enable = enable2;
   }
-  @Config.ToggleSwitch
+  @Config.ToggleSwitch(defaultValue = true)
   public void Enable_Color(boolean enable){
     colorEnable = enable;
   }

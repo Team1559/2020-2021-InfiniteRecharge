@@ -31,11 +31,11 @@ public class Climber implements Loggable {
     
 	//Shuffleboard configs for winch and bar rider
 	@Config
-    private void winch_percent(double Rpms){
+    private void winch_percent_config(double Rpms){
         winchRpms = Rpms;
     }
     @Config
-    private void Balancer_percent( double OutputPercent){
+    private void Balancer_percent_config(double OutputPercent){
         balancerPercent = OutputPercent;
     }
 

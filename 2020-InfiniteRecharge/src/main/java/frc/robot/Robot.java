@@ -192,10 +192,7 @@ public class Robot extends TimedRobot implements Loggable {
       climber.drive();
     }
     if(powerCellEnable && powerCellInitialized){
-      powerCell.intake();
-      powerCell.shoot();
-      powerCell.storage();
-      powerCell.feeder();
+      powerCell.go();
   }
       //Compressor
      if(compressorEnable && compressorInitialized){

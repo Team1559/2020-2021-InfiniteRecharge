@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import frc.robot.Buttons;
 import frc.robot.OperatorInterface;
 import frc.robot.Wiring;
 import io.github.oblarg.oblog.Loggable;
@@ -82,11 +84,11 @@ public class Climber implements Loggable {
 
          
 
-        if(oi.copilot.getRawButton(3)) { //Told you Operator Interface button controls didn't work!
+        if(oi.DPadCopilot() == Buttons.Dpad_up) { //Told you Operator Interface button controls didn't work!
             unwindWinch();
             System.out.println("unwinding");
         }
-        else if(oi.copilot.getRawButton(2)){
+        else if(oi.DPadCopilot() == Buttons.Dpad_down) {
             climbup();
             System.out.println("winding");
         }
@@ -106,11 +108,11 @@ public class Climber implements Loggable {
     
     /*Drives wheels on the bar to allow robot to balance the bar*/
     public void Balance(){
-        if(oi.DPad() == 90)
+        if (oi.copilot.getRawAxis(Buttons.leftJoystick_x) > .3)
         {
             barRider.set(ControlMode.PercentOutput, balancerPercent);
         }
-        else if(oi.DPad() == 270)
+        else if(oi.copilot.getRawAxis(Buttons.leftJoystick_x) < -.3)
         {
             barRider.set(ControlMode.PercentOutput, -balancerPercent);
         }

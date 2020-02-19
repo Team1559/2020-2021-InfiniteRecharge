@@ -101,9 +101,14 @@ public class Chassis implements Loggable{
         ShiftDown = down;
     }
 
+    @Log
     private boolean allowPIDChanges = true;
 
-    
+    @Config.ToggleSwitch
+    public void changeAllThePIDs(boolean cATPIDs)
+    {
+        allowPIDChanges = cATPIDs;
+    }
 
     //@Config
     public void set_PID(double P, double I, double D, double F, double imax, double izone)

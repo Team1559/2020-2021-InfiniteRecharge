@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Buttons;
 import frc.robot.OperatorInterface;
 import frc.robot.Wiring;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -65,7 +66,7 @@ public class Spinner implements Loggable {
         if (compressorEnable) {
             // Solenoid logic for a toggle, which fires the "launcher" out, towards the
             // color wheel if when true
-            buttonX = oi.pilot.getRawButtonPressed(3);
+            buttonX = oi.pilot.getRawButtonPressed(Buttons.X);
             if (buttonX && Fire == false) {
                 Fire = true;
             } else if (buttonX && Fire == true) {
@@ -90,7 +91,7 @@ public class Spinner implements Loggable {
         updateColor();
 
         // when pushing down the B button, this runs stage 2 code
-        if (oi.pilot.getRawButton(2)) {
+        if (oi.copilot.getRawAxis(Buttons.left_Bumper) > .3) {
 
             if (!tempColor.equals(currentColor)) {
                 colorCount++;
@@ -106,7 +107,7 @@ public class Spinner implements Loggable {
             colorCount = 0;
 
             // when pushing down the A button, this runs the stage 3 code
-            if (oi.pilot.getRawButton(1)) {
+            if (oi.copilot.getRawAxis(Buttons.right_Bumper) > .3) {
                 spinnerMotor.set(ControlMode.PercentOutput, 0.10);
                 if (FMScolor.equals("Y")) {
                     if (currentColor.equals("G")) {

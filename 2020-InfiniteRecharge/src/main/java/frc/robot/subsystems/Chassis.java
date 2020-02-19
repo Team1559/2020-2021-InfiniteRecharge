@@ -102,19 +102,12 @@ public class Chassis implements Loggable{
     }
 
     @Log
-    private boolean allowPIDChanges = true;
-
-    @Config.ToggleSwitch
-    public void changeAllThePIDs(boolean cATPIDs)
-    {
-        allowPIDChanges = cATPIDs;
-    }
+    
 
     //@Config
     public void set_PID(double P, double I, double D, double F, double imax, double izone)
     {
-        if(allowPIDChanges)
-        {
+        
         kP = P;
         kI = I;
         kD = D;
@@ -148,7 +141,7 @@ public class Chassis implements Loggable{
         sparkMax3PID.setIMaxAccum(imax, 0);
         sparkMax4PID.setIZone(izone, 0);
         sparkMax4PID.setIMaxAccum(imax, 0);
-        }
+        
     }
 
     //@Config

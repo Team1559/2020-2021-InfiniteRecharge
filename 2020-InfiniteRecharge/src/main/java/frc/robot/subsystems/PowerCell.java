@@ -80,7 +80,7 @@ public class PowerCell implements Loggable {
     }
 
 	@Config
-    private void Intake_RPMS(double Rpms){
+    private void Intake_Percent(double Rpms){
 
         intakeRpms = Rpms;
         
@@ -105,7 +105,7 @@ public class PowerCell implements Loggable {
 
     
     @Config
-    private void Storage_RPMS(double Rpms){
+    private void Storage_Percent(double Rpms){
         storageRpms = Rpms;
     }
 

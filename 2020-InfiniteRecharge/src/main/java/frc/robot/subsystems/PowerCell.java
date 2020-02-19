@@ -27,7 +27,8 @@ public class PowerCell implements Loggable {
     @Log
     private double intake_kI = 0.00000;// 1e-6
     private double intake_kF = 0;
-    private double shooter_kF = 0;
+    private double shooter_kF = 0; 
+    private SupplyCurrentLimitConfiguration shooterLimit = new SupplyCurrentLimitConfiguration(true, 100, 20, 1000);
     @Log
     private double shooter_kP = 5;
     private double shooter_kD = 0;
@@ -45,17 +46,16 @@ public class PowerCell implements Loggable {
     @Log
     private double feederP_kI = 0;// 1e-6
     private double feederP_kF = 0;
-    private SupplyCurrentLimitConfiguration supplyCurrentLimitConfiguration = new SupplyCurrentLimitConfiguration(true,
-            100, 20, 1000);
+    private SupplyCurrentLimitConfiguration feederLimit = new SupplyCurrentLimitConfiguration(true, 40, 20, 1000);
     private boolean feederButton = false;
     private boolean disableAll = false;
-
-    // motors
+    
+    //motors 
     private TalonSRX storageMotorL;
     private TalonSRX storageMotorH;
     private TalonFX shooter;
     private TalonSRX intakeMotor;
-    private TalonSRX feederMotor;
+    private TalonFX feederMotor;
     @Log.Graph
     private double shooterTemp;
     @Log.Graph
@@ -125,7 +125,7 @@ public class PowerCell implements Loggable {
         intakeMotor = new TalonSRX(Wiring.intakeMotor);
         storageMotorH = new TalonSRX(Wiring.storageMotorH);
         storageMotorL = new TalonSRX(Wiring.storageMotorL);
-        feederMotor = new TalonSRX(Wiring.feederMotor);
+        feederMotor = new TalonFX(Wiring.feederMotor);
         oi = operatorinterface;
         // Intake Motor Config
 
@@ -159,7 +159,9 @@ public class PowerCell implements Loggable {
         shooter.configPeakOutputForward(+1, TIMEOUT);
         shooter.configPeakOutputReverse(-1, TIMEOUT);
         shooter.setNeutralMode(NeutralMode.Coast);
-        shooter.configSupplyCurrentLimit(supplyCurrentLimitConfiguration);
+        shooter.configSupplyCurrentLimit(shooterLimit);
+        
+        
 
         // Feeder motor config
         feederMotor.set(ControlMode.PercentOutput, 0);
@@ -173,11 +175,8 @@ public class PowerCell implements Loggable {
         feederMotor.configNominalOutputReverse(0, TIMEOUT);
         feederMotor.configPeakOutputForward(+1, TIMEOUT);
         feederMotor.configPeakOutputReverse(-1, TIMEOUT);
-        feederMotor.enableCurrentLimit(true);
-        feederMotor.configPeakCurrentLimit(75, TIMEOUT);
-        feederMotor.configContinuousCurrentLimit(40, TIMEOUT);
-        feederMotor.configPeakCurrentDuration(1800, TIMEOUT);
         feederMotor.setNeutralMode(NeutralMode.Brake);
+        feederMotor.configSupplyCurrentLimit(feederLimit);
 
         // Storage Motor Config
         storageMotorH.set(ControlMode.PercentOutput, 0);

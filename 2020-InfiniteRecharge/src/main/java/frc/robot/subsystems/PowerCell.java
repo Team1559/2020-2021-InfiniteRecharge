@@ -65,12 +65,12 @@ public class PowerCell implements Loggable {
     @Log
     private double shooterRpms = 100;
     @Log
-    private double intakeRpms = 0.4;
+    private double intakeRpms = 1;
     @Log
-    private double storageRpms = 0.8; // %output for now
+    private double storageRpms = 0.6; //%output for now
     @Log
-    private double feederRpms = 0.5;
-    @Log
+    private double feederRpms = 0.2;
+    @Log 
     double feederPosition = 0.0;
     private boolean shooterOn = false;
 
@@ -79,44 +79,34 @@ public class PowerCell implements Loggable {
         shooterOn = on;
     }
 
-    @Config
-    private void Intake_PID(double kP, double kI, double kD, double Rpms) {
+	@Config
+    private void Intake_Percent(double Rpms){
 
-        intakeMotor.config_kP(0, kP);
-        intakeMotor.config_kD(0, kD);
-        intakeMotor.config_kI(0, kI);
         intakeRpms = Rpms;
-        intake_kP = kP;
+        
     }
 
     @Config
-    private void Shooter_PID(double kP, double kI, double kD, double Rpms) {
-        shooter.config_kP(0, kP);
-        shooter.config_kD(0, kD);
-        shooter.config_kI(0, kI);
+        private void Shooter_RPMS(double Rpms){
         shooterRpms = Rpms;
-        shooter_kP = kP;
     }
 
     @Config
-    private void Feeder_PID(double kP, double kI, double kD, double Rpms, double idleSpeed) {
+    private void Feeder_PID(double kP, double kI, double kD, double Rpms){
+        if(feederMotor != null){
         feederMotor.config_kP(0, kP);
         feederMotor.config_kD(0, kD);
         feederMotor.config_kI(0, kI);
         feederRpms = Rpms;
         feederP_kP = kP;
+        }
     }
 
+
+    
     @Config
-    private void Storage_PID(double kP, double kI, double kD, double Rpms) {
-        storageMotorH.config_kP(0, kP);
-        storageMotorH.config_kD(0, kD);
-        storageMotorH.config_kI(0, kI);
-        storageMotorL.config_kP(0, kP);
-        storageMotorL.config_kD(0, kD);
-        storageMotorL.config_kI(0, kI);
+    private void Storage_Percent(double Rpms){
         storageRpms = Rpms;
-        storage_kP = kP;
     }
 
     public void init(OperatorInterface operatorinterface) {

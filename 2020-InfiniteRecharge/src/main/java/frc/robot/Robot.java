@@ -194,6 +194,7 @@ public class Robot extends TimedRobot implements Loggable {
   @Override
   public void teleopInit()
   {
+    m_driveTrain = m_driveChooser.getSelected();
       initialize();
      
   }
@@ -201,7 +202,7 @@ public class Robot extends TimedRobot implements Loggable {
   public void teleopPeriodic()
   {
     if(chassisEnable && chassisInitialized){    
-    driveTrain.DriveSystem(oi.pilot);
+    driveTrain.DriveSystem(oi.pilot,m_driveTrain);
     }
     
     if(ImuEnable && ImuInitialized){
@@ -211,10 +212,7 @@ public class Robot extends TimedRobot implements Loggable {
       climber.drive();
     }
     if(powerCellEnable && powerCellInitialized){
-      powerCell.intake();
-      powerCell.shoot();
-      powerCell.storage();
-      powerCell.feeder();
+      powerCell.go();
   }
       //Compressor
      if(compressorEnable && compressorInitialized){

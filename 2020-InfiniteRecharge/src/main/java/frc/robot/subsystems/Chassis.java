@@ -213,10 +213,10 @@ public class Chassis implements Loggable {
         sparkMax3.setOpenLoopRampRate(0.4);
         sparkMax4.setOpenLoopRampRate(0.4);
 
-        sparkMax1.setClosedLoopRampRate(0.5);
-        sparkMax2.setClosedLoopRampRate(0.5);
-        sparkMax3.setClosedLoopRampRate(0.5);
-        sparkMax4.setClosedLoopRampRate(0.5);
+        sparkMax1.setClosedLoopRampRate(1);
+        sparkMax2.setClosedLoopRampRate(1);
+        sparkMax3.setClosedLoopRampRate(1);
+        sparkMax4.setClosedLoopRampRate(1);
 
         sparkMax1.setClosedLoopRampRate(1);
         sparkMax2.setClosedLoopRampRate(1);
@@ -289,24 +289,28 @@ public class Chassis implements Loggable {
         } else {
             gearShifter.set(false);
         }
-        switch (mode) {
-        case "Tank Drive":
-            driveTrain.tankDrive(-(oi.getPilotX()), -(oi.pilot.getRawAxis(5)), isSquaredInputs);
+        switch(mode)
+        {
+             case "Tank Drive":
+            driveTrain.tankDrive(-(oi.getPilotX()),-(oi.pilot.getRawAxis(5)), isSquaredInputs);
+            
+             break;
 
-            break;
-
-        case "Arcade Drive":
-            if (drive == null) {
-                System.out.println("Your controller is Null dimwit!!!!");
-            } else {
+             case "Arcade Drive":
+             if(drive == null)
+             {
+                 System.out.println("Your controller is Null dimwit!!!!");
+             }
+             else
+             {
                 double forwardSpeed = (oi.getPilotY());
                 double turnSpeed = -(oi.getPilotZ());
-                // if(forwardSpeed >= 0.5)
-                // forwardSpeed = setSpeed;
-                // else if(forwardSpeed <= -0.5)
-                // forwardSpeed = -setSpeed;
-                // else
-                // forwardSpeed = 0;
+                //if(forwardSpeed >= 0.5)
+                    //forwardSpeed = setSpeed;
+                //else if(forwardSpeed <= -0.5)
+                    //forwardSpeed = -setSpeed;
+                //else
+                    //forwardSpeed = 0;
                 driveTrain.arcadeDrive(forwardSpeed, turnSpeed, isSquaredInputs);
 
             }

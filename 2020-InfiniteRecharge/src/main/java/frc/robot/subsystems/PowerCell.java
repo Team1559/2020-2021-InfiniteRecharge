@@ -7,72 +7,75 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+import frc.robot.Buttons;
 import frc.robot.OperatorInterface;
 import frc.robot.Wiring;
 import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;
 
-
- //intake has to go double the speed the shooter goes
-public class PowerCell implements Loggable{
+//intake has to go double the speed the shooter goes
+public class PowerCell implements Loggable {
     private OperatorInterface oi;
-    //pid values
+    // pid values
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
     @Log
-    private double intake_kP = 5;//5e-5 
+    private double intake_kP = 5;// 5e-5
     private double intake_kD = 0;
     @Log
-    private double intake_kI = 0.00000;//1e-6
+    private double intake_kI = 0.00000;// 1e-6
     private double intake_kF = 0;
     private double shooter_kF = 0; 
+    private SupplyCurrentLimitConfiguration shooterLimit = new SupplyCurrentLimitConfiguration(true, 100, 20, 1000);
     @Log
-    private double shooter_kP = 5; 
+    private double shooter_kP = 5;
     private double shooter_kD = 0;
     @Log
-    private double shooter_kI = 0.00000;//1e-6
+    private double shooter_kI = 0.00000;// 1e-6
     @Log
-    private double storage_kP = 5; 
+    private double storage_kP = 5;
     private double storage_kD = 0;
     @Log
     private double storage_kI = 0;
     private double storage_kF = 0;
     @Log
-    private double feederP_kP = .0001;//5e-5 
+    private double feederP_kP = .0001;// 5e-5
     private double feederP_kD = 0;
     @Log
-    private double feederP_kI = 0;//1e-6
+    private double feederP_kI = 0;// 1e-6
     private double feederP_kF = 0;
-    private SupplyCurrentLimitConfiguration supplyCurrentLimitConfiguration = new SupplyCurrentLimitConfiguration(true, 100, 20, 1000);
+    private SupplyCurrentLimitConfiguration feederLimit = new SupplyCurrentLimitConfiguration(true, 40, 20, 1000);
     private boolean feederButton = false;
+    private boolean disableAll = false;
     
     //motors 
     private TalonSRX storageMotorL;
     private TalonSRX storageMotorH;
     private TalonFX shooter;
     private TalonSRX intakeMotor;
-    private TalonSRX feederMotor;
+    private TalonFX feederMotor;
     @Log.Graph
     private double shooterTemp;
     @Log.Graph
     private double supplyCurrent;
     @Log.Graph
-    private double statorCurrent;    
+    private double statorCurrent;
     @Log
     private double shooterRpms = 100;
     @Log
     private double intakeRpms = 0.4;
     @Log
-    private double storageRpms = 0.8; //%output for now
+    private double storageRpms = 0.8; // %output for now
     @Log
     private double feederRpms = 0.5;
-    @Log 
+    @Log
     double feederPosition = 0.0;
     private boolean shooterOn = false;
 
     @Config.ToggleSwitch
-    private void shooter_toggle(boolean on){
+    private void shooter_toggle(boolean on) {
         shooterOn = on;
     }
 
@@ -99,6 +102,7 @@ public class PowerCell implements Loggable{
             shooter_kP = kP;
         }
     }
+
     @Config
     private void Feeder_PID(double kP, double kI, double kD, double Rpms, double idleSpeed){
         if(feederMotor != null)
@@ -110,7 +114,7 @@ public class PowerCell implements Loggable{
             feederP_kP = kP;
         }
     }
-    
+
     @Config
     private void Storage_PID(double kP, double kI, double kD, double Rpms){
         if(storageMotorH != null && storageMotorL != null)
@@ -131,11 +135,11 @@ public class PowerCell implements Loggable{
         intakeMotor = new TalonSRX(Wiring.intakeMotor);
         storageMotorH = new TalonSRX(Wiring.storageMotorH);
         storageMotorL = new TalonSRX(Wiring.storageMotorL);
-        feederMotor = new TalonSRX(Wiring.feederMotor);
+        feederMotor = new TalonFX(Wiring.feederMotor);
         oi = operatorinterface;
-        //Intake Motor Config
+        // Intake Motor Config
 
-        intakeMotor.set(ControlMode.PercentOutput, 0);	
+        intakeMotor.set(ControlMode.PercentOutput, 0);
         intakeMotor.configClosedloopRamp(cLR, TIMEOUT);
         intakeMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         intakeMotor.config_kF(0, intake_kF);
@@ -147,13 +151,13 @@ public class PowerCell implements Loggable{
         intakeMotor.configPeakOutputForward(+1, TIMEOUT);
         intakeMotor.configPeakOutputReverse(-1, TIMEOUT);
         intakeMotor.enableCurrentLimit(true);
-		intakeMotor.configPeakCurrentLimit(75,TIMEOUT);
-		intakeMotor.configContinuousCurrentLimit(40, TIMEOUT);
-		intakeMotor.configPeakCurrentDuration(1800,TIMEOUT);
+        intakeMotor.configPeakCurrentLimit(75, TIMEOUT);
+        intakeMotor.configContinuousCurrentLimit(40, TIMEOUT);
+        intakeMotor.configPeakCurrentDuration(1800, TIMEOUT);
         intakeMotor.setNeutralMode(NeutralMode.Coast);
 
-        //Shooter Motor Config
-        shooter.set(TalonFXControlMode.Velocity, 0);	
+        // Shooter Motor Config
+        shooter.set(TalonFXControlMode.Velocity, 0);
         shooter.configClosedloopRamp(cLR, TIMEOUT);
         shooter.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         shooter.config_kF(0, shooter_kF);
@@ -165,12 +169,12 @@ public class PowerCell implements Loggable{
         shooter.configPeakOutputForward(+1, TIMEOUT);
         shooter.configPeakOutputReverse(-1, TIMEOUT);
         shooter.setNeutralMode(NeutralMode.Coast);
-        shooter.configSupplyCurrentLimit(supplyCurrentLimitConfiguration);
+        shooter.configSupplyCurrentLimit(shooterLimit);
         
         
 
-        //Feeder motor config
-        feederMotor.set(ControlMode.PercentOutput, 0);	
+        // Feeder motor config
+        feederMotor.set(ControlMode.PercentOutput, 0);
         feederMotor.configClosedloopRamp(cLR, TIMEOUT);
         feederMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         feederMotor.config_kF(0, feederP_kF);
@@ -181,14 +185,11 @@ public class PowerCell implements Loggable{
         feederMotor.configNominalOutputReverse(0, TIMEOUT);
         feederMotor.configPeakOutputForward(+1, TIMEOUT);
         feederMotor.configPeakOutputReverse(-1, TIMEOUT);
-        feederMotor.enableCurrentLimit(true);
-		feederMotor.configPeakCurrentLimit(75,TIMEOUT);
-		feederMotor.configContinuousCurrentLimit(40, TIMEOUT);
-		feederMotor.configPeakCurrentDuration(1800,TIMEOUT);
         feederMotor.setNeutralMode(NeutralMode.Brake);
-        
-        //Storage Motor Config
-        storageMotorH.set(ControlMode.PercentOutput, 0);	
+        feederMotor.configSupplyCurrentLimit(feederLimit);
+
+        // Storage Motor Config
+        storageMotorH.set(ControlMode.PercentOutput, 0);
         storageMotorH.configClosedloopRamp(cLR, TIMEOUT);
         storageMotorH.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         storageMotorH.config_kF(0, storage_kF);
@@ -200,12 +201,12 @@ public class PowerCell implements Loggable{
         storageMotorH.configPeakOutputForward(+1, TIMEOUT);
         storageMotorH.configPeakOutputReverse(-1, TIMEOUT);
         storageMotorH.enableCurrentLimit(true);
-		storageMotorH.configPeakCurrentLimit(10,TIMEOUT);
-		storageMotorH.configContinuousCurrentLimit(10, TIMEOUT);
-		storageMotorH.configPeakCurrentDuration(1800,TIMEOUT);
+        storageMotorH.configPeakCurrentLimit(10, TIMEOUT);
+        storageMotorH.configContinuousCurrentLimit(10, TIMEOUT);
+        storageMotorH.configPeakCurrentDuration(1800, TIMEOUT);
         storageMotorH.setNeutralMode(NeutralMode.Brake);
 
-        storageMotorL.set(ControlMode.PercentOutput, 0);	
+        storageMotorL.set(ControlMode.PercentOutput, 0);
         storageMotorL.configClosedloopRamp(cLR, TIMEOUT);
         storageMotorL.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         storageMotorL.config_kF(0, storage_kF);
@@ -217,19 +218,19 @@ public class PowerCell implements Loggable{
         storageMotorL.configPeakOutputForward(+1, TIMEOUT);
         storageMotorL.configPeakOutputReverse(-1, TIMEOUT);
         storageMotorL.enableCurrentLimit(true);
-		storageMotorL.configPeakCurrentLimit(10, TIMEOUT);
-		storageMotorL.configContinuousCurrentLimit(10, TIMEOUT);
-		storageMotorL.configPeakCurrentDuration(1800,TIMEOUT);
+        storageMotorL.configPeakCurrentLimit(10, TIMEOUT);
+        storageMotorL.configContinuousCurrentLimit(10, TIMEOUT);
+        storageMotorL.configPeakCurrentDuration(1800, TIMEOUT);
         storageMotorL.setNeutralMode(NeutralMode.Brake);
         stopfeeder();
     }
 
-    public void stopfeeder(){
+    public void stopfeeder() {
         feederPosition = feederMotor.getSelectedSensorPosition();
         feederMotor.set(ControlMode.Position, feederPosition);
     }
 
-    public void stopStorage(){
+    public void stopStorage() {
         storageMotorH.set(ControlMode.PercentOutput, 0);
         storageMotorL.set(ControlMode.PercentOutput, 0);
     }
@@ -273,21 +274,27 @@ public class PowerCell implements Loggable{
         }
     }
 
-    public void storage(){
-        if(oi.copilot.getRawButton(3)){
-            startStorage();
+    public void storage() {
+        if (oi.copilot.getRawButton(Buttons.Y)) {
+            stopStorage();
         }
-        else{
-           stopStorage();
+        else if(oi.copilot.getRawButton(Buttons.right_Bumper))
+        {
+            storageMotorH.set(ControlMode.PercentOutput, storageRpms);
+            storageMotorL.set(ControlMode.PercentOutput, -storageRpms);
+        }
+         else {
+            storageMotorH.set(ControlMode.PercentOutput, -storageRpms);// Will need to be velocity
+            storageMotorL.set(ControlMode.PercentOutput, storageRpms);// Will need to be velocity
         }
     }
 
-	public void intake() {
-        if(oi.copilot.getRawButton(3)){
-            intakeMotor.set(ControlMode.PercentOutput, intakeRpms);// Will need to be velocity
-        }
-        else{
+    public void intake() {
+        if (oi.copilot.getRawButton(Buttons.Y)) {
             stopIntake();
+        } 
+        else if (oi.copilot.getRawButton(Buttons.left_Bumper) || oi.copilot.getRawButton(Buttons.right_Bumper)) {
+            intakeMotor.set(ControlMode.PercentOutput, -intakeRpms);
         }
     }
 
@@ -296,11 +303,11 @@ public class PowerCell implements Loggable{
             shooterTemp = shooter.getTemperature();
             supplyCurrent = shooter.getSupplyCurrent();
             statorCurrent = shooter.getStatorCurrent();
-            if(oi.pilot.getRawButton(6)){
-                startShooter();
+            if (oi.copilot.getRawButton(Buttons.Y)) {
+                stopShooter();
             }
             else{
-                stopShooter();
+                startShooter();
             }
         }
     }
@@ -315,5 +322,12 @@ public class PowerCell implements Loggable{
         stopfeeder();
         stopShooter();
         stopStorage();
+    }
+    
+    public void go(){
+        intake();
+        shoot();
+        storage();
+        feeder();
     }
 }

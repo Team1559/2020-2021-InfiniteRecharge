@@ -49,13 +49,13 @@ public class Spinner implements Loggable {
     @Log
     int colorCount = 0;
 
-    @Config(defaultValueNumeric = 0.2) // (max = 1 , min = -1 , blockIncrement = .05)
+    //@Config(defaultValueNumeric = 0.2) // (max = 1 , min = -1 , blockIncrement = .05)
     public void configSpinner(double output) {
         spinnerOutput = output;
     }
 
     public void init(OperatorInterface ointerface) {
-        spinnerMotor = new TalonSRX(5);
+        spinnerMotor = new TalonSRX(Wiring.spinnerMotor);
         spinnerMotor.setNeutralMode(NeutralMode.Brake);
         spinnerLauncher = new Solenoid(Wiring.spinnerLauncher);
         oi = ointerface;

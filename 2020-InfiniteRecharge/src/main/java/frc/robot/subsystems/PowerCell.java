@@ -41,7 +41,7 @@ public class PowerCell implements Loggable {
     private double storage_kI = 0;
     private double storage_kF = 0;
     @Log
-    private double feederP_kP = .0001;// 5e-5
+    private double feederP_kP = 500;// 5e-5
     private double feederP_kD = 0;
     @Log
     private double feederP_kI = 0;// 1e-6
@@ -236,6 +236,9 @@ public class PowerCell implements Loggable {
             }
         }
     }
+    public void store(){
+        
+    }
 
     public void storage() {
         
@@ -245,8 +248,7 @@ public class PowerCell implements Loggable {
         }
         else if(oi.copilot.getRawButton(Buttons.right_Bumper))
         {
-            storageMotorH.set(ControlMode.PercentOutput, -storageRpms);
-            storageMotorL.set(ControlMode.PercentOutput, storageRpms);
+            store();
         }
          else {
             storageMotorH.set(ControlMode.PercentOutput, storageRpms);// Will need to be velocity

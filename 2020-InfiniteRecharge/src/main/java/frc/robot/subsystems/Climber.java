@@ -30,11 +30,11 @@ public class Climber implements Loggable {
     private final double cLR = 0.1;
     
 	//Shuffleboard configs for winch and bar rider
-	@Config
+	//@Config
     private void winch_percent_config(double Rpms){
         winchRpms = Rpms;
     }
-    @Config
+    //@Config
     private void Balancer_percent_config(double OutputPercent){
         balancerPercent = OutputPercent;
     }
@@ -64,6 +64,8 @@ public class Climber implements Loggable {
     barRider.configPeakOutputReverse(-1, TIMEOUT);
     barRider.setNeutralMode(NeutralMode.Brake);
     barRider.enableCurrentLimit(true);
+    barRider.configForwardSoftLimitEnable(false);
+    barRider.configReverseSoftLimitEnable(false);
 	barRider.configPeakCurrentLimit(75,TIMEOUT);
 	barRider.configContinuousCurrentLimit(40, TIMEOUT);
 	barRider.configPeakCurrentDuration(1800,TIMEOUT);
@@ -108,13 +110,14 @@ public class Climber implements Loggable {
     
     /*Drives wheels on the bar to allow robot to balance the bar*/
     public void Balance(){
-        if (oi.copilot.getRawAxis(Buttons.leftJoystick_x) > .3)
-        {
-            barRider.set(ControlMode.PercentOutput, balancerPercent);
-        }
-        else if(oi.copilot.getRawAxis(Buttons.leftJoystick_x) < -.3)
+        double leftJoystick_x = oi.copilot.getRawAxis(Buttons.leftJoystick_x);
+        if ( leftJoystick_x > 0.3)
         {
             barRider.set(ControlMode.PercentOutput, -balancerPercent);
+        }
+        else if(leftJoystick_x < -0.3)
+        {
+            barRider.set(ControlMode.PercentOutput, balancerPercent);
         }
         else
         {

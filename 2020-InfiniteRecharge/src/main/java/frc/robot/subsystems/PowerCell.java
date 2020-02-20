@@ -72,26 +72,25 @@ public class PowerCell implements Loggable {
     private double feederRpms = 0.2;
     @Log 
     double feederPosition = 0.0;
-    private boolean shooterOn = false;
 
-    @Config.ToggleSwitch
+    //@Config.ToggleSwitch
     private void shooter_toggle(boolean on) {
-        shooterOn = on;
+        //shooterOn = on;
     }
 
-	@Config
+	//@Config
     private void Intake_Percent(double Rpms){
 
         intakeRpms = Rpms;
         
     }
 
-    @Config
+    //@Config
         private void Shooter_RPMS(double Rpms){
         shooterRpms = Rpms;
     }
 
-    @Config
+    //@Config
     private void Feeder_PID(double kP, double kI, double kD, double Rpms){
         if(feederMotor != null){
         feederMotor.config_kP(0, kP);
@@ -104,7 +103,7 @@ public class PowerCell implements Loggable {
 
 
     
-    @Config
+    //@Config
     private void Storage_Percent(double Rpms){
         storageRpms = Rpms;
     }
@@ -226,7 +225,7 @@ public class PowerCell implements Loggable {
     public void feeder() {
         if (oi.pilot.getRawButton(Buttons.B)) {
             if (!feederButton) {
-                feederMotor.set(ControlMode.PercentOutput, feederRpms);
+                feederMotor.set(ControlMode.PercentOutput, -feederRpms);
                 feederButton = true;
             }
         } 
@@ -239,48 +238,53 @@ public class PowerCell implements Loggable {
     }
 
     public void storage() {
-        if (oi.copilot.getRawButton(Buttons.Y)) {
+        
+        if (disableAll) {
+            
             stopStorage();
         }
         else if(oi.copilot.getRawButton(Buttons.right_Bumper))
         {
-            storageMotorH.set(ControlMode.PercentOutput, storageRpms);
-            storageMotorL.set(ControlMode.PercentOutput, -storageRpms);
+            storageMotorH.set(ControlMode.PercentOutput, -storageRpms);
+            storageMotorL.set(ControlMode.PercentOutput, storageRpms);
         }
          else {
-            storageMotorH.set(ControlMode.PercentOutput, -storageRpms);// Will need to be velocity
-            storageMotorL.set(ControlMode.PercentOutput, storageRpms);// Will need to be velocity
+            storageMotorH.set(ControlMode.PercentOutput, storageRpms);// Will need to be velocity
+            storageMotorL.set(ControlMode.PercentOutput, -storageRpms);// Will need to be velocity
         }
     }
 
     public void intake() {
-        if (oi.copilot.getRawButton(Buttons.Y)) {
+        if (disableAll) {
             stopIntake();
         } 
         else if (oi.copilot.getRawButton(Buttons.left_Bumper) || oi.copilot.getRawButton(Buttons.right_Bumper)) {
-            intakeMotor.set(ControlMode.PercentOutput, -intakeRpms);
+            intakeMotor.set(ControlMode.PercentOutput, intakeRpms);
         }
         else {
-            intakeMotor.set(ControlMode.PercentOutput, intakeRpms);// Will need to be velocity
+            intakeMotor.set(ControlMode.PercentOutput, -intakeRpms);// Will need to be velocity
         }
     }
 
     public void shoot() {
-        if (shooterOn) {
-            shooterTemp = shooter.getTemperature();
-            supplyCurrent = shooter.getSupplyCurrent();
-            statorCurrent = shooter.getStatorCurrent();
-            if (oi.copilot.getRawButton(Buttons.Y)) {
-                stopShooter();
-            }
-             else {
-                shooter.set(ControlMode.Velocity, shooterRpms);
-            }
+        shooterTemp = shooter.getTemperature();
+        supplyCurrent = shooter.getSupplyCurrent();
+        statorCurrent = shooter.getStatorCurrent();
+        if (disableAll) {
+            stopShooter();
+        }
+            else {
+            shooter.set(ControlMode.Velocity, -shooterRpms);
+            
         }
     }
 
 
+
     public void go(){
+        if(oi.copilot.getRawButtonPressed(Buttons.Y)){
+            disableAll = !disableAll;
+        }
         
         intake();
         shoot();

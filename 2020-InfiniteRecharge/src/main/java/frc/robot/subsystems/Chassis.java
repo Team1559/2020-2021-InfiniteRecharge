@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import frc.robot.components.DevilDifferential;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.robot.Buttons;
 import frc.robot.OperatorInterface;
 import frc.robot.Wiring;
 import frc.robot.widgets.MotorWidget;
@@ -80,13 +81,13 @@ public class Chassis implements Loggable{
     private boolean shift = true;
 
     @Log
-    private double kP = 0.0001; //0.0001
+    private double kP = 0.0002; //0.0001
     @Log
-    private double kI = 0.0000001; //0.0 (We don't really need I for now, maybe later)
+    private double kI = 0.000000; //0.0 (We don't really need I for now, maybe later)
     @Log
     private double kD = 0.0000;
     @Log
-    private double kF = 0.000125; //0.000125
+    private double kF = 0.00018; //0.000125
 
     @Log
     private double deadband = 0.01;
@@ -151,7 +152,7 @@ public class Chassis implements Loggable{
     }
 
     @Log
-    private double setSpeed = 0;
+    private double setSpeed = 5600;
 
     //@Config
     public void setMySpeed(double sS)
@@ -203,38 +204,43 @@ public class Chassis implements Loggable{
         sparkMax4PID = sparkMax4.getPIDController();
         sparkMax4PID.setReference(0, ControlType.kVelocity);
 
-        sparkMax1.setOpenLoopRampRate(0.4);
-        sparkMax2.setOpenLoopRampRate(0.4);
-        sparkMax3.setOpenLoopRampRate(0.4);
-        sparkMax4.setOpenLoopRampRate(0.4);
+        int rampRate = 2;
+        sparkMax1.setOpenLoopRampRate(rampRate);
+        sparkMax2.setOpenLoopRampRate(rampRate);
+        sparkMax3.setOpenLoopRampRate(rampRate);
+        sparkMax4.setOpenLoopRampRate(rampRate);
 
-        sparkMax1.setClosedLoopRampRate(1);
-        sparkMax2.setClosedLoopRampRate(1);
-        sparkMax3.setClosedLoopRampRate(1);
-        sparkMax4.setClosedLoopRampRate(1);
+        sparkMax1.setClosedLoopRampRate(rampRate);
+        sparkMax2.setClosedLoopRampRate(rampRate);
+        sparkMax3.setClosedLoopRampRate(rampRate);
+        sparkMax4.setClosedLoopRampRate(rampRate);
 
-        sparkMax1PID.setP(0.00001);
-        sparkMax1PID.setI(0.0000001);
-        sparkMax1PID.setD(0);
+        sparkMax1PID.setP(kP);
+        sparkMax1PID.setI(kI);
+        sparkMax1PID.setD(kD);
+        sparkMax1PID.setFF(kF);
         sparkMax1PID.setIZone(10, 0);
         sparkMax1PID.setIMaxAccum(20, 0);
         sparkMax1PID.setIAccum(0); //may need to be set\\
 
-        sparkMax2PID.setP(0.00001);
-        sparkMax2PID.setI(0.000000);
-        sparkMax2PID.setD(0);
+        sparkMax2PID.setP(kP);
+        sparkMax2PID.setI(kI);
+        sparkMax2PID.setD(kD);
+        sparkMax2PID.setFF(kF);
         sparkMax2PID.setIZone(10, 0);
         sparkMax2PID.setIMaxAccum(20, 0);
 
-        sparkMax3PID.setP(0.00001);
-        sparkMax3PID.setI(0.000000);
-        sparkMax3PID.setD(0);
+        sparkMax3PID.setP(kP);
+        sparkMax3PID.setI(kI);
+        sparkMax3PID.setD(kD);
+        sparkMax3PID.setFF(kF);
         sparkMax3PID.setIZone(10, 0);
         sparkMax3PID.setIMaxAccum(20, 0);
 
-        sparkMax4PID.setP(0.00001);
-        sparkMax4PID.setI(0.000000);
-        sparkMax4PID.setD(0);
+        sparkMax4PID.setP(kP);
+        sparkMax4PID.setI(kI);
+        sparkMax4PID.setD(kD);
+        sparkMax4PID.setFF(kF);
         sparkMax4PID.setIZone(10, 0);
         sparkMax4PID.setIMaxAccum(20, 0);
         
@@ -256,7 +262,7 @@ public class Chassis implements Loggable{
     }
     public void DriveSystem(Joystick drive)
     {
-        DriveSystem(drive, "Arcade Drive");
+        DriveSystem(drive, "Scott Drive");
     }
 
     public void DriveSystem(Joystick drive, String mode)
@@ -317,10 +323,10 @@ public class Chassis implements Loggable{
 
              case "Scott Drive":
              //Axis 0 for left joystick left to right
-             //Axis 2 for left bumper
-             //Axis 3 for right bumper
-             double forwardSpeed = oi.pilot.getRawAxis(3);
-             double backwardSpeed = oi.pilot.getRawAxis(2);
+             //Axis 2 for left Trigger
+             //Axis 3 for right Trigger
+             double forwardSpeed = oi.pilot.getRawAxis(Buttons.rightTrigger);
+             double backwardSpeed = oi.pilot.getRawAxis(Buttons.leftTrigger);
              double sideSpeed = -oi.getPilotX();
              if(forwardSpeed <= deadband)
              {

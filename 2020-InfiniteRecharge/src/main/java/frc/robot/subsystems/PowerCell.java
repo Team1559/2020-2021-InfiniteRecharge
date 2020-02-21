@@ -254,7 +254,7 @@ public class PowerCell implements Loggable {
         int spinTimer = spinSetPoint;
         switch (state) {
             case Wait:
-            spinTimer = spinSetPoint;
+                spinTimer = spinSetPoint;
                stopStorage();
                 waitTimer --;
                 if(waitTimer == 0 ){
@@ -264,8 +264,8 @@ public class PowerCell implements Loggable {
     
             case Spin:
                 waitTimer = waitSetPoint;
-                storageMotorH.set(ControlMode.PercentOutput, -1);
-                storageMotorL.set(ControlMode.PercentOutput, 1);
+                storageMotorH.set(ControlMode.PercentOutput, -storageRpms);
+                storageMotorL.set(ControlMode.PercentOutput, storageRpms);
                 if(spinTimer == 0){
                     state = State.Wait;
                 }

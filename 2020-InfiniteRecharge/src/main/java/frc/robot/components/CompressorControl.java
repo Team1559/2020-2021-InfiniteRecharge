@@ -8,7 +8,7 @@ import io.github.oblarg.oblog.annotations.Config;
 public class CompressorControl implements Loggable{
     public Compressor airCompressor;
     public boolean useCompressor;
-    @Config
+    @Config(defaultValueBoolean = true)
     public void useCompressor(boolean enable){
         useCompressor = enable;
     }

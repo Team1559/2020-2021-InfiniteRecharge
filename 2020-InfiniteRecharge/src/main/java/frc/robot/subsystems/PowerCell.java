@@ -82,7 +82,7 @@ public class PowerCell implements Loggable {
     private void Wait_set_point(int setPoint) {
         waitSetPoint = setPoint;    
     }
-    @Config(defaultValueNumeric = 50)
+    @Config(defaultValueNumeric = 25)
     private void Spin_set_point(int setPoint) {
         spinSetPoint = setPoint;    
     }

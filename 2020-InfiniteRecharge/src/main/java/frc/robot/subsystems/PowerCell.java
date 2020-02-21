@@ -18,6 +18,10 @@ import io.github.oblarg.oblog.annotations.Log;
 //intake has to go double the speed the shooter goes
 public class PowerCell implements Loggable {
     private OperatorInterface oi;
+    public enum State {
+        Spin, Wait    
+    }
+    private State state = State.Wait;
     // pid values
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
@@ -237,7 +241,26 @@ public class PowerCell implements Loggable {
         }
     }
     public void store(){
-        
+        int waitTimer = 50;
+        int spinTimer = 25;
+        switch (state) {
+            case Wait:
+               stopStorage();
+                waitTimer --;
+                if(waitTimer == 0 ){
+                    state = State.Spin;
+                }
+                break;
+    
+            case Spin:
+            waitTimer = 50;
+            storageMotorH.set(ControlMode.PercentOutput, -1);
+            storageMotorL.set(ControlMode.PercentOutput, 1);
+            if(spinTimer == 0){
+                state = State.Wait;
+            }
+               
+            }   
     }
 
     public void storage() {
@@ -251,8 +274,8 @@ public class PowerCell implements Loggable {
             store();
         }
          else {
-            storageMotorH.set(ControlMode.PercentOutput, storageRpms);// Will need to be velocity
-            storageMotorL.set(ControlMode.PercentOutput, -storageRpms);// Will need to be velocity
+            storageMotorH.set(ControlMode.PercentOutput, storageRpms);
+            storageMotorL.set(ControlMode.PercentOutput, -storageRpms);
         }
     }
 

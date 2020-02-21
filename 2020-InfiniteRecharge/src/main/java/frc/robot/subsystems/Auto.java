@@ -45,6 +45,7 @@ public class Auto implements Loggable {
         switch (state) {
         case Wait:
             System.out.println("We're waiting");
+            driveTrain.move(0, 0);
             if (timer / 50.0 >= initialWait) {
                 timer = 0;
                 state = State.DriveToGoal;

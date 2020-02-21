@@ -84,7 +84,7 @@ public class Climber implements Loggable {
 
          
 
-        if(oi.DPadCopilot() == Buttons.Dpad_up) { //Told you Operator Interface button controls didn't work!
+        if(oi.DPadCopilot() == Buttons.Dpad_up && oi.copilot.getRawButton(Buttons.X)){{//Told you Operator Interface button controls didn't work!
             unwindWinch();
             System.out.println("unwinding");
         }

@@ -76,7 +76,16 @@ public class PowerCell implements Loggable {
     private double feederRpms = 0.2;
     @Log 
     double feederPosition = 0.0;
-
+    private int waitSetPoint = 50;
+    private int spinSetPoint = 25;
+    @Config(defaultValueNumeric = 50)
+    private void Wait_set_point(int setPoint) {
+        waitSetPoint = setPoint;    
+    }
+    @Config(defaultValueNumeric = 50)
+    private void Spin_set_point(int setPoint) {
+        spinSetPoint = setPoint;    
+    }
     //@Config.ToggleSwitch
     private void shooter_toggle(boolean on) {
         //shooterOn = on;
@@ -241,10 +250,11 @@ public class PowerCell implements Loggable {
         }
     }
     public void store(){
-        int waitTimer = 50;
-        int spinTimer = 25;
+        int waitTimer = waitSetPoint;
+        int spinTimer = spinSetPoint;
         switch (state) {
             case Wait:
+            spinTimer = spinSetPoint;
                stopStorage();
                 waitTimer --;
                 if(waitTimer == 0 ){
@@ -253,7 +263,7 @@ public class PowerCell implements Loggable {
                 break;
     
             case Spin:
-                waitTimer = 50;
+                waitTimer = waitSetPoint;
                 storageMotorH.set(ControlMode.PercentOutput, -1);
                 storageMotorL.set(ControlMode.PercentOutput, 1);
                 if(spinTimer == 0){

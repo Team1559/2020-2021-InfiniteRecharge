@@ -304,8 +304,8 @@ public class Robot extends TimedRobot implements Loggable {
       autoStatice = "Auto initialised";
       autoInitialized = true;
     }
-    else if(ImuInitialized == false || chassisInitialized == false){
-      autoStatice = "Either the IMU or the drive train aren't initialized";
+    else if(ImuInitialized == false || chassisInitialized == false || powerCellInitialized == false){
+      autoStatice = "Either the IMU, power cell, or the drive train aren't initialized";
     }
   }
 }

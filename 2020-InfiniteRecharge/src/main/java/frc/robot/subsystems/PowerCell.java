@@ -253,12 +253,12 @@ public class PowerCell implements Loggable {
                 break;
     
             case Spin:
-            waitTimer = 50;
-            storageMotorH.set(ControlMode.PercentOutput, -1);
-            storageMotorL.set(ControlMode.PercentOutput, 1);
-            if(spinTimer == 0){
-                state = State.Wait;
-            }
+                waitTimer = 50;
+                storageMotorH.set(ControlMode.PercentOutput, -1);
+                storageMotorL.set(ControlMode.PercentOutput, 1);
+                if(spinTimer == 0){
+                    state = State.Wait;
+                }
                
             }   
     }

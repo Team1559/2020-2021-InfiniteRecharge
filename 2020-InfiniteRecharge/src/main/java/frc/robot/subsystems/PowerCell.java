@@ -234,7 +234,14 @@ public class PowerCell implements Loggable {
     public void stopShooter() {
         shooter.set(TalonFXControlMode.PercentOutput, 0);
     }
-
+    public void reverseStorage(){
+        storageMotorH.set(ControlMode.PercentOutput, -storageRpms);
+        storageMotorL.set(ControlMode.PercentOutput, storageRpms);
+    }
+    public void intakeStorage(){
+        storageMotorH.set(ControlMode.PercentOutput, storageRpms);
+        storageMotorL.set(ControlMode.PercentOutput, -storageRpms);
+    }
     public void feeder() {
         if (oi.pilot.getRawButton(Buttons.B)) {
             if (!feederButton) {
@@ -257,7 +264,7 @@ public class PowerCell implements Loggable {
                 spinTimer = spinSetPoint;
                stopStorage();
                 waitTimer --;
-                if(waitTimer == 0 ){
+                if(waitTimer <= 0 ){
                     state = State.Spin;
                 }
                 break;
@@ -265,9 +272,8 @@ public class PowerCell implements Loggable {
             case Spin:
                 waitTimer = waitSetPoint;
                 spinTimer--;
-                storageMotorH.set(ControlMode.PercentOutput, -storageRpms);
-                storageMotorL.set(ControlMode.PercentOutput, storageRpms);
-                if(spinTimer == 0){
+                intakeStorage();
+                if(spinTimer <= 0){
                     state = State.Wait;
                 }
                
@@ -282,11 +288,11 @@ public class PowerCell implements Loggable {
         }
         else if(oi.copilot.getRawButton(Buttons.right_Bumper))
         {
-            store();
+            reverseStorage();
         }
          else {
-            storageMotorH.set(ControlMode.PercentOutput, storageRpms);
-            storageMotorL.set(ControlMode.PercentOutput, -storageRpms);
+            store();
+            
         }
     }
 

@@ -54,7 +54,7 @@ public class Auto implements Loggable {
         case DriveToGoal:
             System.out.println("Driving to Goal");
             driveTrain.move(.2, 0);
-            //powerCell.startShooter();
+            powerCell.startShooter();
             if (odometry.getTranslation().getX() >= 3 || timer / 50.0 >= 4) {
                 timer = 0;
                 state = State.Shoot;
@@ -64,11 +64,11 @@ public class Auto implements Loggable {
         case Shoot:
         System.out.println("It's Shootin Time");
             driveTrain.move(0, 0);
-           // powerCell.startWithoutButton();
+           powerCell.startWithoutButton();
             if (timer / 50.0 >= 2.0) {
                 timer = 0;
                 state = State.Stop;
-                //powerCell.stopWithoutButton();
+                powerCell.stopWithoutButton();
             }
             break;
 
@@ -78,7 +78,7 @@ public class Auto implements Loggable {
             if(timer/50.0>=5)
             {
                 timer = 0;
-                state = State.Wait;
+                //state = State.Wait;
             }
             break;
         }

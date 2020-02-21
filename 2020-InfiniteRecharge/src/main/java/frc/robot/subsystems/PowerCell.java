@@ -264,6 +264,7 @@ public class PowerCell implements Loggable {
     
             case Spin:
                 waitTimer = waitSetPoint;
+                spinTimer--;
                 storageMotorH.set(ControlMode.PercentOutput, -storageRpms);
                 storageMotorL.set(ControlMode.PercentOutput, storageRpms);
                 if(spinTimer == 0){

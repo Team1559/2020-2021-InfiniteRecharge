@@ -21,7 +21,7 @@ public class PowerCell implements Loggable {
     public enum State {
         Spin, Wait    
     }
-    private State state = State.Wait;
+    private State state = State.Spin;
     // pid values
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;

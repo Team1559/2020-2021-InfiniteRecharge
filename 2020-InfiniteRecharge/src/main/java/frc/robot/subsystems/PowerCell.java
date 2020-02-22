@@ -18,6 +18,10 @@ import io.github.oblarg.oblog.annotations.Log;
 //intake has to go double the speed the shooter goes
 public class PowerCell implements Loggable {
     private OperatorInterface oi;
+    public enum State {
+        Spin, Wait    
+    }
+    private State state = State.Spin;
     // pid values
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
@@ -41,7 +45,7 @@ public class PowerCell implements Loggable {
     private double storage_kI = 0;
     private double storage_kF = 0;
     @Log
-    private double feederP_kP = .0001;// 5e-5
+    private double feederP_kP = 5;// 5e-5
     private double feederP_kD = 0;
     @Log
     private double feederP_kI = 0;// 1e-6
@@ -72,7 +76,18 @@ public class PowerCell implements Loggable {
     private double feederRpms = 0.2;
     @Log 
     double feederPosition = 0.0;
-
+    private int waitSetPoint = 50;
+    private int spinSetPoint = 25;
+    private int spinTimer = 1;
+    private int waitTimer = 1;
+    @Config(defaultValueNumeric = 15)
+    private void Wait_set_point(int setPoint) {
+        waitSetPoint = setPoint;    
+    }
+    @Config(defaultValueNumeric = 12.5)
+    private void Spin_set_point(int setPoint) {
+        spinSetPoint = setPoint;    
+    }
     //@Config.ToggleSwitch
     private void shooter_toggle(boolean on) {
         //shooterOn = on;
@@ -221,7 +236,14 @@ public class PowerCell implements Loggable {
     public void stopShooter() {
         shooter.set(TalonFXControlMode.PercentOutput, 0);
     }
-
+    public void reverseStorage(){
+        storageMotorH.set(ControlMode.PercentOutput, -storageRpms);
+        storageMotorL.set(ControlMode.PercentOutput, storageRpms);
+    }
+    public void intakeStorage(){
+        storageMotorH.set(ControlMode.PercentOutput, storageRpms);
+        storageMotorL.set(ControlMode.PercentOutput, -storageRpms);
+    }
     public void feeder() {
         if (oi.pilot.getRawButton(Buttons.B)) {
             if (!feederButton) {
@@ -236,6 +258,31 @@ public class PowerCell implements Loggable {
             }
         }
     }
+    public void store(){
+        intakeStorage();
+        
+        switch (state) {
+            case Wait:
+            System.out.println("Stopped");
+                spinTimer = spinSetPoint;
+               stopStorage();
+                waitTimer --;
+                if(waitTimer <= 0 ){
+                    state = State.Spin;
+                }
+                break;
+    
+            case Spin:
+                waitTimer = waitSetPoint;
+                spinTimer--;
+                intakeStorage();
+                if(spinTimer <= 0){
+                    state = State.Wait;
+                }
+                System.out.println("Spinning");
+               
+            }   
+    }
 
     public void storage() {
         
@@ -245,12 +292,15 @@ public class PowerCell implements Loggable {
         }
         else if(oi.copilot.getRawButton(Buttons.right_Bumper))
         {
-            storageMotorH.set(ControlMode.PercentOutput, -storageRpms);
-            storageMotorL.set(ControlMode.PercentOutput, storageRpms);
+            reverseStorage();
         }
          else {
-            storageMotorH.set(ControlMode.PercentOutput, storageRpms);// Will need to be velocity
-            storageMotorL.set(ControlMode.PercentOutput, -storageRpms);// Will need to be velocity
+             if(oi.pilot.getRawButton(Buttons.B)){
+                 intakeStorage();
+             }
+             else{
+            store();
+             }
         }
     }
 

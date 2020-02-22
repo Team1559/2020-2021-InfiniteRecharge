@@ -25,16 +25,24 @@ public class Climber implements Loggable {
     private double winchRpms = 0.6;
     @Log
     private double balancerPercent = 0.8;
-    private SupplyCurrentLimitConfiguration scl = new SupplyCurrentLimitConfiguration(true, 100, 40, 1000);
+    @Log.Graph
+    private double winchTemp;
+    @Log.Graph
+    private double winchsupplyCurrent;
+    @Log.Graph
+    private double winchstatorCurrent;
+    @Log.Graph
+    private double balencerCurrent;
+    private SupplyCurrentLimitConfiguration scl = new SupplyCurrentLimitConfiguration(true, 200, 200, 1000);
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
     
 	//Shuffleboard configs for winch and bar rider
-	//@Config
+	@Config(defaultValueNumeric = 0.6)
     private void winch_percent_config(double Rpms){
         winchRpms = Rpms;
     }
-    //@Config
+    @Config(defaultValueNumeric = 1.0)
     private void Balancer_percent_config(double OutputPercent){
         balancerPercent = OutputPercent;
     }
@@ -83,10 +91,13 @@ public class Climber implements Loggable {
     /*Main method of climber class operates all functions of climber*/
     public void drive()    {
         Balance();
-
+        balencerCurrent = barRider.getSupplyCurrent();
+        winchTemp = winch.getTemperature();
+        winchsupplyCurrent = winch.getSupplyCurrent();
+        winchstatorCurrent = winch.getStatorCurrent();
          
 
-        if(oi.DPadCopilot() == Buttons.Dpad_up) { //Told you Operator Interface button controls didn't work!
+        if(oi.DPadCopilot() == Buttons.Dpad_up && oi.copilot.getRawButton(Buttons.X)) { //Told you Operator Interface button controls didn't work!
             unwindWinch();
             System.out.println("unwinding");
         }

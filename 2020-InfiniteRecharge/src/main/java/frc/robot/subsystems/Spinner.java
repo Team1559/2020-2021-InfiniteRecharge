@@ -27,7 +27,6 @@ public class Spinner implements Loggable {
     private String tempColor = "B";
     // Varible for the Solenoid, everything with "Launcher" and "Fire" is a Solenoid
     // component
-    @Log.Exclude
     private Solenoid spinnerLauncher;
     // Variable for the position of the spinner
     private boolean Fire = false;
@@ -59,7 +58,7 @@ public class Spinner implements Loggable {
         spinnerMotor.setNeutralMode(NeutralMode.Brake);
         spinnerLauncher = new Solenoid(Wiring.spinnerLauncher);
         oi = ointerface;
-        spinnerOutput = 0.3;
+        spinnerOutput = 0.2;
     }
 
     public void spin(boolean compressorEnable) {
@@ -91,7 +90,7 @@ public class Spinner implements Loggable {
         updateColor();
 
         // when pushing down the B button, this runs stage 2 code
-        if (oi.copilot.getRawAxis(Buttons.left_Bumper) > .3) {
+        if (oi.copilot.getRawAxis(Buttons.leftTrigger) > .3) {
 
             if (!tempColor.equals(currentColor)) {
                 colorCount++;
@@ -107,8 +106,8 @@ public class Spinner implements Loggable {
             colorCount = 0;
 
             // when pushing down the A button, this runs the stage 3 code
-            if (oi.copilot.getRawAxis(Buttons.right_Bumper) > .3) {
-                spinnerMotor.set(ControlMode.PercentOutput, 0.10);
+            if (oi.copilot.getRawAxis(Buttons.rightTrigger) > .3) {
+                spinnerMotor.set(ControlMode.PercentOutput, 0.20);
                 if (FMScolor.equals("Y")) {
                     if (currentColor.equals("G")) {
                         spinnerMotor.set(ControlMode.PercentOutput, 0);

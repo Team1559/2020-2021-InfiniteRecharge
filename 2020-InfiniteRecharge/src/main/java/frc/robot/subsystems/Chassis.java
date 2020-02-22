@@ -104,7 +104,7 @@ public class Chassis implements Loggable{
         shiftUp = up;
         ShiftDown = down;
     }
-    @Config (defaultValueNumeric = 0.8)
+    @Config (defaultValueNumeric = 0)//.8
     public void rampRate(double rr){
         sparkMax1.setOpenLoopRampRate(rr);
         sparkMax2.setOpenLoopRampRate(rr);
@@ -266,10 +266,10 @@ public class Chassis implements Loggable{
         leftMotors.setInverted(true);
         rightMotors.setInverted(true);
 
-        sparkMax1.setSmartCurrentLimit(40);
-        sparkMax2.setSmartCurrentLimit(40);
-        sparkMax3.setSmartCurrentLimit(40);
-        sparkMax4.setSmartCurrentLimit(40);
+        sparkMax1.setSmartCurrentLimit(100);
+        sparkMax2.setSmartCurrentLimit(100);
+        sparkMax3.setSmartCurrentLimit(100);
+        sparkMax4.setSmartCurrentLimit(100);
 
         
         driveTrain = new DevilDifferential(sparkMax1PID, sparkMax2PID);

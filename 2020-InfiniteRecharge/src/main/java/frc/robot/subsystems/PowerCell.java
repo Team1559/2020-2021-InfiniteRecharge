@@ -240,10 +240,18 @@ public class PowerCell implements Loggable {
         storageMotorH.set(ControlMode.PercentOutput, -storageRpms);
         storageMotorL.set(ControlMode.PercentOutput, storageRpms);
     }
-    public void intakeStorage(){
+    public void startStorage(){
         storageMotorH.set(ControlMode.PercentOutput, storageRpms);
         storageMotorL.set(ControlMode.PercentOutput, -storageRpms);
     }
+    public void startFeeder() {
+        feederMotor.set(ControlMode.PercentOutput, feederRpms);
+    }
+
+    public void startShooter() {
+        shooter.set(ControlMode.Velocity, -shooterRpms);
+    }
+
     public void feeder() {
         if (oi.pilot.getRawButton(Buttons.B)) {
             if (!feederButton) {
@@ -259,7 +267,7 @@ public class PowerCell implements Loggable {
         }
     }
     public void store(){
-        intakeStorage();
+        startStorage();
         
         switch (state) {
             case Wait:
@@ -275,7 +283,7 @@ public class PowerCell implements Loggable {
             case Spin:
                 waitTimer = waitSetPoint;
                 spinTimer--;
-                intakeStorage();
+                startStorage();
                 if(spinTimer <= 0){
                     state = State.Wait;
                 }
@@ -296,7 +304,7 @@ public class PowerCell implements Loggable {
         }
          else {
              if(oi.pilot.getRawButton(Buttons.B)){
-                 intakeStorage();
+                startStorage();
              }
              else{
             store();
@@ -323,13 +331,10 @@ public class PowerCell implements Loggable {
         if (disableAll) {
             stopShooter();
         }
-            else {
-            shooter.set(ControlMode.Velocity, -shooterRpms);
-            
+        else {
+            startShooter();
         }
     }
-
-
 
     public void go(){
         if(oi.copilot.getRawButtonPressed(Buttons.Y)){
@@ -340,5 +345,17 @@ public class PowerCell implements Loggable {
         shoot();
         storage();
         feeder();
+    }
+
+    public void startWithoutButton(){
+        startStorage();
+        startFeeder();
+        startShooter();
+    }
+
+    public void stopWithoutButton(){
+        stopfeeder();
+        stopShooter();
+        stopStorage();
     }
 }

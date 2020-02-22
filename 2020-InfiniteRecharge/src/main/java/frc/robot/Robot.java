@@ -19,6 +19,8 @@ import frc.robot.components.Camera;
 import frc.robot.components.IMU;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Auto;
+
 import frc.robot.components.CompressorControl;
 import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.Logger;
@@ -78,6 +80,7 @@ public class Robot extends TimedRobot implements Loggable {
   private IMU imu = new IMU();
   private Camera camera1 = new Camera(0);
   private Camera camera2 = new Camera(1);
+  private Auto auto = new Auto();
   
   //oblog feature flags
   @Config.ToggleSwitch(defaultValue = true)
@@ -157,11 +160,13 @@ public class Robot extends TimedRobot implements Loggable {
     if(ImuEnable && ImuInitialized){
       imu.zeroYaw();
     }
+    auto.AutoInit(driveTrain);
   }
 
   @Override
   public void autonomousPeriodic()
   {
+    auto.AutoPeriodic(driveTrain, powerCell);
     if(ImuEnable && ImuInitialized){
       imu.getvalues();
     }
@@ -251,7 +256,7 @@ public class Robot extends TimedRobot implements Loggable {
     }
     if(chassisEnable && chassisInitialized == false)
     {
-      driveTrain.Init(oi);
+      driveTrain.Init(oi, imu);
       chassisInitialized = true;
     }
     

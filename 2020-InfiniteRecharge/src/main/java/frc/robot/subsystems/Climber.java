@@ -113,10 +113,10 @@ public class Climber implements Loggable {
     
     /*Initializes robot's departure from the ground*/
     public void climbup(){
-        winch.set(TalonFXControlMode.PercentOutput, winchRpms);
+        winch.set(TalonFXControlMode.PercentOutput, -winchRpms);
     }
     public void unwindWinch(){
-        winch.set(TalonFXControlMode.PercentOutput, -winchRpms);
+        winch.set(TalonFXControlMode.PercentOutput, winchRpms);
     }
     
     /*Drives wheels on the bar to allow robot to balance the bar*/

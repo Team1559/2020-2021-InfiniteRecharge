@@ -100,7 +100,7 @@ public class PowerCell implements Loggable {
         
     }
 
-    //@Config
+    @Config(defaultValueNumeric = 100)
         private void Shooter_RPMS(double Rpms){
         shooterRpms = Rpms;
     }

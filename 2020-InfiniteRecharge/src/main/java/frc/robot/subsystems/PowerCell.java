@@ -78,11 +78,13 @@ public class PowerCell implements Loggable {
     double feederPosition = 0.0;
     private int waitSetPoint = 50;
     private int spinSetPoint = 25;
-    @Config(defaultValueNumeric = 50)
+    private int spinTimer = 1;
+    private int waitTimer = 1;
+    @Config(defaultValueNumeric = 15)
     private void Wait_set_point(int setPoint) {
         waitSetPoint = setPoint;    
     }
-    @Config(defaultValueNumeric = 25)
+    @Config(defaultValueNumeric = 12.5)
     private void Spin_set_point(int setPoint) {
         spinSetPoint = setPoint;    
     }
@@ -258,11 +260,10 @@ public class PowerCell implements Loggable {
     }
     public void store(){
         intakeStorage();
-        if(false){
-        int waitTimer = waitSetPoint;
-        int spinTimer = spinSetPoint;
+        
         switch (state) {
             case Wait:
+            System.out.println("Stopped");
                 spinTimer = spinSetPoint;
                stopStorage();
                 waitTimer --;
@@ -278,7 +279,7 @@ public class PowerCell implements Loggable {
                 if(spinTimer <= 0){
                     state = State.Wait;
                 }
-            }
+                System.out.println("Spinning");
                
             }   
     }
@@ -294,8 +295,12 @@ public class PowerCell implements Loggable {
             reverseStorage();
         }
          else {
+             if(oi.pilot.getRawButton(Buttons.B)){
+                 intakeStorage();
+             }
+             else{
             store();
-            
+             }
         }
     }
 

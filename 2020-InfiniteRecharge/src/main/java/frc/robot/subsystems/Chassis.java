@@ -340,10 +340,6 @@ public class Chassis implements Loggable{
              {
                  sideSpeed = 0;
              }
-             if(backwardSpeed > forwardSpeed)
-             {
-                 sideSpeed = -sideSpeed;
-             }
              driveTrain.arcadeDrive(forwardSpeed-backwardSpeed, sideSpeed, isSquaredInputs);
              break;
         }

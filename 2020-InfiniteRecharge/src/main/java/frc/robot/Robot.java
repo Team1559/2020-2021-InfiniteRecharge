@@ -233,12 +233,17 @@ public class Robot extends TimedRobot implements Loggable {
     if(compressorEnable && compressorInitialized){
       compressorControl.disable();
     }
+    if(chassisEnable && chassisInitialized)
+    {
+      driveTrain.disabled();
+    }
+    
   }
 
   @Override
   public void disabledPeriodic()
   {
-
+    
   }
   
   public void initialize()

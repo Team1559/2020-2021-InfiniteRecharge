@@ -245,7 +245,7 @@ public class PowerCell implements Loggable {
         storageMotorL.set(ControlMode.PercentOutput, -storageRpms);
     }
     public void startFeeder() {
-        feederMotor.set(ControlMode.PercentOutput, feederRpms);
+        feederMotor.set(ControlMode.PercentOutput, -feederRpms);
     }
 
     public void startShooter() {
@@ -255,7 +255,7 @@ public class PowerCell implements Loggable {
     public void feeder() {
         if (oi.pilot.getRawButton(Buttons.B)) {
             if (!feederButton) {
-                feederMotor.set(ControlMode.PercentOutput, -feederRpms);
+                startFeeder();
                 feederButton = true;
             }
         } 

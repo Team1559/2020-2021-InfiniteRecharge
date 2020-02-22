@@ -408,4 +408,12 @@ public class Chassis implements Loggable{
     {
         return m_odometry.update(new Rotation2d(imu.getYaw()), R2M(lEncoder.getPosition()), R2M(rEncoder.getPosition()));
     }
+
+    public void disabled()
+    {
+        sparkMax1.setIdleMode(IdleMode.kCoast);
+        sparkMax2.setIdleMode(IdleMode.kCoast);
+        sparkMax3.setIdleMode(IdleMode.kCoast);
+        sparkMax4.setIdleMode(IdleMode.kCoast);
+    }
 }

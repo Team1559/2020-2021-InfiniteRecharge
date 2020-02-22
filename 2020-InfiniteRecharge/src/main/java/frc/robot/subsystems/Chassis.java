@@ -273,10 +273,10 @@ public class Chassis implements Loggable{
         leftMotors.setInverted(true);
         rightMotors.setInverted(true);
 
-        sparkMax1.setSmartCurrentLimit(100);
-        sparkMax2.setSmartCurrentLimit(100);
-        sparkMax3.setSmartCurrentLimit(100);
-        sparkMax4.setSmartCurrentLimit(100);
+        sparkMax1.setSmartCurrentLimit(40);
+        sparkMax2.setSmartCurrentLimit(40);
+        sparkMax3.setSmartCurrentLimit(40);
+        sparkMax4.setSmartCurrentLimit(40);
 
         
         driveTrain = new DevilDifferential(sparkMax1PID, sparkMax2PID);

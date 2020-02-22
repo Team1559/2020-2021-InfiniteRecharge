@@ -4,6 +4,7 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -51,6 +52,8 @@ public class Chassis implements Loggable{
     private MotorWidget widget4;
     private SCGWidget widget5;
     private SCGWidget widget6;
+    
+    private double rampRate = 1;
 
     private SpeedControllerGroup leftMotors;
     private SpeedControllerGroup rightMotors;
@@ -101,10 +104,20 @@ public class Chassis implements Loggable{
         shiftUp = up;
         ShiftDown = down;
     }
+    @Config (defaultValueNumeric = 0.8)
+    public void rampRate(double rr){
+        sparkMax1.setOpenLoopRampRate(rr);
+        sparkMax2.setOpenLoopRampRate(rr);
+        sparkMax3.setOpenLoopRampRate(rr);
+        sparkMax4.setOpenLoopRampRate(rr);
 
-    @Log
-    
+        sparkMax1.setClosedLoopRampRate(rr);
+        sparkMax2.setClosedLoopRampRate(rr);
+        sparkMax3.setClosedLoopRampRate(rr);
+        sparkMax4.setClosedLoopRampRate(rr);
 
+        rampRate = rr;
+    }
     //@Config
     public void set_PID(double P, double I, double D, double F, double imax, double izone)
     {
@@ -170,8 +183,8 @@ public class Chassis implements Loggable{
     }
     public void Init(OperatorInterface oInterface)
     {
-        shiftUp = 5000;
-        ShiftDown = 3500;
+        shiftUp = 3500;
+        ShiftDown = 2500;
         oi = oInterface;
         sparkMax1 = new CANSparkMax(11, MotorType.kBrushless); //ID 11
         sparkMax2 = new CANSparkMax(12, MotorType.kBrushless); //ID 12
@@ -204,7 +217,6 @@ public class Chassis implements Loggable{
         sparkMax4PID = sparkMax4.getPIDController();
         sparkMax4PID.setReference(0, ControlType.kVelocity);
 
-        int rampRate = 2;
         sparkMax1.setOpenLoopRampRate(rampRate);
         sparkMax2.setOpenLoopRampRate(rampRate);
         sparkMax3.setOpenLoopRampRate(rampRate);
@@ -244,6 +256,13 @@ public class Chassis implements Loggable{
         sparkMax4PID.setIZone(10, 0);
         sparkMax4PID.setIMaxAccum(20, 0);
         
+        sparkMax1.setIdleMode(IdleMode.kBrake);
+        sparkMax2.setIdleMode(IdleMode.kBrake);
+        sparkMax3.setIdleMode(IdleMode.kBrake);
+        sparkMax4.setIdleMode(IdleMode.kBrake);
+
+
+
         leftMotors.setInverted(true);
         rightMotors.setInverted(true);
 
@@ -276,11 +295,7 @@ public class Chassis implements Loggable{
         motor2Current = sparkMax2.getOutputCurrent();
         motor3Current = sparkMax3.getOutputCurrent();
         motor4Current = sparkMax4.getOutputCurrent();
-        if(shift){
         gearShift();        
-        }
-        else{gearShifter.set(false);
-        }
         switch(mode)
         {
              case "Tank Drive":
@@ -352,11 +367,11 @@ public class Chassis implements Loggable{
 
         velocity = Math.abs((leftVelocity + rightVelocity) /2);
 
-        if(velocity >= shiftUp){
+        if(oi.pilot.getRawAxis(Buttons.rightJoystick_y) >= 0.5) {
             gearShifter.set(true);
             Gear = "High";
         }
-        else if(velocity <= ShiftDown){
+        else{
             gearShifter.set(false);
             Gear = "Low";
 

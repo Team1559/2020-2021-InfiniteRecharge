@@ -32,6 +32,7 @@ public class Auto implements Loggable {
 
         driveTrain.initOdometry();
         timer = 0;
+        state = State.Wait;
     }
 
     public void AutoPeriodic(Chassis driveTrain, PowerCell powerCell) {

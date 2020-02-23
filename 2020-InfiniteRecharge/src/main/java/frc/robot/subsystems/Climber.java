@@ -108,12 +108,10 @@ public class Climber implements Loggable {
          
 
         if(oi.DPadCopilot() == Buttons.Dpad_up && oi.copilot.getRawButton(Buttons.X)) { //Told you Operator Interface button controls didn't work!
-            unwindWinch();
-            System.out.println("unwinding");
+            raiseClimber();
         }
         else if(oi.DPadCopilot() == Buttons.Dpad_down) {
-            climbup();
-            System.out.println("winding");
+            raiseRobot();
         }
         else{         
            holdwinch();
@@ -122,10 +120,10 @@ public class Climber implements Loggable {
     }
     
     /*Initializes robot's departure from the ground*/
-    public void climbup(){
+    public void raiseRobot(){
         winch.set(TalonFXControlMode.PercentOutput, -winchDownrpms);
     }
-    public void unwindWinch(){
+    public void raiseClimber(){
         winch.set(TalonFXControlMode.PercentOutput, winchUprpms);
     }
     

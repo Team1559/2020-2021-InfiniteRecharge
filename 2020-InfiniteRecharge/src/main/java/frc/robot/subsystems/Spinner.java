@@ -107,7 +107,7 @@ public class Spinner implements Loggable {
 
             // when pushing down the A button, this runs the stage 3 code
             if (oi.copilot.getRawAxis(Buttons.rightTrigger) > .3) {
-                spinnerMotor.set(ControlMode.PercentOutput, 0.1);
+                spinnerMotor.set(ControlMode.PercentOutput, 0.15);
                 if (FMScolor.equals("Y")) {
                     if (currentColor.equals("G")) {
                         spinnerMotor.set(ControlMode.PercentOutput, 0);

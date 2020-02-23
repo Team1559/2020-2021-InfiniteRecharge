@@ -11,6 +11,8 @@ import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
@@ -35,7 +37,7 @@ public class Climber implements Loggable {
     private double winchstatorCurrent;
     @Log.Graph
     private double balencerCurrent;
-    private SupplyCurrentLimitConfiguration scl = new SupplyCurrentLimitConfiguration(true, 200, 200, 1000);
+    private SupplyCurrentLimitConfiguration scl = new SupplyCurrentLimitConfiguration(true, 120, 120, 1000);
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
     
@@ -68,6 +70,8 @@ public class Climber implements Loggable {
     winch.configPeakOutputReverse(-1, TIMEOUT);
     winch.configSupplyCurrentLimit(scl, TIMEOUT);
     winch.setNeutralMode(NeutralMode.Brake);
+    winch.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+
 
     barRider.set(ControlMode.PercentOutput, 0);	
     barRider.configClosedloopRamp(cLR, TIMEOUT);

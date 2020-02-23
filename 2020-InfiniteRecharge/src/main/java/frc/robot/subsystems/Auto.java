@@ -15,19 +15,21 @@ import edu.wpi.first.wpilibj.geometry.*;
 
 public class Auto implements Loggable {
     public enum State {
-        Wait, DriveToGoal, Shoot, Stop
+        Wait, DriveToGoal, Shoot, Move, Stop
     }
 
     private State state = State.Wait;
     private int timer = 0;
 
     private double initialWait = 0.0;
-
+    private double driveForward = -2.438;
+    private double driveBackward = -2.438;
+    private double driveSpeed = .45;
     @Config
     private void setInitialWait(double newWait) {
         initialWait = newWait;
     }
-
+    
     public void AutoInit(Chassis driveTrain) {
 
         driveTrain.initOdometry();
@@ -50,28 +52,34 @@ public class Auto implements Loggable {
 
         case DriveToGoal:
             System.out.println("Driving to Goal");
-            driveTrain.move(-.45, 0);
+            driveTrain.move(-driveSpeed, 0);
             powerCell.startShooter();
             powerCell.startStorage();
-            if (odometry.getTranslation().getX() <= -2.438 || timer / 50.0 >= 4) {
+            if (odometry.getTranslation().getX() <= -driveForward || timer / 50.0 >= 4) {
                 timer = 0;
                 state = State.Shoot;
             }
             break;
 
         case Shoot:
-        System.out.println("It's Shootin Time");
+            System.out.println("It's Shootin Time");
             driveTrain.move(0, 0);
             powerCell.startFeeder();
             if (timer / 50.0 >= 4.0) {
                 timer = 0;
-                state = State.Stop;
+                state = State.Move;
                 powerCell.stopWithoutButton();
             }
             break;
 
+        case Move:
+            driveTrain.move(driveSpeed, 0);
+            if (odometry.getTranslation().getX() >= driveForward || timer / 50.0 >= 4) {
+                timer = 0;
+                state = State.Stop;
+            }
         case Stop:
-        System.out.println("It's Stopped");
+            System.out.println("It's Stopped");
             driveTrain.move(0, 0);
             break;
         }

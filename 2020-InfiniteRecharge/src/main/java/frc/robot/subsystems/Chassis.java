@@ -110,7 +110,8 @@ public class Chassis implements Loggable{
         shiftUp = up;
         ShiftDown = down;
     }
-    @Config (defaultValueNumeric = 0.8)
+    @Config (defaultValueNumeric = 0)//.8
+    
     public void rampRate(double rr){
         sparkMax1.setOpenLoopRampRate(rr);
         sparkMax2.setOpenLoopRampRate(rr);

@@ -22,7 +22,9 @@ public class Climber implements Loggable {
     private TalonSRX barRider;
     private TalonFX winch;
     @Log
-    private double winchRpms = 0.6;
+    private double winchUprpms = 1.0;
+    @Log
+    private double winchDownrpms = 0.6;
     @Log
     private double balancerPercent = 0.8;
     @Log.Graph
@@ -38,9 +40,13 @@ public class Climber implements Loggable {
     private final double cLR = 0.1;
     
 	//Shuffleboard configs for winch and bar rider
-	@Config(defaultValueNumeric = 0.6)
-    private void winch_percent_config(double Rpms){
-        winchRpms = Rpms;
+	@Config(defaultValueNumeric = 1.0)
+    private void winchup_percent_config(double Rpms){
+        winchUprpms = Rpms;
+    }
+    @Config(defaultValueNumeric = 0.6)
+    private void winchdown_percent_config(double Rpms){
+        winchDownrpms = Rpms;
     }
     @Config(defaultValueNumeric = 1.0)
     private void Balancer_percent_config(double OutputPercent){
@@ -113,10 +119,10 @@ public class Climber implements Loggable {
     
     /*Initializes robot's departure from the ground*/
     public void climbup(){
-        winch.set(TalonFXControlMode.PercentOutput, -winchRpms);
+        winch.set(TalonFXControlMode.PercentOutput, -winchDownrpms);
     }
     public void unwindWinch(){
-        winch.set(TalonFXControlMode.PercentOutput, winchRpms);
+        winch.set(TalonFXControlMode.PercentOutput, winchUprpms);
     }
     
     /*Drives wheels on the bar to allow robot to balance the bar*/

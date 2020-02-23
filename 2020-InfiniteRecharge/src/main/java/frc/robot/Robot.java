@@ -142,7 +142,7 @@ public class Robot extends TimedRobot implements Loggable {
     m_driveChooser.addOption("Shuffle Drive Control Groups", kShuffleDriveGroups); //A Drive Train option
     m_driveChooser.addOption("Scott Drive", kScottDrive); //Scott's Drive Train Option
     driveTrainTab.add("Drive Train Choices", m_driveChooser); //Allows you to pick a Drive Train option through Shuffleboard   
-}
+  }
 
   @Override
   public void robotPeriodic()

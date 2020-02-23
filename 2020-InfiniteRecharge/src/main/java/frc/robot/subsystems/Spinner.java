@@ -58,7 +58,7 @@ public class Spinner implements Loggable {
         spinnerMotor.setNeutralMode(NeutralMode.Brake);
         spinnerLauncher = new Solenoid(Wiring.spinnerLauncher);
         oi = ointerface;
-        spinnerOutput = 0.2;
+        spinnerOutput = 0.3;
     }
 
     public void spin(boolean compressorEnable) {
@@ -72,7 +72,7 @@ public class Spinner implements Loggable {
                 Fire = false;
 
             }
-            if (Fire) {
+            if(Fire) {
                 spinnerLauncher.set(true);
             } else {
                 spinnerLauncher.set(false);
@@ -107,7 +107,7 @@ public class Spinner implements Loggable {
 
             // when pushing down the A button, this runs the stage 3 code
             if (oi.copilot.getRawAxis(Buttons.rightTrigger) > .3) {
-                spinnerMotor.set(ControlMode.PercentOutput, 0.20);
+                spinnerMotor.set(ControlMode.PercentOutput, 0.15);
                 if (FMScolor.equals("Y")) {
                     if (currentColor.equals("G")) {
                         spinnerMotor.set(ControlMode.PercentOutput, 0);

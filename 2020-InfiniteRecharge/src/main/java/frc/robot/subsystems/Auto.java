@@ -22,10 +22,15 @@ public class Auto implements Loggable {
     private int timer = 0;
 
     private double initialWait = 0.0;
+    private double driveDistance = 0.0;
 
     @Config
     private void setInitialWait(double newWait) {
         initialWait = newWait;
+    }
+    @Config
+    private void setDistance(double d) {
+        driveDistance = d;
     }
 
     public void AutoInit(Chassis driveTrain) {
@@ -53,7 +58,7 @@ public class Auto implements Loggable {
             driveTrain.move(-.45, 0);
             powerCell.startShooter();
             powerCell.startStorage();
-            if (odometry.getTranslation().getX() <= -2.438 || timer / 50.0 >= 4) {
+            if (odometry.getTranslation().getX() <= -driveDistance || timer / 50.0 >= 4) {
                 timer = 0;
                 state = State.Shoot;
             }

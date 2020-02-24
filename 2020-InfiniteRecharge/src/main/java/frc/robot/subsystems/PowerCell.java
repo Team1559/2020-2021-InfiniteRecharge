@@ -66,8 +66,6 @@ public class PowerCell implements Loggable {
     private double supplyCurrent;
     @Log.Graph
     private double statorCurrent;
-    //@Log.Graph
-    private double shooterSpeed;
     @Log
     private double shooterRpms = 90;
     @Log
@@ -101,21 +99,20 @@ public class PowerCell implements Loggable {
         intakeRpms = Rpms;
         
     }
-    @Config(defaultValueNumeric = 5)
-        private void Shooter_KP(double KP){
-        shooter.config_kP(0, KP);
-        shooter_kP = KP; 
-        
-    }
+
     @Config(defaultValueNumeric = 90)
         private void Shooter_RPMS(double Rpms){
         shooterRpms = Rpms;
     }
 
-    @Config(defaultValueNumeric = 0.2)
-    private void Feeder_Percent(double Rpms){
+    //@Config
+    private void Feeder_PID(double kP, double kI, double kD, double Rpms){
         if(feederMotor != null){
+        feederMotor.config_kP(0, kP);
+        feederMotor.config_kD(0, kD);
+        feederMotor.config_kI(0, kI);
         feederRpms = Rpms;
+        feederP_kP = kP;
         }
     }
 
@@ -328,7 +325,6 @@ public class PowerCell implements Loggable {
     }
 
     public void shoot() {
-        shooterSpeed = shooter.getSelectedSensorVelocity();
         shooterTemp = shooter.getTemperature();
         supplyCurrent = shooter.getSupplyCurrent();
         statorCurrent = shooter.getStatorCurrent();

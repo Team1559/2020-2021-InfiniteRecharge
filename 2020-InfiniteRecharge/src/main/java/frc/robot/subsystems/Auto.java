@@ -74,6 +74,8 @@ public class Auto implements Loggable {
         case Shoot:
             //System.out.println("It's Shootin Time");
             driveTrain.move(0, 0);
+            powerCell.startShooter();
+            powerCell.startStorage();
             powerCell.startFeeder();
             if (timer / 50.0 >= 4.0) {
                 timer = 0;

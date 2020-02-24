@@ -15,15 +15,16 @@ import edu.wpi.first.wpilibj.geometry.*;
 
 public class Auto implements Loggable {
     public enum State {
-        Wait, DriveToGoal, Shoot, Stop
+        Wait, DriveToGoal, Shoot, Move, Stop
     }
 
     private State state = State.Wait;
     private int timer = 0;
 
     private double initialWait = 0.0;
-    private double driveDistance = 0.0;
-
+    private double driveForward = 2.438;
+    private double driveBackward = 5;
+    private double driveSpeed = .45;
     @Config
     private void setInitialWait(double newWait) {
         initialWait = newWait;
@@ -43,10 +44,11 @@ public class Auto implements Loggable {
     public void AutoPeriodic(Chassis driveTrain, PowerCell powerCell) {
         
         timer++;
+        //System.out.println("Time: " + timer);
         Pose2d odometry = driveTrain.updateOdometry();
         switch (state) {
         case Wait:
-            System.out.println("We're waiting");
+            //System.out.println("We're waiting");
             if (timer / 50.0 >= initialWait) {
                 timer = 0;
                 state = State.DriveToGoal;
@@ -54,29 +56,37 @@ public class Auto implements Loggable {
             break;
 
         case DriveToGoal:
-            System.out.println("Driving to Goal");
-            driveTrain.move(-.45, 0);
+            //System.out.println("Driving to Goal");
+            driveTrain.move(-driveSpeed, 0);
             powerCell.startShooter();
             powerCell.startStorage();
-            if (odometry.getTranslation().getX() <= -driveDistance || timer / 50.0 >= 4) {
+            if (odometry.getTranslation().getX() <= -driveForward || timer / 50.0 >= 4) {
                 timer = 0;
                 state = State.Shoot;
             }
             break;
 
         case Shoot:
-        System.out.println("It's Shootin Time");
+            //System.out.println("It's Shootin Time");
             driveTrain.move(0, 0);
             powerCell.startFeeder();
             if (timer / 50.0 >= 4.0) {
                 timer = 0;
-                state = State.Stop;
+                state = State.Move;
                 powerCell.stopWithoutButton();
             }
             break;
 
+        case Move:
+            //System.out.println("Moving Back");
+            driveTrain.move(driveSpeed, 0);
+            if (odometry.getTranslation().getX() >= driveBackward || timer/50.0 >= 6) {
+                timer = 0;
+                state = State.Stop;
+            }
+            break;
         case Stop:
-        System.out.println("It's Stopped");
+            //System.out.println("It's Stopped");
             driveTrain.move(0, 0);
             break;
         }

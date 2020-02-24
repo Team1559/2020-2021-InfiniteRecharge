@@ -29,9 +29,14 @@ public class Auto implements Loggable {
     private void setInitialWait(double newWait) {
         initialWait = newWait;
     }
-    @Config
-    private void setDistance(double d) {
-        driveDistance = d;
+    
+    @Config(defaultValueNumeric = 3)
+    private void setForward(double forward) {
+        driveForward = forward;
+    }
+    @Config(defaultValueNumeric = 0)
+    private void setReverse(double reverse) {
+        driveBackward = reverse;
     }
 
     public void AutoInit(Chassis driveTrain) {

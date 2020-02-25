@@ -23,7 +23,7 @@ public class Auto implements Loggable {
 
     private double initialWait = 0.0;
     private double driveForward = 2.438;
-    private double driveBackward = 4.6;
+    private double driveBackward = 4;
     private double driveSpeed = .45;
     @Config
     private void setInitialWait(double newWait) {
@@ -34,7 +34,7 @@ public class Auto implements Loggable {
     private void setForward(double forward) {
         driveForward = forward;
     }
-    @Config(defaultValueNumeric = 4.6)
+    @Config(defaultValueNumeric = 4)
     private void setReverse(double reverse) {
         driveBackward = reverse;
     }
@@ -65,7 +65,7 @@ public class Auto implements Loggable {
             driveTrain.move(-driveSpeed, 0);
             powerCell.startShooter();
             powerCell.startStorage();
-            if (odometry.getTranslation().getX() <= -driveForward || timer / 50.0 >= 4) {
+            if (odometry.getTranslation().getX() <= -driveForward || timer / 50.0 >= 4.5) {
                 timer = 0;
                 state = State.Shoot;
             }
@@ -87,9 +87,10 @@ public class Auto implements Loggable {
         case Move:
             //System.out.println("Moving Back");
             driveTrain.move(driveSpeed, 0);
-            if (odometry.getTranslation().getX() >= driveBackward || timer/50.0 >= 6) {
+            if (odometry.getTranslation().getX() >= driveBackward || timer/50.0 >= 4.5) {
                 timer = 0;
                 state = State.Stop;
+                
             }
             break;
         case Stop:

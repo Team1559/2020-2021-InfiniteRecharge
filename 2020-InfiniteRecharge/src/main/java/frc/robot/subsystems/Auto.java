@@ -23,7 +23,7 @@ public class Auto implements Loggable {
 
     private double initialWait = 0.0;
     private double driveForward = 2.438;
-    private double driveBackward = 5;
+    private double driveBackward = 4.6;
     private double driveSpeed = .45;
     @Config
     private void setInitialWait(double newWait) {
@@ -34,7 +34,7 @@ public class Auto implements Loggable {
     private void setForward(double forward) {
         driveForward = forward;
     }
-    @Config(defaultValueNumeric = 0)
+    @Config(defaultValueNumeric = 4.6)
     private void setReverse(double reverse) {
         driveBackward = reverse;
     }

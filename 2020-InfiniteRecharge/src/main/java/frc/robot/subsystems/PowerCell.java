@@ -76,15 +76,15 @@ public class PowerCell implements Loggable {
     private double feederRpms = 0.2;
     @Log 
     double feederPosition = 0.0;
-    private int waitSetPoint = 50;
-    private int spinSetPoint = 25;
-    private int spinTimer = 1;
-    private int waitTimer = 1;
+    private double waitSetPoint = 15;
+    private double spinSetPoint = 12;
+    private double spinTimer = 1;
+    private double waitTimer = 1;
     @Config(defaultValueNumeric = 15)
     private void Wait_set_point(int setPoint) {
         waitSetPoint = setPoint;    
     }
-    @Config(defaultValueNumeric = 12.5)
+    @Config(defaultValueNumeric = 12)
     private void Spin_set_point(int setPoint) {
         spinSetPoint = setPoint;    
     }

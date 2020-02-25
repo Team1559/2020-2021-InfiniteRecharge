@@ -67,7 +67,7 @@ public class PowerCell implements Loggable {
     @Log.Graph
     private double statorCurrent;
     @Log
-    private double shooterRpms = 90;
+    private double shooterRpms = 92;
     @Log
     private double intakeRpms = 1;
     @Log
@@ -76,15 +76,15 @@ public class PowerCell implements Loggable {
     private double feederRpms = 0.2;
     @Log 
     double feederPosition = 0.0;
-    private int waitSetPoint = 50;
-    private int spinSetPoint = 25;
-    private int spinTimer = 1;
-    private int waitTimer = 1;
+    private double waitSetPoint = 15;
+    private double spinSetPoint = 12;
+    private double spinTimer = 1;
+    private double waitTimer = 1;
     @Config(defaultValueNumeric = 15)
     private void Wait_set_point(int setPoint) {
         waitSetPoint = setPoint;    
     }
-    @Config(defaultValueNumeric = 12.5)
+    @Config(defaultValueNumeric = 12)
     private void Spin_set_point(int setPoint) {
         spinSetPoint = setPoint;    
     }
@@ -100,7 +100,7 @@ public class PowerCell implements Loggable {
         
     }
 
-    @Config(defaultValueNumeric = 90)
+    @Config(defaultValueNumeric = 92)
         private void Shooter_RPMS(double Rpms){
         shooterRpms = Rpms;
     }
@@ -337,8 +337,11 @@ public class PowerCell implements Loggable {
     }
 
     public void go(){
-        if(oi.copilot.getRawButtonPressed(Buttons.Y)){
-            disableAll = !disableAll;
+        if(oi.copilot.getRawButton(Buttons.Y)){
+            disableAll = false;
+        }
+        else{
+            disableAll = true;
         }
         
         intake();

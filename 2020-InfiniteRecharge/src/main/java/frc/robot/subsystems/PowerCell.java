@@ -67,7 +67,7 @@ public class PowerCell implements Loggable {
     @Log.Graph
     private double statorCurrent;
     @Log
-    private double shooterRpms = 90;
+    private double shooterRpms = 92;
     @Log
     private double intakeRpms = 1;
     @Log
@@ -100,7 +100,7 @@ public class PowerCell implements Loggable {
         
     }
 
-    @Config(defaultValueNumeric = 90)
+    @Config(defaultValueNumeric = 92)
         private void Shooter_RPMS(double Rpms){
         shooterRpms = Rpms;
     }

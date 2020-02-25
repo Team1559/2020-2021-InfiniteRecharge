@@ -130,6 +130,8 @@ public class Robot extends TimedRobot implements Loggable {
   }
   @Override
   public void robotInit() {
+      camera1.init();
+      camera2.init();
   Logger.configureLoggingAndConfig(this, false); 
     driveTrainTab = Shuffleboard.getTab("Drive Train"); //The Shuffleboard Tab for all Drive Train related stuff
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
@@ -271,15 +273,7 @@ public class Robot extends TimedRobot implements Loggable {
       climberInitialized = true;
     }
 
-    if(camera1Enable && camera1Initialized == false){
-      camera1.init();
-      camera1Initialized = true;
-    }
     
-    if(camera2Enable && camera2Initialized == false){
-      camera2.init();
-      camera2Initialized = true;
-    }
     if(colorEnable && colorInitialized == false)
     {
       spinner.init(oi);

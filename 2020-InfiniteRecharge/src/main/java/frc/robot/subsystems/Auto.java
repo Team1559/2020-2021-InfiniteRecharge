@@ -30,6 +30,15 @@ public class Auto implements Loggable {
         initialWait = newWait;
     }
     
+    @Config(defaultValueNumeric = 3)
+    private void setForward(double forward) {
+        driveForward = forward;
+    }
+    @Config(defaultValueNumeric = 0)
+    private void setReverse(double reverse) {
+        driveBackward = reverse;
+    }
+
     public void AutoInit(Chassis driveTrain) {
 
         driveTrain.initOdometry();
@@ -65,6 +74,8 @@ public class Auto implements Loggable {
         case Shoot:
             //System.out.println("It's Shootin Time");
             driveTrain.move(0, 0);
+            powerCell.startShooter();
+            powerCell.startStorage();
             powerCell.startFeeder();
             if (timer / 50.0 >= 4.0) {
                 timer = 0;

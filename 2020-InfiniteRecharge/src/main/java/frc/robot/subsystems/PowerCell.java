@@ -338,7 +338,10 @@ public class PowerCell implements Loggable {
 
     public void go(){
         if(oi.copilot.getRawButtonPressed(Buttons.Y)){
-            disableAll = !disableAll;
+            disableAll = false;
+        }
+        else{
+            disableAll = true;
         }
         
         intake();

@@ -11,6 +11,8 @@ import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
@@ -22,11 +24,11 @@ public class Climber implements Loggable {
     private TalonSRX barRider;
     private TalonFX winch;
     @Log
-    private double winchUprpms = 1.0;
+    private double winchUprpms = 0.6;
     @Log
-    private double winchDownrpms = 0.6;
+    private double winchDownrpms = 1.0;
     @Log
-    private double balancerPercent = 0.8;
+    private double balancerPercent = 1;
     @Log.Graph
     private double winchTemp;
     @Log.Graph
@@ -35,7 +37,7 @@ public class Climber implements Loggable {
     private double winchstatorCurrent;
     @Log.Graph
     private double balencerCurrent;
-    private SupplyCurrentLimitConfiguration scl = new SupplyCurrentLimitConfiguration(true, 200, 200, 1000);
+    private SupplyCurrentLimitConfiguration scl = new SupplyCurrentLimitConfiguration(true, 120, 120, 1000);
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
     
@@ -68,6 +70,8 @@ public class Climber implements Loggable {
     winch.configPeakOutputReverse(-1, TIMEOUT);
     winch.configSupplyCurrentLimit(scl, TIMEOUT);
     winch.setNeutralMode(NeutralMode.Brake);
+    winch.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+
 
     barRider.set(ControlMode.PercentOutput, 0);	
     barRider.configClosedloopRamp(cLR, TIMEOUT);
@@ -104,12 +108,10 @@ public class Climber implements Loggable {
          
 
         if(oi.DPadCopilot() == Buttons.Dpad_up && oi.copilot.getRawButton(Buttons.X)) { //Told you Operator Interface button controls didn't work!
-            unwindWinch();
-            System.out.println("unwinding");
+            raiseClimber();
         }
         else if(oi.DPadCopilot() == Buttons.Dpad_down) {
-            climbup();
-            System.out.println("winding");
+            raiseRobot();
         }
         else{         
            holdwinch();
@@ -118,11 +120,11 @@ public class Climber implements Loggable {
     }
     
     /*Initializes robot's departure from the ground*/
-    public void climbup(){
-        winch.set(TalonFXControlMode.PercentOutput, -winchDownrpms);
+    public void raiseRobot(){
+        winch.set(TalonFXControlMode.PercentOutput, winchDownrpms);
     }
-    public void unwindWinch(){
-        winch.set(TalonFXControlMode.PercentOutput, winchUprpms);
+    public void raiseClimber(){
+        winch.set(TalonFXControlMode.PercentOutput, -winchUprpms);
     }
     
     /*Drives wheels on the bar to allow robot to balance the bar*/
@@ -139,8 +141,6 @@ public class Climber implements Loggable {
         else
         {
             stopBarrider();
-        }
-    
-        
+        } 
     }
 }

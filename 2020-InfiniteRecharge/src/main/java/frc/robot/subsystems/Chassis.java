@@ -59,7 +59,7 @@ public class Chassis implements Loggable{
     private SCGWidget widget5;
     private SCGWidget widget6;
     
-    private double rampRate = 1;
+    private double rampRate = 0.6;
 
     private SpeedControllerGroup leftMotors;
     private SpeedControllerGroup rightMotors;
@@ -110,7 +110,7 @@ public class Chassis implements Loggable{
         shiftUp = up;
         ShiftDown = down;
     }
-    @Config (defaultValueNumeric = 0)//.8
+    @Config (defaultValueNumeric = 0.6)//.8
     
     public void rampRate(double rr){
         sparkMax1.setOpenLoopRampRate(rr);
@@ -393,6 +393,8 @@ public class Chassis implements Loggable{
 
     public void initOdometry()
     {
+        lEncoder.setPosition(0);
+        rEncoder.setPosition(0);
         imu.zeroYaw();
         Rotation2d yaw = new Rotation2d(imu.getYaw());
         m_odometry = new DifferentialDriveOdometry(yaw);

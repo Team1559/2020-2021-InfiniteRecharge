@@ -93,7 +93,7 @@ public class PowerCell implements Loggable {
         //shooterOn = on;
     }
 
-	//@Config
+	@Config(defaultValueNumeric = 0.6)
     private void Intake_Percent(double Rpms){
 
         intakeRpms = Rpms;
@@ -253,7 +253,7 @@ public class PowerCell implements Loggable {
     }
 
     public void feeder() {
-        if (oi.pilot.getRawButton(Buttons.B)) {
+        if (oi.pilot.getRawButton(Buttons.A)) {
             if (!feederButton) {
                 startFeeder();
                 feederButton = true;
@@ -303,7 +303,7 @@ public class PowerCell implements Loggable {
             reverseStorage();
         }
          else {
-             if(oi.pilot.getRawButton(Buttons.B)){
+             if(oi.pilot.getRawButton(Buttons.A)){
                 startStorage();
              }
              else{

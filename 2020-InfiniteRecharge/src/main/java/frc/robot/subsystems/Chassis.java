@@ -198,6 +198,10 @@ public class Chassis implements Loggable{
         sparkMax2 = new CANSparkMax(12, MotorType.kBrushless); //ID 12
         sparkMax3 = new CANSparkMax(13, MotorType.kBrushless); //ID 13
         sparkMax4 = new CANSparkMax(14, MotorType.kBrushless); //ID 14
+        sparkMax1.restoreFactoryDefaults();
+        sparkMax2.restoreFactoryDefaults();
+        sparkMax3.restoreFactoryDefaults();
+        sparkMax4.restoreFactoryDefaults();
         lEncoder = new CANEncoder(sparkMax1);
         rEncoder = new CANEncoder(sparkMax2);
         sparkMax3.follow(sparkMax1);

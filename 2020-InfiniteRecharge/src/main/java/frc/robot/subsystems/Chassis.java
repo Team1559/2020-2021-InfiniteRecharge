@@ -286,7 +286,7 @@ public class Chassis implements Loggable{
         
         driveTrain = new DevilDifferential(sparkMax1PID, sparkMax2PID);
         driveTrain.setMaxOutput(5600); //NEO free speed 5700 RPM
-
+        driveTrain.setExpiration(2.0);
         tab = Shuffleboard.getTab("Chassis");
 
         
@@ -318,7 +318,7 @@ public class Chassis implements Loggable{
              case "Arcade Drive":
              if(drive == null)
              {
-                 System.out.println("Your controller is Null dimwit!!!!");
+                 //System.out.println("Your controller is Null dimwit!!!!");
              }
              else
              {

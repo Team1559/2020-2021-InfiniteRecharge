@@ -271,7 +271,7 @@ public class PowerCell implements Loggable {
         
         switch (state) {
             case Wait:
-            System.out.println("Stopped");
+           // System.out.println("Stopped");
                 spinTimer = spinSetPoint;
                stopStorage();
                 waitTimer --;
@@ -287,7 +287,7 @@ public class PowerCell implements Loggable {
                 if(spinTimer <= 0){
                     state = State.Wait;
                 }
-                System.out.println("Spinning");
+                //System.out.println("Spinning");
                
             }   
     }

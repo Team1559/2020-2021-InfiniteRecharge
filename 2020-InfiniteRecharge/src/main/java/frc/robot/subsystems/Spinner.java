@@ -38,8 +38,8 @@ public class Spinner implements Loggable {
     private double spinnerOutput;
     // Variable for the current color, which is displayed on shuffleboard
     //@Log
-    String currentColor = "None";
-    int blueColor = 0;
+    private String currentColor = "None";
+    private int blueColor = 0;
         private int greenColor = 0;
         private int redColor = 0;
         private double norm_max = 0.0;
@@ -50,6 +50,8 @@ public class Spinner implements Loggable {
         private double redCon = 0.0;
         private double greenCon = 0.0;
         private double yellowCon = 0.0;
+        private String gameData;
+        private String FMScolor = "";
 
     public boolean skipLayout() {
         return true;
@@ -57,7 +59,7 @@ public class Spinner implements Loggable {
 
     // Variable that counts the amount of color changes that the sensor detects
     //@Log
-    int colorCount = 0;
+    private int colorCount = 0;
 
     ////@Config(defaultValueNumeric = 0.2) // (max = 1 , min = -1 , blockIncrement = .05)
     public void configSpinner(double output) {
@@ -91,8 +93,7 @@ public class Spinner implements Loggable {
         }
 
         /// This is the Field Management system code, which was found on docs.wpilib.org
-        String gameData;
-        String FMScolor = "";
+        
         gameData = DriverStation.getInstance().getGameSpecificMessage();
         if (gameData.length() > 0) {
             FMScolor = gameData.substring(0, 1);

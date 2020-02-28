@@ -102,10 +102,10 @@ public class Climber implements Loggable {
     /*Main method of climber class operates all functions of climber*/
     public void drive()    {
         Balance();
-        balencerCurrent = barRider.getSupplyCurrent();
-        winchTemp = winch.getTemperature();
-        winchsupplyCurrent = winch.getSupplyCurrent();
-        winchstatorCurrent = winch.getStatorCurrent();
+        // balencerCurrent = barRider.getSupplyCurrent();
+        // winchTemp = winch.getTemperature();
+        // winchsupplyCurrent = winch.getSupplyCurrent();
+        // winchstatorCurrent = winch.getStatorCurrent();
          
 
         if(oi.DPadCopilot() == Buttons.Dpad_up && oi.copilot.getRawButton(Buttons.X)) { //Told you Operator Interface button controls didn't work!

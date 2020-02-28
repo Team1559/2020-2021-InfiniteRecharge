@@ -114,7 +114,6 @@ public class Chassis implements Loggable{
         ShiftDown = down;
     }
     //@Config (defaultValueNumeric = 0.6)//.8
-    
     public void rampRate(double rr){
         sparkMax1.setOpenLoopRampRate(rr);
         sparkMax2.setOpenLoopRampRate(rr);
@@ -302,14 +301,14 @@ public class Chassis implements Loggable{
     public void DriveSystem(Joystick drive, String mode)
     {   
         // graphing the motor parameters
-        motor1Temp = sparkMax1.getMotorTemperature();
-        motor2Temp = sparkMax2.getMotorTemperature();
-        motor3Temp = sparkMax3.getMotorTemperature();
-        motor4Temp = sparkMax4.getMotorTemperature();
-        motor1Current = sparkMax1.getOutputCurrent();
-        motor2Current = sparkMax2.getOutputCurrent();
-        motor3Current = sparkMax3.getOutputCurrent();
-        motor4Current = sparkMax4.getOutputCurrent();
+        // motor1Temp = sparkMax1.getMotorTemperature();
+        // motor2Temp = sparkMax2.getMotorTemperature();
+        // motor3Temp = sparkMax3.getMotorTemperature();
+        // motor4Temp = sparkMax4.getMotorTemperature();
+        // motor1Current = sparkMax1.getOutputCurrent();
+        // motor2Current = sparkMax2.getOutputCurrent();
+        // motor3Current = sparkMax3.getOutputCurrent();
+        // motor4Current = sparkMax4.getOutputCurrent();
         gearShift();        
         switch(mode)
         {
@@ -377,10 +376,10 @@ public class Chassis implements Loggable{
 
     public void gearShift()
     {
-        leftVelocity = lEncoder.getVelocity();
-        rightVelocity = -(rEncoder.getVelocity());
+        // leftVelocity = lEncoder.getVelocity();
+        // rightVelocity = -(rEncoder.getVelocity());
 
-        velocity = Math.abs((leftVelocity + rightVelocity) /2);
+        // velocity = Math.abs((leftVelocity + rightVelocity) /2);
 
         if(oi.pilot.getRawAxis(Buttons.rightJoystick_y) >= 0.5) {
             gearShifter.set(true);

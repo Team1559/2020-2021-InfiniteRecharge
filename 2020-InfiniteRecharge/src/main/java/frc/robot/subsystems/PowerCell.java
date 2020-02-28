@@ -325,9 +325,9 @@ public class PowerCell implements Loggable {
     }
 
     public void shoot() {
-        shooterTemp = shooter.getTemperature();
-        supplyCurrent = shooter.getSupplyCurrent();
-        statorCurrent = shooter.getStatorCurrent();
+        // shooterTemp = shooter.getTemperature();
+        // supplyCurrent = shooter.getSupplyCurrent();
+        // statorCurrent = shooter.getStatorCurrent();
         if (disableAll) {
             stopShooter();
         }

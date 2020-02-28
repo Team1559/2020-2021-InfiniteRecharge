@@ -25,29 +25,29 @@ public class PowerCell implements Loggable {
     // pid values
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
-    @Log
+    //@Log
     private double intake_kP = 5;// 5e-5
     private double intake_kD = 0;
-    @Log
+    //@Log
     private double intake_kI = 0.00000;// 1e-6
     private double intake_kF = 0;
     private double shooter_kF = 0; 
     private SupplyCurrentLimitConfiguration shooterLimit = new SupplyCurrentLimitConfiguration(true, 100, 20, 1000);
-    @Log
+    //@Log
     private double shooter_kP = 5;
     private double shooter_kD = 0;
-    @Log
+    //@Log
     private double shooter_kI = 0.00000;// 1e-6
-    @Log
+    //@Log
     private double storage_kP = 5;
     private double storage_kD = 0;
-    @Log
+    //@Log
     private double storage_kI = 0;
     private double storage_kF = 0;
-    @Log
+    //@Log
     private double feederP_kP = 5;// 5e-5
     private double feederP_kD = 0;
-    @Log
+    //@Log
     private double feederP_kI = 0;// 1e-6
     private double feederP_kF = 0;
     private SupplyCurrentLimitConfiguration feederLimit = new SupplyCurrentLimitConfiguration(true, 40, 20, 1000);
@@ -60,52 +60,52 @@ public class PowerCell implements Loggable {
     private TalonFX shooter;
     private TalonSRX intakeMotor;
     private TalonFX feederMotor;
-    @Log.Graph
+    //@Log.Graph
     private double shooterTemp;
-    @Log.Graph
+    //@Log.Graph
     private double supplyCurrent;
-    @Log.Graph
+    //@Log.Graph
     private double statorCurrent;
-    @Log
+    //@Log
     private double shooterRpms = 92;
-    @Log
+    //@Log
     private double intakeRpms = 1;
-    @Log
+    //@Log
     private double storageRpms = 0.6; //%output for now
-    @Log
+    //@Log
     private double feederRpms = 0.2;
-    @Log 
+    //@Log 
     double feederPosition = 0.0;
     private double waitSetPoint = 15;
     private double spinSetPoint = 12;
     private double spinTimer = 1;
     private double waitTimer = 1;
-    @Config(defaultValueNumeric = 15)
+    //@Config(defaultValueNumeric = 15)
     private void Wait_set_point(int setPoint) {
         waitSetPoint = setPoint;    
     }
-    @Config(defaultValueNumeric = 12)
+    //@Config(defaultValueNumeric = 12)
     private void Spin_set_point(int setPoint) {
         spinSetPoint = setPoint;    
     }
-    //@Config.ToggleSwitch
+    ////@Config.ToggleSwitch
     private void shooter_toggle(boolean on) {
         //shooterOn = on;
     }
 
-	@Config(defaultValueNumeric = 0.6)
+	//@Config(defaultValueNumeric = 0.6)
     private void Intake_Percent(double Rpms){
 
         intakeRpms = Rpms;
         
     }
 
-    @Config(defaultValueNumeric = 92)
+    //@Config(defaultValueNumeric = 92)
         private void Shooter_RPMS(double Rpms){
         shooterRpms = Rpms;
     }
 
-    //@Config
+    ////@Config
     private void Feeder_PID(double kP, double kI, double kD, double Rpms){
         if(feederMotor != null){
         feederMotor.config_kP(0, kP);
@@ -118,7 +118,7 @@ public class PowerCell implements Loggable {
 
 
     
-    //@Config
+    ////@Config
     private void Storage_Percent(double Rpms){
         storageRpms = Rpms;
     }

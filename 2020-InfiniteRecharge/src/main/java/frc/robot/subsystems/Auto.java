@@ -21,20 +21,20 @@ public class Auto implements Loggable {
     private State state = State.Wait;
     private int timer = 0;
 
-    private double initialWait = 0.0;
+    private double initialWait = 0;
     private double driveForward = 2.438;
-    private double driveBackward = 4;
+    private double driveBackward = 0;
     private double driveSpeed = .45;
-    @Config
+    //@Config(defaultValueNumeric = 0)
     private void setInitialWait(double newWait) {
         initialWait = newWait;
     }
     
-    @Config(defaultValueNumeric = 3)
+    //@Config(defaultValueNumeric = 3)
     private void setForward(double forward) {
         driveForward = forward;
     }
-    @Config(defaultValueNumeric = 4)
+    //@Config(defaultValueNumeric = 4)
     private void setReverse(double reverse) {
         driveBackward = reverse;
     }

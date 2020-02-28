@@ -28,7 +28,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 
 public class Chassis implements Loggable{
 
-    @Log
+    //@Log
     private String Gear = "Low";
     private CANEncoder lEncoder;
     private CANEncoder rEncoder;
@@ -40,9 +40,9 @@ public class Chassis implements Loggable{
     private CANPIDController sparkMax3PID;
     private CANSparkMax sparkMax4;
     private CANPIDController sparkMax4PID;
-    @Log
+    //@Log
     private double shiftUp;
-    @Log
+    //@Log
     public double ShiftDown;
     private Solenoid gearShifter;
     private OperatorInterface oi;
@@ -63,54 +63,57 @@ public class Chassis implements Loggable{
 
     private SpeedControllerGroup leftMotors;
     private SpeedControllerGroup rightMotors;
-    @Log.Graph
+    //@Log.Graph
     private double leftVelocity;
-    @Log.Graph
+    //@Log.Graph
     private double rightVelocity;
-    @Log.Dial(max = 6000, min = 0)
+    //@Log.Dial(max = 6000, min = 0)
     private double velocity;
-    @Log.Graph
+    //@Log.Graph
     public double motor1Current;
-    @Log.Graph
+    //@Log.Graph
     public double motor2Current;
-    @Log.Graph
+    //@Log.Graph
     public double motor3Current;
-    @Log.Graph
+    //@Log.Graph
     public double motor4Current;
 
-    @Log.Dial
+    //@Log.Dial
     private double motor1Temp;
-    @Log.Dial
+    //@Log.Dial
     private double motor2Temp;
-    @Log.Dial
+    //@Log.Dial
     private double motor3Temp;
-    @Log.Dial
+    //@Log.Dial
     private double motor4Temp;
 
     private boolean shift = true;
 
-    @Log
+    //@Log
     private double kP = 0.0002; //0.0001
-    @Log
+    //@Log
     private double kI = 0.000000; //0.0 (We don't really need I for now, maybe later)
-    @Log
+    //@Log
     private double kD = 0.0000;
-    @Log
+    //@Log
     private double kF = 0.00018; //0.000125
 
-    @Log
+    //@Log
     private double deadband = 0.01;
+    private double forwardSpeed = 0;
+    private double backwardSpeed = 0;
+    private double sideSpeed = 0;
 
-   // @Config.ToggleSwitch(defaultValue = true)
+   // //@Config.ToggleSwitch(defaultValue = true)
     public void Enable_Shifting(boolean enable){
         shift = enable;
     }
-    //@Config
+    ////@Config
     public void Shifting_points(double up, double down){
         shiftUp = up;
         ShiftDown = down;
     }
-    @Config (defaultValueNumeric = 0.6)//.8
+    //@Config (defaultValueNumeric = 0.6)//.8
     
     public void rampRate(double rr){
         sparkMax1.setOpenLoopRampRate(rr);
@@ -125,7 +128,7 @@ public class Chassis implements Loggable{
 
         rampRate = rr;
     }
-    //@Config
+    ////@Config
     public void set_PID(double P, double I, double D, double F, double imax, double izone)
     {
         
@@ -165,25 +168,25 @@ public class Chassis implements Loggable{
         
     }
 
-    //@Config
+    ////@Config
     public void setDeadband(double dB)
     {
         deadband = dB;
     }
 
-    @Log
+    //@Log
     private double setSpeed = 5600;
 
-    //@Config
+    ////@Config
     public void setMySpeed(double sS)
     {
         setSpeed = sS;
     }
     
-    @Log
+    //@Log
     private boolean isSquaredInputs = true;
 
-    //@Config
+    ////@Config
     public void wantInputsSquared(boolean iS)
     {
         isSquaredInputs = iS;
@@ -352,9 +355,9 @@ public class Chassis implements Loggable{
              //Axis 0 for left joystick left to right
              //Axis 2 for left Trigger
              //Axis 3 for right Trigger
-             double forwardSpeed = oi.pilot.getRawAxis(Buttons.rightTrigger);
-             double backwardSpeed = oi.pilot.getRawAxis(Buttons.leftTrigger);
-             double sideSpeed = -oi.getPilotX();
+              forwardSpeed = oi.pilot.getRawAxis(Buttons.rightTrigger);
+              backwardSpeed = oi.pilot.getRawAxis(Buttons.leftTrigger);
+              sideSpeed = -oi.getPilotX();
              if(forwardSpeed <= deadband)
              {
                  forwardSpeed = 0;

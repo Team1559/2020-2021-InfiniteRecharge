@@ -120,14 +120,14 @@ public class Robot extends TimedRobot implements Loggable {
       // camera2.init();
   Logger.configureLoggingAndConfig(this, false); 
     driveTrainTab = Shuffleboard.getTab("Drive Train"); //The Shuffleboard Tab for all Drive Train related stuff
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
-    m_driveChooser.setDefaultOption("Tank Drive",kTankDrive); //A Drive Train option
+    // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    // m_chooser.addOption("My Auto", kCustomAuto);
+    // SmartDashboard.putData("Auto choices", m_chooser);
+    // m_driveChooser.setDefaultOption("Tank Drive",kTankDrive); //A Drive Train option
     m_driveChooser.addOption("Arcade Drive", kArcadeDrive); //A Drive Train option
-    m_driveChooser.addOption("Curvature Drive", kCurvatureDrive); //A Drive Train option
-    m_driveChooser.addOption("Shuffle Drive Individual", kShuffleDrive); //A Drive Train option
-    m_driveChooser.addOption("Shuffle Drive Control Groups", kShuffleDriveGroups); //A Drive Train option
+    // m_driveChooser.addOption("Curvature Drive", kCurvatureDrive); //A Drive Train option
+    // m_driveChooser.addOption("Shuffle Drive Individual", kShuffleDrive); //A Drive Train option
+    // m_driveChooser.addOption("Shuffle Drive Control Groups", kShuffleDriveGroups); //A Drive Train option
     m_driveChooser.addOption("Scott Drive", kScottDrive); //Scott's Drive Train Option
     driveTrainTab.add("Drive Train Choices", m_driveChooser); //Allows you to pick a Drive Train option through Shuffleboard   
   }

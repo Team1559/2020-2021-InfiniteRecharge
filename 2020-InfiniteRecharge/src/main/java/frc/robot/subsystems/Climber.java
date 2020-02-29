@@ -25,7 +25,7 @@ public class Climber implements Loggable {
     private TalonFX winch;
     private double leftJoystick_x = 0;
     //@Log
-    private double winchUprpms = 0.6;
+    private double winchUprpms = 0.9;
     //@Log
     private double winchDownrpms = 1.0;
     //@Log

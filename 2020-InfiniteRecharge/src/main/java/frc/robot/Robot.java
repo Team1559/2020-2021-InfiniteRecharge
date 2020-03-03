@@ -116,8 +116,8 @@ public class Robot extends TimedRobot implements Loggable {
   }
   @Override
   public void robotInit() {
-      // camera1.init();
-      // camera2.init();
+      camera1.init();
+      camera2.init();
   Logger.configureLoggingAndConfig(this, false); 
     driveTrainTab = Shuffleboard.getTab("Drive Train"); //The Shuffleboard Tab for all Drive Train related stuff
     // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);

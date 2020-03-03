@@ -23,34 +23,35 @@ public class Climber implements Loggable {
     private OperatorInterface oi;
     private TalonSRX barRider;
     private TalonFX winch;
-    @Log
-    private double winchUprpms = 0.6;
-    @Log
+    private double leftJoystick_x = 0;
+    //@Log
+    private double winchUprpms = 0.9;
+    //@Log
     private double winchDownrpms = 1.0;
-    @Log
+    //@Log
     private double balancerPercent = 1;
-    @Log.Graph
+    //@Log.Graph
     private double winchTemp;
-    @Log.Graph
+    //@Log.Graph
     private double winchsupplyCurrent;
-    @Log.Graph
+    //@Log.Graph
     private double winchstatorCurrent;
-    @Log.Graph
+    //@Log.Graph
     private double balencerCurrent;
     private SupplyCurrentLimitConfiguration scl = new SupplyCurrentLimitConfiguration(true, 120, 120, 1000);
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
     
 	//Shuffleboard configs for winch and bar rider
-	@Config(defaultValueNumeric = 1.0)
+	//@Config(defaultValueNumeric = 1.0)
     private void winchup_percent_config(double Rpms){
         winchUprpms = Rpms;
     }
-    @Config(defaultValueNumeric = 0.6)
+    //@Config(defaultValueNumeric = 0.6)
     private void winchdown_percent_config(double Rpms){
         winchDownrpms = Rpms;
     }
-    @Config(defaultValueNumeric = 1.0)
+    //@Config(defaultValueNumeric = 1.0)
     private void Balancer_percent_config(double OutputPercent){
         balancerPercent = OutputPercent;
     }
@@ -101,10 +102,10 @@ public class Climber implements Loggable {
     /*Main method of climber class operates all functions of climber*/
     public void drive()    {
         Balance();
-        balencerCurrent = barRider.getSupplyCurrent();
-        winchTemp = winch.getTemperature();
-        winchsupplyCurrent = winch.getSupplyCurrent();
-        winchstatorCurrent = winch.getStatorCurrent();
+        // balencerCurrent = barRider.getSupplyCurrent();
+        // winchTemp = winch.getTemperature();
+        // winchsupplyCurrent = winch.getSupplyCurrent();
+        // winchstatorCurrent = winch.getStatorCurrent();
          
 
         if(oi.DPadCopilot() == Buttons.Dpad_up && oi.copilot.getRawButton(Buttons.X)) { //Told you Operator Interface button controls didn't work!
@@ -129,7 +130,7 @@ public class Climber implements Loggable {
     
     /*Drives wheels on the bar to allow robot to balance the bar*/
     public void Balance(){
-        double leftJoystick_x = oi.copilot.getRawAxis(Buttons.leftJoystick_x);
+        leftJoystick_x = oi.copilot.getRawAxis(Buttons.leftJoystick_x);
         if ( leftJoystick_x > 0.3)
         {
             barRider.set(ControlMode.PercentOutput, -balancerPercent);

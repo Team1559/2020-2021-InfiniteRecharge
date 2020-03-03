@@ -47,10 +47,6 @@ public class Robot extends TimedRobot implements Loggable {
   private ShuffleboardTab driveTrainTab;
 
   // feature flags booleans
-  private boolean camera1Enable = false;
-  private boolean camera1Initialized = false;
-  private boolean camera2Enable = false;
-  private boolean camera2Initialized = false;
 
   private boolean chassisEnable = false;
   private boolean chassisInitialized = false;
@@ -98,15 +94,9 @@ public class Robot extends TimedRobot implements Loggable {
     powerCellEnable = enable;
   }
 
-  @Config.ToggleSwitch(defaultValue = true)
-  public void Enable_Camera1(boolean enable){
-    camera1Enable = enable;
-  }
+  
 
-  @Config.ToggleSwitch(defaultValue = true) 
-  public void Enable_Camera2(boolean enable){
-    camera2Enable = enable;
-  }
+  
 
   @Config.ToggleSwitch(defaultValue = true)
   public void Enable_IMU(boolean enable){
@@ -116,14 +106,10 @@ public class Robot extends TimedRobot implements Loggable {
   @Config.ToggleSwitch(defaultValue = true)
   public void Enable_Chassis(boolean enable){
     chassisEnable = enable;
-    System.out.println("Chassis Enable: " + chassisEnable);
-    System.out.println("Enable: " + enable);
+    // System.out.println("Chassis Enable: " + chassisEnable);
+    // System.out.println("Enable: " + enable);
   }
-  @Config.ToggleSwitch(defaultValue = true)
-  public void Enable_Cameras(boolean enable, boolean enable2){
-    camera1Enable  = enable;
-    camera2Enable = enable2;
-  }
+   
   @Config.ToggleSwitch(defaultValue = true)
   public void Enable_Color(boolean enable){
     colorEnable = enable;
@@ -134,14 +120,14 @@ public class Robot extends TimedRobot implements Loggable {
       camera2.init();
   Logger.configureLoggingAndConfig(this, false); 
     driveTrainTab = Shuffleboard.getTab("Drive Train"); //The Shuffleboard Tab for all Drive Train related stuff
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
-    m_driveChooser.setDefaultOption("Tank Drive",kTankDrive); //A Drive Train option
+    // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    // m_chooser.addOption("My Auto", kCustomAuto);
+    // SmartDashboard.putData("Auto choices", m_chooser);
+    // m_driveChooser.setDefaultOption("Tank Drive",kTankDrive); //A Drive Train option
     m_driveChooser.addOption("Arcade Drive", kArcadeDrive); //A Drive Train option
-    m_driveChooser.addOption("Curvature Drive", kCurvatureDrive); //A Drive Train option
-    m_driveChooser.addOption("Shuffle Drive Individual", kShuffleDrive); //A Drive Train option
-    m_driveChooser.addOption("Shuffle Drive Control Groups", kShuffleDriveGroups); //A Drive Train option
+    // m_driveChooser.addOption("Curvature Drive", kCurvatureDrive); //A Drive Train option
+    // m_driveChooser.addOption("Shuffle Drive Individual", kShuffleDrive); //A Drive Train option
+    // m_driveChooser.addOption("Shuffle Drive Control Groups", kShuffleDriveGroups); //A Drive Train option
     m_driveChooser.addOption("Scott Drive", kScottDrive); //Scott's Drive Train Option
     driveTrainTab.add("Drive Train Choices", m_driveChooser); //Allows you to pick a Drive Train option through Shuffleboard   
   }
@@ -157,7 +143,7 @@ public class Robot extends TimedRobot implements Loggable {
   {
     m_autoSelected = m_chooser.getSelected();
     m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+    // System.out.println("Auto selected: " + m_autoSelected);
     initialize();
     if(ImuEnable && ImuInitialized){
       imu.zeroYaw();

@@ -34,21 +34,34 @@ public class Spinner implements Loggable {
     private boolean buttonX = false;
     // speed that the spinner spins during stage 2 only, which can be changed in
     // shuffleboard
-    @Log
+    //@Log
     private double spinnerOutput;
     // Variable for the current color, which is displayed on shuffleboard
-    @Log
-    String currentColor = "None";
+    //@Log
+    private String currentColor = "None";
+    private int blueColor = 0;
+        private int greenColor = 0;
+        private int redColor = 0;
+        private double norm_max = 0.0;
+        private double blueNorm = 0.0;
+        private double redNorm = 0.0;
+        private double greenNorm = 0.0;
+        private double blueCon = 0.0;
+        private double redCon = 0.0;
+        private double greenCon = 0.0;
+        private double yellowCon = 0.0;
+        private String gameData;
+        private String FMScolor = "";
 
     public boolean skipLayout() {
         return true;
     }
 
     // Variable that counts the amount of color changes that the sensor detects
-    @Log
-    int colorCount = 0;
+    //@Log
+    private int colorCount = 0;
 
-    //@Config(defaultValueNumeric = 0.2) // (max = 1 , min = -1 , blockIncrement = .05)
+    ////@Config(defaultValueNumeric = 0.2) // (max = 1 , min = -1 , blockIncrement = .05)
     public void configSpinner(double output) {
         spinnerOutput = output;
     }
@@ -80,8 +93,7 @@ public class Spinner implements Loggable {
         }
 
         /// This is the Field Management system code, which was found on docs.wpilib.org
-        String gameData;
-        String FMScolor = "";
+        
         gameData = DriverStation.getInstance().getGameSpecificMessage();
         if (gameData.length() > 0) {
             FMScolor = gameData.substring(0, 1);
@@ -140,18 +152,9 @@ public class Spinner implements Loggable {
 
     // This is used to find the current color that the sensor is detecting
     public void updateColor() {
-        int blueColor = m_colorSensor.getBlue();
-        int greenColor = m_colorSensor.getGreen();
-        int redColor = m_colorSensor.getRed();
-        double norm_max = 0.0;
-        double blueNorm = 0.0;
-        double redNorm = 0.0;
-        double greenNorm = 0.0;
-        double blueCon = 0.0;
-        double redCon = 0.0;
-        double greenCon = 0.0;
-        double yellowCon = 0.0;
-
+         blueColor = m_colorSensor.getBlue();
+         greenColor = m_colorSensor.getGreen();
+         redColor = m_colorSensor.getRed();
         if (blueColor > greenColor) {
             norm_max = blueColor;
         } else {
@@ -180,8 +183,8 @@ public class Spinner implements Loggable {
             currentColor = "Y";
         }
 
-        SmartDashboard.putNumber("Red", redColor);
-        SmartDashboard.putNumber("Green", greenColor);
-        SmartDashboard.putNumber("Blue", blueColor);
+        // SmartDashboard.putNumber("Red", redColor);
+        // SmartDashboard.putNumber("Green", greenColor);
+        // SmartDashboard.putNumber("Blue", blueColor);
     }
 }

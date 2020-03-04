@@ -311,6 +311,9 @@ public class PowerCell implements Loggable {
              }
         }
     }
+    public void startIntake(){
+        intakeMotor.set(ControlMode.PercentOutput, -intakeRpms);
+    }
 
     public void intake() {
         if (disableAll) {

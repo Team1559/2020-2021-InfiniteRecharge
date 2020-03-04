@@ -148,7 +148,7 @@ public class Robot extends TimedRobot implements Loggable {
     if(ImuEnable && ImuInitialized){
       imu.zeroYaw();
     }
-    auto.AutoInit(driveTrain);
+    auto.AutoInit(driveTrain,imu);
   }
 
   @Override

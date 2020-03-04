@@ -13,34 +13,48 @@ import io.github.oblarg.oblog.annotations.Log;
 import io.github.oblarg.oblog.annotations.Log.Logs;
 import edu.wpi.first.wpilibj.geometry.*;
 
+
 public class Auto implements Loggable {
     public enum State {
-        Wait, DriveToGoal, Shoot, Move, Stop
+        Wait, Reverse1, Forward1, Turn, Forward2, Shoot, Reverse2, Stop
     }
 
     private State state = State.Wait;
     private int timer = 0;
 
     private double initialWait = 0;
-    private double driveForward = 2.438;
-    private double driveBackward = 0;
+    private double forward1 = 2.438;
+    private double forward2 = 2.438;
+    private double reverse1 = 0;
+    private double reverse2 = 0;
     private double driveSpeed = .45;
-    //@Config(defaultValueNumeric = 0)
+    private double turn = 25;
+    private IMU imu;
+
+    @Config(defaultValueNumeric = 0)
     private void setInitialWait(double newWait) {
         initialWait = newWait;
     }
-    
-    //@Config(defaultValueNumeric = 3)
-    private void setForward(double forward) {
-        driveForward = forward;
+    @Config(defaultValueNumeric = 25.2)
+    private void setTurn(double Turn) {
+        turn = Turn;
     }
-    //@Config(defaultValueNumeric = 4)
-    private void setReverse(double reverse) {
-        driveBackward = reverse;
+    @Config(defaultValueNumeric = 4)
+    private void setForward2(double forward) {
+        forward2 = forward;
+    }
+    @Config(defaultValueNumeric = 4)
+    private void setMove1(double move1) {
+        reverse1 = move1;
+        forward1 = move1;
+    }
+    @Config(defaultValueNumeric = 3)
+    private void setReverse2(double reverse) {
+        reverse2 = reverse;
     }
 
-    public void AutoInit(Chassis driveTrain) {
-
+    public void AutoInit(Chassis driveTrain, IMU imU) {
+        imu = imU;
         driveTrain.initOdometry();
         timer = 0;
         state = State.Wait;
@@ -56,16 +70,41 @@ public class Auto implements Loggable {
             //System.out.println("We're waiting");
             if (timer / 50.0 >= initialWait) {
                 timer = 0;
-                state = State.DriveToGoal;
+                state = State.Reverse1;
             }
             break;
 
-        case DriveToGoal:
+        case Reverse1:
+            driveTrain.move(driveSpeed, 0);
+            powerCell.startStorage();
+            powerCell.startIntake();
+            if (odometry.getTranslation().getX() >= reverse1 || timer / 50.0 >= 2.5) {
+                timer = 0;
+                state = State.Forward1;
+            }
+            break;
+        case Forward1:
+            driveTrain.move(-driveSpeed, 0);
+            if (odometry.getTranslation().getX() <= -forward1 || timer / 50.0 >= 2.5) {
+                timer = 0;
+                state = State.Forward1;
+            }
+        break;
+
+        case Turn:
+            driveTrain.move(0, .1);   
+            if (imu.getYaw() >= turn || timer / 50.0 >= 1.0) {
+                timer = 0;
+                state = State.Forward1;
+            } 
+        break;
+
+        case Forward2:
             //System.out.println("Driving to Goal");
             driveTrain.move(-driveSpeed, 0);
             powerCell.startShooter();
             powerCell.startStorage();
-            if (odometry.getTranslation().getX() <= -driveForward || timer / 50.0 >= 4.5) {
+            if (odometry.getTranslation().getX() <= -forward2 || timer / 50.0 >= 4.5) {
                 timer = 0;
                 state = State.Shoot;
             }
@@ -79,20 +118,21 @@ public class Auto implements Loggable {
             powerCell.startFeeder();
             if (timer / 50.0 >= 4.0) {
                 timer = 0;
-                state = State.Move;
+                state = State.Reverse2;
                 powerCell.stopWithoutButton();
             }
             break;
 
-        case Move:
+        case Reverse2:
             //System.out.println("Moving Back");
             driveTrain.move(driveSpeed, 0);
-            if (odometry.getTranslation().getX() >= driveBackward || timer/50.0 >= 4.5) {
+            if (odometry.getTranslation().getX() >= reverse2 || timer/50.0 >= 4.5) {
                 timer = 0;
                 state = State.Stop;
                 
             }
             break;
+
         case Stop:
             //System.out.println("It's Stopped");
             driveTrain.move(0, 0);

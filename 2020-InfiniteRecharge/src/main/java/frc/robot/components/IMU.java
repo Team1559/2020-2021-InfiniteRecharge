@@ -12,7 +12,7 @@ public  class IMU implements Loggable{
     public double roll = 0;
     //@Log.Graph
     public double pitch = 0;
-    //@Log.Graph
+    @Log.Graph
     public double yaw = 0;
     //@Log.Graph
     public double x_acceleration = 0;

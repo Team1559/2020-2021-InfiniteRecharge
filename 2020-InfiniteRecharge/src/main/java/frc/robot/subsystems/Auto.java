@@ -11,12 +11,15 @@ import io.github.oblarg.oblog.Logger;
 import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;
 import io.github.oblarg.oblog.annotations.Log.Logs;
+
+import javax.lang.model.util.ElementScanner6;
+
 import edu.wpi.first.wpilibj.geometry.*;
 
 
 public class Auto implements Loggable {
     public enum State {
-        Wait, Reverse1, Forward1, Turn, Forward2, Shoot, Reverse2, Stop
+        Wait, Reverse1, Adjust, Forward1, Turn, Forward2, Shoot, Reverse2, Stop
     }
 
     private State state = State.Wait;
@@ -35,7 +38,7 @@ public class Auto implements Loggable {
     private void setInitialWait(double newWait) {
         initialWait = newWait;
     }
-    @Config(defaultValueNumeric = 25.2)
+    @Config(defaultValueNumeric = 22)
     private void setTurn(double Turn) {
         turn = Turn;
     }
@@ -48,7 +51,7 @@ public class Auto implements Loggable {
         reverse1 = move1;
         forward1 = move1;
     }
-    @Config(defaultValueNumeric = 3)
+    @Config(defaultValueNumeric = 0)
     private void setReverse2(double reverse) {
         reverse2 = reverse;
     }
@@ -68,6 +71,8 @@ public class Auto implements Loggable {
         switch (state) {
         case Wait:
             //System.out.println("We're waiting");
+            powerCell.store();
+            powerCell.startIntake();
             if (timer / 50.0 >= initialWait) {
                 timer = 0;
                 state = State.Reverse1;
@@ -76,26 +81,44 @@ public class Auto implements Loggable {
 
         case Reverse1:
             driveTrain.move(driveSpeed, 0);
-            powerCell.startStorage();
+            powerCell.store();
             powerCell.startIntake();
-            if (odometry.getTranslation().getX() >= reverse1 || timer / 50.0 >= 2.5) {
+            if (odometry.getTranslation().getX() >= reverse1 || timer / 50.0 >= 5) {
                 timer = 0;
-                state = State.Forward1;
+                state = State.Adjust;
             }
             break;
+        case Adjust:
+            if(imu.getYaw() <= 0 )
+            {
+                driveTrain.move(0, .1);
+            }
+            else{
+                driveTrain.move(0, -.1);
+            }
+            if(imu.getYaw() <= -1.5 || imu.getYaw() >= -.5){
+                    timer = 0;
+                    state = State.Forward1;
+                }
+        break;
         case Forward1:
             driveTrain.move(-driveSpeed, 0);
-            if (odometry.getTranslation().getX() <= -forward1 || timer / 50.0 >= 2.5) {
+            powerCell.store();
+            powerCell.startIntake();
+            if (odometry.getTranslation().getX() <= -forward1 || timer / 50.0 >= 5) {
                 timer = 0;
-                state = State.Forward1;
+                state = State.Turn;
             }
         break;
 
         case Turn:
             driveTrain.move(0, .1);   
-            if (imu.getYaw() >= turn || timer / 50.0 >= 1.0) {
+            powerCell.store();
+            System.out.println(imu.getYaw());
+            if (imu.getYaw() <= -turn || timer / 50.0 >= 10) {
+                
                 timer = 0;
-                state = State.Forward1;
+                state = State.Forward2;
             } 
         break;
 
@@ -103,7 +126,7 @@ public class Auto implements Loggable {
             //System.out.println("Driving to Goal");
             driveTrain.move(-driveSpeed, 0);
             powerCell.startShooter();
-            powerCell.startStorage();
+            powerCell.store();
             if (odometry.getTranslation().getX() <= -forward2 || timer / 50.0 >= 4.5) {
                 timer = 0;
                 state = State.Shoot;
@@ -126,7 +149,7 @@ public class Auto implements Loggable {
         case Reverse2:
             //System.out.println("Moving Back");
             driveTrain.move(driveSpeed, 0);
-            if (odometry.getTranslation().getX() >= reverse2 || timer/50.0 >= 4.5) {
+            if (odometry.getTranslation().getX() >= reverse2 || timer/50.0 >= 0.0) {
                 timer = 0;
                 state = State.Stop;
                 

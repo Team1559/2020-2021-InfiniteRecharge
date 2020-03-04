@@ -40,6 +40,7 @@ public class Chassis implements Loggable{
     private CANPIDController sparkMax3PID;
     private CANSparkMax sparkMax4;
     private CANPIDController sparkMax4PID;
+    private double inputSpeed = 1;
     //@Log
     private double shiftUp;
     //@Log
@@ -97,7 +98,6 @@ public class Chassis implements Loggable{
     private double kD = 0.0000;
     //@Log
     private double kF = 0.00018; //0.000125
-
     //@Log
     private double deadband = 0.01;
     private double forwardSpeed = 0;
@@ -309,6 +309,31 @@ public class Chassis implements Loggable{
         // motor2Current = sparkMax2.getOutputCurrent();
         // motor3Current = sparkMax3.getOutputCurrent();
         // motor4Current = sparkMax4.getOutputCurrent();
+        if(oi.pilot.getRawButton(Buttons.B)){
+            inputSpeed = 0.5;
+            sparkMax1.setOpenLoopRampRate(0);
+            sparkMax2.setOpenLoopRampRate(0);
+            sparkMax3.setOpenLoopRampRate(0);
+            sparkMax4.setOpenLoopRampRate(0);
+
+            sparkMax1.setClosedLoopRampRate(0);
+            sparkMax2.setClosedLoopRampRate(0);
+            sparkMax3.setClosedLoopRampRate(0);
+            sparkMax4.setClosedLoopRampRate(0);
+        }
+        else{
+            inputSpeed = 1;
+            sparkMax1.setOpenLoopRampRate(rampRate);
+            sparkMax2.setOpenLoopRampRate(rampRate);
+            sparkMax3.setOpenLoopRampRate(rampRate);
+            sparkMax4.setOpenLoopRampRate(rampRate);
+
+            sparkMax1.setClosedLoopRampRate(rampRate);
+            sparkMax2.setClosedLoopRampRate(rampRate);
+            sparkMax3.setClosedLoopRampRate(rampRate);
+            sparkMax4.setClosedLoopRampRate(rampRate);
+
+        }
         gearShift();        
         switch(mode)
         {
@@ -354,9 +379,9 @@ public class Chassis implements Loggable{
              //Axis 0 for left joystick left to right
              //Axis 2 for left Trigger
              //Axis 3 for right Trigger
-              forwardSpeed = oi.pilot.getRawAxis(Buttons.rightTrigger);
-              backwardSpeed = oi.pilot.getRawAxis(Buttons.leftTrigger);
-              sideSpeed = -oi.getPilotX();
+              forwardSpeed = oi.pilot.getRawAxis(Buttons.rightTrigger) * inputSpeed;
+              backwardSpeed = oi.pilot.getRawAxis(Buttons.leftTrigger) * inputSpeed;
+              sideSpeed = -oi.getPilotX() *inputSpeed;
              if(forwardSpeed <= deadband)
              {
                  forwardSpeed = 0;

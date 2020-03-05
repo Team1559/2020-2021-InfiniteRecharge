@@ -416,7 +416,7 @@ public class Chassis implements Loggable{
 
         // velocity = Math.abs((leftVelocity + rightVelocity) /2);
 
-        if(oi.pilot.getRawAxis(Buttons.B) >= 0.5) {
+        if(oi.pilot.getRawButton(Buttons.B)) {
             gearShifter.set(true);
             Gear = "High";
         }

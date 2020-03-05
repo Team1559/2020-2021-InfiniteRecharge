@@ -311,7 +311,7 @@ public class Chassis implements Loggable{
         // motor3Current = sparkMax3.getOutputCurrent();
         // motor4Current = sparkMax4.getOutputCurrent();
 
-        if(oi.pilot.getRawButton(Buttons.B)){
+        if(oi.pilot.getRawButton(Buttons.Y)){
             inputSpeed = 0.5;
 
             leftVelocity = lEncoder.getVelocity();
@@ -416,7 +416,7 @@ public class Chassis implements Loggable{
 
         // velocity = Math.abs((leftVelocity + rightVelocity) /2);
 
-        if(oi.pilot.getRawAxis(Buttons.rightJoystick_y) >= 0.5) {
+        if(oi.pilot.getRawAxis(Buttons.B) >= 0.5) {
             gearShifter.set(true);
             Gear = "High";
         }

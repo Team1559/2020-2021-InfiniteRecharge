@@ -67,7 +67,7 @@ public class PowerCell implements Loggable {
     //@Log.Graph
     private double statorCurrent;
     //@Log
-    private double shooterRpms = 92;
+    private double shooterRpms = 100;
     //@Log
     private double intakeRpms = 1;
     //@Log

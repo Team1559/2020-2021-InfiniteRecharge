@@ -30,7 +30,7 @@ public class Auto implements Loggable {
     private double reverse1 = 0;
     private double reverse2 = 0;
     private double driveSpeed = .45;
-    private double turn = 25;
+    private double turn = 24;
     private IMU imu;
 
     @Config(defaultValueNumeric = 0)
@@ -38,7 +38,7 @@ public class Auto implements Loggable {
         initialWait = newWait;
     }
 
-    @Config(defaultValueNumeric = 22)
+    //@Config(defaultValueNumeric = 25)
     private void setTurn(double Turn) {
         turn = Turn;
     }
@@ -92,21 +92,24 @@ public class Auto implements Loggable {
             }
             break;
         case Adjust:
-            System.out.println("Yaw" + imu.getYaw());
-            if (timer <= 50) {
-                driveTrain.move(0, 0);
-            } else {
-                if (imu.getYaw() >= -1) {
-                    driveTrain.move(0, .1);
-                } else {
+            // System.out.println("Yaw" + imu.getYaw());
+            // if (timer <= 100) {
+            //     driveTrain.move(0, 0);
+            // } else {
+            //     if (imu.getYaw() >= -1) {
+            //         driveTrain.move(0, .1);
+            //     } else {
                     timer = 0;
                     state = State.Forward1;
-                }
-            }
+              //  }
+           // }
 
             break;
         case Forward1:
-            driveTrain.move(-driveSpeed, 0);
+        if(timer < 50){
+            System.out.println("Yaw" + imu.getYaw());
+        }  
+            driveTrain.move(-driveSpeed, .03);
             powerCell.store();
             powerCell.startIntake();
             if (odometry.getTranslation().getX() <= -forward1 || timer / 50.0 >= 5) {
@@ -118,7 +121,7 @@ public class Auto implements Loggable {
         case Turn:
             driveTrain.move(0, .1);
             powerCell.store();
-            // System.out.println(imu.getYaw());
+            System.out.println(imu.getYaw());
             if (imu.getYaw() <= -turn || timer / 50.0 >= 10) {
 
                 timer = 0;

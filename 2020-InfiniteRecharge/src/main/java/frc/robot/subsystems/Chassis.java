@@ -41,6 +41,7 @@ public class Chassis implements Loggable{
     private CANSparkMax sparkMax4;
     private CANPIDController sparkMax4PID;
     private double inputSpeed = 1;
+    public double robotSpeed = 0;
     //@Log
     private double shiftUp;
     //@Log
@@ -315,7 +316,7 @@ public class Chassis implements Loggable{
 
             leftVelocity = lEncoder.getVelocity();
             rightVelocity = -(rEncoder.getVelocity());
-            double robotSpeed = Math.max(Math.abs(leftVelocity),Math.abs(rightVelocity));
+            robotSpeed = Math.max(Math.abs(leftVelocity),Math.abs(rightVelocity));
             System.out.println(robotSpeed);
             if(robotSpeed < 0.3 * 5600)
             {

@@ -61,7 +61,7 @@ public class Chassis implements Loggable{
     private SCGWidget widget5;
     private SCGWidget widget6;
     
-    private double rampRate = 0.6;
+    private double rampRate = 1;
 
     private SpeedControllerGroup leftMotors;
     private SpeedControllerGroup rightMotors;
@@ -105,7 +105,7 @@ public class Chassis implements Loggable{
     private double backwardSpeed = 0;
     private double sideSpeed = 0;
 
-   // //@Config.ToggleSwitch(defaultValue = true)
+   //@Config.ToggleSwitch(defaultValue = true)
     public void Enable_Shifting(boolean enable){
         shift = enable;
     }
@@ -114,7 +114,7 @@ public class Chassis implements Loggable{
         shiftUp = up;
         ShiftDown = down;
     }
-    //@Config (defaultValueNumeric = 0.6)//.8
+    @Config (defaultValueNumeric = 1)//.8
     public void rampRate(double rr){
         sparkMax1.setOpenLoopRampRate(rr);
         sparkMax2.setOpenLoopRampRate(rr);

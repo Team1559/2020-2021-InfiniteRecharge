@@ -309,17 +309,26 @@ public class Chassis implements Loggable{
         // motor2Current = sparkMax2.getOutputCurrent();
         // motor3Current = sparkMax3.getOutputCurrent();
         // motor4Current = sparkMax4.getOutputCurrent();
+
         if(oi.pilot.getRawButton(Buttons.B)){
             inputSpeed = 0.5;
-            sparkMax1.setOpenLoopRampRate(0);
-            sparkMax2.setOpenLoopRampRate(0);
-            sparkMax3.setOpenLoopRampRate(0);
-            sparkMax4.setOpenLoopRampRate(0);
 
-            sparkMax1.setClosedLoopRampRate(0);
-            sparkMax2.setClosedLoopRampRate(0);
-            sparkMax3.setClosedLoopRampRate(0);
-            sparkMax4.setClosedLoopRampRate(0);
+            leftVelocity = lEncoder.getVelocity();
+            rightVelocity = -(rEncoder.getVelocity());
+            double robotSpeed = Math.max(Math.abs(leftVelocity),Math.abs(rightVelocity));
+            System.out.println(robotSpeed);
+            if(robotSpeed < 0.3 * 5600)
+            {
+            sparkMax1.setOpenLoopRampRate(0.1);
+            sparkMax2.setOpenLoopRampRate(0.1);
+            sparkMax3.setOpenLoopRampRate(0.1);
+            sparkMax4.setOpenLoopRampRate(0.1);
+
+            sparkMax1.setClosedLoopRampRate(0.1);
+            sparkMax2.setClosedLoopRampRate(0.1);
+            sparkMax3.setClosedLoopRampRate(0.1);
+            sparkMax4.setClosedLoopRampRate(0.1);
+            }
         }
         else{
             inputSpeed = 1;

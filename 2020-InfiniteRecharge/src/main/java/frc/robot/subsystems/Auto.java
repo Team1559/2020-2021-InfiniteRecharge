@@ -109,7 +109,7 @@ public class Auto implements Loggable {
         if(timer < 50){
             System.out.println("Yaw" + imu.getYaw());
         }  
-            driveTrain.move(-driveSpeed, .03);
+            driveTrain.move(-driveSpeed, .03); // 0.03
             powerCell.store();
             powerCell.startIntake();
             if (odometry.getTranslation().getX() <= -forward1 || timer / 50.0 >= 5) {
@@ -122,10 +122,17 @@ public class Auto implements Loggable {
             driveTrain.move(0, .1);
             powerCell.store();
             System.out.println(imu.getYaw());
-            if (imu.getYaw() <= -turn || timer / 50.0 >= 10) {
-
+            if (imu.getYaw() <= -turn) {
                 timer = 0;
                 state = State.Forward2;
+            }
+            else if(imu.getYaw() > 10){//We're in trouble, direction is way off
+                timer = 0;
+                state = State.Stop;
+            }
+            else if(timer / 50.0 >= 3){
+                timer = 0;
+                state = State.Stop;
             }
             break;
 

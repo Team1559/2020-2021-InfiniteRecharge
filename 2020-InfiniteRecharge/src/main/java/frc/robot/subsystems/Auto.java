@@ -29,7 +29,7 @@ public class Auto implements Loggable {
     private double forward2 = 2.438;
     private double reverse1 = 0;
     private double reverse2 = 0;
-    private double driveSpeed = .45;
+    private double driveSpeed = .9;
     private double turn = 22;
     private IMU imu;
 
@@ -84,9 +84,9 @@ public class Auto implements Loggable {
 
         case Reverse1:
             driveTrain.move(driveSpeed, 0);
-            powerCell.store();
+            powerCell.startStorage();
             powerCell.startIntake();
-            if (odometry.getTranslation().getX() >= reverse1 || timer / 50.0 >= 5) {
+            if (odometry.getTranslation().getX() >= reverse1 || timer / 50.0 >= 3) {
                 timer = 0;
                 state = State.Adjust;
             }
@@ -109,31 +109,31 @@ public class Auto implements Loggable {
         if(timer < 50){
             System.out.println("Yaw" + imu.getYaw());
         }  
-            driveTrain.move(-driveSpeed, .03); // 0.03
+            driveTrain.move(-driveSpeed, 0.085); // 0.03
             powerCell.store();
             powerCell.startIntake();
-            if (odometry.getTranslation().getX() <= -forward1 || timer / 50.0 >= 5) {
+            if (odometry.getTranslation().getX() <= -forward1 || timer / 50.0 >= 4.0) {
                 timer = 0;
                 state = State.Turn;
             }
             break;
 
         case Turn:
-            driveTrain.move(0, .1);
-            powerCell.store();
-            System.out.println(imu.getYaw());
-            if (imu.getYaw() <= -turn) {
+            // driveTrain.move(0, .1);
+            // powerCell.store();
+            // System.out.println(imu.getYaw());
+            //if (imu.getYaw() <= -turn) {
                 timer = 0;
                 state = State.Forward2;
-            }
-            else if(imu.getYaw() > 10){//We're in trouble, direction is way off
-                timer = 0;
-                state = State.Stop;
-            }
-            else if(timer / 50.0 >= 3){
-                timer = 0;
-                state = State.Stop;
-            }
+            //}
+            // else if(imu.getYaw() > 10){//We're in trouble, direction is way off
+            //     timer = 0;
+            //     state = State.Stop;
+            // }
+            // else if(timer / 50.0 >= 3){
+            //     timer = 0;
+            //     state = State.Stop;
+            // }
             break;
 
         case Forward2:
@@ -141,7 +141,7 @@ public class Auto implements Loggable {
             driveTrain.move(-driveSpeed, 0);
             powerCell.startShooter();
             powerCell.store();
-            if (odometry.getTranslation().getX() <= -forward2 || timer / 50.0 >= 4.5) {
+            if (odometry.getTranslation().getX() <= -forward2 || timer / 50.0 >= 2.25) {
                 timer = 0;
                 state = State.Shoot;
             }

@@ -30,7 +30,7 @@ public class Auto implements Loggable {
     private double reverse1 = 0;
     private double reverse2 = 0;
     private double driveSpeed = .45;
-    private double turn = 24;
+    private double turn = 22;
     private IMU imu;
 
     @Config(defaultValueNumeric = 0)

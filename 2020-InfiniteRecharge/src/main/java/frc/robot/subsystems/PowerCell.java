@@ -355,7 +355,7 @@ public class PowerCell implements Loggable {
         else{
             disableAll = true;
         }
-        if(oi.pilot.getRawButton(Buttons.right_Bumper)){
+        if(oi.pilot.getRawButton(Buttons.left_Bumper)){
             lowerGatherer();
         }
         else{

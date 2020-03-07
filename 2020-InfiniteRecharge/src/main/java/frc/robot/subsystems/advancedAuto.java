@@ -16,7 +16,7 @@ import javax.lang.model.util.ElementScanner6;
 
 import edu.wpi.first.wpilibj.geometry.*;
 
-public class Auto implements Loggable {
+public class advancedAuto implements Loggable {
     public enum State {
         Wait, Reverse1, Adjust, Forward1, Turn, Forward2, Shoot, Reverse2, Stop
     }

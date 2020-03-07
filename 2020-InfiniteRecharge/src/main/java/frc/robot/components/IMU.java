@@ -20,6 +20,7 @@ public  class IMU implements Loggable{
     public double y_acceleration = 0;
     // @Log.Graph
     public double z_acceleration = 0;
+    public double y_angularVelocity = 0;
 
 
     public void init(){
@@ -50,6 +51,7 @@ public  class IMU implements Loggable{
          roll = ahrs.getPitch();
          pitch = ahrs.getRoll();
          yaw = ahrs.getYaw();
+         y_angularVelocity = ahrs.getRate();
     
     ///////////////////////////////////////////////SmartDashboard.putNumber("IMU_Yaw", ahrs.getYaw());
     ///////////////////////////////////////////////SmartDashboard.putNumber("IMU_Pitch", ahrs.getRoll());

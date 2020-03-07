@@ -19,7 +19,8 @@ import frc.robot.components.Camera;
 import frc.robot.components.IMU;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Auto;
+import frc.robot.subsystems.advancedAuto;
+import frc.robot.subsystems.basicAuto;
 
 import frc.robot.components.CompressorControl;
 import io.github.oblarg.oblog.Loggable;
@@ -63,6 +64,18 @@ public class Robot extends TimedRobot implements Loggable {
   private boolean colorEnable = false;
   private boolean colorInitialized = false;
 
+
+
+
+
+  private boolean doAdvancedAuto = false;
+
+
+
+
+
+
+
   private boolean powerCellEnable = false;
   private boolean powerCellInitialized = false;
 
@@ -76,7 +89,8 @@ public class Robot extends TimedRobot implements Loggable {
   private IMU imu = new IMU();
   private Camera camera1 = new Camera(0);
   private Camera camera2 = new Camera(1);
-  private Auto auto = new Auto();
+  private advancedAuto advancedautO = new advancedAuto();
+  private basicAuto basicautO = new basicAuto();
   
   //oblog feature flags
   @Config.ToggleSwitch(defaultValue = true)
@@ -148,13 +162,23 @@ public class Robot extends TimedRobot implements Loggable {
     if(ImuEnable && ImuInitialized){
       imu.zeroYaw();
     }
-    auto.AutoInit(driveTrain);
+    if(doAdvancedAuto == true){
+    advancedautO.AutoInit(driveTrain,imu, powerCell);
   }
+  else{
+    basicautO.AutoInit(driveTrain);
+  }
+}
 
   @Override
   public void autonomousPeriodic()
   {
-    auto.AutoPeriodic(driveTrain, powerCell);
+    if(doAdvancedAuto == true){
+    advancedautO.AutoPeriodic(driveTrain, powerCell);
+    }
+    else{
+      basicautO.AutoPeriodic(driveTrain, powerCell);
+    }
     if(ImuEnable && ImuInitialized){
       imu.getvalues();
     }

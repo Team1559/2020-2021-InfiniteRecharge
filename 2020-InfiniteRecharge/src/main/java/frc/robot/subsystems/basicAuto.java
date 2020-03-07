@@ -13,7 +13,7 @@ import io.github.oblarg.oblog.annotations.Log;
 import io.github.oblarg.oblog.annotations.Log.Logs;
 import edu.wpi.first.wpilibj.geometry.*;
 
-public class Auto implements Loggable {
+public class basicAuto implements Loggable {
     public enum State {
         Wait, DriveToGoal, Shoot, Move, Stop
     }

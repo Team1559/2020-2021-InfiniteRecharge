@@ -424,11 +424,11 @@ public class Chassis implements Loggable{
 
         if(oi.pilot.getRawButton(Buttons.B)) {
             gearShifter.set(true);
-            Gear = "High";
+            //Gear = "High";
         }
         else{
             gearShifter.set(false);
-            Gear = "Low";
+            //Gear = "Low";
 
         }
     }

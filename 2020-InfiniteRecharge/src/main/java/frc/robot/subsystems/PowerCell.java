@@ -146,7 +146,7 @@ public class PowerCell implements Loggable {
         intakeMotor.configPeakOutputReverse(-1, TIMEOUT);
         intakeMotor.enableCurrentLimit(true);
         intakeMotor.configPeakCurrentLimit(75, TIMEOUT);
-        intakeMotor.configContinuousCurrentLimit(40, TIMEOUT);
+        intakeMotor.configContinuousCurrentLimit(20, TIMEOUT);
         intakeMotor.configPeakCurrentDuration(1800, TIMEOUT);
         intakeMotor.setNeutralMode(NeutralMode.Coast);
 

@@ -38,7 +38,7 @@ public class Climber implements Loggable {
     private double winchstatorCurrent;
     //@Log.Graph
     private double balencerCurrent;
-    private SupplyCurrentLimitConfiguration scl = new SupplyCurrentLimitConfiguration(true, 120, 120, 1000);
+    private SupplyCurrentLimitConfiguration scl = new SupplyCurrentLimitConfiguration(true, 120, 70, 300);
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
     
@@ -62,6 +62,7 @@ public class Climber implements Loggable {
         winch = new TalonFX(Wiring.winch);
         oi = operatorinterface;
 
+    winch.configFactoryDefault();
     winch.set(TalonFXControlMode.PercentOutput, 0);	
     winch.configClosedloopRamp(cLR, TIMEOUT);
     winch.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
@@ -100,11 +101,11 @@ public class Climber implements Loggable {
         winch.set(TalonFXControlMode.PercentOutput, 0);
     }
     /*Main method of climber class operates all functions of climber*/
-    public void drive()    {
+    public void drive(){
         Balance();
         // balencerCurrent = barRider.getSupplyCurrent();
         // winchTemp = winch.getTemperature();
-        // winchsupplyCurrent = winch.getSupplyCurrent();
+        //winchsupplyCurrent = winch.getSupplyCurrent();
         // winchstatorCurrent = winch.getStatorCurrent();
          
 
@@ -133,11 +134,11 @@ public class Climber implements Loggable {
         leftJoystick_x = oi.copilot.getRawAxis(Buttons.leftJoystick_x);
         if ( leftJoystick_x > 0.3)
         {
-            barRider.set(ControlMode.PercentOutput, -balancerPercent);
+            barRider.set(ControlMode.PercentOutput, balancerPercent);
         }
         else if(leftJoystick_x < -0.3)
         {
-            barRider.set(ControlMode.PercentOutput, balancerPercent);
+            barRider.set(ControlMode.PercentOutput, -balancerPercent);
         }
         else
         {

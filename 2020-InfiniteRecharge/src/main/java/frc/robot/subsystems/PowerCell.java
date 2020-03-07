@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.Buttons;
 import frc.robot.OperatorInterface;
 import frc.robot.Wiring;
@@ -60,6 +61,7 @@ public class PowerCell implements Loggable {
     private TalonFX shooter;
     private TalonSRX intakeMotor;
     private TalonFX feederMotor;
+    private Solenoid gatherer;
     //@Log.Graph
     private double shooterTemp;
     //@Log.Graph
@@ -130,6 +132,7 @@ public class PowerCell implements Loggable {
         storageMotorH = new TalonSRX(Wiring.storageMotorH);
         storageMotorL = new TalonSRX(Wiring.storageMotorL);
         feederMotor = new TalonFX(Wiring.feederMotor);
+        gatherer = new Solenoid(2);
         oi = operatorinterface;
         // Intake Motor Config
 
@@ -251,6 +254,12 @@ public class PowerCell implements Loggable {
     public void startShooter() {
         shooter.set(ControlMode.Velocity, -shooterRpms);
     }
+    public void lowerGatherer(){
+        gatherer.set(true);
+    }
+    public void raiseGatherer(){
+        gatherer.set(false);
+    }
 
     public void feeder() {
         if (oi.pilot.getRawButton(Buttons.A)) {
@@ -345,6 +354,12 @@ public class PowerCell implements Loggable {
         }
         else{
             disableAll = true;
+        }
+        if(oi.pilot.getRawButton(Buttons.right_Bumper)){
+            lowerGatherer();
+        }
+        else{
+            raiseGatherer();
         }
         
         intake();

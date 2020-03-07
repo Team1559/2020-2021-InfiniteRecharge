@@ -75,6 +75,7 @@ public class advancedAuto implements Loggable {
         Pose2d odometry = driveTrain.updateOdometry();
         switch (state) {
         case Wait:
+        powerCell.lowerGatherer();
             // System.out.println("We're waiting");
             powerCell.store();
 
@@ -85,7 +86,7 @@ public class advancedAuto implements Loggable {
             break;
 
         case Reverse1:
-       
+        powerCell.lowerGatherer();
         powerCell.startStorage();
 
             // System.out.println("Sucking the balls");
@@ -112,7 +113,7 @@ public class advancedAuto implements Loggable {
 
             break;
         case Forward1:
-                
+        powerCell.lowerGatherer();
             powerCell.startStorage();
 
             //System.out.println("Forward one");
@@ -143,7 +144,7 @@ public class advancedAuto implements Loggable {
             break;
 
         case Forward2:
-
+        powerCell.lowerGatherer();
             powerCell.store();
             //  System.out.println("Driving to Goal");
             driveTrain.move(-driveSpeed/2.0, 0);
@@ -156,6 +157,7 @@ public class advancedAuto implements Loggable {
             break;
 
         case Shoot:
+        powerCell.lowerGatherer();
             if(Math.abs(imu.getYaw()) >= 60){
                 state = State.Stop;
             }
@@ -176,6 +178,7 @@ public class advancedAuto implements Loggable {
 
         case Reverse2:
             //  System.out.println("Moving Back");
+            powerCell.raiseGatherer();
             driveTrain.move(driveSpeed, 0);
             if (odometry.getTranslation().getX() >= reverse2 || timer / 50.0 >= 0.0) {
                 timer = 0;
@@ -186,6 +189,7 @@ public class advancedAuto implements Loggable {
 
         case Stop:
             // System.out.println("It's Stopped");
+            powerCell.raiseGatherer();
             powerCell.stopWithoutButton();
             driveTrain.move(0, 0);
             break;

@@ -110,9 +110,9 @@ public class Auto implements Loggable {
             System.out.println("Yaw" + imu.getYaw());
         }  
             driveTrain.move(-driveSpeed, 0.085); // 0.03
-            powerCell.store();
+            powerCell.startStorage();
             powerCell.startIntake();
-            if (odometry.getTranslation().getX() <= -forward1 || timer / 50.0 >= 5.5) { //4.5
+            if (odometry.getTranslation().getX() <= -forward1 || timer / 50.0 >= 4.5) { //4.5
                 timer = 0;
                 state = State.Turn;
             }
@@ -138,16 +138,20 @@ public class Auto implements Loggable {
 
         case Forward2:
             // System.out.println("Driving to Goal");
-            // driveTrain.move(-driveSpeed, 0);
-            // powerCell.startShooter();
-            // powerCell.store();
-            // if (odometry.getTranslation().getX() <= -forward2 || timer / 50.0 >= 1.75) { //2.25
+            driveTrain.move(-driveSpeed/2.0, 0);
+            powerCell.startShooter();
+            powerCell.store();
+            if (odometry.getTranslation().getX() <= -forward2 || timer / 50.0 >= 1.75) { //2.25
                 timer = 0;
                 state = State.Shoot;
-            // }
+            }
             break;
 
         case Shoot:
+            if(Math.abs(imu.getYaw()) >= 20){
+                state = State.Stop;
+            }
+            else{
             // System.out.println("It's Shootin Time");
             driveTrain.move(0, 0);
             powerCell.startShooter();
@@ -158,6 +162,7 @@ public class Auto implements Loggable {
                 state = State.Reverse2;
                 powerCell.stopWithoutButton();
             }
+        }
             break;
 
         case Reverse2:
@@ -172,6 +177,7 @@ public class Auto implements Loggable {
 
         case Stop:
             // System.out.println("It's Stopped");
+            powerCell.stopWithoutButton();
             driveTrain.move(0, 0);
             break;
         }

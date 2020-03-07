@@ -363,5 +363,6 @@ public class PowerCell implements Loggable {
         stopfeeder();
         stopShooter();
         stopStorage();
+        stopIntake();
     }
 }

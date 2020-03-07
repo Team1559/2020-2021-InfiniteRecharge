@@ -40,6 +40,8 @@ public class Chassis implements Loggable{
     private CANPIDController sparkMax3PID;
     private CANSparkMax sparkMax4;
     private CANPIDController sparkMax4PID;
+    private double inputSpeed = 1;
+    public double robotSpeed = 0;
     //@Log
     private double shiftUp;
     //@Log
@@ -59,7 +61,7 @@ public class Chassis implements Loggable{
     private SCGWidget widget5;
     private SCGWidget widget6;
     
-    private double rampRate = 0.6;
+    private double rampRate = 1;
 
     private SpeedControllerGroup leftMotors;
     private SpeedControllerGroup rightMotors;
@@ -97,14 +99,13 @@ public class Chassis implements Loggable{
     private double kD = 0.0000;
     //@Log
     private double kF = 0.00018; //0.000125
-
     //@Log
     private double deadband = 0.01;
     private double forwardSpeed = 0;
     private double backwardSpeed = 0;
     private double sideSpeed = 0;
 
-   // //@Config.ToggleSwitch(defaultValue = true)
+   //@Config.ToggleSwitch(defaultValue = true)
     public void Enable_Shifting(boolean enable){
         shift = enable;
     }
@@ -113,7 +114,7 @@ public class Chassis implements Loggable{
         shiftUp = up;
         ShiftDown = down;
     }
-    //@Config (defaultValueNumeric = 0.6)//.8
+    @Config (defaultValueNumeric = 1)//.8
     public void rampRate(double rr){
         sparkMax1.setOpenLoopRampRate(rr);
         sparkMax2.setOpenLoopRampRate(rr);
@@ -315,6 +316,40 @@ public class Chassis implements Loggable{
         // motor2Current = sparkMax2.getOutputCurrent();
         // motor3Current = sparkMax3.getOutputCurrent();
         // motor4Current = sparkMax4.getOutputCurrent();
+
+        if(oi.pilot.getRawButton(Buttons.Y)){
+            inputSpeed = 0.5;
+
+            leftVelocity = lEncoder.getVelocity();
+            rightVelocity = -(rEncoder.getVelocity());
+            robotSpeed = Math.max(Math.abs(leftVelocity),Math.abs(rightVelocity));
+            System.out.println(robotSpeed);
+            if(robotSpeed < 0.3 * 5600)
+            {
+            sparkMax1.setOpenLoopRampRate(0.1);
+            sparkMax2.setOpenLoopRampRate(0.1);
+            sparkMax3.setOpenLoopRampRate(0.1);
+            sparkMax4.setOpenLoopRampRate(0.1);
+
+            sparkMax1.setClosedLoopRampRate(0.1);
+            sparkMax2.setClosedLoopRampRate(0.1);
+            sparkMax3.setClosedLoopRampRate(0.1);
+            sparkMax4.setClosedLoopRampRate(0.1);
+            }
+        }
+        else{
+            inputSpeed = 1;
+            sparkMax1.setOpenLoopRampRate(rampRate);
+            sparkMax2.setOpenLoopRampRate(rampRate);
+            sparkMax3.setOpenLoopRampRate(rampRate);
+            sparkMax4.setOpenLoopRampRate(rampRate);
+
+            sparkMax1.setClosedLoopRampRate(rampRate);
+            sparkMax2.setClosedLoopRampRate(rampRate);
+            sparkMax3.setClosedLoopRampRate(rampRate);
+            sparkMax4.setClosedLoopRampRate(rampRate);
+
+        }
         gearShift();        
         switch(mode)
         {
@@ -360,9 +395,9 @@ public class Chassis implements Loggable{
              //Axis 0 for left joystick left to right
              //Axis 2 for left Trigger
              //Axis 3 for right Trigger
-              forwardSpeed = oi.pilot.getRawAxis(Buttons.rightTrigger);
-              backwardSpeed = oi.pilot.getRawAxis(Buttons.leftTrigger);
-              sideSpeed = -oi.getPilotX();
+              forwardSpeed = oi.pilot.getRawAxis(Buttons.rightTrigger) * inputSpeed;
+              backwardSpeed = oi.pilot.getRawAxis(Buttons.leftTrigger) * inputSpeed;
+              sideSpeed = -oi.getPilotX() *inputSpeed;
              if(forwardSpeed <= deadband)
              {
                  forwardSpeed = 0;
@@ -387,7 +422,7 @@ public class Chassis implements Loggable{
 
         // velocity = Math.abs((leftVelocity + rightVelocity) /2);
 
-        if(oi.pilot.getRawAxis(Buttons.rightJoystick_y) >= 0.5) {
+        if(oi.pilot.getRawButton(Buttons.B)) {
             gearShifter.set(true);
             Gear = "High";
         }

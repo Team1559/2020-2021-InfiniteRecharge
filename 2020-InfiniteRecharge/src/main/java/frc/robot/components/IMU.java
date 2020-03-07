@@ -10,15 +10,15 @@ public  class IMU implements Loggable{
     AHRS ahrs;
     //@Log.Graph
     public double roll = 0;
-    //@Log.Graph
+    // @Log.Graph
     public double pitch = 0;
-    //@Log.Graph
+    // @Log.Graph
     public double yaw = 0;
-    //@Log.Graph
+    // @Log.Graph
     public double x_acceleration = 0;
-    //@Log.Graph
+    // @Log.Graph
     public double y_acceleration = 0;
-    //@Log.Graph
+    // @Log.Graph
     public double z_acceleration = 0;
     public double y_angularVelocity = 0;
 

@@ -26,14 +26,15 @@ public class Auto implements Loggable {
 
     private double initialWait = 0;
     private double forward1 = 2.438;
-    private double forward2 = 2.438;
-    private double reverse1 = 0;
+    private double forward2 = 9999999;
+    private double reverse1 = 160;
     private double reverse2 = 0;
     private double driveSpeed = .9;
     private double turn = 22;
     private IMU imu;
+    private double kP = 5;
 
-    @Config(defaultValueNumeric = 0)
+    //@Config(defaultValueNumeric = 0)
     private void setInitialWait(double newWait) {
         initialWait = newWait;
     }
@@ -43,18 +44,18 @@ public class Auto implements Loggable {
         turn = Turn;
     }
 
-    @Config(defaultValueNumeric = 4)
+   // @Config(defaultValueNumeric = 4)
     private void setForward2(double forward) {
         forward2 = forward;
     }
 
-    @Config(defaultValueNumeric = 4)
+   // @Config(defaultValueNumeric = 4)
     private void setMove1(double move1) {
         reverse1 = move1;
         forward1 = move1;
     }
 
-    @Config(defaultValueNumeric = 0)
+   // @Config(defaultValueNumeric = 0)
     private void setReverse2(double reverse) {
         reverse2 = reverse;
     }
@@ -83,10 +84,12 @@ public class Auto implements Loggable {
             break;
 
         case Reverse1:
-            driveTrain.move(driveSpeed, 0);
-            powerCell.startStorage();
+        powerCell.startStorage();
             powerCell.startIntake();
-            if (odometry.getTranslation().getX() >= reverse1 || timer / 50.0 >= 3) {
+           System.out.println(driveTrain.distance());
+            driveTrain.move(driveSpeed, 0);
+            
+            if (driveTrain.distance() >= reverse1 || timer / 50.0 >= 4) {
                 timer = 0;
                 state = State.Adjust;
             }
@@ -106,12 +109,10 @@ public class Auto implements Loggable {
 
             break;
         case Forward1:
-        if(timer < 50){
-            System.out.println("Yaw" + imu.getYaw());
-        }  
-            driveTrain.move(-driveSpeed, 0.085); // 0.03
             powerCell.startStorage();
             powerCell.startIntake();
+            System.out.println(imu.y_angularVelocity); 
+            driveTrain.move(-driveSpeed, 0.085); // 0.03
             if (odometry.getTranslation().getX() <= -forward1 || timer / 50.0 >= 4.5) { //4.5
                 timer = 0;
                 state = State.Turn;
@@ -141,7 +142,7 @@ public class Auto implements Loggable {
             driveTrain.move(-driveSpeed/2.0, 0);
             powerCell.startShooter();
             powerCell.store();
-            if (odometry.getTranslation().getX() <= -forward2 || timer / 50.0 >= 1.75) { //2.25
+            if (driveTrain.distance() <= -forward2 || timer / 50.0 >= 1.75) { //2.25
                 timer = 0;
                 state = State.Shoot;
             }
@@ -154,8 +155,9 @@ public class Auto implements Loggable {
             else{
             // System.out.println("It's Shootin Time");
             driveTrain.move(0, 0);
-            powerCell.startShooter();
             powerCell.startStorage();
+            powerCell.startIntake();
+            powerCell.startShooter();
             powerCell.startFeeder();
             if (timer / 50.0 >= 4.0) {
                 timer = 0;

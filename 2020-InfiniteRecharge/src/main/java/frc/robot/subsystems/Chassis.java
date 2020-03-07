@@ -166,7 +166,13 @@ public class Chassis implements Loggable{
         sparkMax4PID.setIMaxAccum(imax, 0);
         
     }
+    public double distance(){
+      return (Math.abs(lEncoder.getPosition()) + Math.abs(rEncoder.getPosition())) / 2;
+    }
 
+    public void LogEncoders() {
+        System.out.println(lEncoder.getPosition() + " " + rEncoder.getPosition());
+    }
     ////@Config
     public void setDeadband(double dB)
     {

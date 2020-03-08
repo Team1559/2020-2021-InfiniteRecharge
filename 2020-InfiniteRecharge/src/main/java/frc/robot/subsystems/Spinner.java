@@ -4,7 +4,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Buttons;
 import frc.robot.OperatorInterface;
 import frc.robot.Wiring;
@@ -12,11 +11,10 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.ColorSensorV3;
-import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.annotations.Config;
-import io.github.oblarg.oblog.annotations.Log;
 
-public class Spinner implements Loggable {
+
+
+public class Spinner{
     private OperatorInterface oi;
     private final I2C.Port i2cPort = I2C.Port.kOnboard;
     private final ColorSensorV3 m_colorSensor;
@@ -32,12 +30,9 @@ public class Spinner implements Loggable {
     private boolean Fire = false;
     // Variable or the button that is pushed, that is used as a toggle
     private boolean buttonX = false;
-    // speed that the spinner spins during stage 2 only, which can be changed in
-    // shuffleboard
-    //@Log
+    // speed that the spinner spins during stage 2 only
     private double spinnerOutput;
-    // Variable for the current color, which is displayed on shuffleboard
-    //@Log
+    // Variable for the current color
     private String currentColor = "None";
     private int blueColor = 0;
         private int greenColor = 0;
@@ -58,13 +53,8 @@ public class Spinner implements Loggable {
     }
 
     // Variable that counts the amount of color changes that the sensor detects
-    //@Log
     private int colorCount = 0;
 
-    ////@Config(defaultValueNumeric = 0.2) // (max = 1 , min = -1 , blockIncrement = .05)
-    public void configSpinner(double output) {
-        spinnerOutput = output;
-    }
 
     public void init(OperatorInterface ointerface) {
         spinnerMotor = new TalonSRX(Wiring.spinnerMotor);
@@ -183,8 +173,5 @@ public class Spinner implements Loggable {
             currentColor = "Y";
         }
 
-        // SmartDashboard.putNumber("Red", redColor);
-        // SmartDashboard.putNumber("Green", greenColor);
-        // SmartDashboard.putNumber("Blue", blueColor);
     }
 }

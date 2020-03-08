@@ -2,26 +2,18 @@ package frc.robot.components;
 
 import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.Wiring;
-import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.annotations.Config;
-
-public class CompressorControl implements Loggable{
+public class CompressorControl{
     public Compressor airCompressor;
-    public boolean useCompressor;
-    @Config(defaultValueBoolean = true)
-    public void useCompressor(boolean enable){
-        useCompressor = enable;
-    }
+    public boolean useCompressor = true;
+    
     public void init(){
         airCompressor = new Compressor(Wiring.compressor);
     }
     public void run(){
-        if(useCompressor){
+        
             airCompressor.setClosedLoopControl(true);
-          }
-          else {
-            disable();
-          }
+        
+          
         
     }
     public void disable(){

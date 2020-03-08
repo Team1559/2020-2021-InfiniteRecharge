@@ -30,10 +30,9 @@ public class Spinner{
     private boolean Fire = false;
     // Variable or the button that is pushed, that is used as a toggle
     private boolean buttonX = false;
-    // speed that the spinner spins during stage 2 only, which can be changed in
-    // shuffleboard
+    // speed that the spinner spins during stage 2 only
     private double spinnerOutput;
-    // Variable for the current color, which is displayed on shuffleboard
+    // Variable for the current color
     private String currentColor = "None";
     private int blueColor = 0;
         private int greenColor = 0;
@@ -54,13 +53,8 @@ public class Spinner{
     }
 
     // Variable that counts the amount of color changes that the sensor detects
-    //@Log
     private int colorCount = 0;
 
-    ////@Config(defaultValueNumeric = 0.2) // (max = 1 , min = -1 , blockIncrement = .05)
-    public void configSpinner(double output) {
-        spinnerOutput = output;
-    }
 
     public void init(OperatorInterface ointerface) {
         spinnerMotor = new TalonSRX(Wiring.spinnerMotor);
@@ -179,8 +173,5 @@ public class Spinner{
             currentColor = "Y";
         }
 
-        // SmartDashboard.putNumber("Red", redColor);
-        // SmartDashboard.putNumber("Green", greenColor);
-        // SmartDashboard.putNumber("Blue", blueColor);
     }
 }

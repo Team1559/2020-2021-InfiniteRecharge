@@ -15,12 +15,11 @@ import frc.robot.OperatorInterface;
 import frc.robot.components.IMU;
 import frc.robot.Wiring;
 import edu.wpi.first.wpilibj.Solenoid;
-import io.github.oblarg.oblog.Loggable;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 
-public class Chassis implements Loggable{
+public class Chassis{
 
     
     private CANEncoder lEncoder;

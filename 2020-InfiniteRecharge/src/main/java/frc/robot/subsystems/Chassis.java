@@ -10,26 +10,19 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import frc.robot.components.DevilDifferential;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Buttons;
 import frc.robot.OperatorInterface;
 import frc.robot.components.IMU;
 import frc.robot.Wiring;
-import frc.robot.widgets.MotorWidget;
-import frc.robot.widgets.SCGWidget;
 import edu.wpi.first.wpilibj.Solenoid;
 import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.annotations.Config;
-import io.github.oblarg.oblog.annotations.Log;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 
 public class Chassis implements Loggable{
 
-    //@Log
-    private String Gear = "Low";
+    
     private CANEncoder lEncoder;
     private CANEncoder rEncoder;
     private CANSparkMax sparkMax1; // TBD
@@ -42,131 +35,33 @@ public class Chassis implements Loggable{
     private CANPIDController sparkMax4PID;
     private double inputSpeed = 1;
     public double robotSpeed = 0;
-    //@Log
-    private double shiftUp;
-    //@Log
-    public double ShiftDown;
+    
+    
     private Solenoid gearShifter;
     private OperatorInterface oi;
     private DevilDifferential driveTrain;
     private IMU imu;
     private DifferentialDriveOdometry m_odometry;
 
-    private ShuffleboardTab tab; //Is used, just isn't recognizing that it is being used
-
-    private MotorWidget widget1;
-    private MotorWidget widget2;
-    private MotorWidget widget3;
-    private MotorWidget widget4;
-    private SCGWidget widget5;
-    private SCGWidget widget6;
-    
     private double rampRate = 1;
 
     private SpeedControllerGroup leftMotors;
     private SpeedControllerGroup rightMotors;
-    //@Log.Graph
     private double leftVelocity;
-    //@Log.Graph
     private double rightVelocity;
-    //@Log.Dial(max = 6000, min = 0)
-    private double velocity;
-    //@Log.Graph
-    public double motor1Current;
-    //@Log.Graph
-    public double motor2Current;
-    //@Log.Graph
-    public double motor3Current;
-    //@Log.Graph
-    public double motor4Current;
 
-    //@Log.Dial
-    private double motor1Temp;
-    //@Log.Dial
-    private double motor2Temp;
-    //@Log.Dial
-    private double motor3Temp;
-    //@Log.Dial
-    private double motor4Temp;
 
-    private boolean shift = true;
 
-    //@Log
     private double kP = 0.0002; //0.0001
-    //@Log
     private double kI = 0.000000; //0.0 (We don't really need I for now, maybe later)
-    //@Log
     private double kD = 0.0000;
-    //@Log
     private double kF = 0.00018; //0.000125
-    //@Log
     private double deadband = 0.01;
     private double forwardSpeed = 0;
     private double backwardSpeed = 0;
     private double sideSpeed = 0;
 
-   //@Config.ToggleSwitch(defaultValue = true)
-    public void Enable_Shifting(boolean enable){
-        shift = enable;
-    }
-    ////@Config
-    public void Shifting_points(double up, double down){
-        shiftUp = up;
-        ShiftDown = down;
-    }
-    @Config (defaultValueNumeric = 1)//.8
-    public void rampRate(double rr){
-        sparkMax1.setOpenLoopRampRate(rr);
-        sparkMax2.setOpenLoopRampRate(rr);
-        sparkMax3.setOpenLoopRampRate(rr);
-        sparkMax4.setOpenLoopRampRate(rr);
-
-        sparkMax1.setClosedLoopRampRate(rr);
-        sparkMax2.setClosedLoopRampRate(rr);
-        sparkMax3.setClosedLoopRampRate(rr);
-        sparkMax4.setClosedLoopRampRate(rr);
-
-        rampRate = rr;
-    }
-    ////@Config
-    public void set_PID(double P, double I, double D, double F, double imax, double izone)
-    {
-        
-        kP = P;
-        kI = I;
-        kD = D;
-        kF = F;
-        
-        sparkMax1PID.setP(P);
-        sparkMax2PID.setP(P);
-        sparkMax3PID.setP(P);
-        sparkMax4PID.setP(P);
-
-        sparkMax1PID.setI(I);
-        sparkMax2PID.setI(I);
-        sparkMax3PID.setI(I);
-        sparkMax4PID.setI(I);
-
-        sparkMax1PID.setD(D);
-        sparkMax2PID.setD(D);
-        sparkMax3PID.setD(D);
-        sparkMax4PID.setD(D);
-
-        sparkMax1PID.setFF(F);
-        sparkMax2PID.setFF(F);
-        sparkMax3PID.setFF(F);
-        sparkMax4PID.setFF(F);
-
-        sparkMax1PID.setIZone(izone, 0);
-        sparkMax1PID.setIMaxAccum(imax, 0);
-        sparkMax2PID.setIZone(izone, 0);
-        sparkMax2PID.setIMaxAccum(imax, 0);
-        sparkMax3PID.setIZone(izone, 0);
-        sparkMax3PID.setIMaxAccum(imax, 0);
-        sparkMax4PID.setIZone(izone, 0);
-        sparkMax4PID.setIMaxAccum(imax, 0);
-        
-    }
+   
     public double distance(){
       return (Math.abs(lEncoder.getPosition()) + Math.abs(rEncoder.getPosition())) / 2;
     }
@@ -174,34 +69,15 @@ public class Chassis implements Loggable{
     public void LogEncoders() {
         System.out.println(lEncoder.getPosition() + " " + rEncoder.getPosition());
     }
-    ////@Config
-    public void setDeadband(double dB)
-    {
-        deadband = dB;
-    }
+ 
 
-    //@Log
-    private double setSpeed = 5600;
-
-    ////@Config
-    public void setMySpeed(double sS)
-    {
-        setSpeed = sS;
-    }
-    
-    //@Log
     private boolean isSquaredInputs = true;
 
-    ////@Config
-    public void wantInputsSquared(boolean iS)
-    {
-        isSquaredInputs = iS;
-    }
+    
     public void Init(OperatorInterface oInterface, IMU Imu)
     {
         imu = Imu;
-        shiftUp = 3500;
-        ShiftDown = 2500;
+ 
         oi = oInterface;
         sparkMax1 = new CANSparkMax(11, MotorType.kBrushless); //ID 11
         sparkMax2 = new CANSparkMax(12, MotorType.kBrushless); //ID 12
@@ -218,13 +94,6 @@ public class Chassis implements Loggable{
 
         leftMotors = new SpeedControllerGroup(sparkMax1); // (sparkMax1, sparkMax3) for working code
         rightMotors = new SpeedControllerGroup(sparkMax2); // (sparkMax2, sparkMax4) for working code
-        
-        widget1 = new MotorWidget(sparkMax1, "Motor 1");
-        widget2 = new MotorWidget(sparkMax2, "Motor 2");
-        widget3 = new MotorWidget(sparkMax3, "Motor 3");
-        widget4 = new MotorWidget(sparkMax4, "Motor 4");
-        widget5 = new SCGWidget(leftMotors, "Left Motors");
-        widget6 = new SCGWidget(rightMotors, "Right Motors");
 
         gearShifter = new Solenoid(Wiring.gearShifterSolenoid);
     
@@ -296,7 +165,7 @@ public class Chassis implements Loggable{
         driveTrain = new DevilDifferential(sparkMax1PID, sparkMax2PID);
         driveTrain.setMaxOutput(5600); //NEO free speed 5700 RPM
         driveTrain.setExpiration(2.0);
-        tab = Shuffleboard.getTab("Chassis");
+       
 
         
     }
@@ -307,15 +176,6 @@ public class Chassis implements Loggable{
 
     public void DriveSystem(Joystick drive, String mode)
     {   
-        // graphing the motor parameters
-        // motor1Temp = sparkMax1.getMotorTemperature();
-        // motor2Temp = sparkMax2.getMotorTemperature();
-        // motor3Temp = sparkMax3.getMotorTemperature();
-        // motor4Temp = sparkMax4.getMotorTemperature();
-        // motor1Current = sparkMax1.getOutputCurrent();
-        // motor2Current = sparkMax2.getOutputCurrent();
-        // motor3Current = sparkMax3.getOutputCurrent();
-        // motor4Current = sparkMax4.getOutputCurrent();
 
         if(oi.pilot.getRawButton(Buttons.Y)){
             inputSpeed = 0.5;
@@ -323,7 +183,6 @@ public class Chassis implements Loggable{
             leftVelocity = lEncoder.getVelocity();
             rightVelocity = -(rEncoder.getVelocity());
             robotSpeed = Math.max(Math.abs(leftVelocity),Math.abs(rightVelocity));
-            System.out.println(robotSpeed);
             if(robotSpeed < 0.3 * 5600)
             {
             sparkMax1.setOpenLoopRampRate(0.1);
@@ -351,85 +210,35 @@ public class Chassis implements Loggable{
 
         }
         gearShift();        
-        switch(mode)
-        {
-             case "Tank Drive":
-            driveTrain.tankDrive(-(oi.getPilotX()),-(oi.pilot.getRawAxis(5)), isSquaredInputs);
-            
-             break;
-
-             case "Arcade Drive":
-             if(drive == null)
-             {
-                 //System.out.println("Your controller is Null dimwit!!!!");
-             }
-             else
-             {
-                double forwardSpeed = (oi.getPilotY());
-                double turnSpeed = -(oi.getPilotZ());
-     
-                driveTrain.arcadeDrive(forwardSpeed, turnSpeed, isSquaredInputs);
-                
-             }
-             
-             break;
-
-             case "Curvature Drive":
-             driveTrain.curvatureDrive(-(oi.getPilotY()), oi.getPilotZ(), true);
-             
-             break;
-
-             case "Shuffle Drive Individual":
-             widget1.changeOutput();
-             widget2.changeOutput();
-             widget3.changeOutput();
-             widget4.changeOutput();
-             break;
-
-             case "Shuffle Drive Control Groups":
-             widget5.changeOutput();
-             widget6.changeOutput();
-             break;
-
-             case "Scott Drive":
-             //Axis 0 for left joystick left to right
-             //Axis 2 for left Trigger
-             //Axis 3 for right Trigger
-              forwardSpeed = oi.pilot.getRawAxis(Buttons.rightTrigger) * inputSpeed;
-              backwardSpeed = oi.pilot.getRawAxis(Buttons.leftTrigger) * inputSpeed;
-              sideSpeed = -oi.getPilotX() *inputSpeed;
-             if(forwardSpeed <= deadband)
-             {
-                 forwardSpeed = 0;
-             }
-             if(backwardSpeed <= deadband)
-             {
-                 backwardSpeed = 0;
-             }
-             if(sideSpeed >= -deadband && sideSpeed <= deadband)
-             {
-                 sideSpeed = 0;
-             }
-             driveTrain.arcadeDrive(forwardSpeed-backwardSpeed, sideSpeed, isSquaredInputs);
-             break;
-        }
+            //Axis 0 for left joystick left to right
+            //Axis 2 for left Trigger
+            //Axis 3 for right Trigger
+            forwardSpeed = oi.pilot.getRawAxis(Buttons.rightTrigger) * inputSpeed;
+            backwardSpeed = oi.pilot.getRawAxis(Buttons.leftTrigger) * inputSpeed;
+            sideSpeed = -oi.getPilotX() *inputSpeed;
+            if(forwardSpeed <= deadband)
+            {
+                forwardSpeed = 0;
+            }
+            if(backwardSpeed <= deadband)
+            {
+                backwardSpeed = 0;
+            }
+            if(sideSpeed >= -deadband && sideSpeed <= deadband)
+            {
+                sideSpeed = 0;
+            }
+            driveTrain.arcadeDrive(forwardSpeed-backwardSpeed, sideSpeed, isSquaredInputs);
     }
+
 
     public void gearShift()
     {
-        // leftVelocity = lEncoder.getVelocity();
-        // rightVelocity = -(rEncoder.getVelocity());
-
-        // velocity = Math.abs((leftVelocity + rightVelocity) /2);
-
         if(oi.pilot.getRawButton(Buttons.B)) {
             gearShifter.set(true);
-            //Gear = "High";
         }
         else{
             gearShifter.set(false);
-            //Gear = "Low";
-
         }
     }
 

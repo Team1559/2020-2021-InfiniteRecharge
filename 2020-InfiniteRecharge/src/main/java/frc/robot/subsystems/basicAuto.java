@@ -2,18 +2,9 @@ package frc.robot.subsystems;
 
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.PowerCell;
-import frc.robot.components.Camera;
-import frc.robot.components.IMU;
-import frc.robot.OperatorInterface;
-import frc.robot.Wiring;
-import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.Logger;
-import io.github.oblarg.oblog.annotations.Config;
-import io.github.oblarg.oblog.annotations.Log;
-import io.github.oblarg.oblog.annotations.Log.Logs;
 import edu.wpi.first.wpilibj.geometry.*;
 
-public class basicAuto implements Loggable {
+public class basicAuto{
     public enum State {
         Wait, DriveToGoal, Shoot, Move, Stop
     }
@@ -25,19 +16,7 @@ public class basicAuto implements Loggable {
     private double driveForward = 2.438;
     private double driveBackward = 0;
     private double driveSpeed = .45;
-    //@Config(defaultValueNumeric = 0)
-    private void setInitialWait(double newWait) {
-        initialWait = newWait;
-    }
-    
-    //@Config(defaultValueNumeric = 3)
-    private void setForward(double forward) {
-        driveForward = forward;
-    }
-    //@Config(defaultValueNumeric = 4)
-    private void setReverse(double reverse) {
-        driveBackward = reverse;
-    }
+   
 
     public void AutoInit(Chassis driveTrain) {
 

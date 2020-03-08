@@ -2,21 +2,10 @@ package frc.robot.subsystems;
 
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.PowerCell;
-import frc.robot.components.Camera;
 import frc.robot.components.IMU;
-import frc.robot.OperatorInterface;
-import frc.robot.Wiring;
-import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.Logger;
-import io.github.oblarg.oblog.annotations.Config;
-import io.github.oblarg.oblog.annotations.Log;
-import io.github.oblarg.oblog.annotations.Log.Logs;
-
-import javax.lang.model.util.ElementScanner6;
-
 import edu.wpi.first.wpilibj.geometry.*;
 
-public class advancedAuto implements Loggable {
+public class advancedAuto {
     public enum State {
         Wait, Reverse1, Adjust, Forward1, Turn, Forward2, Shoot, Reverse2, Stop
     }
@@ -34,31 +23,7 @@ public class advancedAuto implements Loggable {
     private IMU imu;
     private double kP = 5;
 
-    //@Config(defaultValueNumeric = 0)
-    private void setInitialWait(double newWait) {
-        initialWait = newWait;
-    }
-
-    //@Config(defaultValueNumeric = 25)
-    private void setTurn(double Turn) {
-        turn = Turn;
-    }
-
-   // @Config(defaultValueNumeric = 4)
-    private void setForward2(double forward) {
-        forward2 = forward;
-    }
-
-   // @Config(defaultValueNumeric = 4)
-    private void setMove1(double move1) {
-        reverse1 = move1;
-        forward1 = move1;
-    }
-
-   // @Config(defaultValueNumeric = 0)
-    private void setReverse2(double reverse) {
-        reverse2 = reverse;
-    }
+    
 
     public void AutoInit(Chassis driveTrain, IMU imU, PowerCell powerCell) {
         imu = imU;

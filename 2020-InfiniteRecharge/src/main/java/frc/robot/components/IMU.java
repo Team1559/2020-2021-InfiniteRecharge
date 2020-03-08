@@ -1,24 +1,15 @@
 package frc.robot.components;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.DriverStation;
-import io.github.oblarg.oblog.annotations.Log;
-import io.github.oblarg.oblog.Loggable;
-public  class IMU implements Loggable{
+
+public  class IMU{
     AHRS ahrs;
-    //@Log.Graph
     public double roll = 0;
-    // @Log.Graph
     public double pitch = 0;
-    // @Log.Graph
     public double yaw = 0;
-    // @Log.Graph
     public double x_acceleration = 0;
-    // @Log.Graph
     public double y_acceleration = 0;
-    // @Log.Graph
     public double z_acceleration = 0;
     public double y_angularVelocity = 0;
 

@@ -10,10 +10,6 @@ package frc.robot;
 
 import frc.robot.subsystems.PowerCell;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Spinner;
 import frc.robot.components.Camera;
 import frc.robot.components.IMU;
@@ -23,29 +19,8 @@ import frc.robot.subsystems.advancedAuto;
 import frc.robot.subsystems.basicAuto;
 
 import frc.robot.components.CompressorControl;
-import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.Logger;
-import io.github.oblarg.oblog.annotations.Config;
-import io.github.oblarg.oblog.annotations.Log;
-import io.github.oblarg.oblog.annotations.Log.Logs;
 
-public class Robot extends TimedRobot implements Loggable {
-
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
-  private static final String kTankDrive = "Tank Drive";
-  private static final String kArcadeDrive = "Arcade Drive";
-  private static final String kCurvatureDrive = "Curvature Drive";
-  private static final String kShuffleDrive = "Shuffle Drive Individual";
-  private static final String kShuffleDriveGroups = "Shuffle Drive Control Groups";
-  private static final String kScottDrive = "Scott Drive";
-  private String m_driveTrain;
-  private final SendableChooser<String> m_driveChooser = new SendableChooser<>();
-
-  private ShuffleboardTab driveTrainTab;
+public class Robot extends TimedRobot{
 
   // feature flags booleans
 
@@ -92,72 +67,22 @@ public class Robot extends TimedRobot implements Loggable {
   private advancedAuto advancedautO = new advancedAuto();
   private basicAuto basicautO = new basicAuto();
   
-  //oblog feature flags
-  @Config.ToggleSwitch(defaultValue = true)
-  public void Enable_Compressor(boolean enable){
-    compressorEnable = enable;
-  }
-
-  @Config.ToggleSwitch(defaultValue = true)
-  public void Enable_Climber(boolean enable){
-    climberEnable = enable;
-  }
-
-  @Config.ToggleSwitch(defaultValue = true) 
-  public void Enable_PowerCell(boolean enable){
-    powerCellEnable = enable;
-  }
-
-  
-
-  
-
-  @Config.ToggleSwitch(defaultValue = true)
-  public void Enable_IMU(boolean enable){
-    ImuEnable = enable;
-  }
-
-  @Config.ToggleSwitch(defaultValue = true)
-  public void Enable_Chassis(boolean enable){
-    chassisEnable = enable;
-    // System.out.println("Chassis Enable: " + chassisEnable);
-    // System.out.println("Enable: " + enable);
-  }
-   
-  @Config.ToggleSwitch(defaultValue = true)
-  public void Enable_Color(boolean enable){
-    colorEnable = enable;
-  }
   @Override
   public void robotInit() {
       camera1.init();
       camera2.init();
-  Logger.configureLoggingAndConfig(this, false); 
-    driveTrainTab = Shuffleboard.getTab("Drive Train"); //The Shuffleboard Tab for all Drive Train related stuff
-    // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    // m_chooser.addOption("My Auto", kCustomAuto);
-    // SmartDashboard.putData("Auto choices", m_chooser);
-    // m_driveChooser.setDefaultOption("Tank Drive",kTankDrive); //A Drive Train option
-    m_driveChooser.addOption("Arcade Drive", kArcadeDrive); //A Drive Train option
-    // m_driveChooser.addOption("Curvature Drive", kCurvatureDrive); //A Drive Train option
-    // m_driveChooser.addOption("Shuffle Drive Individual", kShuffleDrive); //A Drive Train option
-    // m_driveChooser.addOption("Shuffle Drive Control Groups", kShuffleDriveGroups); //A Drive Train option
-    m_driveChooser.addOption("Scott Drive", kScottDrive); //Scott's Drive Train Option
-    driveTrainTab.add("Drive Train Choices", m_driveChooser); //Allows you to pick a Drive Train option through Shuffleboard   
   }
 
   @Override
   public void robotPeriodic()
   {
-    Logger.updateEntries();
+
   }
 
   @Override
   public void autonomousInit()
   {
-    m_autoSelected = m_chooser.getSelected();
-    m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    // System.out.println("Auto selected: " + m_autoSelected);
+   
     initialize();
     if(ImuEnable && ImuInitialized){
       imu.zeroYaw();
@@ -192,7 +117,7 @@ public class Robot extends TimedRobot implements Loggable {
   @Override
   public void teleopInit()
   {
-    m_driveTrain = m_driveChooser.getSelected();
+
       initialize();
      
   }
@@ -227,7 +152,7 @@ public class Robot extends TimedRobot implements Loggable {
   @Override
   public void testInit()
   {
-    m_driveTrain = m_driveChooser.getSelected();
+  
     initialize();
   }
 
@@ -235,7 +160,7 @@ public class Robot extends TimedRobot implements Loggable {
   public void testPeriodic() 
   {
     if(chassisEnable && chassisInitialized){
-      driveTrain.DriveSystem(oi.pilot,m_driveTrain);
+      driveTrain.DriveSystem(oi.pilot);
     }
   }
 

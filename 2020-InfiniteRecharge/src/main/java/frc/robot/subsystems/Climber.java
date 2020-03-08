@@ -7,9 +7,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import frc.robot.Buttons;
 import frc.robot.OperatorInterface;
 import frc.robot.Wiring;
-import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.annotations.Config;
-import io.github.oblarg.oblog.annotations.Log;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
@@ -19,42 +16,20 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 
-public class Climber implements Loggable {
+public class Climber{
     private OperatorInterface oi;
     private TalonSRX barRider;
     private TalonFX winch;
     private double leftJoystick_x = 0;
-    //@Log
     private double winchUprpms = 0.9;
-    //@Log
     private double winchDownrpms = 1.0;
-    //@Log
     private double balancerPercent = 1;
-    //@Log.Graph
-    private double winchTemp;
-    //@Log.Graph
-    private double winchsupplyCurrent;
-    //@Log.Graph
-    private double winchstatorCurrent;
-    //@Log.Graph
-    private double balencerCurrent;
+
     private SupplyCurrentLimitConfiguration scl = new SupplyCurrentLimitConfiguration(true, 120, 70, 300);
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
     
-	//Shuffleboard configs for winch and bar rider
-	//@Config(defaultValueNumeric = 1.0)
-    private void winchup_percent_config(double Rpms){
-        winchUprpms = Rpms;
-    }
-    //@Config(defaultValueNumeric = 0.6)
-    private void winchdown_percent_config(double Rpms){
-        winchDownrpms = Rpms;
-    }
-    //@Config(defaultValueNumeric = 1.0)
-    private void Balancer_percent_config(double OutputPercent){
-        balancerPercent = OutputPercent;
-    }
+	
 
     public void ClimberInit(OperatorInterface operatorinterface)
     {

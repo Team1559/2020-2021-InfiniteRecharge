@@ -31,7 +31,7 @@ public class advancedAuto {
         driveTrain.initOdometry();
         timer = 0;
         state = State.Wait;
-        driveTrain.rampRate = 1;
+        driveTrain.setrampRate(1);
     }
 
     public void AutoPeriodic(Chassis driveTrain, PowerCell powerCell) {
@@ -158,7 +158,7 @@ public class advancedAuto {
             powerCell.raiseGatherer();
             powerCell.stopWithoutButton();
             driveTrain.move(0, 0);
-            driveTrain.rampRate = 0.6;
+            driveTrain.setrampRate(0.6);
             break;
         }
     }

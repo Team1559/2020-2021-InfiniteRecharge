@@ -60,6 +60,18 @@ public class Chassis{
     private double backwardSpeed = 0;
     private double sideSpeed = 0;
 
+    public void setRampRate(double rr){
+        sparkMax1.setOpenLoopRampRate(rr);
+        sparkMax2.setOpenLoopRampRate(rr);
+        sparkMax3.setOpenLoopRampRate(rr);
+        sparkMax4.setOpenLoopRampRate(rr);
+
+        sparkMax1.setClosedLoopRampRate(rr);
+        sparkMax2.setClosedLoopRampRate(rr);
+        sparkMax3.setClosedLoopRampRate(rr);
+        sparkMax4.setClosedLoopRampRate(rr);
+
+    }
    
     public double distance(){
       return (Math.abs(lEncoder.getPosition()) + Math.abs(rEncoder.getPosition())) / 2;
@@ -176,28 +188,12 @@ public class Chassis{
             robotSpeed = Math.max(Math.abs(leftVelocity),Math.abs(rightVelocity));
             if(robotSpeed < 0.3 * 5600)
             {
-            sparkMax1.setOpenLoopRampRate(0.1);
-            sparkMax2.setOpenLoopRampRate(0.1);
-            sparkMax3.setOpenLoopRampRate(0.1);
-            sparkMax4.setOpenLoopRampRate(0.1);
-
-            sparkMax1.setClosedLoopRampRate(0.1);
-            sparkMax2.setClosedLoopRampRate(0.1);
-            sparkMax3.setClosedLoopRampRate(0.1);
-            sparkMax4.setClosedLoopRampRate(0.1);
+            setRampRate(0.1);
             }
         }
         else{
             inputSpeed = 1;
-            sparkMax1.setOpenLoopRampRate(rampRate);
-            sparkMax2.setOpenLoopRampRate(rampRate);
-            sparkMax3.setOpenLoopRampRate(rampRate);
-            sparkMax4.setOpenLoopRampRate(rampRate);
-
-            sparkMax1.setClosedLoopRampRate(rampRate);
-            sparkMax2.setClosedLoopRampRate(rampRate);
-            sparkMax3.setClosedLoopRampRate(rampRate);
-            sparkMax4.setClosedLoopRampRate(rampRate);
+            setRampRate(rampRate);
 
         }
         gearShift();        

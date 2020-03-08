@@ -24,19 +24,19 @@ public class Robot extends TimedRobot{
 
   // feature flags booleans
 
-  private boolean chassisEnable = false;
+  private boolean chassisEnable = true;
   private boolean chassisInitialized = false;
 
-  private boolean ImuEnable = false;
+  private boolean ImuEnable = true;
   private boolean ImuInitialized = false;
 
-  private boolean climberEnable = false;
+  private boolean climberEnable = true;
   private boolean climberInitialized = false;
 
-  private boolean compressorEnable = false;
+  private boolean compressorEnable = true;
   private boolean compressorInitialized = false;
   
-  private boolean colorEnable = false;
+  private boolean colorEnable = true;
   private boolean colorInitialized = false;
 
 
@@ -51,7 +51,7 @@ public class Robot extends TimedRobot{
 
 
 
-  private boolean powerCellEnable = false;
+  private boolean powerCellEnable = true;
   private boolean powerCellInitialized = false;
 
   //constructors
@@ -69,8 +69,8 @@ public class Robot extends TimedRobot{
   
   @Override
   public void robotInit() {
-      camera1.init();
-      camera2.init();
+     // camera1.init();
+      //camera2.init();
   }
 
   @Override
@@ -128,9 +128,9 @@ public class Robot extends TimedRobot{
     driveTrain.DriveSystem(oi.pilot);
     }
     
-    if(ImuEnable && ImuInitialized){
-      imu.getvalues();
-    }
+    // if(ImuEnable && ImuInitialized){
+    //   imu.getvalues();
+    // }
     if(climberEnable && climberInitialized){
       climber.drive();
     }

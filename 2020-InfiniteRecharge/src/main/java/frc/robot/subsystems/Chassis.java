@@ -42,7 +42,7 @@ public class Chassis{
     private IMU imu;
     private DifferentialDriveOdometry m_odometry;
 
-    private double rampRate = 1;
+    private double rampRate = .6;
 
     private SpeedControllerGroup leftMotors;
     private SpeedControllerGroup rightMotors;
@@ -164,18 +164,10 @@ public class Chassis{
         driveTrain = new DevilDifferential(sparkMax1PID, sparkMax2PID);
         driveTrain.setMaxOutput(5600); //NEO free speed 5700 RPM
         driveTrain.setExpiration(2.0);
-       
-
-        
     }
+
     public void DriveSystem(Joystick drive)
-    {
-        DriveSystem(drive, "Scott Drive");
-    }
-
-    public void DriveSystem(Joystick drive, String mode)
     {   
-
         if(oi.pilot.getRawButton(Buttons.Y)){
             inputSpeed = 0.5;
 

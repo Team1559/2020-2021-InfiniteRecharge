@@ -260,7 +260,7 @@ public class PowerCell{
     }
 
     public void intake() {
-        if (disableAll) {
+        if (disableAll || oi.pilot.getRawButton(Buttons.A)) {
             stopIntake();
         } 
         else if (oi.copilot.getRawButton(Buttons.left_Bumper) || oi.copilot.getRawButton(Buttons.right_Bumper)) {

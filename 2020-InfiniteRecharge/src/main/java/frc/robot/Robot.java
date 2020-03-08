@@ -43,7 +43,7 @@ public class Robot extends TimedRobot{
 
 
 
-  private boolean doAdvancedAuto = false;
+  private boolean doAdvancedAuto = true;
 
 
 

@@ -114,7 +114,7 @@ public class advancedAuto {
             //  System.out.println("Driving to Goal");
             driveTrain.move(-driveSpeed/2.0, 0);
             powerCell.startShooter();
-            
+            powerCell.stopIntake();
             if (driveTrain.distance() <= -forward2 || timer / 50.0 >= 2.5) { //2.25
                 timer = 0;
                 state = State.Shoot;

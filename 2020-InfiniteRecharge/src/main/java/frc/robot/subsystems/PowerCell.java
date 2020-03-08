@@ -50,7 +50,7 @@ public class PowerCell{
     private TalonSRX intakeMotor;
     private TalonFX feederMotor;
     private Solenoid gatherer;
-    private double shooterRpms = 100;
+    private double shooterRpms = 105;
     private double intakeRpms = 0.75;
     private double storageRpms = 0.6; //%output for now
     private double feederRpms = 0.2;

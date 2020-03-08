@@ -31,6 +31,7 @@ public class advancedAuto {
         driveTrain.initOdometry();
         timer = 0;
         state = State.Wait;
+        driveTrain.rampRate = 1;
     }
 
     public void AutoPeriodic(Chassis driveTrain, PowerCell powerCell) {
@@ -55,7 +56,7 @@ public class advancedAuto {
         powerCell.startStorage();
 
             // System.out.println("Sucking the balls");
-           System.out.println(driveTrain.distance());
+           //System.out.println(driveTrain.distance());
             driveTrain.move(driveSpeed, 0);
             
             if (driveTrain.distance() >= reverse1 || timer / 50.0 >= 4) {
@@ -82,7 +83,7 @@ public class advancedAuto {
             powerCell.startStorage();
 
             //System.out.println("Forward one");
-            System.out.println(imu.y_angularVelocity); 
+           // System.out.println(imu.y_angularVelocity); 
             driveTrain.move(-driveSpeed, 0.085); // 0.03
             if (odometry.getTranslation().getX() <= -forward1 || timer / 50.0 >= 4.5) { //4.5
                 timer = 0;
@@ -114,7 +115,7 @@ public class advancedAuto {
             //  System.out.println("Driving to Goal");
             driveTrain.move(-driveSpeed/2.0, 0);
             powerCell.startShooter();
-            powerCell.stopIntake();
+           // powerCell.stopIntake();
             if (driveTrain.distance() <= -forward2 || timer / 50.0 >= 2.5) { //2.25
                 timer = 0;
                 state = State.Shoot;
@@ -157,6 +158,7 @@ public class advancedAuto {
             powerCell.raiseGatherer();
             powerCell.stopWithoutButton();
             driveTrain.move(0, 0);
+            driveTrain.rampRate = 0.6;
             break;
         }
     }

@@ -42,7 +42,7 @@ public class Chassis{
     private IMU imu;
     private DifferentialDriveOdometry m_odometry;
 
-    private double rampRate = .6;
+    public double rampRate = 0.6;
 
     private SpeedControllerGroup leftMotors;
     private SpeedControllerGroup rightMotors;

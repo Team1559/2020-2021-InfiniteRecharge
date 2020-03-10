@@ -25,7 +25,7 @@ public class Climber{
     private double winchDownrpms = 1.0;
     private double balancerPercent = 1;
 
-    private SupplyCurrentLimitConfiguration scl = new SupplyCurrentLimitConfiguration(true, 120, 70, 300);
+    private SupplyCurrentLimitConfiguration scl = new SupplyCurrentLimitConfiguration(true, 120, 90, 300);
     private final int TIMEOUT = 0;
     private final double cLR = 0.1;
     

@@ -172,14 +172,14 @@ public class Chassis{
     public void DriveSystem(Joystick drive)
     {   
        
-        if(oi.pilot.getRawButton(Buttons.Y)){
+        if(oi.pilot.getRawButton(Buttons.X)){
             inputSpeed = 0.5;
-            highGear = true;
             leftVelocity = lEncoder.getVelocity();
             rightVelocity = -(rEncoder.getVelocity());
             robotSpeed = Math.max(Math.abs(leftVelocity),Math.abs(rightVelocity));
             if(robotSpeed < 0.3 * 5600)
             {
+            highGear = true;
             setRampRate(0.1);
             }
         }

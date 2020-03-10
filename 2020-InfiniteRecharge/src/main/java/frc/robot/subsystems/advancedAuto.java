@@ -81,7 +81,10 @@ public class advancedAuto {
         case Forward1:
             powerCell.lowerGatherer();
             powerCell.startStorage();
-
+            if(timer / 50.0 >= 2.5)
+            {
+                powerCell.stopIntake();
+            }
             // System.out.println("Forward one");
             // System.out.println(imu.y_angularVelocity);
             driveTrain.move(-driveSpeed, 0.085); // 0.03
@@ -113,7 +116,7 @@ public class advancedAuto {
             powerCell.lowerGatherer();
             powerCell.store();
             // System.out.println("Driving to Goal");
-            driveTrain.move(-driveSpeed / 2.0, 0);
+            driveTrain.move(-driveSpeed / 2.0, -0.06);
             powerCell.startShooter();
             // powerCell.stopIntake();
             if (driveTrain.distance() <= -forward2 || timer / 50.0 >= 2.5) { // 2.25
@@ -130,7 +133,7 @@ public class advancedAuto {
                 // System.out.println("It's Shootin Time");
                 driveTrain.move(0, 0);
                 powerCell.startStorage();
-
+                powerCell.startIntake();
                 powerCell.startShooter();
                 powerCell.startFeeder();
                 if (timer / 50.0 >= 4.0) {

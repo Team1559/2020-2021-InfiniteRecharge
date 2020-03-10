@@ -68,7 +68,7 @@ public class Spinner{
         if (compressorEnable) {
             // Solenoid logic for a toggle, which fires the "launcher" out, towards the
             // color wheel if when true
-            buttonX = oi.pilot.getRawButtonPressed(Buttons.X);
+            buttonX = oi.pilot.getRawButtonPressed(Buttons.Y);
             if (buttonX && Fire == false) {
                 Fire = true;
             } else if (buttonX && Fire == true) {

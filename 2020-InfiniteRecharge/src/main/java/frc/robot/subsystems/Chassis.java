@@ -59,10 +59,21 @@ public class Chassis{
     private double forwardSpeed = 0;
     private double backwardSpeed = 0;
     private double sideSpeed = 0;
+    private double currentRampRate = 0;
+    private boolean highGear = false;
 
+    public void setRampRate(double rr){
+        if(rr != currentRampRate){
+            currentRampRate = rr;
+            sparkMax1.setClosedLoopRampRate(rr);
+            sparkMax2.setClosedLoopRampRate(rr);
+            sparkMax3.setClosedLoopRampRate(rr);
+            sparkMax4.setClosedLoopRampRate(rr);
+        }
+    }
    
     public double distance(){
-      return (Math.abs(lEncoder.getPosition()) + Math.abs(rEncoder.getPosition())) / 2;
+        return (Math.abs(lEncoder.getPosition()) + Math.abs(rEncoder.getPosition())) / 2;
     }
 
     public void LogEncoders() {
@@ -106,15 +117,7 @@ public class Chassis{
         sparkMax4PID = sparkMax4.getPIDController();
         sparkMax4PID.setReference(0, ControlType.kVelocity);
 
-        sparkMax1.setOpenLoopRampRate(rampRate);
-        sparkMax2.setOpenLoopRampRate(rampRate);
-        sparkMax3.setOpenLoopRampRate(rampRate);
-        sparkMax4.setOpenLoopRampRate(rampRate);
-
-        sparkMax1.setClosedLoopRampRate(rampRate);
-        sparkMax2.setClosedLoopRampRate(rampRate);
-        sparkMax3.setClosedLoopRampRate(rampRate);
-        sparkMax4.setClosedLoopRampRate(rampRate);
+       setRampRate(0.6);
 
         sparkMax1PID.setP(kP);
         sparkMax1PID.setI(kI);
@@ -168,39 +171,32 @@ public class Chassis{
 
     public void DriveSystem(Joystick drive)
     {   
-        if(oi.pilot.getRawButton(Buttons.Y)){
+       
+        if(oi.pilot.getRawButton(Buttons.X)){
             inputSpeed = 0.5;
-
             leftVelocity = lEncoder.getVelocity();
             rightVelocity = -(rEncoder.getVelocity());
             robotSpeed = Math.max(Math.abs(leftVelocity),Math.abs(rightVelocity));
             if(robotSpeed < 0.3 * 5600)
             {
-            sparkMax1.setOpenLoopRampRate(0.1);
-            sparkMax2.setOpenLoopRampRate(0.1);
-            sparkMax3.setOpenLoopRampRate(0.1);
-            sparkMax4.setOpenLoopRampRate(0.1);
-
-            sparkMax1.setClosedLoopRampRate(0.1);
-            sparkMax2.setClosedLoopRampRate(0.1);
-            sparkMax3.setClosedLoopRampRate(0.1);
-            sparkMax4.setClosedLoopRampRate(0.1);
+            highGear = true;
+            setRampRate(0.1);
             }
         }
         else{
             inputSpeed = 1;
-            sparkMax1.setOpenLoopRampRate(rampRate);
-            sparkMax2.setOpenLoopRampRate(rampRate);
-            sparkMax3.setOpenLoopRampRate(rampRate);
-            sparkMax4.setOpenLoopRampRate(rampRate);
-
-            sparkMax1.setClosedLoopRampRate(rampRate);
-            sparkMax2.setClosedLoopRampRate(rampRate);
-            sparkMax3.setClosedLoopRampRate(rampRate);
-            sparkMax4.setClosedLoopRampRate(rampRate);
-
+            highGear = false;
+            setRampRate(rampRate);
+            gearShift();
         }
-        gearShift();        
+        
+        
+        if(highGear){
+            gearShifter.set(true);
+        }
+        else{
+            gearShifter.set(false);
+        }
             //Axis 0 for left joystick left to right
             //Axis 2 for left Trigger
             //Axis 3 for right Trigger
@@ -225,12 +221,11 @@ public class Chassis{
 
     public void gearShift()
     {
-        if(oi.pilot.getRawButton(Buttons.B)) {
-            gearShifter.set(true);
+        if(oi.pilot.getRawAxis(Buttons.rightJoystick_y) >= 0.5) {
+            highGear = true;
         }
         else{
-            gearShifter.set(false);
-        }
+            highGear = false;        }
     }
 
     public void move(double speed, double rotation)

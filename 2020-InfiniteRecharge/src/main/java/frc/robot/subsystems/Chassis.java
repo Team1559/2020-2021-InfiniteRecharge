@@ -176,6 +176,7 @@ public class Chassis{
             inputSpeed = 0.5;
             leftVelocity = lEncoder.getVelocity();
             rightVelocity = -(rEncoder.getVelocity());
+            //System.out.println("R: " + rightVelocity + " " + "L: " + leftVelocity);
             robotSpeed = Math.max(Math.abs(leftVelocity),Math.abs(rightVelocity));
             if(robotSpeed < 0.3 * 5600)
             {

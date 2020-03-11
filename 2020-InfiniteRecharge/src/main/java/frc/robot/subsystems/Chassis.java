@@ -81,7 +81,7 @@ public class Chassis{
     }
  
 
-    private boolean isSquaredInputs = true;
+    private boolean isSquaredInputs = false;
 
     
     public void Init(OperatorInterface oInterface, IMU Imu)
@@ -178,15 +178,15 @@ public class Chassis{
             rightVelocity = -(rEncoder.getVelocity());
             //System.out.println("R: " + rightVelocity + " " + "L: " + leftVelocity);
             robotSpeed = Math.max(Math.abs(leftVelocity),Math.abs(rightVelocity));
-            if(robotSpeed < 0.3 * 5600)
+            if(robotSpeed < 0.60042069 * 5600)
             {
-            highGear = true;
+            highGear = false;
             setRampRate(0.1);
             }
         }
         else{
             inputSpeed = 1;
-            highGear = false;
+            highGear = true;
             setRampRate(rampRate);
             gearShift();
         }

@@ -17,6 +17,7 @@ import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.advancedAuto;
 import frc.robot.subsystems.basicAuto;
+import main.java.frc.robot.subsystems.Vision;
 
 import frc.robot.components.CompressorControl;
 
@@ -44,7 +45,11 @@ public class Robot extends TimedRobot{
   private boolean powerCellEnable = true;
   private boolean powerCellInitialized = false;
 
+  private boolean visionEnable = true;
+  private boolean visionInitialized = false;
+
   //constructors
+  public Vision vision = new Vision();
   public Climber climber = new Climber();
   public PowerCell powerCell = new PowerCell();
   private CompressorControl compressorControl = new CompressorControl();
@@ -204,9 +209,15 @@ public class Robot extends TimedRobot{
       spinner.init(oi);
       colorInitialized = true;
     }
+
     if(compressorEnable && compressorInitialized == false){
       compressorControl.init();
       compressorInitialized = true;
+    }
+
+    if(visionEnable && visionInitialized == false){
+      vision.init(oi, imu);
+      visionInitialized = true;
     }
   }
 }

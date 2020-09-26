@@ -113,10 +113,5 @@ public  class IMU{
     //SmartDashboard.putNumber("QuaternionX", ahrs.getQuaternionX());
     //SmartDashboard.putNumber("QuaternionY", ahrs.getQuaternionY());
     //SmartDashboard.putNumber("QuaternionZ", ahrs.getQuaternionZ());
-
-        
-         
-
-
    }
 }

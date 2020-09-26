@@ -39,17 +39,7 @@ public class Robot extends TimedRobot{
   private boolean colorEnable = true;
   private boolean colorInitialized = false;
 
-
-
-
-
   private boolean doAdvancedAuto = true;
-
-
-
-
-
-
 
   private boolean powerCellEnable = true;
   private boolean powerCellInitialized = false;

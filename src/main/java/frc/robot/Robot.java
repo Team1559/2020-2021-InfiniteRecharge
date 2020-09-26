@@ -18,8 +18,9 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.advancedAuto;
 import frc.robot.subsystems.basicAuto;
 import main.java.frc.robot.subsystems.Vision;
-
 import frc.robot.components.CompressorControl;
+import frc.robot.components.DevilDifferential;
+import frc.robot.components.Limelight;
 
 public class Robot extends TimedRobot{
 
@@ -49,6 +50,7 @@ public class Robot extends TimedRobot{
   private boolean visionInitialized = false;
 
   //constructors
+  public Limelight limeLight = new Limelight();
   public Vision vision = new Vision();
   public Climber climber = new Climber();
   public PowerCell powerCell = new PowerCell();
@@ -119,9 +121,7 @@ public class Robot extends TimedRobot{
   @Override
   public void teleopPeriodic()
   {
-    if(chassisEnable && chassisInitialized){    
-    driveTrain.DriveSystem(oi.pilot);
-    }
+    
     
     // if(ImuEnable && ImuInitialized){
     //   imu.getvalues();
@@ -139,6 +139,13 @@ public class Robot extends TimedRobot{
     //All spinner logic is in Spinner.java
     if(colorEnable && colorInitialized){
       spinner.spin(compressorEnable);
+    }
+
+    if(colorEnable && colorInitialized && oi.copilot.getRawButton(Buttons.autoButton)){
+      vision.go();
+    }
+    else if(chassisEnable && chassisInitialized){    
+      driveTrain.DriveSystem(oi.pilot);
     }
     
 
@@ -216,7 +223,8 @@ public class Robot extends TimedRobot{
     }
 
     if(visionEnable && visionInitialized == false){
-      vision.init(oi, imu);
+      limeLight.init();
+      vision.init(oi, imu, driveTrain, limeLight);
       visionInitialized = true;
     }
   }

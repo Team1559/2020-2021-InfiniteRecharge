@@ -38,7 +38,7 @@ public class Chassis{
     
     private Solenoid gearShifter;
     private OperatorInterface oi;
-    private DevilDifferential driveTrain;
+    public DevilDifferential driveTrain;
     private IMU imu;
     private DifferentialDriveOdometry m_odometry;
 

@@ -19,4 +19,7 @@ Download from https://github.com/CrossTheRoadElec/Phoenix-Releases/releases/down
 Unzip and run the installer.
 #### Imu Software
 download from https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
-* click latest build and run the installer
+* Click latest build and run the installer
+#### Limelight Stuff
+* Documentation is at https://docs.limelightvision.io/en/latest/getting_started.html#basic-programming
+* Downloads are at https://limelightvision.io/pages/downloads

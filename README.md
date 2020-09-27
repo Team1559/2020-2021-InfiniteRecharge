@@ -1,25 +1,25 @@
 # 2020-InfiniteRecharge
 
-## SparkMAX Software Documentation http://www.revrobotics.com/content/sw/max/sw-docs/SPARK-MAX-Java-API-Offline.pdf
+## [SparkMAX Software Documentation](http://www.revrobotics.com/content/sw/max/sw-docs/SPARK-MAX-Java-API-Offline.pdf)
 
 ### Software You Need
 
 #### [Rev Robotics SparkMax Software](http://www.revrobotics.com/sparkmax-software/#java-api)
 
-Download from http://www.revrobotics.com/content/sw/max/sdk/SPARK-MAX-SDK-v1.5.2.zip.
+Download [here](http://www.revrobotics.com/content/sw/max/sdk/SPARK-MAX-SDK-v1.5.2.zip.)
 * Unzip it into the C:\Users\Public\wpilib\2020 directory on windows.
 
-#### Rev Robotics Color Sensor Software
+#### [Rev Robotics Color Sensor Software](https://www.revrobotics.com/rev-31-1557/)
 
-Download from http://revrobotics.com/content/sw/color-sensor-v3/sdk/Color-Sensor-V3-SDK-v1.0.1.zip
+Download [here](http://revrobotics.com/content/sw/color-sensor-v3/sdk/Color-Sensor-V3-SDK-v1.2.0.zip)
 * Unzip it into the C:\Users\Public\wpilib\2020 directory on windows.
 
-#### CTRE Phoenix Software (for Talon SRX, Falcon 500, PDP, PCM, and the Pigeon IMU)
-Download from https://github.com/CrossTheRoadElec/Phoenix-Releases/releases/download/v5.17.4.0/CTRE.Phoenix.Framework.v5.17.4.0.zip
+#### [CTRE Phoenix Software (for Talon SRX, Falcon 500, PDP, PCM, and the Pigeon IMU)](https://github.com/CrossTheRoadElec/Phoenix-Releases/releases)
+Download [here](https://github.com/CrossTheRoadElec/Phoenix-Releases/releases/download/v5.18.4.3/CTRE.Phoenix.Framework.v5.18.4.3.zip)
 Unzip and run the installer.
-#### Imu Software
-download from https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
+#### [Imu Software](https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/)
+download [here](https://www.kauailabs.com/public_files/navx-mxp/navx-mxp.zip)
 * Click latest build and run the installer
-#### Limelight Stuff
-* Documentation is at https://docs.limelightvision.io/en/latest/getting_started.html#basic-programming
-* Downloads are at https://limelightvision.io/pages/downloads
+#### [Limelight Stuff](https://limelightvision.io/)
+* Documentation is [here](https://docs.limelightvision.io/en/latest/getting_started.html#basic-programming)
+* Downloada are [here](https://limelightvision.io/pages/downloads)

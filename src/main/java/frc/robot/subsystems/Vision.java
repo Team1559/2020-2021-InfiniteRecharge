@@ -18,7 +18,7 @@ public class Vision{
     private double min_command = 0.05f;
     private double leftSide = 0;
     private double rightSide = 0;
-    
+    private boolean driveTheChassis = false;// used for testing will eventually be removed along with the if statement
 
     public void init(IMU inertialMessurmentUnit, Chassis ChassiS, Limelight limelighT){
         imu = inertialMessurmentUnit;
@@ -42,9 +42,13 @@ public class Vision{
             }
             leftSide += steering_adjust;
             rightSide -= steering_adjust;
-
+            System.out.println("Tx is " + tx);
+            System.out.println("sterring ajust is" + steering_adjust);
+            System.out.println("left Side speed is " + leftSide + "right side speed is "+ rightSide);
+            
+            if(driveTheChassis){// will be removed along with the boolean
             drivetrain.driveTrain.tankDrive(leftSide, rightSide);
-        
+            }
         }
     
 

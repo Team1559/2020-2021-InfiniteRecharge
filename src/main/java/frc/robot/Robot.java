@@ -17,9 +17,8 @@ import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.advancedAuto;
 import frc.robot.subsystems.basicAuto;
-import main.java.frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Vision;
 import frc.robot.components.CompressorControl;
-import frc.robot.components.DevilDifferential;
 import frc.robot.components.Limelight;
 
 public class Robot extends TimedRobot{

@@ -1,13 +1,9 @@
-package main.java.frc.robot.subsystems;
+package frc.robot.subsystems;
 //Imports
 import frc.robot.components.Limelight;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.PowerCell;
 import frc.robot.components.IMU;
-import frc.robot.subsystems.Chassis;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Vision{
     //Creation of variables

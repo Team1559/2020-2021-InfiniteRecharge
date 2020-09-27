@@ -224,7 +224,7 @@ public class Robot extends TimedRobot{
 
     if(visionEnable && visionInitialized == false){
       limeLight.init();
-      vision.init(oi, imu, driveTrain, limeLight);
+      vision.init(imu, driveTrain, limeLight);
       visionInitialized = true;
     }
   }

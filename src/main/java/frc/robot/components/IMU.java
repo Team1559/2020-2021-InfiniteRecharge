@@ -33,6 +33,17 @@ public  class IMU{
     {
         return ahrs.getYaw();
     }
+    public boolean isYawValid(){
+      if(ahrs.getYaw() < 60 && ahrs.getYaw() > -60){
+      return true;
+      }
+      else if(ahrs.getYaw() < 60 && ahrs.getYaw() > -60){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
    public void getvalues(){
     //AHRS.BoardYawAxis yaw_axis = ahrs.getBoardYawAxis();
     
@@ -43,6 +54,8 @@ public  class IMU{
          pitch = ahrs.getRoll();
          yaw = ahrs.getYaw();
          y_angularVelocity = ahrs.getRate();
+
+         
     
     ///////////////////////////////////////////////SmartDashboard.putNumber("IMU_Yaw", ahrs.getYaw());
     ///////////////////////////////////////////////SmartDashboard.putNumber("IMU_Pitch", ahrs.getRoll());

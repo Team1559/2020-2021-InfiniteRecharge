@@ -4,18 +4,14 @@ import frc.robot.components.Limelight;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.PowerCell;
 import frc.robot.components.IMU;
-import frc.robot.OperatorInterface;
 import frc.robot.subsystems.Chassis;
 import frc.robot.Buttons;
-import frc.robot.components.DevilDifferential;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Vision{
     //Creation of variables
-    private DevilDifferential devilDrive;
-    private OperatorInterface oi;
     private Limelight limeLight;
     private IMU imu;
     private Chassis drivetrain;
@@ -25,9 +21,8 @@ public class Vision{
     private double rightSide = 0;
     
 
-    public void init(OperatorInterface operatorInterface, IMU inertialMessurmentUnit, Chassis ChassiS, Limelight limelighT){
+    public void init(IMU inertialMessurmentUnit, Chassis ChassiS, Limelight limelighT){
         imu = inertialMessurmentUnit;
-        oi = operatorInterface;
         drivetrain = ChassiS;
         limeLight = limelighT;
     }
@@ -39,11 +34,11 @@ public class Vision{
             double tx = limeLight.getTx();
             double heading_error = -tx;
             double steering_adjust = 0.0f;
-            if (tx > 1.0)
+            if (tx > 1.0 && imu.isYawValid())
             {
                 steering_adjust = kP*heading_error - min_command;
             }
-            else if (tx < 1.0)
+            else if (tx < 1.0 && imu.isYawValid())
             {
                 steering_adjust = kP*heading_error + min_command;
             }

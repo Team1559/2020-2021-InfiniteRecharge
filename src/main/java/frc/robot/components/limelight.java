@@ -8,17 +8,17 @@ public class Limelight{
     public void init(){
         limeLightTable = NetworkTableInstance.getDefault().getTable("limelight");
     }
-    public double getTx(){ //Sill Needs Work
+    public double getTx(){
       NetworkTableEntry targetX = limeLightTable.getEntry("tx");
       double tx = targetX.getDouble(0);
       return tx;
     }
-    public double geTa(){ //Sill Needs Work
+    public double geTa(){
       NetworkTableEntry targetA = limeLightTable.getEntry("ta");
       double ta = targetA.getDouble(0);
         return ta;
     }
-    public double getTy(){ //Sill Needs Work
+    public double getTy(){
         NetworkTableEntry targetY = limeLightTable.getEntry("ty");
         double ty = targetY.getDouble(0);
         return ty;

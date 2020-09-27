@@ -82,7 +82,5 @@ public class OperatorInterface {
     public int DPadCopilot()
     {
         return copilot.getPOV(0);
-    }
-
-    
+    } 
 }

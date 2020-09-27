@@ -21,5 +21,3 @@ public interface Constants {
 	public static final int PILOT_JOYSTICK = 0;
 	public static final int COPILOT_JOYSTICK = 1;
 }
-	
-

@@ -12,8 +12,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.ColorSensorV3;
 
-
-
 public class Spinner{
     private OperatorInterface oi;
     private final I2C.Port i2cPort = I2C.Port.kOnboard;

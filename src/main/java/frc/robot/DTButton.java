@@ -23,8 +23,6 @@ public class DTButton {
         current = b;
     }
 
-    
-
     /**
      * @return if button is being held down
      */

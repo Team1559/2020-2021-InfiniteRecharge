@@ -7,11 +7,11 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.Buttons;
 import frc.robot.OperatorInterface;
 import frc.robot.Wiring;
+
 //intake has to go double the speed the shooter goes
 public class PowerCell{
     private OperatorInterface oi;

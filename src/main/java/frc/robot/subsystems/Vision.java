@@ -22,30 +22,26 @@ public class Vision{
         limeLight = limelighT;
     }
 
-    
-
     public void go(){ //we should look into adding a pathfinding algorithem to allow for a more efficiant approach, currently this is example code from the lielight website, the code was written for C++ and was hopefully converted to java.   
-            double tx = limeLight.getTx(); //the target xValue
-            double heading_error = -tx;
-            double steering_adjust = 0.0f;
-            if (tx > 1.0)
-            {
-                steering_adjust = kP*heading_error - min_command;
-            }
-            else if (tx < 1.0)
-            {
-                steering_adjust = kP*heading_error + min_command;
-            }
-            leftSide += steering_adjust;
-            rightSide -= steering_adjust;
-            System.out.println("Tx is " + tx);
-            System.out.println("sterring ajust is" + steering_adjust);
-            System.out.println("left Side speed is " + leftSide + "right side speed is "+ rightSide);
-            
-            if(driveTheChassis){// will be removed along with the boolean
-            drivetrain.driveTrain.tankDrive(leftSide, rightSide);
-            }
+        double tx = limeLight.getTx(); //the target xValue
+        double heading_error = -tx;
+        double steering_adjust = 0.0f;
+        if (tx > 1.0)
+        {
+            steering_adjust = kP*heading_error - min_command;
         }
-    
-
+        else if (tx < 1.0)
+        {
+            steering_adjust = kP*heading_error + min_command;
+        }
+        leftSide += steering_adjust;
+        rightSide -= steering_adjust;
+        System.out.println("Tx is " + tx);
+        System.out.println("sterring ajust is" + steering_adjust);
+        System.out.println("left Side speed is " + leftSide + "right side speed is "+ rightSide);
+        
+        if(driveTheChassis){// will be removed along with the boolean
+            drivetrain.driveTrain.tankDrive(leftSide, rightSide);
+        }
+    }
 }

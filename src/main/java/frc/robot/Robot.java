@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-
 import frc.robot.subsystems.PowerCell;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.subsystems.Spinner;

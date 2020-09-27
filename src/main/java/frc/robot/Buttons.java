@@ -9,7 +9,7 @@ public final class Buttons {
     public static final int Y = 4;
     public static final int left_Bumper = 5;
     public static final int right_Bumper = 6;
-    public static final int autoButton = 9;
+    public static final int autoButton = 9; // will probably need to change
     //Axes
     public static final int leftJoystick_x = 0;
     public static final int leftJoystick_y  = 1;

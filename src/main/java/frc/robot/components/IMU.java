@@ -33,7 +33,7 @@ public  class IMU{
     {
         return ahrs.getYaw();
     }
-    public boolean isYawValid(){
+    public boolean isYawValid(){ //Returnes true if the yaw is within a range (subject to change) so the vision sequence doesn't run you into a wall and exits if it rotates too much
       if(ahrs.getYaw() < 60 && ahrs.getYaw() > -60){
       return true;
       }

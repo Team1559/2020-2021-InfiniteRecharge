@@ -141,7 +141,7 @@ public class Robot extends TimedRobot{
       spinner.spin(compressorEnable);
     }
 
-    if(colorEnable && colorInitialized && oi.copilot.getRawButton(Buttons.autoButton)){
+    if(colorEnable && colorInitialized && oi.copilot.getRawButton(Buttons.autoButton) && imu.isYawValid()){
       vision.go();
     }
     else if(chassisEnable && chassisInitialized){    

@@ -9,15 +9,18 @@ public class Limelight{
         limeLightTable = NetworkTableInstance.getDefault().getTable("limelight");
     }
     public double getTx(){ //Sill Needs Work
-      double tx = limeLightTable.getEntry("tx");
+      NetworkTableEntry targetX = limeLightTable.getEntry("tx");
+      double tx = targetX.getDouble(0);
       return tx;
     }
     public double geTa(){ //Sill Needs Work
-        double ta = limeLightTable.getEntry("ta");
+      NetworkTableEntry targetA = limeLightTable.getEntry("ta");
+      double ta = targetA.getDouble(0);
         return ta;
     }
     public double getTy(){ //Sill Needs Work
-        double ty = limeLightTable.getEntry("ty");
+        NetworkTableEntry targetY = limeLightTable.getEntry("ty");
+        double ty = targetY.getDouble(0);
         return ty;
     }
 }

@@ -6,7 +6,7 @@
 
 #### [Rev Robotics SparkMax Software](http://www.revrobotics.com/sparkmax-software/#java-api)
 
-Download from http://www.revrobotics.com/content/sw/max/sdk/SPARK-MAX-SDK-v1.5.1.zip.
+Download from http://www.revrobotics.com/content/sw/max/sdk/SPARK-MAX-SDK-v1.5.2.zip.
 * Unzip it into the C:\Users\Public\wpilib\2020 directory on windows.
 
 #### Rev Robotics Color Sensor Software

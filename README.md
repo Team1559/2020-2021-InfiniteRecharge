@@ -1,4 +1,4 @@
-# 2020-InfiniteRecharge
+# 2020-2021-InfiniteRecharge
 
 ## [SparkMAX Software Documentation](http://www.revrobotics.com/content/sw/max/sw-docs/SPARK-MAX-Java-API-Offline.pdf)
 

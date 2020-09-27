@@ -22,4 +22,4 @@ Download [here](https://www.kauailabs.com/public_files/navx-mxp/navx-mxp.zip)
 * Click latest build and run the installer
 #### [Limelight Stuff](https://limelightvision.io/)
 * Documentation is [here](https://docs.limelightvision.io/en/latest/getting_started.html#basic-programming)
-* Downloada are [here](https://limelightvision.io/pages/downloads)
+* Downloads are [here](https://limelightvision.io/pages/downloads)

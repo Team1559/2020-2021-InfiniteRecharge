@@ -31,5 +31,6 @@ Download latest version [here](https://github.com/CrossTheRoadElec/Phoenix-Relea
 Download latest version [here](https://www.kauailabs.com/public_files/navx-mxp/navx-mxp.zip)
 * Click latest build and run the installer
 #### [Limelight Stuff](https://limelightvision.io/)
-* Documentation is [here](https://docs.limelightvision.io/en/latest/getting_started.html#basic-programming)
-* Downloads are [here](https://limelightvision.io/pages/downloads)
+Documentation is [here](https://docs.limelightvision.io/en/latest/getting_started.html#basic-programming)
+
+Downloads are [here](https://limelightvision.io/pages/downloads)

@@ -14,6 +14,7 @@ Download [here](http://www.revrobotics.com/content/sw/max/sdk/SPARK-MAX-SDK-v1.5
   then go into the vendordeps folder and copy the json file into the C:\Users\Public\wpilib\2020\vendordeps directory on windows
 #### [Rev Robotics Color Sensor Software](https://www.revrobotics.com/rev-31-1557/)
 [SparkMAX Software Documentation](http://www.revrobotics.com/content/sw/max/sw-docs/SPARK-MAX-Java-API-Offline.pdf)
+
 Download [here](http://revrobotics.com/content/sw/color-sensor-v3/sdk/Color-Sensor-V3-SDK-v1.2.0.zip)
 * Unzip it to the desktop and then go to maven\com\revrobotics\frc and move the folders into the C:\Users\Public\wpilib\2020\maven\com\revrobotics\frc directory on windows.
   then go into the vendordeps folder and copy the json file into the C:\Users\Public\wpilib\2020\vendordeps directory on windows

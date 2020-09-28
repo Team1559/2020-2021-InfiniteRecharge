@@ -26,10 +26,10 @@ Download latest version [here](http://revrobotics.com/content/sw/color-sensor-v3
   then go into the vendordeps folder and copy the json file into the C:\Users\Public\wpilib\2020\vendordeps directory on windows. If it askes, select replace files in destination.
 #### [CTRE Phoenix Software (for Talon SRX, Falcon 500, PDP, PCM, and the Pigeon IMU)](https://github.com/CrossTheRoadElec/Phoenix-Releases/releases)
 Download latest version [here](https://github.com/CrossTheRoadElec/Phoenix-Releases/releases/download/v5.18.4.3/CTRE.Phoenix.Framework.v5.18.4.3.zip)
-* Unzip and run the installer.
+* Unzip to the destop and run the installer.
 #### [Nav-X Imu Software](https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/)
 Download latest version [here](https://www.kauailabs.com/public_files/navx-mxp/navx-mxp.zip)
-* Click latest build and run the installer
+* Unzip to the desktop and run the installer
 #### [Limelight Stuff](https://limelightvision.io/)
 Documentation is [here](https://docs.limelightvision.io/en/latest/getting_started.html#basic-programming)
 

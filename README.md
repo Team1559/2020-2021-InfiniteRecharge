@@ -4,7 +4,7 @@
 ### Software You Need
 
 #### [WPILib](https://wpilib.org/)
-[WPILib Downloads](https://github.com/wpilibsuite/allwpilib/releases)
+[WPILib Downloads](https://github.com/wpilibsuite/allwpilib/releases)\n
 [WPILib Documentation](https://docs.wpilib.org/en/stable/)
 #### [Rev Robotics SparkMax Software](http://www.revrobotics.com/sparkmax-software/#java-api)
 

@@ -19,9 +19,9 @@ public class advancedAuto {
     private double reverse1 = 150;
     private double reverse2 = 0;
     private double driveSpeed = .9;
-    private double turn = 22;
+    //private double turn = 22;
     private IMU imu;
-    private double kP = 5;
+    //private double kP = 5;
 
     
 

@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 //Imports
 import frc.robot.components.Limelight;
 import frc.robot.subsystems.Chassis;
-import frc.robot.subsystems.PowerCell;
+//import frc.robot.subsystems.PowerCell;
 import frc.robot.components.IMU;
 
 public class Vision{
@@ -14,6 +14,7 @@ public class Vision{
     private double min_command = 0.05f;
     private double leftSide = 0;
     private double rightSide = 0;
+    public double yaw;
     private boolean driveTheChassis = false;// used for testing will eventually be removed along with the if statement
 
     public void init(IMU inertialMessurmentUnit, Chassis ChassiS, Limelight limelighT){
@@ -23,6 +24,7 @@ public class Vision{
     }
 
     public void go(){ //we should look into adding a pathfinding algorithem to allow for a more efficiant approach, currently this is example code from the lielight website, the code was written for C++ and was hopefully converted to java.   
+        yaw = imu.getYaw();
         double tx = limeLight.getTx(); //the target xValue
         double heading_error = -tx;
         double steering_adjust = 0.0f;

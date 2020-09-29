@@ -91,7 +91,7 @@ public class DevilDifferential extends RobotDriveBase implements AutoCloseable {
   public static final double kDefaultQuickStopThreshold = 0.2;
   public static final double kDefaultQuickStopAlpha = 0.1;
 
-  private static int instances;
+  //private static int instances;
 
   private final CANPIDController m_leftMotor;
   private final CANPIDController m_rightMotor;
@@ -112,7 +112,7 @@ public class DevilDifferential extends RobotDriveBase implements AutoCloseable {
     verify(leftMotor, rightMotor);
     m_leftMotor = leftMotor;
     m_rightMotor = rightMotor;
-    instances++;
+    //instances++;
     
   }
 

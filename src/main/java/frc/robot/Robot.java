@@ -14,17 +14,20 @@ import frc.robot.components.Camera;
 import frc.robot.components.IMU;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.advancedAuto;
-import frc.robot.subsystems.basicAuto;
+import frc.robot.subsystems.AdvancedAuto;
+import frc.robot.subsystems.BasicAuto;
 import frc.robot.subsystems.Vision;
 import frc.robot.components.CompressorControl;
 import frc.robot.components.Limelight;
 import frc.robot.components.DistSensor;
 import edu.wpi.first.wpilibj.AnalogInput;
+import frc.robot.Logging;
 
 public class Robot extends TimedRobot{
 
   // feature flags booleans
+  private boolean loggingEnable = true;
+  private boolean loggingInitialized = false;
   
   private boolean chassisEnable = true;
   private boolean chassisInitialized = false;
@@ -50,6 +53,7 @@ public class Robot extends TimedRobot{
   private boolean visionInitialized = false;
 
   //constructors
+  private Logging logging = new Logging();
   private AnalogInput ai = new AnalogInput(Wiring.distSensorPort);
   public Limelight limeLight = new Limelight();
   public Vision vision = new Vision();
@@ -63,8 +67,8 @@ public class Robot extends TimedRobot{
   private Camera camera1 = new Camera(0);
   private Camera camera2 = new Camera(1);
   public DistSensor distSensor = new DistSensor();
-  private advancedAuto advancedautO = new advancedAuto();
-  private basicAuto basicautO = new basicAuto();
+  private AdvancedAuto advancedAuto = new AdvancedAuto();
+  private BasicAuto basicAuto = new BasicAuto();
   
   @Override
   public void robotInit() {
@@ -87,10 +91,10 @@ public class Robot extends TimedRobot{
       imu.zeroYaw();
     }
     if(doAdvancedAuto == true){
-    advancedautO.AutoInit(driveTrain,imu, powerCell);
+    advancedAuto.AutoInit(driveTrain,imu, powerCell);
   }
   else{
-    basicautO.AutoInit(driveTrain);
+    basicAuto.AutoInit(driveTrain);
   }
 }
 
@@ -98,10 +102,10 @@ public class Robot extends TimedRobot{
   public void autonomousPeriodic()
   {
     if(doAdvancedAuto == true){
-    advancedautO.AutoPeriodic(driveTrain, powerCell);
+      advancedAuto.AutoPeriodic(driveTrain, powerCell);
     }
     else{
-      basicautO.AutoPeriodic(driveTrain, powerCell);
+      basicAuto.AutoPeriodic(driveTrain, powerCell);
     }
     if(ImuEnable && ImuInitialized){
       imu.getvalues();
@@ -229,6 +233,10 @@ public class Robot extends TimedRobot{
       distSensor.init(ai);
       vision.init(imu, driveTrain, limeLight, distSensor);
       visionInitialized = true;
+    }
+    if(loggingEnable && loggingInitialized == false){
+      logging.init(vision, imu, driveTrain, limeLight, distSensor, powerCell, climber, spinner, compressorControl, advancedAuto, basicAuto);
+      loggingInitialized = true;
     }
   }
 }

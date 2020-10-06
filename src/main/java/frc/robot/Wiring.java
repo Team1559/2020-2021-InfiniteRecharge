@@ -21,5 +21,7 @@ public class Wiring
 
     public static final int spinnerLauncher = 0;
     public static final int spinnerMotor = 6;
+//Distance Sensor
+    public static final int distSensorPort = 1;
 
 }

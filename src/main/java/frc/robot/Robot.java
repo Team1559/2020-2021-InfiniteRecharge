@@ -19,11 +19,13 @@ import frc.robot.subsystems.basicAuto;
 import frc.robot.subsystems.Vision;
 import frc.robot.components.CompressorControl;
 import frc.robot.components.Limelight;
+import frc.robot.components.DistSensor;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 public class Robot extends TimedRobot{
 
   // feature flags booleans
-
+  
   private boolean chassisEnable = true;
   private boolean chassisInitialized = false;
 
@@ -48,6 +50,7 @@ public class Robot extends TimedRobot{
   private boolean visionInitialized = false;
 
   //constructors
+  private AnalogInput ai = new AnalogInput(Wiring.distSensorPort);
   public Limelight limeLight = new Limelight();
   public Vision vision = new Vision();
   public Climber climber = new Climber();
@@ -59,6 +62,7 @@ public class Robot extends TimedRobot{
   private IMU imu = new IMU();
   private Camera camera1 = new Camera(0);
   private Camera camera2 = new Camera(1);
+  public DistSensor distSensor = new DistSensor();
   private advancedAuto advancedautO = new advancedAuto();
   private basicAuto basicautO = new basicAuto();
   
@@ -222,7 +226,8 @@ public class Robot extends TimedRobot{
 
     if(visionEnable && visionInitialized == false){
       limeLight.init();
-      vision.init(imu, driveTrain, limeLight);
+      distSensor.init(ai);
+      vision.init(imu, driveTrain, limeLight, distSensor);
       visionInitialized = true;
     }
   }

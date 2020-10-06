@@ -4,12 +4,14 @@ import frc.robot.components.Limelight;
 import frc.robot.subsystems.Chassis;
 //import frc.robot.subsystems.PowerCell;
 import frc.robot.components.IMU;
+import frc.robot.components.DistSensor;
 
 public class Vision{
     //Creation of variables
     private Limelight limeLight;
     private IMU imu;
     private Chassis drivetrain;
+    private DistSensor distSensor; 
     private double kP= -0.1f;
     private double min_command = 0.05f;
     private double leftSide = 0;
@@ -17,10 +19,11 @@ public class Vision{
     public double yaw;
     private boolean driveTheChassis = false;// used for testing will eventually be removed along with the if statement
 
-    public void init(IMU inertialMessurmentUnit, Chassis ChassiS, Limelight limelighT){
+    public void init(IMU inertialMessurmentUnit, Chassis ChassiS, Limelight limelighT, DistSensor distSensoR){
         imu = inertialMessurmentUnit;
         drivetrain = ChassiS;
         limeLight = limelighT;
+        distSensor = distSensoR;
     }
 
     public void go(){ //we should look into adding a pathfinding algorithem to allow for a more efficiant approach, currently this is example code from the lielight website, the code was written for C++ and was hopefully converted to java.   
@@ -42,8 +45,11 @@ public class Vision{
         System.out.println("sterring ajust is" + steering_adjust);
         System.out.println("left Side speed is " + leftSide + "right side speed is "+ rightSide);
         
-        if(driveTheChassis){// will be removed along with the boolean
+        if(driveTheChassis && distSensor.isRangeZero()){
             drivetrain.driveTrain.tankDrive(leftSide, rightSide);
+        }
+        else{
+            drivetrain.driveTrain.tankDrive(0, 0); 
         }
     }
 }

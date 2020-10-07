@@ -26,6 +26,10 @@ public class Logging{
     private CompressorControl compressorControl;
     private AdvancedAuto advancedAuto;
     private BasicAuto basicAuto;
+    
+    //Booleans
+    private boolean printVisionlogs = true;
+    private boolean printCompressorLogs = true;
 
     public void init(Vision visioN, IMU Imu, Chassis DriveTrain, Limelight limeLighT, DistSensor distSensoR,PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO){
         vision = visioN;
@@ -39,8 +43,20 @@ public class Logging{
         compressorControl = compressorControL;
         advancedAuto = advancedAutO;
         basicAuto = basicAutO;
-
-         
+   
     }
-
+    public void printLogs(){
+        if(printVisionlogs){
+            System.out.println("Vision Logs");
+            System.out.println("left Side speed is " + vision.leftSide + "right side speed is "+ vision.rightSide);
+            System.out.println("Tx is " + vision.tx);
+            System.out.println("sterring ajust is" + vision.steering_adjust);
+            System.out.println();
+        }
+        if(printCompressorLogs){
+            System.out.println("Compressor Logs");
+            System.out.println(compressorControl.isCompressorOn);
+            System.out.println();
+        }
+    }
 }

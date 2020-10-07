@@ -101,6 +101,9 @@ public class Robot extends TimedRobot{
   @Override
   public void autonomousPeriodic()
   {
+    if(loggingEnable && loggingInitialized){
+      logging.printLogs();
+    }
     if(doAdvancedAuto == true){
       advancedAuto.AutoPeriodic(driveTrain, powerCell);
     }
@@ -127,6 +130,9 @@ public class Robot extends TimedRobot{
   @Override
   public void teleopPeriodic()
   {
+    if(loggingEnable && loggingInitialized){
+      logging.printLogs();
+    }
     if(ImuEnable && ImuInitialized){
       imu.getvalues();
     }

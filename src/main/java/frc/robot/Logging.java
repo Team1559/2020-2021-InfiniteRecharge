@@ -52,6 +52,7 @@ public class Logging{
             System.out.println("left Side speed is " + vision.leftSide + "right side speed is "+ vision.rightSide);
             System.out.println("Tx is " + vision.tx);
             System.out.println("sterring ajust is" + vision.steering_adjust);
+            System.out.println("Distance from a wall is" + vision.distance);
             System.out.println();
         }
         if(printCompressorLogs){
@@ -59,9 +60,11 @@ public class Logging{
             System.out.println(compressorControl.isCompressorOn);
             System.out.println();
         }
-        if(printCompressorLogs){
+        if(printImuLogs){
             System.out.println("IMU Logs");
-            System.out.println(imu.yaw);
+            System.out.println("Yaw" + imu.yaw);
+            System.out.println("Pitch" + imu.pitch);
+            System.out.println("Roll" + imu.roll);
             System.out.println();
         }
     }

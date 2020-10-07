@@ -21,6 +21,7 @@ public class Vision{
     public double tx = 0;
     public double heading_error = 0;
     public double steering_adjust = 0;
+    public double distance = 0;
     public boolean driveTheChassis = false;// used for testing will eventually be removed along with the if statement
 
     public void init(IMU inertialMessurmentUnit, Chassis ChassiS, Limelight limelighT, DistSensor distSensoR){
@@ -31,6 +32,7 @@ public class Vision{
     }
 
     public void go(){ //we should look into adding a pathfinding algorithem to allow for a more efficiant approach, currently this is example code from the lielight website, the code was written for C++ and was hopefully converted to java.   
+        distance = distSensor.getRange();
         yaw = imu.yaw;
         tx = limeLight.getTx(); //the target xValue
         heading_error = -tx;

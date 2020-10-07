@@ -30,6 +30,7 @@ public class Logging{
     //Booleans
     private boolean printVisionlogs = true;
     private boolean printCompressorLogs = true;
+    private boolean printImuLogs = true;
 
     public void init(Vision visioN, IMU Imu, Chassis DriveTrain, Limelight limeLighT, DistSensor distSensoR,PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO){
         vision = visioN;
@@ -56,6 +57,11 @@ public class Logging{
         if(printCompressorLogs){
             System.out.println("Compressor Logs");
             System.out.println(compressorControl.isCompressorOn);
+            System.out.println();
+        }
+        if(printCompressorLogs){
+            System.out.println("IMU Logs");
+            System.out.println(imu.yaw);
             System.out.println();
         }
     }

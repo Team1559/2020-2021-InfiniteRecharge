@@ -127,11 +127,9 @@ public class Robot extends TimedRobot{
   @Override
   public void teleopPeriodic()
   {
-    
-    
-    // if(ImuEnable && ImuInitialized){
-    //   imu.getvalues();
-    // }
+    if(ImuEnable && ImuInitialized){
+      imu.getvalues();
+    }
     if(climberEnable && climberInitialized){
       climber.drive();
     }

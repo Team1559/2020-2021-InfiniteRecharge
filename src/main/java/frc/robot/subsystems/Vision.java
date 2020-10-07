@@ -31,7 +31,7 @@ public class Vision{
     }
 
     public void go(){ //we should look into adding a pathfinding algorithem to allow for a more efficiant approach, currently this is example code from the lielight website, the code was written for C++ and was hopefully converted to java.   
-        yaw = imu.getYaw();
+        yaw = imu.yaw;
         tx = limeLight.getTx(); //the target xValue
         heading_error = -tx;
         steering_adjust = 0.0f;

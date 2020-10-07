@@ -127,7 +127,7 @@ public class AdvancedAuto {
 
         case Shoot:
             powerCell.lowerGatherer();
-            if (Math.abs(imu.getYaw()) >= 60) {
+            if (Math.abs(imu.yaw) >= 60) {
                 state = State.Stop;
             } else {
                 // System.out.println("It's Shootin Time");

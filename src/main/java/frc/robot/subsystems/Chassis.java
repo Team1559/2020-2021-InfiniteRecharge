@@ -238,7 +238,7 @@ public class Chassis{
         lEncoder.setPosition(0);
         rEncoder.setPosition(0);
         imu.zeroYaw();
-        Rotation2d yaw = new Rotation2d(imu.getYaw());
+        Rotation2d yaw = new Rotation2d(imu.yaw);
         m_odometry = new DifferentialDriveOdometry(yaw);
         //Neccessary for advanced auto new Pose2d(0,0 new Rotation2d())
     }
@@ -251,7 +251,7 @@ public class Chassis{
 
     public Pose2d updateOdometry()
     {
-        return m_odometry.update(new Rotation2d(imu.getYaw()), R2M(lEncoder.getPosition()), R2M(rEncoder.getPosition()));
+        return m_odometry.update(new Rotation2d(imu.yaw), R2M(lEncoder.getPosition()), R2M(rEncoder.getPosition()));
     }
 
     public void disabled()

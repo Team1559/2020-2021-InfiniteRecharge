@@ -2,7 +2,6 @@ package frc.robot;
 
 import frc.robot.subsystems.PowerCell;
 import frc.robot.subsystems.Spinner;
-import frc.robot.components.Camera;
 import frc.robot.components.IMU;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Climber;
@@ -12,18 +11,17 @@ import frc.robot.subsystems.Vision;
 import frc.robot.components.CompressorControl;
 import frc.robot.components.Limelight;
 import frc.robot.components.DistSensor;
-import edu.wpi.first.wpilibj.AnalogInput;
 
 public class Logging{
     private Vision vision;
     private IMU imu;
+    private CompressorControl compressorControl;
     private Chassis driveTrain;
     private Limelight limeLight;
     private DistSensor distSensor;
     private PowerCell powerCell;
     private Climber climber;
     private Spinner spinner;
-    private CompressorControl compressorControl;
     private AdvancedAuto advancedAuto;
     private BasicAuto basicAuto;
     

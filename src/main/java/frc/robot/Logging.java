@@ -11,6 +11,7 @@ import frc.robot.subsystems.Vision;
 import frc.robot.components.CompressorControl;
 import frc.robot.components.Limelight;
 import frc.robot.components.DistSensor;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Logging{
     private Vision vision;
@@ -28,7 +29,8 @@ public class Logging{
     //Booleans
     private boolean printVisionlogs = true;
     private boolean printCompressorLogs = true;
-    private boolean printImuLogs = true;
+    private boolean printImuLogs = false;
+    private boolean smartDashboardImuLogs = true;
 
     public void init(Vision visioN, IMU Imu, Chassis DriveTrain, Limelight limeLighT, DistSensor distSensoR,PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO){
         vision = visioN;
@@ -64,6 +66,11 @@ public class Logging{
             System.out.println("Pitch" + imu.pitch);
             System.out.println("Roll" + imu.roll);
             System.out.println();
+        }
+    }
+    public void smartDashboardLogs(){
+        if(smartDashboardImuLogs){
+            SmartDashboard.putNumber("Imu yaw", imu.yaw);
         }
     }
 }

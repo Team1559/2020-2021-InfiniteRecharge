@@ -103,6 +103,7 @@ public class Robot extends TimedRobot{
   {
     if(loggingEnable && loggingInitialized){
       logging.printLogs();
+      logging.smartDashboardLogs();
     }
     if(doAdvancedAuto == true){
       advancedAuto.AutoPeriodic(driveTrain, powerCell);
@@ -131,6 +132,7 @@ public class Robot extends TimedRobot{
   public void teleopPeriodic()
   {
     if(loggingEnable && loggingInitialized){
+      logging.smartDashboardLogs();
       logging.printLogs();
     }
     if(ImuEnable && ImuInitialized){

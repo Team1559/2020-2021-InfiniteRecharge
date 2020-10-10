@@ -26,6 +26,8 @@ import frc.robot.Logging;
 public class Robot extends TimedRobot{
 
   // feature flags booleans
+  private boolean doAdvancedAuto = true;//change this to false for basic auto
+
   private boolean loggingEnable = true;
   private boolean loggingInitialized = false;
   
@@ -43,8 +45,12 @@ public class Robot extends TimedRobot{
   
   private boolean colorEnable = true;
   private boolean colorInitialized = false;
+  
+  private boolean advancedAutoEnable = true;
+  private boolean advancedAutoInitialized = false;
 
-  private boolean doAdvancedAuto = true;
+  private boolean basicAutoEnable = true;
+  private boolean basicAutoInitialize = false;
 
   private boolean powerCellEnable = true;
   private boolean powerCellInitialized = false;
@@ -85,42 +91,60 @@ public class Robot extends TimedRobot{
   @Override
   public void autonomousInit()
   {
-   
+    //sets the feautre flag boolean for advanced auto
+    if(doAdvancedAuto){
+      basicAutoEnable = false;
+      advancedAutoEnable = true;
+    }
+    else{
+      basicAutoEnable = true;
+      advancedAutoEnable = false;
+    }
+
+    //runs the initialize method
     initialize();
+
+    //zeros the imu
     if(ImuEnable && ImuInitialized){
       imu.zeroYaw();
     }
-    if(doAdvancedAuto == true){
-    advancedAuto.AutoInit(driveTrain,imu, powerCell);
   }
-  else{
-    basicAuto.AutoInit(driveTrain);
-  }
-}
 
   @Override
   public void autonomousPeriodic()
   {
+    //logging
     if(loggingEnable && loggingInitialized){
       logging.printLogs();
       logging.smartDashboardLogs();
     }
-    if(doAdvancedAuto == true){
+
+    //advanced auto
+    if(doAdvancedAuto == true && imu.isYawValid()){
       advancedAuto.AutoPeriodic(driveTrain, powerCell);
     }
-    else{
+
+    //basic auto
+    else if(imu.isYawValid()){
       basicAuto.AutoPeriodic(driveTrain, powerCell);
     }
+
+    //stop the drivetrain
+    else{
+      driveTrain.move(0, 0);
+    }
+
+    //imu
     if(ImuEnable && ImuInitialized){
       imu.getvalues();
     }
+
     //Compressor
     if(compressorEnable && compressorInitialized){
       compressorControl.run();
     }
   }
   
-
   @Override
   public void teleopInit()
   {
@@ -131,64 +155,72 @@ public class Robot extends TimedRobot{
   @Override
   public void teleopPeriodic()
   {
+    //logging
     if(loggingEnable && loggingInitialized){
       logging.smartDashboardLogs();
       logging.printLogs();
     }
+
+    //imu
     if(ImuEnable && ImuInitialized){
       imu.getvalues();
     }
+
+    //climber
     if(climberEnable && climberInitialized){
       climber.drive();
     }
+
+    //powercell
     if(powerCellEnable && powerCellInitialized){
       powerCell.go();
-  }
-      //Compressor
-     if(compressorEnable && compressorInitialized){
+    }
+
+    //Compressor
+    if(compressorEnable && compressorInitialized){
       compressorControl.run();
     }
+
     //All spinner logic is in Spinner.java
     if(colorEnable && colorInitialized){
       spinner.spin(compressorEnable);
     }
 
+    //Vision code
     if(colorEnable && colorInitialized && oi.copilot.getRawButton(Buttons.autoButton) && imu.isYawValid()){
       vision.go();
     }
+
+    //Chassis code
     else if(chassisEnable && chassisInitialized){    
       driveTrain.DriveSystem(oi.pilot);
     }
-    
-
   }
  
   @Override
   public void testInit()
   {
-  
     initialize();
   }
 
   @Override
   public void testPeriodic() 
   {
-    if(chassisEnable && chassisInitialized){
-      driveTrain.DriveSystem(oi.pilot);
-    }
+
   }
 
   @Override
   public void disabledInit()
   {
+    //turns off the compresser
     if(compressorEnable && compressorInitialized){
       compressorControl.disable();
     }
+    //sets the chassis to coast mode for easier transport
     if(chassisEnable && chassisInitialized)
     {
       driveTrain.disabled();
     }
-    
   }
 
   @Override
@@ -199,47 +231,66 @@ public class Robot extends TimedRobot{
   
   public void initialize()
   {
+    //advanced auto
+    if(advancedAutoEnable && advancedAutoInitialized == false){
+      advancedAuto.AutoInit(driveTrain,imu, powerCell);
+      advancedAutoInitialized = true;
+    }
 
+    //basic auto
+    if(basicAutoEnable && basicAutoInitialize == false){
+      basicAuto.AutoInit(driveTrain);
+      basicAutoInitialize = true;
+    }
+
+    //imu
     if(ImuEnable && ImuInitialized == false)
     {
       imu.init();
       ImuInitialized = true;
     }
-  
-  if(powerCellEnable && powerCellInitialized == false){
+
+    //powercell
+    if(powerCellEnable && powerCellInitialized == false){
       powerCell.init(oi);
       powerCellInitialized = true;
     }
+
+    //chassis
     if(chassisEnable && chassisInitialized == false)
     {
       driveTrain.Init(oi, imu);
       chassisInitialized = true;
     }
-    
 
+    //climber
     if(climberEnable && climberInitialized == false){
       climber.ClimberInit(oi);
       climberInitialized = true;
     }
-
     
+    //spinner
     if(colorEnable && colorInitialized == false)
     {
       spinner.init(oi);
       colorInitialized = true;
     }
-
+    
+    //compressor
     if(compressorEnable && compressorInitialized == false){
       compressorControl.init();
       compressorInitialized = true;
     }
 
+    //vision
     if(visionEnable && visionInitialized == false){
       limeLight.init();
       distSensor.init(ai);
       vision.init(imu, driveTrain, limeLight, distSensor);
       visionInitialized = true;
     }
+
+    //logging
     if(loggingEnable && loggingInitialized == false){
       logging.init(vision, imu, driveTrain, limeLight, distSensor, powerCell, climber, spinner, compressorControl, advancedAuto, basicAuto);
       loggingInitialized = true;

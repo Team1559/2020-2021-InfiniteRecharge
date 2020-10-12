@@ -54,7 +54,7 @@ public class PowerCell{
     private TalonFX feederMotor;
     //solinoids
     private Solenoid gatherer;
-    
+
     private double shooterRpms = 98;
     private double intakeRpms = 0.5;
     private double storageRpms = 0.6; //%output for now
@@ -311,6 +311,7 @@ public class PowerCell{
         startStorage();
         startFeeder();
         startShooter();
+        startIntake();
     }
 
     public void stopWithoutButton(){

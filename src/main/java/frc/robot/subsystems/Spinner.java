@@ -15,7 +15,7 @@ import com.revrobotics.ColorSensorV3;
 public class Spinner{
     private OperatorInterface oi;
     private final I2C.Port i2cPort = I2C.Port.kOnboard;
-    private final ColorSensorV3 m_colorSensor;
+    private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
     // Variable for the motor
     private TalonSRX spinnerMotor;
     // Variable for a temporary placeholder for the color value, to compare with the
@@ -134,21 +134,19 @@ public class Spinner{
         }
     }
 
-    public Spinner() {
-        m_colorSensor = new ColorSensorV3(i2cPort);
-    }
-
     // This is used to find the current color that the sensor is detecting
     public void updateColor() {
          blueColor = m_colorSensor.getBlue();
          greenColor = m_colorSensor.getGreen();
          redColor = m_colorSensor.getRed();
-        if (blueColor > greenColor) {
+
+        if(blueColor > greenColor){
             norm_max = blueColor;
-        } else {
+        }
+        else{
             norm_max = greenColor;
         }
-        if (redColor > norm_max) {
+        if(redColor > norm_max){
             norm_max = redColor;
         }
 
@@ -161,13 +159,13 @@ public class Spinner{
         greenCon = (((greenNorm / 255) + ((255 - redNorm) / 255) + ((255 - blueNorm) / 255))) / 3;
         yellowCon = (((greenNorm / 255) + (redNorm / 255) + ((255 - blueNorm) / 255))) / 3;
 
-        if ((blueCon > greenCon) && (blueCon > redCon) && (blueCon > yellowCon)) {
+        if((blueCon > greenCon) && (blueCon > redCon) && (blueCon > yellowCon)){
             currentColor = "B";
-        } else if ((greenCon > blueCon) && (greenCon > redCon) && (greenCon > yellowCon)) {
+        } else if((greenCon > blueCon) && (greenCon > redCon) && (greenCon > yellowCon)){
             currentColor = "G";
-        } else if ((redCon > greenCon) && (redCon > blueCon) && (redCon > yellowCon)) {
+        } else if((redCon > greenCon) && (redCon > blueCon) && (redCon > yellowCon)){
             currentColor = "R";
-        } else {
+        } else{
             currentColor = "Y";
         }
 

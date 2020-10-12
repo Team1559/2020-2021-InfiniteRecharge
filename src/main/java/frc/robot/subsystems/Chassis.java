@@ -48,8 +48,6 @@ public class Chassis{
     private double leftVelocity;
     private double rightVelocity;
 
-
-
     private double kP = 0.0002; //0.0001
     private double kI = 0.000000; //0.0 (We don't really need I for now, maybe later)
     private double kD = 0.0000;
@@ -83,8 +81,7 @@ public class Chassis{
     private boolean isSquaredInputs = false;
 
     
-    public void Init(OperatorInterface oInterface, IMU Imu)
-    {
+    public void Init(OperatorInterface oInterface, IMU Imu){
         imu = Imu;
  
         oi = oInterface;
@@ -219,8 +216,7 @@ public class Chassis{
     }
 
 
-    public void gearShift()
-    {
+    public void gearShift(){
         if(oi.pilot.getRawAxis(Buttons.rightJoystick_y) >= 0.5) {
             highGear = true;
         }
@@ -228,13 +224,11 @@ public class Chassis{
             highGear = false;        }
     }
 
-    public void move(double speed, double rotation)
-    {
+    public void move(double speed, double rotation){
             driveTrain.arcadeDrive(speed,rotation,false);
     }
 
-    public void initOdometry()
-    {
+    public void initOdometry(){
         lEncoder.setPosition(0);
         rEncoder.setPosition(0);
         imu.zeroYaw();
@@ -243,8 +237,7 @@ public class Chassis{
         //Neccessary for advanced auto new Pose2d(0,0 new Rotation2d())
     }
 
-    public double R2M(double rotations)             //gear ratio: 15.2:1
-    {                                               //wheel diameter 5.8in
+    public double R2M(double rotations){  //gear ratio: 15.2:1, wheel diameter 5.8in
         double out = rotations/15.2*5.8*Math.PI/39.37;
         return out;
     }

@@ -40,22 +40,24 @@ public  class IMU{
         return false;
       }
     }
-   public void getvalues(){
+
+  public void getvalues(){
     //AHRS.BoardYawAxis yaw_axis = ahrs.getBoardYawAxis();
     
     x_acceleration = ahrs.getWorldLinearAccelX();
-        y_acceleration = ahrs.getWorldLinearAccelY();
-        z_acceleration = ahrs.getWorldLinearAccelZ();
-         roll = ahrs.getPitch();
-         pitch = ahrs.getRoll();
-         yaw = ahrs.getYaw();
-         y_angularVelocity = ahrs.getRate();
-
+    y_acceleration = ahrs.getWorldLinearAccelY();
+    z_acceleration = ahrs.getWorldLinearAccelZ();
+    roll = ahrs.getPitch();
+    pitch = ahrs.getRoll();
+    yaw = ahrs.getYaw();
+    y_angularVelocity = ahrs.getRate();
+   }
          
+    /*the following are all the functions avalible*/
     
-    ///////////////////////////////////////////////SmartDashboard.putNumber("IMU_Yaw", ahrs.getYaw());
-    ///////////////////////////////////////////////SmartDashboard.putNumber("IMU_Pitch", ahrs.getRoll());
-    ///////////////////////////////////////////////SmartDashboard.putNumber("IMU_Roll", ahrs.getPitch());
+    //SmartDashboard.putNumber("IMU_Yaw", ahrs.getYaw());
+    //SmartDashboard.putNumber("IMU_Pitch", ahrs.getRoll());
+    //SmartDashboard.putNumber("IMU_Roll", ahrs.getPitch());
     
     //SmartDashboard.putNumber("IMU_CompassHeading", ahrs.getCompassHeading());
 
@@ -122,5 +124,4 @@ public  class IMU{
     //SmartDashboard.putNumber("QuaternionX", ahrs.getQuaternionX());
     //SmartDashboard.putNumber("QuaternionY", ahrs.getQuaternionY());
     //SmartDashboard.putNumber("QuaternionZ", ahrs.getQuaternionZ());
-   }
 }

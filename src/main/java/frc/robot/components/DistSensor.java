@@ -16,10 +16,9 @@ public class DistSensor
         analogInput = ai; 
     }
     
-    public double getRange()
-    {
+    public double getRange(){
 
-                /* Analog Sensor Testing */ 
+        /* Analog Sensor Testing */ 
 
 		//int raw = analogInput.getValue();
 		double volts = analogInput.getVoltage();

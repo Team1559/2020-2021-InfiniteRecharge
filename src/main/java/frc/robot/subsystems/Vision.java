@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+
 //Imports
 import frc.robot.components.Limelight;
 import frc.robot.subsystems.Chassis;
@@ -10,7 +11,7 @@ public class Vision{
     //Objects
     private Limelight limeLight;
     private IMU imu;
-    private Chassis drivetrain;
+    private Chassis Drivetrain;
     private DistSensor distSensor; 
     //Variables
     public double kP= -0.1f;
@@ -26,7 +27,7 @@ public class Vision{
 
     public void init(IMU inertialMessurmentUnit, Chassis ChassiS, Limelight limelighT, DistSensor distSensoR){
         imu = inertialMessurmentUnit;
-        drivetrain = ChassiS;
+        Drivetrain = ChassiS;
         limeLight = limelighT;
         distSensor = distSensoR;
     }
@@ -37,21 +38,19 @@ public class Vision{
         tx = limeLight.getTx(); //the target xValue
         heading_error = -tx;
         steering_adjust = 0.0f;
-        if (tx > 1.0)
-        {
+        if (tx > 1.0){
             steering_adjust = kP*heading_error - min_command;
         }
-        else if (tx < 1.0)
-        {
+        else if (tx < 1.0){
             steering_adjust = kP*heading_error + min_command;
         }
         leftSide += steering_adjust;
         rightSide -= steering_adjust;
         if(driveTheChassis && distSensor.isRangeZero()){
-            drivetrain.driveTrain.tankDrive(leftSide, rightSide);
+            Drivetrain.driveTrain.tankDrive(leftSide, rightSide);
         }
         else{
-            drivetrain.driveTrain.tankDrive(0, 0); 
+            Drivetrain.driveTrain.tankDrive(0, 0); 
         }
     }
 }

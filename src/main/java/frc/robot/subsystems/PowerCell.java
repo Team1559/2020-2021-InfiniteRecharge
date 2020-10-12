@@ -18,6 +18,7 @@ public class PowerCell{
     public enum State {
         Spin, Wait    
     }
+
     private State state = State.Spin;
     // pid values
     private final int TIMEOUT = 0;
@@ -27,7 +28,6 @@ public class PowerCell{
     private double intake_kI = 0.00000;// 1e-6
     private double intake_kF = 0;
     private double shooter_kF = 0; 
-    private SupplyCurrentLimitConfiguration shooterLimit = new SupplyCurrentLimitConfiguration(true, 100, 20, 1000);
     private double shooter_kP = 5;
     private double shooter_kD = 0;
     private double shooter_kI = 0.00000;// 1e-6
@@ -39,7 +39,10 @@ public class PowerCell{
     private double feederP_kD = 0;
     private double feederP_kI = 0;// 1e-6
     private double feederP_kF = 0;
+    //current limits
+    private SupplyCurrentLimitConfiguration shooterLimit = new SupplyCurrentLimitConfiguration(true, 100, 20, 1000);
     private SupplyCurrentLimitConfiguration feederLimit = new SupplyCurrentLimitConfiguration(true, 40, 20, 1000);
+    
     private boolean feederButton = false;
     private boolean disableAll = false;
     
@@ -49,7 +52,9 @@ public class PowerCell{
     private TalonFX shooter;
     private TalonSRX intakeMotor;
     private TalonFX feederMotor;
+    //solinoids
     private Solenoid gatherer;
+    
     private double shooterRpms = 98;
     private double intakeRpms = 0.5;
     private double storageRpms = 0.6; //%output for now
@@ -60,7 +65,7 @@ public class PowerCell{
     private double spinTimer = 1;
     private double waitTimer = 1;
     
-    public void init(OperatorInterface operatorinterface) {
+    public void init(OperatorInterface operatorinterface){
         // Constructors
         shooter = new TalonFX(Wiring.shooterMotor);
         intakeMotor = new TalonSRX(Wiring.intakeMotor);
@@ -157,21 +162,21 @@ public class PowerCell{
         stopfeeder();
     }
 
-    public void stopfeeder() {
+    public void stopfeeder(){
         feederPosition = feederMotor.getSelectedSensorPosition();
         feederMotor.set(ControlMode.Position, feederPosition);
     }
 
-    public void stopStorage() {
+    public void stopStorage(){
         storageMotorH.set(ControlMode.PercentOutput, 0);
         storageMotorL.set(ControlMode.PercentOutput, 0);
     }
 
-    public void stopIntake() {
+    public void stopIntake(){
         intakeMotor.set(ControlMode.PercentOutput, 0);
     }
 
-    public void stopShooter() {
+    public void stopShooter(){
         shooter.set(TalonFXControlMode.PercentOutput, 0);
     }
     public void reverseStorage(){
@@ -182,11 +187,11 @@ public class PowerCell{
         storageMotorH.set(ControlMode.PercentOutput, storageRpms);
         storageMotorL.set(ControlMode.PercentOutput, -storageRpms);
     }
-    public void startFeeder() {
+    public void startFeeder(){
         feederMotor.set(ControlMode.PercentOutput, -feederRpms);
     }
 
-    public void startShooter() {
+    public void startShooter(){
         shooter.set(ControlMode.Velocity, -shooterRpms);
     }
     public void lowerGatherer(){
@@ -196,7 +201,7 @@ public class PowerCell{
         gatherer.set(false);
     }
 
-    public void feeder() {
+    public void feeder(){
         if (oi.pilot.getRawButton(Buttons.A)) {
             if (!feederButton) {
                 startFeeder();
@@ -210,10 +215,11 @@ public class PowerCell{
             }
         }
     }
+
     public void store(){
         startStorage();
         
-        switch (state) {
+        switch (state){
             case Wait:
            // System.out.println("Stopped");
                 spinTimer = spinSetPoint;
@@ -236,7 +242,7 @@ public class PowerCell{
             }   
     }
 
-    public void storage() {
+    public void storage(){
         
         if (disableAll) {
             
@@ -255,6 +261,7 @@ public class PowerCell{
              }
         }
     }
+
     public void startIntake(){
         intakeMotor.set(ControlMode.PercentOutput, -intakeRpms);
     }

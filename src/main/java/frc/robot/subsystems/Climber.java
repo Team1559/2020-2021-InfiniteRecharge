@@ -29,8 +29,7 @@ public class Climber{
     
 	
 
-    public void ClimberInit(OperatorInterface operatorinterface)
-    {
+    public void ClimberInit(OperatorInterface operatorinterface){
         barRider = new WPI_TalonSRX(Wiring.barRider);
         winch = new TalonFX(Wiring.winch);
         oi = operatorinterface;
@@ -105,16 +104,13 @@ public class Climber{
     /*Drives wheels on the bar to allow robot to balance the bar*/
     public void Balance(){
         leftJoystick_x = oi.copilot.getRawAxis(Buttons.leftJoystick_x);
-        if ( leftJoystick_x > 0.3)
-        {
+        if ( leftJoystick_x > 0.3){
             barRider.set(ControlMode.PercentOutput, balancerPercent);
         }
-        else if(leftJoystick_x < -0.3)
-        {
+        else if(leftJoystick_x < -0.3){
             barRider.set(ControlMode.PercentOutput, -balancerPercent);
         }
-        else
-        {
+        else{
             stopBarrider();
         } 
     }

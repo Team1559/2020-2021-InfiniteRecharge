@@ -26,6 +26,7 @@ public class Vision{
     public double steering_adjust = 0;
     public double distance = 0;
     public boolean moveTheRobot = false;// used for testing will eventually be removed along with the if statement
+    public int timer = 0;
 
     public void init(IMU inertialMessurmentUnit, Chassis ChassiS, Limelight limelighT, DistSensor distSensoR, PowerCell powercelL){
         imu = inertialMessurmentUnit;
@@ -36,7 +37,11 @@ public class Vision{
     }
 
     public void go(){ //we should look into adding a pathfinding algorithem to allow for a more efficiant approach, currently this is example code from the lielight website, the code was written for C++ and was hopefully converted to java.   
-        Drivetrain.setControltype(ControlType.kPosition); 
+        while(timer <1){
+            Drivetrain.timer = 0;
+            Drivetrain.setControltype(ControlType.kPosition);
+            timer++;
+        } 
         distance = distSensor.getRange();
         yaw = imu.yaw;
         tx = limeLight.getTx(); //the target xValue

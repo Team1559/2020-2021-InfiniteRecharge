@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import frc.robot.subsystems.Vision;
 
 public class Chassis{
 
@@ -33,6 +34,7 @@ public class Chassis{
     private CANPIDController sparkMax4PID;
     private double inputSpeed = 1;
     public double robotSpeed = 0;
+    private Vision vision;
     
     
     private Solenoid gearShifter;
@@ -58,6 +60,7 @@ public class Chassis{
     private double sideSpeed = 0;
     private double currentRampRate = 0;
     private boolean highGear = false;
+    public int timer = 0;
 
     public void setRampRate(double rr){
         if(rr != currentRampRate){
@@ -81,9 +84,9 @@ public class Chassis{
     private boolean isSquaredInputs = false;
 
     
-    public void Init(OperatorInterface oInterface, IMU Imu){
+    public void Init(OperatorInterface oInterface, IMU Imu, Vision visioN){
         imu = Imu;
- 
+        vision = visioN;
         oi = oInterface;
         sparkMax1 = new CANSparkMax(11, MotorType.kBrushless); //ID 11
         sparkMax2 = new CANSparkMax(12, MotorType.kBrushless); //ID 12
@@ -178,8 +181,11 @@ public class Chassis{
 
     public void DriveSystem(Joystick drive)
     {   
-       setControltype(ControlType.kVelocity);
-       
+        while(timer <1){
+            vision.timer = 0;
+            setControltype(ControlType.kVelocity);
+            timer++;
+        }
         if(oi.pilot.getRawButton(Buttons.X)){
             inputSpeed = 0.5;
             leftVelocity = lEncoder.getVelocity();

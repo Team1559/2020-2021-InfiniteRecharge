@@ -261,7 +261,7 @@ public class Robot extends TimedRobot{
 
     //chassis
     if(chassisEnable && chassisInitialized == false){
-      driveTrain.Init(oi, imu);
+      driveTrain.Init(oi, imu, vision);
       chassisInitialized = true;
     }
 

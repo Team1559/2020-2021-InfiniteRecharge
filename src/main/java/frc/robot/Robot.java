@@ -46,10 +46,10 @@ public class Robot extends TimedRobot{
   private boolean colorEnable = true;
   private boolean colorInitialized = false;
   
-  private boolean advancedAutoEnable = true;
+  private boolean advancedAutoEnable = false;
   private boolean advancedAutoInitialized = false;
 
-  private boolean basicAutoEnable = true;
+  private boolean basicAutoEnable = false;
   private boolean basicAutoInitialize = false;
 
   private boolean powerCellEnable = true;
@@ -96,6 +96,8 @@ public class Robot extends TimedRobot{
       basicAutoEnable = false;
       advancedAutoEnable = true;
     }
+
+    //sets the feautre flag boolean for basic auto
     else{
       basicAutoEnable = true;
       advancedAutoEnable = false;
@@ -148,8 +150,8 @@ public class Robot extends TimedRobot{
   @Override
   public void teleopInit()
   {
-
-      initialize();
+    //runs the initalize method
+    initialize();
      
   }
   @Override
@@ -200,7 +202,7 @@ public class Robot extends TimedRobot{
   @Override
   public void testInit()
   {
-    initialize();
+
   }
 
   @Override
@@ -216,9 +218,9 @@ public class Robot extends TimedRobot{
     if(compressorEnable && compressorInitialized){
       compressorControl.disable();
     }
+
     //sets the chassis to coast mode for easier transport
-    if(chassisEnable && chassisInitialized)
-    {
+    if(chassisEnable && chassisInitialized){
       driveTrain.disabled();
     }
   }
@@ -244,8 +246,7 @@ public class Robot extends TimedRobot{
     }
 
     //imu
-    if(ImuEnable && ImuInitialized == false)
-    {
+    if(ImuEnable && ImuInitialized == false){
       imu.init();
       ImuInitialized = true;
     }
@@ -257,8 +258,7 @@ public class Robot extends TimedRobot{
     }
 
     //chassis
-    if(chassisEnable && chassisInitialized == false)
-    {
+    if(chassisEnable && chassisInitialized == false){
       driveTrain.Init(oi, imu);
       chassisInitialized = true;
     }
@@ -270,8 +270,7 @@ public class Robot extends TimedRobot{
     }
     
     //spinner
-    if(colorEnable && colorInitialized == false)
-    {
+    if(colorEnable && colorInitialized == false){
       spinner.init(oi);
       colorInitialized = true;
     }

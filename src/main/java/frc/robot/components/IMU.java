@@ -1,4 +1,5 @@
 package frc.robot.components;
+//imports
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
@@ -12,28 +13,28 @@ public  class IMU{
     public double y_acceleration = 0;
     public double z_acceleration = 0;
     public double y_angularVelocity = 0;
+    public double maxAutoYaw = 60;// messured in degrees, may change
 
-
+  //the init method
     public void init(){
-    try {
+      try {
         ahrs = new AHRS(SPI.Port.kMXP);
-        
-        // ahrs = new AHRS(SerialPort.Port.kUSB1);
         ahrs.enableLogging(true);
-      } catch (RuntimeException ex) {
-        DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
-        }
+      }
+      catch (RuntimeException ex) {
+         DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
+       }
         
     }
 
+    //sets the yaw to zero
     public void zeroYaw(){
       ahrs.zeroYaw();
     }
-    public boolean isYawValid(){ //Returnes true if the yaw is within a range (subject to change) so the vision sequence doesn't run you into a wall and exits if it rotates too much
-      if(ahrs.getYaw() < 60 && ahrs.getYaw() > -60){
-      return true;
-      }
-      else if(ahrs.getYaw() < 60 && ahrs.getYaw() > -60){
+
+    //returns true if the yaw is between the valid range
+    public boolean isYawValid(){
+      if(ahrs.getYaw() < maxAutoYaw && ahrs.getYaw() > -maxAutoYaw){
         return true;
       }
       else{
@@ -41,9 +42,8 @@ public  class IMU{
       }
     }
 
+  //gets all the yaw values
   public void getvalues(){
-    //AHRS.BoardYawAxis yaw_axis = ahrs.getBoardYawAxis();
-    
     x_acceleration = ahrs.getWorldLinearAccelX();
     y_acceleration = ahrs.getWorldLinearAccelY();
     z_acceleration = ahrs.getWorldLinearAccelZ();
@@ -54,7 +54,7 @@ public  class IMU{
    }
          
     /*the following are all the functions avalible*/
-    
+
     //SmartDashboard.putNumber("IMU_Yaw", ahrs.getYaw());
     //SmartDashboard.putNumber("IMU_Pitch", ahrs.getRoll());
     //SmartDashboard.putNumber("IMU_Roll", ahrs.getPitch());

@@ -91,6 +91,8 @@ public class DevilDifferential extends RobotDriveBase implements AutoCloseable {
   public static final double kDefaultQuickStopThreshold = 0.2;
   public static final double kDefaultQuickStopAlpha = 0.1;
 
+  //sets the conrol type
+  public ControlType controlType = ControlType.kVelocity;
   //private static int instances;
 
   private final CANPIDController m_leftMotor;
@@ -108,6 +110,7 @@ public class DevilDifferential extends RobotDriveBase implements AutoCloseable {
    * <p>To pass multiple motors per side, use a {@link SpeedControllerGroup}. If a motor needs to be
    * inverted, do so before passing it in.
    */
+
   public DevilDifferential(CANPIDController leftMotor, CANPIDController rightMotor) {
     verify(leftMotor, rightMotor);
     m_leftMotor = leftMotor;
@@ -213,8 +216,8 @@ public class DevilDifferential extends RobotDriveBase implements AutoCloseable {
 
     double maxOutput = m_maxOutput * m_rightSideInvertMultiplier;
     //System.out.println(MathUtil.clamp(leftMotorOutput, -1.0, 1.0) * m_maxOutput+ " "+ MathUtil.clamp(rightMotorOutput, -1.0, 1.0) * maxOutput);
-    m_leftMotor.setReference(MathUtil.clamp(leftMotorOutput, -1.0, 1.0) * m_maxOutput,ControlType.kVelocity);
-    m_rightMotor.setReference(MathUtil.clamp(rightMotorOutput, -1.0, 1.0) * maxOutput,ControlType.kVelocity);
+    m_leftMotor.setReference(MathUtil.clamp(leftMotorOutput, -1.0, 1.0) * m_maxOutput,controlType);
+    m_rightMotor.setReference(MathUtil.clamp(rightMotorOutput, -1.0, 1.0) * maxOutput,controlType);
 
     feed();
   }
@@ -297,8 +300,8 @@ public class DevilDifferential extends RobotDriveBase implements AutoCloseable {
       rightMotorOutput /= maxMagnitude;
     }
 
-    m_leftMotor.setReference(leftMotorOutput * m_maxOutput, ControlType.kVelocity);
-    m_rightMotor.setReference(rightMotorOutput * m_maxOutput * m_rightSideInvertMultiplier, ControlType.kVelocity);
+    m_leftMotor.setReference(leftMotorOutput * m_maxOutput, controlType);
+    m_rightMotor.setReference(rightMotorOutput * m_maxOutput * m_rightSideInvertMultiplier, controlType);
 
     feed();
   }
@@ -345,8 +348,8 @@ public class DevilDifferential extends RobotDriveBase implements AutoCloseable {
       rightSpeed = Math.copySign(rightSpeed * rightSpeed, rightSpeed);
     }
 
-    m_leftMotor.setReference(leftSpeed * m_maxOutput, ControlType.kVelocity);
-    m_rightMotor.setReference(rightSpeed * m_maxOutput * m_rightSideInvertMultiplier, ControlType.kVelocity);
+    m_leftMotor.setReference(leftSpeed * m_maxOutput, controlType);
+    m_rightMotor.setReference(rightSpeed * m_maxOutput * m_rightSideInvertMultiplier, controlType);
 
     feed();
   }
@@ -402,8 +405,8 @@ public class DevilDifferential extends RobotDriveBase implements AutoCloseable {
 
   @Override
   public void stopMotor() {
-    m_leftMotor.setReference(0,ControlType.kVelocity);
-    m_rightMotor.setReference(0,ControlType.kVelocity);
+    m_leftMotor.setReference(0,controlType);
+    m_rightMotor.setReference(0,controlType);
     feed();
   }
 

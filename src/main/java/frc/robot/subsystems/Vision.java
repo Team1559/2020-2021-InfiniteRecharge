@@ -6,6 +6,7 @@ import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.PowerCell;
 import frc.robot.components.IMU;
 import frc.robot.components.DistSensor;
+import com.revrobotics.ControlType;
 
 public class Vision{
     //Objects
@@ -35,6 +36,7 @@ public class Vision{
     }
 
     public void go(){ //we should look into adding a pathfinding algorithem to allow for a more efficiant approach, currently this is example code from the lielight website, the code was written for C++ and was hopefully converted to java.   
+        Drivetrain.setControltype(ControlType.kPosition); 
         distance = distSensor.getRange();
         yaw = imu.yaw;
         tx = limeLight.getTx(); //the target xValue

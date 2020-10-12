@@ -165,8 +165,20 @@ public class Chassis{
         driveTrain.setExpiration(2.0);
     }
 
+    public void setControltype(ControlType controlTypE){
+        driveTrain.controlType = controlTypE;
+    }
+
+    public void setKF(double kF){
+        sparkMax1PID.setFF(kF);
+        sparkMax2PID.setFF(kF);
+        sparkMax3PID.setFF(kF);
+        sparkMax4PID.setFF(kF);
+    }
+
     public void DriveSystem(Joystick drive)
     {   
+       setControltype(ControlType.kVelocity);
        
         if(oi.pilot.getRawButton(Buttons.X)){
             inputSpeed = 0.5;

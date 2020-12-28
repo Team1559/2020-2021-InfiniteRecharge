@@ -1,0 +1,11 @@
+[
+  {
+    "name": "2020-InfiniteRecharge (in project 2020-InfiniteRecharge)",
+    "file": "C:\\Users\\FIRST1559\\Documents\\GitHub\\2020-InfiniteRecharge\\2020-InfiniteRecharge\\build\\libs\\2020-InfiniteRecharge.jar",
+    "extensions": [
+      "C:\\Users\\FIRST1559\\Documents\\GitHub\\2020-InfiniteRecharge\\2020-InfiniteRecharge\\build\\tmp\\expandedArchives\\halsim_gui-2020.1.2-windowsx86-64.zip_0ded91afab576f356c80ba4c4e7b8310\\windows\\x86-64\\shared\\halsim_gui.dll"
+    ],
+    "librarydir": "C:\\Users\\FIRST1559\\Documents\\GitHub\\2020-InfiniteRecharge\\2020-InfiniteRecharge\\build\\tmp\\jniExtractDir",
+    "mainclass": "frc.robot.Main"
+  }
+]

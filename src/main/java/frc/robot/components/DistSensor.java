@@ -17,17 +17,12 @@ public class DistSensor
     }
     
     public double getRange(){
-
         /* Analog Sensor Testing */ 
-
-		//int raw = analogInput.getValue();
 		double volts = analogInput.getVoltage();
+		//int raw = analogInput.getValue();
 		//int averageRaw = analogInput.getAverageValue();
 		//double averageVolts = analogInput.getAverageVoltage();
-	
-
 		double IRdistance = (distanceOffset * Math.pow(volts, -1.5549))-16;
-
         return IRdistance;
     }
     public boolean isRangeZero(){

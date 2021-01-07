@@ -20,7 +20,6 @@ public class MotionProfiling extends TrapezoidProfileSubsystem {
 
     public MotionProfiling() {
         super(new TrapezoidProfile.Constraints(maxVelocity,maxAccelaration));
-
     }
 
     @Override

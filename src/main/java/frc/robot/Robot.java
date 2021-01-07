@@ -17,6 +17,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.AdvancedAuto;
 import frc.robot.subsystems.BasicAuto;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.VisionAuto;
 import frc.robot.components.CompressorControl;
 import frc.robot.components.Limelight;
 import frc.robot.components.MotionProfiling;
@@ -27,8 +28,8 @@ import frc.robot.Logging;
 public class Robot extends TimedRobot{
 
   // feature flags booleans
-  private boolean doAdvancedAuto = true;//change this to false for basic auto
-
+  private String autoSelector = "advanced";//change this "basic" for basic auto, "advanced" for advanced auto, "vision" for vision auto, and "none" for no auto
+  //                                                      -----                   --------                      ------                        ----
   private boolean loggingEnable = true;
   private boolean loggingInitialized = false;
   
@@ -58,6 +59,9 @@ public class Robot extends TimedRobot{
 
   private boolean visionEnable = true;
   private boolean visionInitialized = false;
+  
+  private boolean visionAutoEnable = true;
+  private boolean visionAutoInitialized = false;
 
   //constructors
   private Logging logging = new Logging();
@@ -76,6 +80,7 @@ public class Robot extends TimedRobot{
   public DistSensor distSensor = new DistSensor();
   private AdvancedAuto advancedAuto = new AdvancedAuto();
   private BasicAuto basicAuto = new BasicAuto();
+  private VisionAuto visionAuto = new VisionAuto();
   private MotionProfiling motionProfiling = new MotionProfiling();
   
   @Override
@@ -94,13 +99,21 @@ public class Robot extends TimedRobot{
   public void autonomousInit()
   {
     //sets the feautre flag boolean for advanced auto
-    if(doAdvancedAuto){
+    if(autoSelector == "vision"){
+      visionEnable = true;
+      basicAutoEnable = false;
+      advancedAutoEnable = false;
+    }
+    //sets the feautre flag boolean for advanced auto
+    else if(autoSelector =="advanced"){
+      visionEnable = false;
       basicAutoEnable = false;
       advancedAutoEnable = true;
     }
 
     //sets the feautre flag boolean for basic auto
-    else{
+    else if(autoSelector == "basic"){
+      visionEnable = false;
       basicAutoEnable = true;
       advancedAutoEnable = false;
     }
@@ -122,14 +135,19 @@ public class Robot extends TimedRobot{
       logging.printLogs();
       logging.smartDashboardLogs();
     }
+    
+    //vision auto
+    if(autoSelector == "vision"){
+      visionAuto.AutoPeriodic(driveTrain, powerCell);
+    }
 
     //advanced auto
-    if(doAdvancedAuto == true && imu.isYawValid()){
+    else if(autoSelector == "advanced" && imu.isYawValid()){
       advancedAuto.AutoPeriodic(driveTrain, powerCell);
     }
 
     //basic auto
-    else if(imu.isYawValid()){
+    else if(autoSelector == "basic" && imu.isYawValid()){
       basicAuto.AutoPeriodic(driveTrain, powerCell);
     }
 
@@ -290,6 +308,10 @@ public class Robot extends TimedRobot{
       vision.init(imu, driveTrain, limeLight, distSensor, powerCell);
       motionProfiling.init(driveTrain);
       visionInitialized = true;
+    }
+    if(visionAutoEnable && visionAutoInitialized == false && visionEnable && visionInitialized == true){
+      visionAuto.AutoInit(driveTrain,imu, powerCell, vision);
+      visionAutoInitialized = true;
     }
     
     //logging

@@ -308,7 +308,7 @@ public class Robot extends TimedRobot{
     if(visionEnable && visionInitialized == false){
       limeLight.init();
       distSensor.init(ai);
-      vision.init(imu, driveTrain, limeLight, distSensor, powerCell);
+      vision.init(imu, driveTrain, limeLight, distSensor);
       motionProfiling.init(driveTrain);
       visionInitialized = true;
     }

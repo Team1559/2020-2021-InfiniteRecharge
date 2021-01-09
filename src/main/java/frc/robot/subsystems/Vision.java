@@ -10,7 +10,6 @@ import com.revrobotics.ControlType;
 
 public class Vision{
     //Objects
-    private PowerCell powerCell;
     private Limelight limeLight;
     private IMU imu;
     private Chassis Drivetrain;
@@ -29,12 +28,11 @@ public class Vision{
     public int timer = 0;
     
 
-    public void init(IMU inertialMessurmentUnit, Chassis ChassiS, Limelight limelighT, DistSensor distSensoR, PowerCell powercelL){
+    public void init(IMU inertialMessurmentUnit, Chassis ChassiS, Limelight limelighT, DistSensor distSensoR){
         imu = inertialMessurmentUnit;
         Drivetrain = ChassiS;
         limeLight = limelighT;
         distSensor = distSensoR;
-        powerCell = powercelL;
     }
     public double getDistance(){
         if(limeLight.getDistance()>=distSensor.distSensorMaxDist){

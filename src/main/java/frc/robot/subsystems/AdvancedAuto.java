@@ -57,10 +57,12 @@ public class AdvancedAuto {
                 state = State.Forward1;
             }
             break;
+
         case Adjust:
             timer = 0;
             state = State.Forward1;
             break;
+            
         case Forward1:
             powerCell.lowerGatherer();
             powerCell.startStorage();
@@ -120,7 +122,7 @@ public class AdvancedAuto {
             }
         }
         else{
-            state=State.Stop;
+            state = State.Stop;
         }
         break;
 

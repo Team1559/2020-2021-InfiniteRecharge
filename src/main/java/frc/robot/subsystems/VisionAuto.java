@@ -64,10 +64,12 @@ public class VisionAuto {
                 state = State.Forward1;
             }
             break;
+            
         case Adjust:
             timer = 0;
             state = State.Forward1;
             break;
+
         case Forward1:
             powerCell.lowerGatherer();
             powerCell.startStorage();
@@ -127,7 +129,7 @@ public class VisionAuto {
                 }
             }
             else{
-                state=State.Stop;
+                state = State.Stop;
             }
             break;
 

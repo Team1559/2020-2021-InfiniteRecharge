@@ -23,4 +23,7 @@ public class Limelight{
         double ty = targetY.getDouble(0);
         return ty;
     }
+    public double getDistance(){
+      return getTy();// this will need to change IMMEDIATLY 
+    }
 }

@@ -19,9 +19,8 @@ public class AdvancedAuto {
     private double reverse1 = 150;
     private double reverse2 = 0;
     private double driveSpeed = .9;
-    //private double turn = 22;
+    private boolean doReverse = true;
     private IMU imu;
-    //private double kP = 5;
 
     
 
@@ -35,14 +34,11 @@ public class AdvancedAuto {
     }
 
     public void AutoPeriodic(Chassis driveTrain, PowerCell powerCell) {
-
         timer++;
-        // System.out.println("Time: " + timer);
         Pose2d odometry = driveTrain.updateOdometry();
         switch (state) {
         case Wait:
             powerCell.lowerGatherer();
-            // System.out.println("We're waiting");
             powerCell.store();
 
             if (timer / 50.0 >= initialWait) {
@@ -54,9 +50,6 @@ public class AdvancedAuto {
         case Reverse1:
             powerCell.lowerGatherer();
             powerCell.startStorage();
-
-            // System.out.println("Sucking the balls");
-            // System.out.println(driveTrain.distance());
             driveTrain.move(driveSpeed, 0);
 
             if (driveTrain.distance() >= reverse1 || timer / 50.0 >= 4) {
@@ -65,18 +58,8 @@ public class AdvancedAuto {
             }
             break;
         case Adjust:
-            // System.out.println("Yaw" + imu.getYaw());
-            // if (timer <= 100) {
-            // driveTrain.move(0, 0);
-            // } else {
-            // if (imu.getYaw() >= -1) {
-            // driveTrain.move(0, .1);
-            // } else {
             timer = 0;
             state = State.Forward1;
-            // }
-            // }
-
             break;
         case Forward1:
             powerCell.lowerGatherer();
@@ -85,8 +68,6 @@ public class AdvancedAuto {
             {
                 powerCell.stopIntake();
             }
-            // System.out.println("Forward one");
-            // System.out.println(imu.y_angularVelocity);
             driveTrain.move(-driveSpeed, 0.085); // 0.03
             if (odometry.getTranslation().getX() <= -forward1 || timer / 50.0 >= 4.5) { // 4.5
                 timer = 0;
@@ -95,30 +76,15 @@ public class AdvancedAuto {
             break;
 
         case Turn:
-            // driveTrain.move(0, .1);
-            // powerCell.store();
-            // System.out.println(imu.getYaw());
-            // if (imu.getYaw() <= -turn) {
             timer = 0;
             state = State.Forward2;
-            // }
-            // else if(imu.getYaw() > 10){//We're in trouble, direction is way off
-            // timer = 0;
-            // state = State.Stop;
-            // }
-            // else if(timer / 50.0 >= 3){
-            // timer = 0;
-            // state = State.Stop;
-            // }
             break;
 
         case Forward2:
             powerCell.lowerGatherer();
             powerCell.store();
-            // System.out.println("Driving to Goal");
             driveTrain.move(-driveSpeed / 2.0, -0.06);
             powerCell.startShooter();
-            // powerCell.stopIntake();
             if (driveTrain.distance() <= -forward2 || timer / 50.0 >= 2.5) { // 2.25
                 timer = 0;
                 state = State.Shoot;
@@ -130,7 +96,6 @@ public class AdvancedAuto {
             if (Math.abs(imu.yaw) >= 60) {
                 state = State.Stop;
             } else {
-                // System.out.println("It's Shootin Time");
                 driveTrain.move(0, 0);
                 powerCell.startStorage();
                 powerCell.startIntake();
@@ -145,7 +110,7 @@ public class AdvancedAuto {
             break;
 
         case Reverse2:
-            // System.out.println("Moving Back");
+        if(doReverse){
             powerCell.raiseGatherer();
             driveTrain.move(driveSpeed, 0);
             if (odometry.getTranslation().getX() >= reverse2 || timer / 50.0 >= 0.0) {
@@ -153,10 +118,13 @@ public class AdvancedAuto {
                 state = State.Stop;
 
             }
-            break;
+        }
+        else{
+            state=State.Stop;
+        }
+        break;
 
         case Stop:
-            // System.out.println("It's Stopped");
             powerCell.raiseGatherer();
             powerCell.stopWithoutButton();
             driveTrain.move(0, 0);

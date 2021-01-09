@@ -83,6 +83,8 @@ public class Robot extends TimedRobot{
   private VisionAuto visionAuto = new VisionAuto();
   private MotionProfiling motionProfiling = new MotionProfiling();
   
+  private double targetDistance = 3;
+
   @Override
   public void robotInit() {
      camera1.init();
@@ -210,7 +212,7 @@ public class Robot extends TimedRobot{
 
     //Vision code
     if(colorEnable && colorInitialized && oi.copilot.getRawButton(Buttons.autoButton) && imu.isYawValid()){
-      vision.go();
+      vision.driveToTarget(targetDistance);
     }
 
     //Chassis code

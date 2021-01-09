@@ -10,7 +10,7 @@ public class DistSensor
 
     private AnalogInput analogInput; 
     private double distanceOffset = 24.031;
-
+    public double distSensorMaxDist = 3;
     public void init(AnalogInput ai)
     {
         analogInput = ai; 

@@ -13,7 +13,6 @@ public class VisionAuto {
 
     private State state = State.Wait;
     private int timer = 0;
-
     private double initialWait = 0;
     private double forward1 = 2.438;
     private double forward2 = 9999999;
@@ -64,7 +63,7 @@ public class VisionAuto {
                 state = State.Forward1;
             }
             break;
-            
+
         case Adjust:
             timer = 0;
             state = State.Forward1;

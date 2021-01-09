@@ -84,6 +84,7 @@ public class Robot extends TimedRobot{
   private MotionProfiling motionProfiling = new MotionProfiling();
   
   private double targetDistance = 3;
+  private boolean doReverse = true;
 
   @Override
   public void robotInit() {
@@ -140,17 +141,17 @@ public class Robot extends TimedRobot{
     
     //vision auto
     if(autoSelector == "vision"){
-      visionAuto.AutoPeriodic(driveTrain, powerCell);
+      visionAuto.AutoPeriodic(driveTrain, powerCell, doReverse);
     }
 
     //advanced auto
     else if(autoSelector == "advanced" && imu.isYawValid()){
-      advancedAuto.AutoPeriodic(driveTrain, powerCell);
+      advancedAuto.AutoPeriodic(driveTrain, powerCell, doReverse);
     }
 
     //basic auto
     else if(autoSelector == "basic" && imu.isYawValid()){
-      basicAuto.AutoPeriodic(driveTrain, powerCell);
+      basicAuto.AutoPeriodic(driveTrain, powerCell, doReverse);
     }
 
     //stop the drivetrain

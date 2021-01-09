@@ -25,7 +25,7 @@ public class BasicAuto{
         state = State.Wait;
     }
 
-    public void AutoPeriodic(Chassis driveTrain, PowerCell powerCell) {
+    public void AutoPeriodic(Chassis driveTrain, PowerCell powerCell, boolean doReverse) {
         
         timer++;
         //System.out.println("Time: " + timer);
@@ -65,12 +65,17 @@ public class BasicAuto{
 
         case Move:
             //System.out.println("Moving Back");
-            driveTrain.move(driveSpeed, 0);
-            if (odometry.getTranslation().getX() >= driveBackward || timer/50.0 >= 4.5) {
-                timer = 0;
-                state = State.Stop;
-                
-            }
+            if(doReverse){
+                driveTrain.move(driveSpeed, 0);
+                if (odometry.getTranslation().getX() >= driveBackward || timer/50.0 >= 4.5) {
+                    timer = 0;
+                    state = State.Stop;
+                    
+                }
+            }   
+        else{
+            state = State.Stop;
+        } 
             break;
         case Stop:
             //System.out.println("It's Stopped");

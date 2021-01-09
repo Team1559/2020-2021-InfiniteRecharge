@@ -23,7 +23,6 @@ public class VisionAuto {
     private IMU imu;
     private Vision vision;
     private double targetDistance = 5;
-    private boolean doReverse = true;
     //private double kP = 5;
 
     
@@ -38,7 +37,7 @@ public class VisionAuto {
         driveTrain.setRampRate(1);
     }
 
-    public void AutoPeriodic(Chassis driveTrain, PowerCell powerCell) {
+    public void AutoPeriodic(Chassis driveTrain, PowerCell powerCell, boolean doReverse) {
 
         timer++;
         Pose2d odometry = driveTrain.updateOdometry();
@@ -101,7 +100,7 @@ public class VisionAuto {
 
         case Shoot:
             powerCell.lowerGatherer();
-            if (Math.abs(imu.yaw) >= 60) {
+            if (imu.isYawValid() == false) {
                 state = State.Stop;
             } else {
                 driveTrain.move(0, 0);

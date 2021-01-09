@@ -11,12 +11,15 @@ import frc.robot.subsystems.Vision;
 import frc.robot.components.CompressorControl;
 import frc.robot.components.Limelight;
 import frc.robot.components.DistSensor;
+import frc.robot.subsystems.VisionAuto;
+import frc.robot.components.MotionProfiling;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Logging{
     private Vision vision;
     private IMU imu;
     private CompressorControl compressorControl;
+    private VisionAuto visionAuto;
     private Chassis driveTrain;
     private Limelight limeLight;
     private DistSensor distSensor;
@@ -25,6 +28,7 @@ public class Logging{
     private Spinner spinner;
     private AdvancedAuto advancedAuto;
     private BasicAuto basicAuto;
+    private MotionProfiling motionProfiling;
     
     //Booleans
     private boolean printVisionlogs = true;
@@ -32,7 +36,7 @@ public class Logging{
     private boolean printImuLogs = false;
     private boolean smartDashboardImuLogs = true;
 
-    public void init(Vision visioN, IMU Imu, Chassis DriveTrain, Limelight limeLighT, DistSensor distSensoR,PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO){
+    public void init(Vision visioN, IMU Imu, Chassis DriveTrain, Limelight limeLighT, DistSensor distSensoR,PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO, VisionAuto visionAutO, MotionProfiling motionProfilinG){
         vision = visioN;
         imu = Imu;
         driveTrain = DriveTrain;
@@ -44,7 +48,8 @@ public class Logging{
         compressorControl = compressorControL;
         advancedAuto = advancedAutO;
         basicAuto = basicAutO;
-   
+        visionAuto = visionAutO;   
+        motionProfiling = motionProfilinG;
     }
     public void printLogs(){
         if(printVisionlogs){

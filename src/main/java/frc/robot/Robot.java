@@ -319,7 +319,7 @@ public class Robot extends TimedRobot{
     
     //logging
     if(loggingEnable && loggingInitialized == false){
-      logging.init(vision, imu, driveTrain, limeLight, distSensor, powerCell, climber, spinner, compressorControl, advancedAuto, basicAuto);
+      logging.init(vision, imu, driveTrain, limeLight, distSensor, powerCell, climber, spinner, compressorControl, advancedAuto, basicAuto, visionAuto, motionProfiling);
       loggingInitialized = true;
     }
   }

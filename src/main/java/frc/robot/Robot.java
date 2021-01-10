@@ -26,41 +26,37 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import frc.robot.Logging;
 
 public class Robot extends TimedRobot{
-
+//these are changable
+  private double targetDistance = 3;// distance in inches
+  private boolean doReverse = true;
+  private String autoSelector = "advanced"; //in order to switch auto modes change what is in the quotes "basic" for basic auto, "advanced" for advanced auto, "vision" for vision auto, and "none" for no auto
+  //                                                                                                      -----                   --------                      ------                        ----
+   
   // feature flags booleans
-  private String autoSelector = "advanced";//change this "basic" for basic auto, "advanced" for advanced auto, "vision" for vision auto, and "none" for no auto
-  //                                                      -----                   --------                      ------                        ----
+  //change these to disable unused subsystems.
   private boolean loggingEnable = true;
-  private boolean loggingInitialized = false;
-  
   private boolean chassisEnable = true;
-  private boolean chassisInitialized = false;
-
   private boolean ImuEnable = true;
-  private boolean ImuInitialized = false;
-
   private boolean climberEnable = true;
-  private boolean climberInitialized = false;
-
   private boolean compressorEnable = true;
-  private boolean compressorInitialized = false;
-  
   private boolean colorEnable = true;
-  private boolean colorInitialized = false;
-  
   private boolean advancedAutoEnable = false;
-  private boolean advancedAutoInitialized = false;
-
   private boolean basicAutoEnable = false;
-  private boolean basicAutoInitialize = false;
-
   private boolean powerCellEnable = true;
-  private boolean powerCellInitialized = false;
-
   private boolean visionEnable = true;
-  private boolean visionInitialized = false;
-  
   private boolean visionAutoEnable = true;
+
+  //DON'T TOUCH THESE, they are used to determine if the specifies subsystem has been initialised as to not call it's init method more than once, causiing errors.
+  private boolean loggingInitialized = false;
+  private boolean chassisInitialized = false;
+  private boolean ImuInitialized = false;
+  private boolean climberInitialized = false;
+  private boolean compressorInitialized = false;
+  private boolean colorInitialized = false;
+  private boolean advancedAutoInitialized = false;
+  private boolean basicAutoInitialize = false;
+  private boolean powerCellInitialized = false;
+  private boolean visionInitialized = false;
   private boolean visionAutoInitialized = false;
 
   //constructors
@@ -83,8 +79,7 @@ public class Robot extends TimedRobot{
   private VisionAuto visionAuto = new VisionAuto();
   private MotionProfiling motionProfiling = new MotionProfiling();
   
-  private double targetDistance = 3;
-  private boolean doReverse = true;
+
 
   @Override
   public void robotInit() {

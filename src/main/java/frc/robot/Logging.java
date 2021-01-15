@@ -31,10 +31,10 @@ public class Logging{
     private MotionProfiling motionProfiling;
     
     //Booleans
-    private boolean printVisionlogs = true;
-    private boolean printCompressorLogs = true;
+    private boolean printVisionlogs = false;
+    private boolean printCompressorLogs = false;
     private boolean printImuLogs = false;
-    private boolean smartDashboardImuLogs = true;
+    private boolean smartDashboardImuLogs = false;
 
     public void init(Vision visioN, IMU Imu, Chassis DriveTrain, Limelight limeLighT, DistSensor distSensoR,PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO, VisionAuto visionAutO, MotionProfiling motionProfilinG){
         vision = visioN;

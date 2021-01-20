@@ -32,7 +32,8 @@ public class Chassis{
     private CANPIDController sparkMax3PID;
     private CANSparkMax sparkMax4;
     private CANPIDController sparkMax4PID;
-    private double inputSpeed = 1;
+    private double forwardInputSpeed = 1;
+    private double turningInputSpeed = 0.75;
     public double robotSpeed = 0;
     private Vision vision;
     
@@ -186,7 +187,8 @@ public class Chassis{
             timer++;
         }
         if(oi.pilot.getRawButton(Buttons.X)){
-            inputSpeed = 0.25;
+            forwardInputSpeed = 0.25;
+            turningInputSpeed = 0.25;
             leftVelocity = lEncoder.getVelocity();
             rightVelocity = -(rEncoder.getVelocity());
             //System.out.println("R: " + rightVelocity + " " + "L: " + leftVelocity);
@@ -198,7 +200,8 @@ public class Chassis{
             }
         }
         else{
-            inputSpeed = 1;
+            turningInputSpeed = 0.75;
+            forwardInputSpeed = 1;
             highGear = true;
             setRampRate(rampRate);
             gearShift();
@@ -214,8 +217,8 @@ public class Chassis{
             //Axis 0 for left joystick left to right
             //Axis 2 for left Trigger
             //Axis 3 for right Trigger
-            forwardSpeed = -oi.pilot.getRawAxis(Buttons.leftJoystick_y) * inputSpeed;
-            sideSpeed = -oi.pilot.getRawAxis(Buttons.rightJoystick_x) *inputSpeed;
+            forwardSpeed = -oi.pilot.getRawAxis(Buttons.leftJoystick_y) * forwardInputSpeed;
+            sideSpeed = -oi.pilot.getRawAxis(Buttons.rightJoystick_x) *turningInputSpeed;
             if(Math.abs(forwardSpeed) <= deadband)
 
             {

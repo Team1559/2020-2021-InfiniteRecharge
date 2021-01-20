@@ -56,7 +56,6 @@ public class Chassis{
     private double kF = 0.00018; //0.000125
     private double deadband = 0.01;
     private double forwardSpeed = 0;
-    private double backwardSpeed = 0;
     private double sideSpeed = 0;
     private double currentRampRate = 0;
     private boolean highGear = false;
@@ -187,7 +186,7 @@ public class Chassis{
             timer++;
         }
         if(oi.pilot.getRawButton(Buttons.X)){
-            inputSpeed = 0.5;
+            inputSpeed = 0.25;
             leftVelocity = lEncoder.getVelocity();
             rightVelocity = -(rEncoder.getVelocity());
             //System.out.println("R: " + rightVelocity + " " + "L: " + leftVelocity);
@@ -215,27 +214,23 @@ public class Chassis{
             //Axis 0 for left joystick left to right
             //Axis 2 for left Trigger
             //Axis 3 for right Trigger
-            forwardSpeed = oi.pilot.getRawAxis(Buttons.rightTrigger) * inputSpeed;
-            backwardSpeed = oi.pilot.getRawAxis(Buttons.leftTrigger) * inputSpeed;
-            sideSpeed = -oi.getPilotX() *inputSpeed;
-            if(forwardSpeed <= deadband)
+            forwardSpeed = -oi.pilot.getRawAxis(Buttons.leftJoystick_y) * inputSpeed;
+            sideSpeed = -oi.pilot.getRawAxis(Buttons.rightJoystick_x) *inputSpeed;
+            if(Math.abs(forwardSpeed) <= deadband)
+
             {
                 forwardSpeed = 0;
-            }
-            if(backwardSpeed <= deadband)
-            {
-                backwardSpeed = 0;
             }
             if(sideSpeed >= -deadband && sideSpeed <= deadband)
             {
                 sideSpeed = 0;
             }
-            driveTrain.arcadeDrive(forwardSpeed-backwardSpeed, sideSpeed, isSquaredInputs);
+            driveTrain.arcadeDrive(forwardSpeed, sideSpeed, isSquaredInputs);
     }
 
 
     public void gearShift(){
-        if(oi.pilot.getRawAxis(Buttons.rightJoystick_y) >= 0.5) {
+        if(oi.pilot.getRawAxis(Buttons.right_Bumper) >= 0.5) {
             highGear = true;
         }
         else{

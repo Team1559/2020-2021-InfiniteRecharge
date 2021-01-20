@@ -83,8 +83,8 @@ public class Robot extends TimedRobot{
 
   @Override
   public void robotInit() {
-     camera1.init();
-     camera2.init();
+  camera1.init();
+  camera2.init();
   }
 
   @Override

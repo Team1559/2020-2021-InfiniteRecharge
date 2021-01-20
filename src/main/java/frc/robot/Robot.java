@@ -34,19 +34,19 @@ public class Robot extends TimedRobot{
    
   // feature flags booleans
   //change these to disable unused subsystems.
-  private boolean loggingEnable = true;
+  private boolean loggingEnable = false;
   private boolean chassisEnable = true;
   private boolean ImuEnable = true;
-  private boolean climberEnable = true;
+  private boolean climberEnable = false;
   private boolean compressorEnable = true;
   private boolean colorEnable = false;
-  private boolean advancedAutoEnable = false;
-  private boolean basicAutoEnable = false;
   private boolean powerCellEnable = true;
-  private boolean visionEnable = true;
-  private boolean visionAutoEnable = true;
+  private boolean visionEnable = false;  
 
   //DON'T TOUCH THESE, they are used to determine if the specifies subsystem has been initialised as to not call it's init method more than once, causiing errors.
+  private boolean visionAutoEnable = false;
+  private boolean advancedAutoEnable = false;
+  private boolean basicAutoEnable = false;
   private boolean loggingInitialized = false;
   private boolean chassisInitialized = false;
   private boolean ImuInitialized = false;

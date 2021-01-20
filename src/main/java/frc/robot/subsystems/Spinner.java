@@ -15,7 +15,7 @@ import com.revrobotics.ColorSensorV3;
 public class Spinner{
     private OperatorInterface oi;
     private final I2C.Port i2cPort = I2C.Port.kOnboard;
-    private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+    private ColorSensorV3 m_colorSensor; 
     // Variable for the motor
     private TalonSRX spinnerMotor;
     // Variable for a temporary placeholder for the color value, to compare with the
@@ -60,6 +60,7 @@ public class Spinner{
         spinnerLauncher = new Solenoid(Wiring.spinnerLauncher);
         oi = ointerface;
         spinnerOutput = 0.3;
+        m_colorSensor = new ColorSensorV3(i2cPort);
     }
 
     public void spin(boolean compressorEnable) {

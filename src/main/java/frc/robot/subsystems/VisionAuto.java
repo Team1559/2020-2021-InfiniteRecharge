@@ -23,6 +23,7 @@ public class VisionAuto {
     private IMU imu;
     private Vision vision;
     private double targetDistance = 5;
+    private int pathselector = 1;//0 is normanl advanced auto, barrel racing is one, slolums is 2, and bounce path is three
     //private double kP = 5;
 
     
@@ -38,105 +39,119 @@ public class VisionAuto {
     }
 
     public void AutoPeriodic(Chassis driveTrain, PowerCell powerCell, boolean doReverse) {
+        
+        if(pathselector == 0){
+            timer++;
+            Pose2d odometry = driveTrain.updateOdometry();
+            switch (state) {
+            case Wait:
+                powerCell.lowerGatherer();
+                powerCell.store();
 
-        timer++;
-        Pose2d odometry = driveTrain.updateOdometry();
-        switch (state) {
-        case Wait:
-            powerCell.lowerGatherer();
-            powerCell.store();
+                if (timer / 50.0 >= initialWait) {
+                    timer = 0;
+                    state = State.Reverse1;
+                }
+                break;
 
-            if (timer / 50.0 >= initialWait) {
-                timer = 0;
-                state = State.Reverse1;
-            }
-            break;
+            case Reverse1:
+                powerCell.lowerGatherer();
+                powerCell.startStorage();
+                driveTrain.move(driveSpeed, 0);
 
-        case Reverse1:
-            powerCell.lowerGatherer();
-            powerCell.startStorage();
-            driveTrain.move(driveSpeed, 0);
+                if (driveTrain.distance() >= reverse1 || timer / 50.0 >= 4) {
+                    timer = 0;
+                    state = State.Forward1;
+                }
+                break;
 
-            if (driveTrain.distance() >= reverse1 || timer / 50.0 >= 4) {
+            case Adjust:
                 timer = 0;
                 state = State.Forward1;
-            }
-            break;
+                break;
 
-        case Adjust:
-            timer = 0;
-            state = State.Forward1;
-            break;
+            case Forward1:
+                powerCell.lowerGatherer();
+                powerCell.startStorage();
+                if(timer / 50.0 >= 2.5)
+                {
+                    powerCell.stopIntake();
+                }
+                driveTrain.move(-driveSpeed, 0.085); // 0.03
+                if (odometry.getTranslation().getX() <= -forward1 || timer / 50.0 >= 4.5) { // 4.5
+                    timer = 0;
+                    state = State.Forward2;
+                }
+                break;
 
-        case Forward1:
-            powerCell.lowerGatherer();
-            powerCell.startStorage();
-            if(timer / 50.0 >= 2.5)
-            {
-                powerCell.stopIntake();
-            }
-            driveTrain.move(-driveSpeed, 0.085); // 0.03
-            if (odometry.getTranslation().getX() <= -forward1 || timer / 50.0 >= 4.5) { // 4.5
+            case Turn:
                 timer = 0;
                 state = State.Forward2;
-            }
-            break;
+                break;
 
-        case Turn:
-            timer = 0;
-            state = State.Forward2;
-            break;
-
-        case Forward2:
-            powerCell.lowerGatherer();
-            powerCell.store();
-            vision.driveToTarget(targetDistance);
-            powerCell.startShooter();
-            if (vision.getDistance() <= targetDistance || timer / 50.0 >= 2.5) { // 2.25
-                timer = 0;
-                state = State.Shoot;
-            }
-            break;
-
-        case Shoot:
-            powerCell.lowerGatherer();
-            if (imu.isYawValid() == false) {
-                state = State.Stop;
-            } else {
-                driveTrain.move(0, 0);
-                powerCell.startStorage();
-                powerCell.startIntake();
+            case Forward2:
+                powerCell.lowerGatherer();
+                powerCell.store();
+                vision.driveToTarget(targetDistance);
                 powerCell.startShooter();
-                powerCell.startFeeder();
-                if (timer / 50.0 >= 4.0){
+                if (vision.getDistance() <= targetDistance || timer / 50.0 >= 2.5) { // 2.25
                     timer = 0;
-                    state = State.Reverse2;
-                    powerCell.stopWithoutButton();
+                    state = State.Shoot;
                 }
-            }
-            break;
+                break;
 
-        case Reverse2:
-            if(doReverse){
-                powerCell.raiseGatherer();
-                driveTrain.move(driveSpeed, 0);
-                if (odometry.getTranslation().getX() >= reverse2 || timer / 50.0 >= 0.0) {
-                    timer = 0;
+            case Shoot:
+                powerCell.lowerGatherer();
+                if (imu.isYawValid() == false) {
                     state = State.Stop;
-
+                } else {
+                    driveTrain.move(0, 0);
+                    powerCell.startStorage();
+                    powerCell.startIntake();
+                    powerCell.startShooter();
+                    powerCell.startFeeder();
+                    if (timer / 50.0 >= 4.0){
+                        timer = 0;
+                        state = State.Reverse2;
+                        powerCell.stopWithoutButton();
+                    }
                 }
-            }
-            else{
-                state = State.Stop;
-            }
-            break;
+                break;
 
-        case Stop:
-            powerCell.raiseGatherer();
-            powerCell.stopWithoutButton();
-            driveTrain.move(0, 0);
-            driveTrain.setRampRate(0.6);
-            break;
+            case Reverse2:
+                if(doReverse){
+                    powerCell.raiseGatherer();
+                    driveTrain.move(driveSpeed, 0);
+                    if (odometry.getTranslation().getX() >= reverse2 || timer / 50.0 >= 0.0) {
+                        timer = 0;
+                        state = State.Stop;
+
+                    }
+                }
+                else{
+                    state = State.Stop;
+                }
+                break;
+
+            case Stop:
+                powerCell.raiseGatherer();
+                powerCell.stopWithoutButton();
+                driveTrain.move(0, 0);
+                driveTrain.setRampRate(0.6);
+                break;
+            }
         }
+        else if(pathselector ==1 ){
+
+
+        }
+        else if(pathselector == 2){
+
+
+        }
+        else if(pathselector == 3){
+
+
+        } 
     }
 }

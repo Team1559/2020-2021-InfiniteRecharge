@@ -27,11 +27,12 @@ import frc.robot.Logging;
 
 public class Robot extends TimedRobot{
 //these are changable
-  private int AutonavPathSelector = 0;//0 is normanl advanced auto, barrel racing is one, slolums is 2, and bounce path is 3
+  private int AutonavPathSelector = 0;//0 is normanl vision auto, barrel racing is one, slolums is 2, and bounce path is 3
   private double targetDistance = 3;// distance in inches
   private boolean doReverse = true;
-  private String autoSelector = "advanced"; //in order to switch auto modes change what is in the quotes "basic" for basic auto, "advanced" for advanced auto, "vision" for vision auto, and "none" for no auto
-  //                                                                                                      -----                   --------                      ------                        ----
+  private String autoSelector = "vision"; 
+  //in order to switch auto modes change what is in the quotes "basic" for basic auto, "advanced" for advanced auto, "vision" for vision auto, and "none" for no auto
+  //                                                            -----                   --------                      ------                        ----
    
   // feature flags booleans
   //change these to disable unused subsystems.

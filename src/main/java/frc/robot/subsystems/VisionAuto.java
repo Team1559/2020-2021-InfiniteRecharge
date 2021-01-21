@@ -23,7 +23,7 @@ public class VisionAuto {
     private IMU imu;
     private Vision vision;
     private double targetDistance = 5;
-    private int pathSelector = 1;//0 is normanl advanced auto, barrel racing is one, slolums is 2, and bounce path is three
+    private int pathSelector;//0 is normanl vision auto, barrel racing is one, slolums is 2, and bounce path is three
     //private double kP = 5;
 
     
@@ -142,8 +142,8 @@ public class VisionAuto {
                 break;
             }
         }
-        else if(pathSelector ==1 ){
-
+        else if(pathSelector == 1){
+            
 
         }
         else if(pathSelector == 2){

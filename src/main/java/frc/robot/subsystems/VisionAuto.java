@@ -18,17 +18,17 @@ public class VisionAuto {
     private double forward2 = 9999999;
     private double reverse1 = 150;
     private double reverse2 = 0;
-    private double driveSpeed = .9;
+    private double driveSpeed = 0.9;
     //private double turn = 22;
     private IMU imu;
     private Vision vision;
     private double targetDistance = 5;
-    private int pathselector = 1;//0 is normanl advanced auto, barrel racing is one, slolums is 2, and bounce path is three
+    private int pathSelector = 1;//0 is normanl advanced auto, barrel racing is one, slolums is 2, and bounce path is three
     //private double kP = 5;
 
     
 
-    public void AutoInit(Chassis driveTrain, IMU imU, PowerCell powerCell, Vision visioN) {
+    public void AutoInit(int pathSelectoR, Chassis driveTrain, IMU imU, PowerCell powerCell, Vision visioN) {
         imu = imU;
         vision = visioN;
         powerCell.startIntake();
@@ -36,11 +36,12 @@ public class VisionAuto {
         timer = 0;
         state = State.Wait;
         driveTrain.setRampRate(1);
+        pathSelector = pathSelectoR;
     }
 
     public void AutoPeriodic(Chassis driveTrain, PowerCell powerCell, boolean doReverse) {
         
-        if(pathselector == 0){
+        if(pathSelector == 0){
             timer++;
             Pose2d odometry = driveTrain.updateOdometry();
             switch (state) {
@@ -141,15 +142,15 @@ public class VisionAuto {
                 break;
             }
         }
-        else if(pathselector ==1 ){
+        else if(pathSelector ==1 ){
 
 
         }
-        else if(pathselector == 2){
+        else if(pathSelector == 2){
 
 
         }
-        else if(pathselector == 3){
+        else if(pathSelector == 3){
 
 
         } 

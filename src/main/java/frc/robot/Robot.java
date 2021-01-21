@@ -27,6 +27,7 @@ import frc.robot.Logging;
 
 public class Robot extends TimedRobot{
 //these are changable
+  private int AutonavPathSelector = 0;//0 is normanl advanced auto, barrel racing is one, slolums is 2, and bounce path is 3
   private double targetDistance = 3;// distance in inches
   private boolean doReverse = true;
   private String autoSelector = "advanced"; //in order to switch auto modes change what is in the quotes "basic" for basic auto, "advanced" for advanced auto, "vision" for vision auto, and "none" for no auto
@@ -308,7 +309,7 @@ public class Robot extends TimedRobot{
       visionInitialized = true;
     }
     if(visionAutoEnable && visionAutoInitialized == false && visionEnable && visionInitialized == true){
-      visionAuto.AutoInit(driveTrain,imu, powerCell, vision);
+      visionAuto.AutoInit(AutonavPathSelector,driveTrain,imu, powerCell, vision);
       visionAutoInitialized = true;
     }
     

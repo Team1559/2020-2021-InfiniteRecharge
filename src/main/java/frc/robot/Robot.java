@@ -27,7 +27,7 @@ import frc.robot.Logging;
 
 public class Robot extends TimedRobot{
 //these are changable
-  private int AutonavPathSelector = 0;//0 is normanl vision auto, barrel racing is one, slolums is 2, and bounce path is 3
+  private int AutoNavPathSelector = 0;//0 is normanl vision auto, barrel racing is one, slolums is 2, and bounce path is 3
   private double targetDistance = 3;// distance in inches
   private boolean doReverse = true;
   private String autoSelector = "vision"; 
@@ -310,7 +310,7 @@ public class Robot extends TimedRobot{
       visionInitialized = true;
     }
     if(visionAutoEnable && visionAutoInitialized == false && visionEnable && visionInitialized == true){
-      visionAuto.AutoInit(AutonavPathSelector,driveTrain,imu, powerCell, vision);
+      visionAuto.AutoInit(AutoNavPathSelector,driveTrain,imu, powerCell, vision);
       visionAutoInitialized = true;
     }
     

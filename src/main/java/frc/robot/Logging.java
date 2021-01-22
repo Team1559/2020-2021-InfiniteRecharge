@@ -30,10 +30,15 @@ public class Logging{
     private BasicAuto basicAuto;
     private MotionProfiling motionProfiling;
     
-    //Booleans
-    private boolean printVisionlogs = false;
+    //Master Booleans
+    private boolean printLogs = true; //master boolean disable to kill all print logs
+    private boolean smartDasboardLogs = false; //master boolean disable to kill all smart dashboard logs
+
+    //Class Booleans
+    private boolean printVisionLogs = false;
     private boolean printCompressorLogs = false;
     private boolean printImuLogs = false;
+    private boolean printVisionAutoLogs = true;
     private boolean smartDashboardImuLogs = false;
 
     public void init(Vision visioN, IMU Imu, Chassis DriveTrain, Limelight limeLighT, DistSensor distSensoR,PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO, VisionAuto visionAutO, MotionProfiling motionProfilinG){
@@ -52,7 +57,7 @@ public class Logging{
         motionProfiling = motionProfilinG;
     }
     public void printLogs(){
-        if(printVisionlogs){
+        if(printLogs && printVisionLogs){
             System.out.println("Vision Logs");
             System.out.println("left Side speed is " + vision.leftSide + "right side speed is "+ vision.rightSide);
             System.out.println("Tx is " + vision.tx);
@@ -60,21 +65,24 @@ public class Logging{
             System.out.println("Distance from a wall is" + vision.distance);
             System.out.println();
         }
-        if(printCompressorLogs){
+        if(printLogs && printCompressorLogs){
             System.out.println("Compressor Logs");
             System.out.println(compressorControl.isCompressorOn);
             System.out.println();
         }
-        if(printImuLogs){
+        if(printLogs && printImuLogs){
             System.out.println("IMU Logs");
             System.out.println("Yaw" + imu.yaw);
             System.out.println("Pitch" + imu.pitch);
             System.out.println("Roll" + imu.roll);
             System.out.println();
         }
+        if(printLogs && printVisionAutoLogs){
+            
+        }
     }
     public void smartDashboardLogs(){
-        if(smartDashboardImuLogs){
+        if(smartDasboardLogs && smartDashboardImuLogs){
             SmartDashboard.putNumber("Imu yaw", imu.yaw);
         }
     }

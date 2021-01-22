@@ -117,6 +117,11 @@ public class Robot extends TimedRobot{
       basicAutoEnable = true;
       advancedAutoEnable = false;
     }
+    else{
+      visionEnable = false;
+      basicAutoEnable = false;
+      advancedAutoEnable = false;
+    }
 
     //runs the initialize method
     initialize();

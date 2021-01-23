@@ -74,8 +74,8 @@ public class PowerCell{
         feederMotor = new TalonFX(Wiring.feederMotor);
         gatherer = new Solenoid(2);
         oi = operatorinterface;
+        
         // Intake Motor Config
-
         intakeMotor.set(ControlMode.PercentOutput, 0);
         intakeMotor.configClosedloopRamp(cLR, TIMEOUT);
         intakeMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);

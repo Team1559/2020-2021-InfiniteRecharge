@@ -33,7 +33,7 @@ public class Chassis{
     private CANSparkMax sparkMax4;
     private CANPIDController sparkMax4PID;
     private double forwardInputSpeed = 1;
-    private double turningInputSpeed = 0.75;
+    private double turningInputSpeed = 0.65;
     public double robotSpeed = 0;
     private Vision vision;
     

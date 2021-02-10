@@ -19,16 +19,16 @@ Download latest version [here](https://github.com/wpilibsuite/allwpilib/releases
 [Rev Robotics SparkMax Software ](http://www.revrobotics.com/sparkmax-software/#java-api)
 
 Download latest version [here](http://www.revrobotics.com/content/sw/max/sdk/SPARK-MAX-SDK-v1.5.4.zip.)
-* Unzip it to the desktop and then go to maven\com\revrobotics\frc and move the folders into the C:\Users\Public\wpilib\2020\maven\com\revrobotics\frc directory on windows.
-  then go into the vendordeps folder and copy the json file into the C:\Users\Public\wpilib\2020\vendordeps directory on windows. If it askes, select replace files in destination.
+* Unzip it to the desktop and then go to maven\com\revrobotics\frc and move the folders into the C:\Users\Public\wpilib\2021\maven\com\revrobotics\frc directory on windows.
+  then go into the vendordeps folder and copy the json file into the C:\Users\Public\wpilib\2021\vendordeps directory on windows. If it askes, select replace files in destination.
   
 [Rev Robotics Color Sensor Software](https://www.revrobotics.com/rev-31-1557/)
 
 
 
 Download latest version [here](http://revrobotics.com/content/sw/color-sensor-v3/sdk/Color-Sensor-V3-SDK-v1.2.0.zip)
-* Unzip it to the desktop and then go to maven\com\revrobotics\frc and move the folders into the C:\Users\Public\wpilib\2020\maven\com\revrobotics\frc directory on windows.
-  then go into the vendordeps folder and copy the json file into the C:\Users\Public\wpilib\2020\vendordeps directory on windows. If it askes, select replace files in destination.
+* Unzip it to the desktop and then go to maven\com\revrobotics\frc and move the folders into the C:\Users\Public\wpilib\2021\maven\com\revrobotics\frc directory on windows.
+  then go into the vendordeps folder and copy the json file into the C:\Users\Public\wpilib\2021\vendordeps directory on windows. If it askes, select replace files in destination.
 #### [CTRE Phoenix Software (for Talon SRX, Falcon 500, PDP, PCM, and the Pigeon IMU)](https://github.com/CrossTheRoadElec/Phoenix-Releases/releases)
 Download latest version [here](https://github.com/CrossTheRoadElec/Phoenix-Releases/releases/download/v5.19.4.1/CTRE_Phoenix_Framework_v5.19.4.1.exe)
 * Unzip to the destop and run the installer

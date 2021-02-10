@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import frc.robot.subsystems.Chassis;
 import frc.robot.components.IMU;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 
 
 public class AutoNav{

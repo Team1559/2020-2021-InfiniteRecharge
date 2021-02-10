@@ -6,22 +6,17 @@ import frc.robot.components.IMU;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.AdvancedAuto;
+import frc.robot.subsystems.AutoNav;
 import frc.robot.subsystems.BasicAuto;
-import frc.robot.subsystems.Vision;
 import frc.robot.components.CompressorControl;
-import frc.robot.components.Limelight;
-import frc.robot.components.DistSensor;
-import frc.robot.subsystems.VisionAuto;
+import frc.robot.subsystems.AutoNav;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Logging{
-    private Vision vision;
+    private AutoNav autoNav;
     private IMU imu;
     private CompressorControl compressorControl;
-    private VisionAuto visionAuto;
     private Chassis driveTrain;
-    private Limelight limeLight;
-    private DistSensor distSensor;
     private PowerCell powerCell;
     private Climber climber;
     private Spinner spinner;
@@ -39,29 +34,18 @@ public class Logging{
     private boolean printVisionAutoLogs = true;
     private boolean smartDashboardImuLogs = false;
 
-    public void init(Vision visioN, IMU Imu, Chassis DriveTrain, Limelight limeLighT, DistSensor distSensoR,PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO, VisionAuto visionAutO){
-        vision = visioN;
+    public void init(IMU Imu, Chassis DriveTrain, PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO, AutoNav autoNaV){
+        autoNav = autoNaV;
         imu = Imu;
         driveTrain = DriveTrain;
-        limeLight = limeLighT;
-        distSensor = distSensoR;
         powerCell = powerCelL;
         climber = climbeR;
         spinner = spinneR;
         compressorControl = compressorControL;
         advancedAuto = advancedAutO;
-        basicAuto = basicAutO;
-        visionAuto = visionAutO;   
+        basicAuto = basicAutO; 
     }
     public void printLogs(){
-        if(printLogs && printVisionLogs){
-            System.out.println("Vision Logs");
-            System.out.println("left Side speed is " + vision.leftSide + "right side speed is "+ vision.rightSide);
-            System.out.println("Tx is " + vision.tx);
-            System.out.println("sterring ajust is" + vision.steering_adjust);
-            System.out.println("Distance from a wall is" + vision.distance);
-            System.out.println();
-        }
         if(printLogs && printCompressorLogs){
             System.out.println("Compressor Logs");
             System.out.println(compressorControl.isCompressorOn);

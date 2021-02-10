@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
-import frc.robot.subsystems.Vision;
 
 public class Chassis{
 
@@ -35,7 +34,6 @@ public class Chassis{
     private double forwardInputSpeed = 1;
     private double turningInputSpeed = 0.65;
     public double robotSpeed = 0;
-    private Vision vision;
     
     
     private Solenoid gearShifter;
@@ -84,9 +82,8 @@ public class Chassis{
     private boolean isSquaredInputs = false;
 
     
-    public void Init(OperatorInterface oInterface, IMU Imu, Vision visioN){
+    public void Init(OperatorInterface oInterface, IMU Imu){
         imu = Imu;
-        vision = visioN;
         oi = oInterface;
         sparkMax1 = new CANSparkMax(11, MotorType.kBrushless); //ID 11
         sparkMax2 = new CANSparkMax(12, MotorType.kBrushless); //ID 12
@@ -182,7 +179,6 @@ public class Chassis{
     public void DriveSystem(Joystick drive)
     {   
         while(timer <1){
-            vision.timer = 0;
             setControltype(ControlType.kVelocity);
             timer++;
         }
@@ -246,14 +242,15 @@ public class Chassis{
 
     public void initOdometry()
     {
-        lEncoder.reset();
-        rEncoder.reset();
+        lEncoder.setPosition(0);
+        rEncoder.setPosition(0);
         imu.zeroYaw();
         Rotation2d yaw = new Rotation2d(imu.yaw);
         m_odometry = new DifferentialDriveOdometry(yaw);
         //Neccessary for advanced auto new Pose2d(0,0 new Rotation2d())
-        lEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-        rEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+        //lEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse); This don't exist                                                                       k
+        //rEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse); This doesn't exist                                                                      k
+        
     }
 
     public double R2M(double rotations){  //gear ratio: 15.2:1, wheel diameter 5.8in
@@ -279,16 +276,16 @@ public class Chassis{
         sparkMax2.setVoltage(-rightVolts);
         driveTrain.feed();
       }
-      public double getAverageEncoderDistance() {
-        return (lEncoder.getDistance() + rEncoder.getDistance()) / 2.0;
-      }
+    //   public double getAverageEncoderDistance() {
+    //     return (lEncoder.getDistance() + rEncoder.getDistance()) / 2.0; //This doesn't exist                                                                                            k
+    //   }
     
       /**
        * Gets the left drive encoder.
        *
        * @return the left drive encoder
        */
-      public Encoder getLeftEncoder() {
+      public CANEncoder getLeftEncoder() {
         return lEncoder;
       }
     
@@ -297,7 +294,7 @@ public class Chassis{
        *
        * @return the right drive encoder
        */
-      public Encoder getRightEncoder() {
+      public CANEncoder getRightEncoder() {
         return rEncoder;
       }
     
@@ -323,7 +320,7 @@ public class Chassis{
        * @return the robot's heading in degrees, from -180 to 180
        */
       public double getHeading() {
-        return imu.getYaw();
+        return imu.yaw;
       }
     
       /**
@@ -331,8 +328,7 @@ public class Chassis{
        *
        * @return The turn rate of the robot, in degrees per second
        */
-      public double getTurnRate() {
-        return -imu.getRate();
-      }
-    }
+    //   public double getTurnRate() {
+    //     return -imu.getRate(); //This doesn't exist                                                                                                                                              k
+    //   }
 }

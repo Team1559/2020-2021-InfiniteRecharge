@@ -15,13 +15,11 @@ import frc.robot.components.IMU;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.AdvancedAuto;
+import frc.robot.subsystems.AutoNav;
 import frc.robot.subsystems.BasicAuto;
-import frc.robot.subsystems.Vision;
-import frc.robot.subsystems.VisionAuto;
 import frc.robot.components.CompressorControl;
-import frc.robot.components.Limelight;
-import frc.robot.components.DistSensor;
 import edu.wpi.first.wpilibj.AnalogInput;
+import frc.robot.subsystems.AutoNav;
 import frc.robot.Logging;
 
 public class Robot extends TimedRobot{
@@ -29,8 +27,8 @@ public class Robot extends TimedRobot{
   private int AutoNavPathSelector = 0;//0 is normanl vision auto, barrel racing is one, slolums is 2, and bounce path is 3
   private double targetDistance = 3;// distance in inches
   private boolean doReverse = true;
-  private String autoSelector = "vision"; 
-  //in order to switch auto modes change what is in the quotes "basic" for basic auto, "advanced" for advanced auto, "vision" for vision auto, and "none" for no auto
+  private String autoSelector = "autoNav"; 
+  //in order to switch auto modes change what is in the quotes "basic" for basic auto, "advanced" for advanced auto, "autoNav" for vision auto, and "none" for no auto
   //                                                            -----                   --------                      ------                        ----
    
   // feature flags booleans
@@ -45,26 +43,18 @@ public class Robot extends TimedRobot{
   private boolean visionEnable = false;  
 
   //DON'T TOUCH THESE, they are used to determine if the specifies subsystem has been initialised as to not call it's init method more than once, causiing errors.
-  private boolean visionAutoEnable = false;
-  private boolean advancedAutoEnable = false;
-  private boolean basicAutoEnable = false;
   private boolean loggingInitialized = false;
   private boolean chassisInitialized = false;
   private boolean ImuInitialized = false;
   private boolean climberInitialized = false;
   private boolean compressorInitialized = false;
   private boolean colorInitialized = false;
-  private boolean advancedAutoInitialized = false;
-  private boolean basicAutoInitialize = false;
   private boolean powerCellInitialized = false;
-  private boolean visionInitialized = false;
-  private boolean visionAutoInitialized = false;
 
   //constructors
+  private AutoNav autoNav = new AutoNav();
   private Logging logging = new Logging();
   private AnalogInput ai = new AnalogInput(Wiring.distSensorPort);
-  public Limelight limeLight = new Limelight();
-  public Vision vision = new Vision();
   public Climber climber = new Climber();
   public PowerCell powerCell = new PowerCell();
   private CompressorControl compressorControl = new CompressorControl();
@@ -74,10 +64,9 @@ public class Robot extends TimedRobot{
   private IMU imu = new IMU();
   private Camera camera1 = new Camera(0);
   private Camera camera2 = new Camera(1);
-  public DistSensor distSensor = new DistSensor();
   private AdvancedAuto advancedAuto = new AdvancedAuto();
   private BasicAuto basicAuto = new BasicAuto();
-  private VisionAuto visionAuto = new VisionAuto();
+
   
 
 
@@ -97,28 +86,17 @@ public class Robot extends TimedRobot{
   public void autonomousInit()
   {
     //sets the feautre flag boolean for advanced auto
-    if(autoSelector == "vision"){
-      visionEnable = true;
-      basicAutoEnable = false;
-      advancedAutoEnable = false;
+    if(autoSelector == "autoNav"){
+      autoNav.AutoInit(driveTrain, imu);
     }
     //sets the feautre flag boolean for advanced auto
     else if(autoSelector =="advanced"){
-      visionEnable = false;
-      basicAutoEnable = false;
-      advancedAutoEnable = true;
+      advancedAuto.AutoInit(driveTrain, imu, powerCell);
     }
 
     //sets the feautre flag boolean for basic auto
     else if(autoSelector == "basic"){
-      visionEnable = false;
-      basicAutoEnable = true;
-      advancedAutoEnable = false;
-    }
-    else{
-      visionEnable = false;
-      basicAutoEnable = false;
-      advancedAutoEnable = false;
+      basicAuto.AutoInit(driveTrain);
     }
 
     //runs the initialize method
@@ -139,10 +117,10 @@ public class Robot extends TimedRobot{
       logging.smartDashboardLogs();
     }
     
-    //vision auto
-    if(autoSelector == "vision"){
-      visionAuto.AutoPeriodic(driveTrain, powerCell, doReverse);
-    }
+    //autoNav
+    // if(autoSelector == "autoNav"){
+    //   autoNav.AutoPeriodic(driveTrain, powerCell, doReverse);
+    // }
 
     //advanced auto
     else if(autoSelector == "advanced" && imu.isYawValid()){
@@ -211,11 +189,6 @@ public class Robot extends TimedRobot{
       spinner.spin(compressorEnable);
     }
 
-    //Vision code
-    if(colorEnable && colorInitialized && oi.copilot.getRawButton(Buttons.autoButton) && imu.isYawValid()){
-      vision.driveToTarget(targetDistance);
-    }
-
     //Chassis code
     else if(chassisEnable && chassisInitialized){    
       driveTrain.DriveSystem(oi.pilot);
@@ -256,18 +229,7 @@ public class Robot extends TimedRobot{
   
   public void initialize()
   {
-    //advanced auto
-    if(advancedAutoEnable && advancedAutoInitialized == false){
-      advancedAuto.AutoInit(driveTrain,imu, powerCell);
-      advancedAutoInitialized = true;
-    }
-
-    //basic auto
-    if(basicAutoEnable && basicAutoInitialize == false){
-      basicAuto.AutoInit(driveTrain);
-      basicAutoInitialize = true;
-    }
-
+    
     //imu
     if(ImuEnable && ImuInitialized == false){
       imu.init();
@@ -282,7 +244,7 @@ public class Robot extends TimedRobot{
 
     //chassis
     if(chassisEnable && chassisInitialized == false){
-      driveTrain.Init(oi, imu, vision);
+      driveTrain.Init(oi, imu);
       chassisInitialized = true;
     }
 
@@ -303,22 +265,10 @@ public class Robot extends TimedRobot{
       compressorControl.init();
       compressorInitialized = true;
     }
-
-    //vision
-    if(visionEnable && visionInitialized == false){
-      limeLight.init();
-      distSensor.init(ai);
-      vision.init(imu, driveTrain, limeLight, distSensor);
-      visionInitialized = true;
-    }
-    if(visionAutoEnable && visionAutoInitialized == false && visionEnable && visionInitialized == true){
-      visionAuto.AutoInit(AutoNavPathSelector,driveTrain,imu, powerCell, vision);
-      visionAutoInitialized = true;
-    }
     
     //logging
     if(loggingEnable && loggingInitialized == false){
-      logging.init(vision, imu, driveTrain, limeLight, distSensor, powerCell, climber, spinner, compressorControl, advancedAuto, basicAuto, visionAuto);
+      logging.init(imu, driveTrain, powerCell, climber, spinner, compressorControl, advancedAuto, basicAuto, autoNav);
       loggingInitialized = true;
     }
   }

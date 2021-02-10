@@ -131,6 +131,10 @@ public class Robot extends TimedRobot{
     else if(autoSelector == "basic" && imu.isYawValid()){
       basicAuto.AutoPeriodic(driveTrain, powerCell, doReverse);
     }
+    //autoNav
+    else if(autoSelector == "autoNav" && imu.isYawValid()){
+      autoNav.AutoPeriodic(driveTrain, powerCell, doReverse);
+    }
 
     //stop the drivetrain
     else{

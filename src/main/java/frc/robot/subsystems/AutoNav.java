@@ -33,6 +33,9 @@ public class AutoNav{
         driveTrain.initOdometry();
 
     }
+    public void AutoPeriodic(Chassis driveTrain, PowerCell powerCell, boolean doReverse) {
+        
+    }
     
 
 

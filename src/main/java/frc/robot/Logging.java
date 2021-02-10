@@ -12,7 +12,6 @@ import frc.robot.components.CompressorControl;
 import frc.robot.components.Limelight;
 import frc.robot.components.DistSensor;
 import frc.robot.subsystems.VisionAuto;
-import frc.robot.components.MotionProfiling;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Logging{
@@ -28,7 +27,6 @@ public class Logging{
     private Spinner spinner;
     private AdvancedAuto advancedAuto;
     private BasicAuto basicAuto;
-    private MotionProfiling motionProfiling;
     
     //Master Booleans
     private boolean printLogs = true; //master boolean disable to kill all print logs
@@ -41,7 +39,7 @@ public class Logging{
     private boolean printVisionAutoLogs = true;
     private boolean smartDashboardImuLogs = false;
 
-    public void init(Vision visioN, IMU Imu, Chassis DriveTrain, Limelight limeLighT, DistSensor distSensoR,PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO, VisionAuto visionAutO, MotionProfiling motionProfilinG){
+    public void init(Vision visioN, IMU Imu, Chassis DriveTrain, Limelight limeLighT, DistSensor distSensoR,PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO, VisionAuto visionAutO){
         vision = visioN;
         imu = Imu;
         driveTrain = DriveTrain;
@@ -54,7 +52,6 @@ public class Logging{
         advancedAuto = advancedAutO;
         basicAuto = basicAutO;
         visionAuto = visionAutO;   
-        motionProfiling = motionProfilinG;
     }
     public void printLogs(){
         if(printLogs && printVisionLogs){

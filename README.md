@@ -7,7 +7,7 @@
 #### [WPILib](https://wpilib.org/)
 [WPILib Downloads](https://github.com/wpilibsuite/allwpilib/releases)
 
-Download latest version [here](https://github.com/wpilibsuite/allwpilib/releases/tag/v2020.3.2)
+Download latest version [here](https://github.com/wpilibsuite/allwpilib/releases/tag/v2021.1.2)
 * Download the latest version, unzip it to the desktop and run the installer
 
 [WPILib Documentation](https://docs.wpilib.org/en/stable/)
@@ -18,7 +18,7 @@ Download latest version [here](https://github.com/wpilibsuite/allwpilib/releases
 
 [Rev Robotics SparkMax Software ](http://www.revrobotics.com/sparkmax-software/#java-api)
 
-Download latest version [here](http://www.revrobotics.com/content/sw/max/sdk/SPARK-MAX-SDK-v1.5.2.zip.)
+Download latest version [here](http://www.revrobotics.com/content/sw/max/sdk/SPARK-MAX-SDK-v1.5.4.zip.)
 * Unzip it to the desktop and then go to maven\com\revrobotics\frc and move the folders into the C:\Users\Public\wpilib\2020\maven\com\revrobotics\frc directory on windows.
   then go into the vendordeps folder and copy the json file into the C:\Users\Public\wpilib\2020\vendordeps directory on windows. If it askes, select replace files in destination.
   

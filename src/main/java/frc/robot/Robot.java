@@ -20,7 +20,6 @@ import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.VisionAuto;
 import frc.robot.components.CompressorControl;
 import frc.robot.components.Limelight;
-import frc.robot.components.MotionProfiling;
 import frc.robot.components.DistSensor;
 import edu.wpi.first.wpilibj.AnalogInput;
 import frc.robot.Logging;
@@ -79,7 +78,6 @@ public class Robot extends TimedRobot{
   private AdvancedAuto advancedAuto = new AdvancedAuto();
   private BasicAuto basicAuto = new BasicAuto();
   private VisionAuto visionAuto = new VisionAuto();
-  private MotionProfiling motionProfiling = new MotionProfiling();
   
 
 
@@ -311,7 +309,6 @@ public class Robot extends TimedRobot{
       limeLight.init();
       distSensor.init(ai);
       vision.init(imu, driveTrain, limeLight, distSensor);
-      motionProfiling.init(driveTrain);
       visionInitialized = true;
     }
     if(visionAutoEnable && visionAutoInitialized == false && visionEnable && visionInitialized == true){
@@ -321,7 +318,7 @@ public class Robot extends TimedRobot{
     
     //logging
     if(loggingEnable && loggingInitialized == false){
-      logging.init(vision, imu, driveTrain, limeLight, distSensor, powerCell, climber, spinner, compressorControl, advancedAuto, basicAuto, visionAuto, motionProfiling);
+      logging.init(vision, imu, driveTrain, limeLight, distSensor, powerCell, climber, spinner, compressorControl, advancedAuto, basicAuto, visionAuto);
       loggingInitialized = true;
     }
   }

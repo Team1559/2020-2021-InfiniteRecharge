@@ -244,13 +244,16 @@ public class Chassis{
             driveTrain.arcadeDrive(speed,rotation,false);
     }
 
-    public void initOdometry(){
-        lEncoder.setPosition(0);
-        rEncoder.setPosition(0);
+    public void initOdometry()
+    {
+        lEncoder.reset();
+        rEncoder.reset();
         imu.zeroYaw();
         Rotation2d yaw = new Rotation2d(imu.yaw);
         m_odometry = new DifferentialDriveOdometry(yaw);
         //Neccessary for advanced auto new Pose2d(0,0 new Rotation2d())
+        lEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+        rEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
     }
 
     public double R2M(double rotations){  //gear ratio: 15.2:1, wheel diameter 5.8in
@@ -269,5 +272,67 @@ public class Chassis{
         sparkMax2.setIdleMode(IdleMode.kCoast);
         sparkMax3.setIdleMode(IdleMode.kCoast);
         sparkMax4.setIdleMode(IdleMode.kCoast);
+    }
+
+    public void tankDriveVolts(double leftVolts, double rightVolts) {
+        sparkMax1.setVoltage(leftVolts);
+        sparkMax2.setVoltage(-rightVolts);
+        driveTrain.feed();
+      }
+      public double getAverageEncoderDistance() {
+        return (lEncoder.getDistance() + rEncoder.getDistance()) / 2.0;
+      }
+    
+      /**
+       * Gets the left drive encoder.
+       *
+       * @return the left drive encoder
+       */
+      public Encoder getLeftEncoder() {
+        return lEncoder;
+      }
+    
+      /**
+       * Gets the right drive encoder.
+       *
+       * @return the right drive encoder
+       */
+      public Encoder getRightEncoder() {
+        return rEncoder;
+      }
+    
+      /**
+       * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
+       *
+       * @param maxOutput the maximum output to which the drive will be constrained
+       */
+      public void setMaxOutput(double maxOutput) {
+        driveTrain.setMaxOutput(maxOutput);
+      }
+    
+      /**
+       * Zeroes the heading of the robot.
+       */
+      public void zeroHeading() {
+        imu.zeroYaw();
+      }
+    
+      /**
+       * Returns the heading of the robot.
+       *
+       * @return the robot's heading in degrees, from -180 to 180
+       */
+      public double getHeading() {
+        return imu.getYaw();
+      }
+    
+      /**
+       * Returns the turn rate of the robot.
+       *
+       * @return The turn rate of the robot, in degrees per second
+       */
+      public double getTurnRate() {
+        return -imu.getRate();
+      }
     }
 }

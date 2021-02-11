@@ -277,7 +277,7 @@ public class Chassis{
         driveTrain.feed();
       }
       public double getAverageEncoderDistance() {
-        return (R2M(lEncoder.getPosition()) + R2M(rEncoder.getPosition())) / 2.0; 
+        return (R2M(lEncoder.getPosition()) + R2M(rEncoder.getPosition())) / 2.0;// might need to be this (Math.abs(lEncoder.getPosition()) + Math.abs(rEncoder.getPosition())) 
       }
     
       /**

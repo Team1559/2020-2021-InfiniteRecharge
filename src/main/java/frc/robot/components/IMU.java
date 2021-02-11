@@ -13,6 +13,7 @@ public  class IMU{
     public double y_acceleration = 0;
     public double z_acceleration = 0;
     public double y_angularVelocity = 0;
+    public double rate;
     public double maxAutoYaw = 60;// messured in degrees, may change
 
   //the init method
@@ -50,6 +51,7 @@ public  class IMU{
     roll = ahrs.getPitch();
     pitch = ahrs.getRoll();
     yaw = ahrs.getYaw();
+    rate = ahrs.getRate(); 
     y_angularVelocity = ahrs.getRate();
    }
          

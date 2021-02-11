@@ -328,7 +328,7 @@ public class Chassis{
        *
        * @return The turn rate of the robot, in degrees per second
        */
-    //   public double getTurnRate() {
-    //     return -imu.getRate(); //This doesn't exist                                                                                                                                              k
-    //   }
+      public double getTurnRate() {
+        return -imu.rate;
+      }
 }

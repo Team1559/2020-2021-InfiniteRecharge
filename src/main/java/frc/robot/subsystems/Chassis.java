@@ -276,9 +276,9 @@ public class Chassis{
         sparkMax2.setVoltage(-rightVolts);
         driveTrain.feed();
       }
-    //   public double getAverageEncoderDistance() {
-    //     return (lEncoder.getDistance() + rEncoder.getDistance()) / 2.0; //This doesn't exist                                                                                            k
-    //   }
+      public double getAverageEncoderDistance() {
+        return (R2M(lEncoder.getPosition()) + R2M(rEncoder.getPosition())) / 2.0; //This doesn't exist                                                                                            k
+      }
     
       /**
        * Gets the left drive encoder.

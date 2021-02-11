@@ -277,7 +277,7 @@ public class Chassis{
         driveTrain.feed();
       }
       public double getAverageEncoderDistance() {
-        return (R2M(lEncoder.getPosition()) + R2M(rEncoder.getPosition())) / 2.0; //This doesn't exist                                                                                            k
+        return (R2M(lEncoder.getPosition()) + R2M(rEncoder.getPosition())) / 2.0; 
       }
     
       /**
@@ -329,6 +329,6 @@ public class Chassis{
        * @return The turn rate of the robot, in degrees per second
        */
       public double getTurnRate() {
-        return -imu.rate;
+        return -imu.turnRate;
       }
 }

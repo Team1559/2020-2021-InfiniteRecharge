@@ -19,6 +19,7 @@ import frc.robot.subsystems.AutoNav;
 import frc.robot.subsystems.BasicAuto;
 import frc.robot.components.CompressorControl;
 import edu.wpi.first.wpilibj.AnalogInput;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.AutoNav;
 import frc.robot.Logging;
 
@@ -50,8 +51,10 @@ public class Robot extends TimedRobot{
   private boolean compressorInitialized = false;
   private boolean colorInitialized = false;
   private boolean powerCellInitialized = false;
+  private RobotContainer m_robotContainer;
 
   //constructors
+  private RobotContainer robotContainer = new RobotContainer();
   private AutoNav autoNav = new AutoNav();
   private Logging logging = new Logging();
   private AnalogInput ai = new AnalogInput(Wiring.distSensorPort);
@@ -74,6 +77,7 @@ public class Robot extends TimedRobot{
   public void robotInit() {
   camera1.init();
   camera2.init();
+  m_robotContainer = new RobotContainer();
   }
 
   @Override
@@ -87,6 +91,7 @@ public class Robot extends TimedRobot{
   {
     //sets the feautre flag boolean for advanced auto
     if(autoSelector == "autoNav"){
+      robotContainer.init(driveTrain);
       autoNav.AutoInit(driveTrain, imu);
     }
     //sets the feautre flag boolean for advanced auto

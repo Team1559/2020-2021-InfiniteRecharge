@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.components.DevilDifferential;
 import frc.robot.Buttons;
 import frc.robot.OperatorInterface;
@@ -17,8 +18,9 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 
-public class Chassis{
+public class Chassis extends Subsystem{
 
     
     private CANEncoder lEncoder;
@@ -34,6 +36,7 @@ public class Chassis{
     private double forwardInputSpeed = 1;
     private double turningInputSpeed = 0.65;
     public double robotSpeed = 0;
+
     
     
     private Solenoid gearShifter;
@@ -239,6 +242,10 @@ public class Chassis{
     public void move(double speed, double rotation){
             driveTrain.arcadeDrive(speed,rotation,false);
     }
+    public void resetEncoders(){
+        lEncoder.setPosition(0);
+        rEncoder.setPosition(0);
+    }
 
     public void initOdometry()
     {
@@ -263,6 +270,23 @@ public class Chassis{
         return m_odometry.update(new Rotation2d(imu.yaw), R2M(lEncoder.getPosition()), R2M(rEncoder.getPosition()));
     }
 
+    public Pose2d getPose() {
+        return m_odometry.getPoseMeters();
+      }
+
+    public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+        return new DifferentialDriveWheelSpeeds(R2M(lEncoder.getVelocity())/60, R2M(rEncoder.getVelocity())/60);
+    }
+    public void tankDriveVolts(double leftVolts, double rightVolts) {
+        sparkMax1.setVoltage(leftVolts);
+        sparkMax2.setVoltage(-rightVolts);
+        driveTrain.feed();
+      }
+    public void resetOdometry(Pose2d pose) {
+        resetEncoders();
+         m_odometry.resetPosition(pose, new Rotation2d(imu.yaw));
+    }
+      
     public void disabled()
     {
         sparkMax1.setIdleMode(IdleMode.kCoast);
@@ -271,13 +295,9 @@ public class Chassis{
         sparkMax4.setIdleMode(IdleMode.kCoast);
     }
 
-    public void tankDriveVolts(double leftVolts, double rightVolts) {
-        sparkMax1.setVoltage(leftVolts);
-        sparkMax2.setVoltage(-rightVolts);
-        driveTrain.feed();
-      }
+    
       public double getAverageEncoderDistance() {
-        return (R2M(lEncoder.getPosition()) + R2M(rEncoder.getPosition())) / 2.0;// might need to be this (Math.abs(lEncoder.getPosition()) + Math.abs(rEncoder.getPosition())) 
+        return (Math.abs(lEncoder.getPosition()) + Math.abs(rEncoder.getPosition())) / 2.0; 
       }
     
       /**
@@ -330,5 +350,11 @@ public class Chassis{
        */
       public double getTurnRate() {
         return -imu.turnRate;
+      }
+
+      @Override
+      protected void initDefaultCommand() {
+          // TODO Auto-generated method stub
+
       }
 }

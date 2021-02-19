@@ -8,7 +8,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.components.DevilDifferential;
 import frc.robot.Buttons;
 import frc.robot.OperatorInterface;
@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 
-public class Chassis extends Subsystem{
+public class Chassis extends SubsystemBase{
 
     
     private CANEncoder lEncoder;
@@ -350,11 +350,5 @@ public class Chassis extends Subsystem{
        */
       public double getTurnRate() {
         return -imu.turnRate;
-      }
-
-      @Override
-      protected void initDefaultCommand() {
-          // TODO Auto-generated method stub
-
       }
 }

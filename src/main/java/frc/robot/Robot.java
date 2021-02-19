@@ -25,7 +25,7 @@ import frc.robot.Logging;
 
 public class Robot extends TimedRobot{
 //these are changable
-  private int AutoNavPathSelector = 0;//0 is normanl vision auto, barrel racing is one, slolums is 2, and bounce path is 3
+  private int AutoNavPathSelector = 0;// barrel racing is 0, slolums is 1, and bounce path is 2
   private double targetDistance = 3;// distance in inches
   private boolean doReverse = true;
   private String autoSelector = "autoNav"; 
@@ -41,7 +41,6 @@ public class Robot extends TimedRobot{
   private boolean compressorEnable = true;
   private boolean colorEnable = false;
   private boolean powerCellEnable = true;
-  private boolean visionEnable = false;  
 
   //DON'T TOUCH THESE, they are used to determine if the specifies subsystem has been initialised as to not call it's init method more than once, causiing errors.
   private boolean loggingInitialized = false;
@@ -92,7 +91,7 @@ public class Robot extends TimedRobot{
     //sets the feautre flag boolean for advanced auto
     if(autoSelector == "autoNav"){
       robotContainer.init(driveTrain);
-      autoNav.AutoInit(driveTrain, imu);
+      autoNav.AutoInit(driveTrain, imu, AutoNavPathSelector);
     }
     //sets the feautre flag boolean for advanced auto
     else if(autoSelector =="advanced"){

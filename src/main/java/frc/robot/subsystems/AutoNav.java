@@ -9,14 +9,15 @@ public class AutoNav{
 
     //DO NOT RUN THESE YET
     
-
+    private int pathSelector;
     private IMU imu;
 
     
 
-    public void AutoInit(Chassis driveTrain , IMU imU) {
+    public void AutoInit(Chassis driveTrain , IMU imU, int pathSelectoR) {
         imu = imU;
         driveTrain.initOdometry();
+        pathSelector = pathSelectoR;
 
     }
     public void AutoPeriodic(Chassis driveTrain, PowerCell powerCell, boolean doReverse) {

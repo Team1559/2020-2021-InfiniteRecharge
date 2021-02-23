@@ -4,6 +4,8 @@ import frc.robot.subsystems.Chassis;
 import frc.robot.components.IMU;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 
 public class AutoNav{
@@ -12,6 +14,7 @@ public class AutoNav{
     private RobotContainer robotContainer;
     public String pathSelector;
     private IMU imu;
+    public Command m_autonomousCommand;
 
     
 
@@ -20,10 +23,15 @@ public class AutoNav{
         driveTrain.initOdometry();
         pathSelector = pathSelectoR;
         robotContainer = robotContaineR;
+        m_autonomousCommand = robotContainer.getAutonomousCommand(pathSelector);//temporary
+        if (m_autonomousCommand != null) {
+            m_autonomousCommand.schedule();
+          }
 
     }
     public void AutoPeriodic(Chassis driveTrain, PowerCell powerCell) {
-        robotContainer.getAutonomousCommand(pathSelector);//temporary
+        
+        CommandScheduler.getInstance().run();
     }
     
 

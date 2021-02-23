@@ -157,6 +157,10 @@ public class Robot extends TimedRobot{
   @Override
   public void teleopInit()
   {
+
+    if (autoNav.m_autonomousCommand != null) {
+      autoNav.m_autonomousCommand.cancel();
+    }
     //runs the initalize method
     initialize();
      

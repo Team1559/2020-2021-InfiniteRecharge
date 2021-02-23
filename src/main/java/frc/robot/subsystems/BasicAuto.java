@@ -69,8 +69,7 @@ public class BasicAuto{
                 driveTrain.move(driveSpeed, 0);
                 if (odometry.getTranslation().getX() >= driveBackward || timer/50.0 >= 4.5) {
                     timer = 0;
-                    state = State.Stop;
-                    
+                    state = State.Stop;  
                 }
             }   
         else{

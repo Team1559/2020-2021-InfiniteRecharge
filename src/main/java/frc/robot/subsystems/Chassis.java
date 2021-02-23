@@ -96,8 +96,8 @@ public class Chassis extends SubsystemBase{
         sparkMax2.restoreFactoryDefaults();
         sparkMax3.restoreFactoryDefaults();
         sparkMax4.restoreFactoryDefaults();
-        lEncoder = new CANEncoder(sparkMax1);
-        rEncoder = new CANEncoder(sparkMax2);
+        lEncoder = sparkMax1.getEncoder(); //old  new CANEncoder(sparkMax1);
+        rEncoder = sparkMax2.getEncoder(); //old  new CANEncoder(sparkMax2);
         sparkMax3.follow(sparkMax1);
         sparkMax4.follow(sparkMax2);
 

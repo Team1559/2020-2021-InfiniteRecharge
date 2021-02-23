@@ -10,9 +10,11 @@ import frc.robot.subsystems.AutoNav;
 import frc.robot.subsystems.BasicAuto;
 import frc.robot.components.CompressorControl;
 import frc.robot.subsystems.AutoNav;
+import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Logging{
+    private RobotContainer robotContainer;
     private AutoNav autoNav;
     private IMU imu;
     private CompressorControl compressorControl;
@@ -28,13 +30,12 @@ public class Logging{
     private boolean smartDasboardLogs = false; //master boolean disable to kill all smart dashboard logs
 
     //Class Booleans
-    private boolean printVisionLogs = false;
     private boolean printCompressorLogs = false;
     private boolean printImuLogs = false;
-    private boolean printVisionAutoLogs = true;
     private boolean smartDashboardImuLogs = false;
+    private boolean printautoNavLogs = true;
 
-    public void init(IMU Imu, Chassis DriveTrain, PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO, AutoNav autoNaV){
+    public void init(IMU Imu, Chassis DriveTrain, PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO, AutoNav autoNaV, RobotContainer robotContaineR){
         autoNav = autoNaV;
         imu = Imu;
         driveTrain = DriveTrain;
@@ -44,6 +45,7 @@ public class Logging{
         compressorControl = compressorControL;
         advancedAuto = advancedAutO;
         basicAuto = basicAutO; 
+        robotContainer = robotContaineR;
     }
     public void printLogs(){
         if(printLogs && printCompressorLogs){
@@ -58,8 +60,8 @@ public class Logging{
             System.out.println("Roll" + imu.roll);
             System.out.println();
         }
-        if(printLogs && printVisionAutoLogs){
-            
+        if(printLogs && printautoNavLogs){
+            System.out.println(autoNav.pathSelector);
         }
     }
     public void smartDashboardLogs(){

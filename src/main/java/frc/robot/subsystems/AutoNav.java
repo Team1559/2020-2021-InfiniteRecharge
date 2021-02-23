@@ -10,7 +10,7 @@ public class AutoNav{
 
     //DO NOT RUN THESE YET
     private RobotContainer robotContainer;
-    private String pathSelector;
+    public String pathSelector;
     private IMU imu;
 
     

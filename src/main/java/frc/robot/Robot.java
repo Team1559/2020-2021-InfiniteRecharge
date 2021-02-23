@@ -25,13 +25,11 @@ import frc.robot.Logging;
 
 public class Robot extends TimedRobot{
 //these are changable
-  private int AutoNavPathSelector = 0;// barrel racing is 0, slolums is 1, and bounce path is 2
-  private double targetDistance = 3;// distance in inches
+  private String AutoNavPathSelector = "example";// barrel racing is "barrel" , slolum is "slolum", and bounce path is "bounce" and example is "example" 
   private boolean doReverse = true;
   private String autoSelector = "autoNav"; 
   //in order to switch auto modes change what is in the quotes "basic" for basic auto, "advanced" for advanced auto, "autoNav" for vision auto, and "none" for no auto
-  //                                                            -----                   --------                      ------                        ----
-   
+ 
   // feature flags booleans
   //change these to disable unused subsystems.
   private boolean loggingEnable = false;
@@ -91,7 +89,7 @@ public class Robot extends TimedRobot{
     //sets the feautre flag boolean for advanced auto
     if(autoSelector == "autoNav"){
       robotContainer.init(driveTrain);
-      autoNav.AutoInit(driveTrain, imu, AutoNavPathSelector);
+      autoNav.AutoInit(driveTrain, imu, AutoNavPathSelector, robotContainer);
     }
     //sets the feautre flag boolean for advanced auto
     else if(autoSelector =="advanced"){
@@ -137,7 +135,7 @@ public class Robot extends TimedRobot{
     }
     //autoNav
     else if(autoSelector == "autoNav" && imu.isYawValid()){
-      autoNav.AutoPeriodic(driveTrain, powerCell, doReverse);
+      autoNav.AutoPeriodic(driveTrain, powerCell);
     }
 
     //stop the drivetrain

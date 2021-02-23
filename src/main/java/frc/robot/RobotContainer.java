@@ -70,7 +70,7 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  public Command getAutonomousCommand(String path) {
 
     // Create a voltage constraint to ensure we don't accelerate too fast
     var autoVoltageConstraint =
@@ -93,7 +93,9 @@ public class RobotContainer {
             .addConstraint(autoVoltageConstraint);
 
     // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory =
+    Trajectory trajectory;
+    if(path == "example"){
+     trajectory =
         TrajectoryGenerator.generateTrajectory(
             // Start at the origin facing the +X direction
             new Pose2d(0, 0, new Rotation2d(0)),
@@ -103,10 +105,18 @@ public class RobotContainer {
             new Pose2d(3, 0, new Rotation2d(0)),
             // Pass config
             config);
+    }
+    else{
+        trajectory =
+        TrajectoryGenerator.generateTrajectory(new Pose2d(0, 0, new Rotation2d(0)), 
+        List.of(new Translation2d(0, 0), 
+        new Translation2d(0, 0)),
+         new Pose2d(0, 0, new Rotation2d(0)), config);
+    }
 
     RamseteCommand ramseteCommand =
         new RamseteCommand(
-            exampleTrajectory,
+            trajectory,
             m_robotDrive::getPose,
             new RamseteController(kRamseteB, kRamseteZeta),
             new SimpleMotorFeedforward(
@@ -122,9 +132,11 @@ public class RobotContainer {
             m_robotDrive);
 
     // Reset odometry to the starting pose of the trajectory.
-    m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
+    m_robotDrive.resetOdometry(trajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
     return ramseteCommand.andThen(() -> m_robotDrive.tankDriveVolts(0, 0));
+    
   }
+ 
 }

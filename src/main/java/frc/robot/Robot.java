@@ -36,7 +36,7 @@ public class Robot extends TimedRobot{
   private boolean chassisEnable = true;
   private boolean ImuEnable = true;
   private boolean climberEnable = false;
-  private boolean compressorEnable = true;
+  private boolean compressorEnable = false;// change this back
   private boolean colorEnable = false;
   private boolean powerCellEnable = true;
 
@@ -86,6 +86,7 @@ public class Robot extends TimedRobot{
   @Override
   public void autonomousInit()
   {
+    initialize();
     //sets the feautre flag boolean for advanced auto
     if(autoSelector == "autoNav"){
       robotContainer.init(driveTrain);
@@ -102,7 +103,7 @@ public class Robot extends TimedRobot{
     }
 
     //runs the initialize method
-    initialize();
+    
 
     //zeros the imu
     if(ImuEnable && ImuInitialized){

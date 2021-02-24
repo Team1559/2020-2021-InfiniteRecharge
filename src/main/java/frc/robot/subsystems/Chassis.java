@@ -45,7 +45,7 @@ public class Chassis extends SubsystemBase{
     private IMU imu;
     private DifferentialDriveOdometry m_odometry;
 
-    public double rampRate = 0.6;
+    public double rampRate = 0.7;
 
     private SpeedControllerGroup leftMotors;
     private SpeedControllerGroup rightMotors;
@@ -116,7 +116,7 @@ public class Chassis extends SubsystemBase{
         sparkMax4PID = sparkMax4.getPIDController();
         sparkMax4PID.setReference(0, ControlType.kVelocity);
 
-       setRampRate(0.6);
+       setRampRate(0.7);
 
         sparkMax1PID.setP(kP);
         sparkMax1PID.setI(kI);
@@ -278,8 +278,8 @@ public class Chassis extends SubsystemBase{
         return new DifferentialDriveWheelSpeeds(R2M(lEncoder.getVelocity())/60, R2M(rEncoder.getVelocity())/60);
     }
     public void tankDriveVolts(double leftVolts, double rightVolts) {
-        sparkMax1.setVoltage(leftVolts);
-        sparkMax2.setVoltage(-rightVolts);
+        sparkMax1.setVoltage(leftVolts/10);
+        sparkMax2.setVoltage(-rightVolts/10);
         driveTrain.feed();
       }
     public void resetOdometry(Pose2d pose) {

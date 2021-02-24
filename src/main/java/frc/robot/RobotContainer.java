@@ -19,13 +19,13 @@ import java.util.List;
 
 
 public class RobotContainer {
-    public static final double ksVolts = 0.186;
-    public static final double kvVoltSecondsPerMeter = 0.131;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.0101;
-    public static final double kPDriveVel = 0.436;
+    public static final double ksVolts = 0.166;
+    public static final double kvVoltSecondsPerMeter = 0.126;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.00993;
+    public static final double kPDriveVel = 0.43;
 
 
-    public static final double kTrackwidthMeters = 32.24539107483547;// not correct
+    public static final double kTrackwidthMeters = 32.35950316516879;// not correct
     public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
 
     public static final double kMaxSpeedMetersPerSecond = 0;

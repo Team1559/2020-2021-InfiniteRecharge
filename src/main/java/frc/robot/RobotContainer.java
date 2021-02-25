@@ -20,10 +20,10 @@ import java.util.List;
 
 public class RobotContainer {
     private String path;
-    public static final double ksVolts = (0.166) * 2.27;
-    public static final double kvVoltSecondsPerMeter = (0.126) * 2.27;
-    public static final double kaVoltSecondsSquaredPerMeter = (0.00993) * 2.27;
-    public static final double kPDriveVel = (0.43) * 2.27;
+    public static final double ksVolts = (0.166);
+    public static final double kvVoltSecondsPerMeter = (0.126);
+    public static final double kaVoltSecondsSquaredPerMeter = (0.00993);
+    public static final double kPDriveVel = (0.43);
 
 
     public static final double kTrackwidthMeters = 32.35950316516879;
@@ -103,7 +103,7 @@ public void setpath(String patH){
             // Start at the origin facing the +X direction
             new Pose2d(0, 0, new Rotation2d(0)),
             // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+            List.of(new Translation2d((1) * 2.27, (1) * 2.27), new Translation2d((2) * 2.27, (-1) * 2.27)),
             // End 3 meters straight ahead of where we started, facing forward
             new Pose2d(3, 0, new Rotation2d(0)),
             // Pass config

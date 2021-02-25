@@ -19,13 +19,14 @@ import java.util.List;
 
 
 public class RobotContainer {
-    public static final double ksVolts = 0.166;
-    public static final double kvVoltSecondsPerMeter = 0.126;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.00993;
-    public static final double kPDriveVel = 0.43;
+    private String path;
+    public static final double ksVolts = (0.166) * 2.27;
+    public static final double kvVoltSecondsPerMeter = (0.126) * 2.27;
+    public static final double kaVoltSecondsSquaredPerMeter = (0.00993) * 2.27;
+    public static final double kPDriveVel = (0.43) * 2.27;
 
 
-    public static final double kTrackwidthMeters = 32.35950316516879;// not correct
+    public static final double kTrackwidthMeters = 32.35950316516879;
     public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
 
     public static final double kMaxSpeedMetersPerSecond = 0;
@@ -51,7 +52,9 @@ public class RobotContainer {
   public void init(Chassis chassiS) {
       m_robotDrive = chassiS;
   }
-
+public void setpath(String patH){
+    path = patH;
+}
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure default commands
@@ -70,7 +73,7 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand(String path) {
+  public Command getAutonomousCommand() {
 
     // Create a voltage constraint to ensure we don't accelerate too fast
     var autoVoltageConstraint =

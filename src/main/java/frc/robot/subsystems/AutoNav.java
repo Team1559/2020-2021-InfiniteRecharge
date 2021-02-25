@@ -23,14 +23,14 @@ public class AutoNav{
         driveTrain.initOdometry();
         pathSelector = pathSelectoR;
         robotContainer = robotContaineR;
-        m_autonomousCommand = robotContainer.getAutonomousCommand(pathSelector);//temporary
+        robotContainer.setpath(pathSelector);
+        m_autonomousCommand = robotContainer.getAutonomousCommand();
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();
           }
 
     }
     public void AutoPeriodic(Chassis driveTrain, PowerCell powerCell) {
-        
         CommandScheduler.getInstance().run();
     }
     

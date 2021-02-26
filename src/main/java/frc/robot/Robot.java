@@ -18,7 +18,6 @@ import frc.robot.subsystems.AdvancedAuto;
 import frc.robot.subsystems.AutoNav;
 import frc.robot.subsystems.BasicAuto;
 import frc.robot.components.CompressorControl;
-import edu.wpi.first.wpilibj.AnalogInput;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.AutoNav;
 import frc.robot.Logging;
@@ -54,7 +53,6 @@ public class Robot extends TimedRobot{
   private RobotContainer robotContainer = new RobotContainer();
   private AutoNav autoNav = new AutoNav();
   private Logging logging = new Logging();
-  private AnalogInput ai = new AnalogInput(Wiring.distSensorPort);
   public Climber climber = new Climber();
   public PowerCell powerCell = new PowerCell();
   private CompressorControl compressorControl = new CompressorControl();

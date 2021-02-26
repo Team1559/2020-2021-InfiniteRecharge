@@ -80,7 +80,10 @@ public class Chassis extends SubsystemBase{
     public void LogEncoders() {
         System.out.println(lEncoder.getPosition() + " " + rEncoder.getPosition());
     }
- 
+    public double[] motorTemps(){
+        double temps[] = {sparkMax1.getMotorTemperature(), sparkMax2.getMotorTemperature(), sparkMax3.getMotorTemperature(), sparkMax4.getMotorTemperature()};
+        return temps;
+    }
 
     private boolean isSquaredInputs = false;
 

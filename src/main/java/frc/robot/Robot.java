@@ -90,7 +90,7 @@ public class Robot extends TimedRobot{
     //sets the feautre flag boolean for advanced auto
     if(autoSelector == "autoNav"){
       robotContainer.init(driveTrain);
-      autoNav.AutoInit(driveTrain, imu, AutoNavPathSelector, robotContainer);
+      autoNav.AutoInit(driveTrain, AutoNavPathSelector, robotContainer);
     }
     //sets the feautre flag boolean for advanced auto
     else if(autoSelector =="advanced"){

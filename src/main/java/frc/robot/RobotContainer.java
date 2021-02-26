@@ -43,7 +43,6 @@ public class RobotContainer {
   // The robot's subsystems
   private Chassis m_robotDrive;
 
-  // The driver's controller
   public void init(Chassis chassiS) {
       m_robotDrive = chassiS;
   }
@@ -81,8 +80,6 @@ public void setTrajectory(Trajectory t){
         10);
 
     // Create config for trajectory
-    
-
     config = new TrajectoryConfig(
             kMaxSpeedMetersPerSecond,
             kMaxAccelerationMetersPerSecondSquared)
@@ -90,9 +87,6 @@ public void setTrajectory(Trajectory t){
             .setKinematics(kDriveKinematics)
             // Apply the voltage constraint
             .addConstraint(autoVoltageConstraint);
-        
-
-    // An example trajectory to follow.  All units in meters.
     
 
     RamseteCommand ramseteCommand =

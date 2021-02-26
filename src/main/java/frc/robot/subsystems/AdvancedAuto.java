@@ -69,7 +69,7 @@ public class AdvancedAuto {
                 powerCell.stopIntake();
             }
             driveTrain.move(-driveSpeed, 0.085); // 0.03
-            if (odometry.getTranslation().getX() <= -forward1 || timer / 50.0 >= 4.5) { // 4.5
+            if (driveTrain.R2M(odometry.getTranslation().getX()) <= -forward1 || timer / 50.0 >= 4.5) { // 4.5
                 timer = 0;
                 state = State.Forward2;
             }
@@ -113,7 +113,7 @@ public class AdvancedAuto {
         if(doReverse){
             powerCell.raiseGatherer();
             driveTrain.move(driveSpeed, 0);
-            if (odometry.getTranslation().getX() >= reverse2 || timer / 50.0 >= 0.0) {
+            if (driveTrain.R2M(odometry.getTranslation().getX()) >= reverse2 || timer / 50.0 >= 0.0) {
                 timer = 0;
                 state = State.Stop;
 

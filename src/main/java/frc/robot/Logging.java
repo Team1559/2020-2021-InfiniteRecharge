@@ -71,7 +71,7 @@ public class Logging{
         }
         if(smartDasboardLogs && ChassisSmartdashboardLogs){
             for(int i=0; i<4; i++){
-                SmartDashboard.putNumber("motor" + i+1, driveTrain.getMotorTemps()[i]);
+                SmartDashboard.putNumber("Motor " + (i+1) + " Temp: ", driveTrain.getMotorTemps()[i]);
             }
         }
 

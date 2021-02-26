@@ -29,11 +29,14 @@ public class Logging{
     private boolean printLogs = true; //master boolean disable to kill all print logs
     private boolean smartDasboardLogs = false; //master boolean disable to kill all smart dashboard logs
 
-    //Class Booleans
+    //Class pPrint Booleans
     private boolean printCompressorLogs = false;
     private boolean printImuLogs = false;
-    private boolean smartDashboardImuLogs = false;
     private boolean printautoNavLogs = true;
+
+    //Class Smart Dashboard Logs
+    private boolean ChassisSmartdashboardLogs = true;
+    private boolean imuSmartDashboardLogs = false;
 
     public void init(IMU Imu, Chassis DriveTrain, PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO, AutoNav autoNaV, RobotContainer robotContaineR){
         autoNav = autoNaV;
@@ -65,8 +68,14 @@ public class Logging{
         }
     }
     public void smartDashboardLogs(){
-        if(smartDasboardLogs && smartDashboardImuLogs){
+        if(smartDasboardLogs && imuSmartDashboardLogs){
             SmartDashboard.putNumber("Imu yaw", imu.yaw);
         }
+        if(smartDasboardLogs && ChassisSmartdashboardLogs){
+            for(int i=0; i<4; i++){
+                SmartDashboard.putNumber("motor" + i+1, driveTrain.getMotorTemps()[i]);
+            }
+        }
+
     }
 }

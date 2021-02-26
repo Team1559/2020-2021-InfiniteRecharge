@@ -50,7 +50,7 @@ public class Logging{
         basicAuto = basicAutO; 
         robotContainer = robotContaineR;
     }
-    public void printLogs(){
+    public void Log(){
         if(printLogs && printCompressorLogs){
             System.out.println("Compressor Logs");
             System.out.println(compressorControl.isCompressorOn);
@@ -66,8 +66,6 @@ public class Logging{
         if(printLogs && printautoNavLogs){
             System.out.println(autoNav.pathSelector);
         }
-    }
-    public void smartDashboardLogs(){
         if(smartDasboardLogs && imuSmartDashboardLogs){
             SmartDashboard.putNumber("Imu yaw", imu.yaw);
         }

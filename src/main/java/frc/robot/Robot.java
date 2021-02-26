@@ -114,8 +114,7 @@ public class Robot extends TimedRobot{
   {
     //logging
     if(loggingEnable && loggingInitialized){
-      logging.printLogs();
-      logging.smartDashboardLogs();
+      logging.Log();
     }
     
     //autoNav
@@ -169,8 +168,7 @@ public class Robot extends TimedRobot{
   {
     //logging
     if(loggingEnable && loggingInitialized){
-      logging.smartDashboardLogs();
-      logging.printLogs();
+      logging.Log();
     }
 
     //imu

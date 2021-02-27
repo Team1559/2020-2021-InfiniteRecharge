@@ -235,7 +235,7 @@ public class Chassis extends SubsystemBase{
 
 
     public void gearShift(){
-        if(oi.pilot.getRawAxis(Buttons.right_Bumper) >= 0.5) {
+        if(oi.pilot.getRawAxis(Buttons.rightTrigger) >= 0.5) {
             highGear = true;
         }
         else{
@@ -270,7 +270,7 @@ public class Chassis extends SubsystemBase{
 
     public Pose2d updateOdometry()
     {
-        return m_odometry.update(new Rotation2d(imu.yaw), (lEncoder.getPosition()), (rEncoder.getPosition()));
+        return m_odometry.update(new Rotation2d((imu.yaw) * (Math.PI/180)), (lEncoder.getPosition()), (rEncoder.getPosition()));
     }
 
     public Pose2d getPose() {
@@ -281,8 +281,8 @@ public class Chassis extends SubsystemBase{
         return new DifferentialDriveWheelSpeeds(R2M(lEncoder.getVelocity())/60, R2M(rEncoder.getVelocity())/60);
     }
     public void tankDriveVolts(double leftVolts, double rightVolts) {
-        sparkMax1.setVoltage(leftVolts/10);
-        sparkMax2.setVoltage(-rightVolts/10);
+        sparkMax1.setVoltage(leftVolts);
+        sparkMax2.setVoltage(-rightVolts);
         driveTrain.feed();
       }
     public void resetOdometry(Pose2d pose) {

@@ -31,11 +31,11 @@ public class Logging{
 
     //Class pPrint Booleans
     private boolean printCompressorLogs = false;
-    private boolean printImuLogs = false;
-    private boolean printautoNavLogs = true;
+    private boolean printImuLogs = true;
+    private boolean printautoNavLogs = false;
 
     //Class Smart Dashboard Logs
-    private boolean ChassisSmartdashboardLogs = true;
+    private boolean ChassisSmartdashboardLogs = false;
     private boolean imuSmartDashboardLogs = false;
 
     public void init(IMU Imu, Chassis DriveTrain, PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO, AutoNav autoNaV, RobotContainer robotContaineR){
@@ -58,9 +58,9 @@ public class Logging{
         }
         if(printLogs && printImuLogs){
             System.out.println("IMU Logs");
-            System.out.println("Yaw" + imu.yaw);
-            System.out.println("Pitch" + imu.pitch);
-            System.out.println("Roll" + imu.roll);
+            System.out.println("Yaw " + imu.yaw);
+            System.out.println("Pitch " + imu.pitch);
+            System.out.println("Roll " + imu.roll);
             System.out.println();
         }
         if(printLogs && printautoNavLogs){

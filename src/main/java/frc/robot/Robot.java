@@ -9,6 +9,8 @@ package frc.robot;
 
 import frc.robot.subsystems.PowerCell;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Spinner;
 import frc.robot.components.Camera;
 import frc.robot.components.IMU;
@@ -34,9 +36,9 @@ public class Robot extends TimedRobot{
   private boolean loggingEnable = false;
   private boolean chassisEnable = true;
   private boolean ImuEnable = true;
-  private boolean climberEnable = false;
-  private boolean compressorEnable = false;// change this back
-  private boolean colorEnable = false;
+  private boolean climberEnable = true;
+  private boolean compressorEnable = true;// change this back
+  private boolean colorEnable = true;
   private boolean powerCellEnable = true;
 
   //DON'T TOUCH THESE, they are used to determine if the specifies subsystem has been initialised as to not call it's init method more than once, causiing errors.
@@ -48,9 +50,9 @@ public class Robot extends TimedRobot{
   private boolean colorInitialized = false;
   private boolean powerCellInitialized = false;
   private RobotContainer m_robotContainer;
-
+  private Command m_autonomousCommand;
   //constructors
-  private RobotContainer robotContainer = new RobotContainer();
+  //private RobotContainer robotContainer = new RobotContainer();
   private AutoNav autoNav = new AutoNav();
   private Logging logging = new Logging();
   public Climber climber = new Climber();
@@ -72,12 +74,13 @@ public class Robot extends TimedRobot{
   public void robotInit() {
   camera1.init();
   camera2.init();
-  m_robotContainer = new RobotContainer();
+  m_robotContainer = new RobotContainer(driveTrain);
   }
 
   @Override
   public void robotPeriodic()
   {
+    CommandScheduler.getInstance().run();
 
   }
 
@@ -85,10 +88,26 @@ public class Robot extends TimedRobot{
   public void autonomousInit()
   {
     initialize();
+  
     //sets the feautre flag boolean for advanced auto
     if(autoSelector == "autoNav"){
-      robotContainer.init(driveTrain);
-      autoNav.AutoInit(driveTrain, AutoNavPathSelector, robotContainer);
+      driveTrain.initOdometry();
+      // robotContainer.init(driveTrain);
+      // autoNav.AutoInit(driveTrain, AutoNavPathSelector, robotContainer);
+    
+      m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+      /*
+       * String autoSelected = SmartDashboard.getString("Auto Selector",
+       * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
+       * = new MyAutoCommand(); break; case "Default Auto": default:
+       * autonomousCommand = new ExampleCommand(); break; }
+       */
+  
+      // schedule the autonomous command (example)
+      if (m_autonomousCommand != null) {
+        m_autonomousCommand.schedule();
+      }
     }
     //sets the feautre flag boolean for advanced auto
     else if(autoSelector =="advanced"){
@@ -155,12 +174,12 @@ public class Robot extends TimedRobot{
   @Override
   public void teleopInit()
   {
-
+    initialize();
     if (autoNav.m_autonomousCommand != null) {
       autoNav.m_autonomousCommand.cancel();
     }
     //runs the initalize method
-    initialize();
+    
      
   }
   @Override
@@ -197,7 +216,7 @@ public class Robot extends TimedRobot{
     }
 
     //Chassis code
-    else if(chassisEnable && chassisInitialized){    
+    if(chassisEnable && chassisInitialized){    
       driveTrain.DriveSystem(oi.pilot);
     }
   }
@@ -275,7 +294,7 @@ public class Robot extends TimedRobot{
     
     //logging
     if(loggingEnable && loggingInitialized == false){
-      logging.init(imu, driveTrain, powerCell, climber, spinner, compressorControl, advancedAuto, basicAuto, autoNav, robotContainer);
+      logging.init(imu, driveTrain, powerCell, climber, spinner, compressorControl, advancedAuto, basicAuto, autoNav, m_robotContainer);
       loggingInitialized = true;
     }
   }

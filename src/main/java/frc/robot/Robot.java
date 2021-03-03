@@ -17,7 +17,6 @@ import frc.robot.components.IMU;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.AdvancedAuto;
-import frc.robot.subsystems.AutoNav;
 import frc.robot.subsystems.BasicAuto;
 import frc.robot.components.CompressorControl;
 import frc.robot.RobotContainer;
@@ -52,7 +51,6 @@ public class Robot extends TimedRobot{
   private Command m_autonomousCommand;
   //constructors
   //private RobotContainer robotContainer = new RobotContainer();
-  private AutoNav autoNav = new AutoNav();
   private Logging logging = new Logging();
   public Climber climber = new Climber();
   public PowerCell powerCell = new PowerCell();
@@ -290,7 +288,7 @@ public class Robot extends TimedRobot{
     
     //logging
     if(loggingEnable && loggingInitialized == false){
-      logging.init(imu, driveTrain, powerCell, climber, spinner, compressorControl, advancedAuto, basicAuto, autoNav, m_robotContainer);
+      logging.init(imu, driveTrain, powerCell, climber, spinner, compressorControl, advancedAuto, basicAuto, m_robotContainer);
       loggingInitialized = true;
     }
   }

@@ -6,16 +6,13 @@ import frc.robot.components.IMU;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.AdvancedAuto;
-import frc.robot.subsystems.AutoNav;
 import frc.robot.subsystems.BasicAuto;
 import frc.robot.components.CompressorControl;
-import frc.robot.subsystems.AutoNav;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Logging{
     private RobotContainer robotContainer;
-    private AutoNav autoNav;
     private IMU imu;
     private CompressorControl compressorControl;
     private Chassis driveTrain;
@@ -38,8 +35,7 @@ public class Logging{
     private boolean ChassisSmartdashboardLogs = false;
     private boolean imuSmartDashboardLogs = false;
 
-    public void init(IMU Imu, Chassis DriveTrain, PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO, AutoNav autoNaV, RobotContainer robotContaineR){
-        autoNav = autoNaV;
+    public void init(IMU Imu, Chassis DriveTrain, PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO, RobotContainer robotContaineR){
         imu = Imu;
         driveTrain = DriveTrain;
         powerCell = powerCelL;
@@ -59,12 +55,9 @@ public class Logging{
         if(printLogs && printImuLogs){
             System.out.println("IMU Logs");
             System.out.println("Yaw " + imu.yaw);
-            //System.out.println("Pitch " + imu.pitch);
-            //System.out.println("Roll " + imu.roll);
+            // System.out.println("Pitch " + imu.pitch);
+            // System.out.println("Roll " + imu.roll);
             System.out.println();
-        }
-        if(printLogs && printautoNavLogs){
-            System.out.println(autoNav.pathSelector);
         }
         if(smartDasboardLogs && imuSmartDashboardLogs){
             SmartDashboard.putNumber("Imu yaw", imu.yaw);

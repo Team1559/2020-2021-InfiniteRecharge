@@ -35,7 +35,7 @@ public class Robot extends TimedRobot{
   private boolean chassisEnable = true;
   private boolean ImuEnable = true;
   private boolean climberEnable = true;
-  private boolean compressorEnable = true;// change this back
+  private boolean compressorEnable = true;
   private boolean colorEnable = true;
   private boolean powerCellEnable = true;
 

@@ -59,8 +59,8 @@ public class Logging{
         if(printLogs && printImuLogs){
             System.out.println("IMU Logs");
             System.out.println("Yaw " + imu.yaw);
-            System.out.println("Pitch " + imu.pitch);
-            System.out.println("Roll " + imu.roll);
+            //System.out.println("Pitch " + imu.pitch);
+            //System.out.println("Roll " + imu.roll);
             System.out.println();
         }
         if(printLogs && printautoNavLogs){

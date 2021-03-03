@@ -31,6 +31,7 @@ public  class IMU{
     //sets the yaw to zero
     public void zeroYaw(){
       ahrs.zeroYaw();
+      yaw = 0;
     }
 
     //returns true if the yaw is between the valid range
@@ -50,7 +51,7 @@ public  class IMU{
     z_acceleration = ahrs.getWorldLinearAccelZ();
     roll = ahrs.getPitch();
     pitch = ahrs.getRoll();
-    yaw = ahrs.getYaw();
+    yaw = -(ahrs.getYaw()*Math.PI/180.0);
     turnRate = ahrs.getRate(); 
     y_angularVelocity = ahrs.getRate();
    }

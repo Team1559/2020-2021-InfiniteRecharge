@@ -47,8 +47,6 @@ public class Chassis extends SubsystemBase{
 
     public double rampRate = 0.7;
 
-    private SpeedControllerGroup leftMotors;
-    private SpeedControllerGroup rightMotors;
     private double leftVelocity;
     private double rightVelocity;
 
@@ -104,9 +102,7 @@ public class Chassis extends SubsystemBase{
         sparkMax3.follow(sparkMax1);
         sparkMax4.follow(sparkMax2);
 
-        leftMotors = new SpeedControllerGroup(sparkMax1); // (sparkMax1, sparkMax3) for working code
-        rightMotors = new SpeedControllerGroup(sparkMax2); // (sparkMax2, sparkMax4) for working code
-
+    
         gearShifter = new Solenoid(Wiring.gearShifterSolenoid);
     
 
@@ -156,17 +152,13 @@ public class Chassis extends SubsystemBase{
         sparkMax4.setIdleMode(IdleMode.kBrake);
 
 
-
-        leftMotors.setInverted(true);
-        rightMotors.setInverted(true);
-
         sparkMax1.setSmartCurrentLimit(40);
         sparkMax2.setSmartCurrentLimit(40);
         sparkMax3.setSmartCurrentLimit(40);
         sparkMax4.setSmartCurrentLimit(40);
 
         
-        driveTrain = new DevilDifferential(sparkMax1PID, sparkMax2PID);
+        driveTrain = new DevilDifferential(sparkMax2PID, sparkMax1PID);
         driveTrain.setMaxOutput(5600); //NEO free speed 5700 RPM
         driveTrain.setExpiration(2.0);
     }
@@ -219,7 +211,7 @@ public class Chassis extends SubsystemBase{
             //Axis 0 for left joystick left to right
             //Axis 2 for left Trigger
             //Axis 3 for right Trigger
-            forwardSpeed = -oi.pilot.getRawAxis(Buttons.leftJoystick_y) * forwardInputSpeed;
+            forwardSpeed = oi.pilot.getRawAxis(Buttons.leftJoystick_y) * forwardInputSpeed;
             sideSpeed = -oi.pilot.getRawAxis(Buttons.rightJoystick_x) *turningInputSpeed;
             if(Math.abs(forwardSpeed) <= deadband)
 
@@ -255,6 +247,7 @@ public class Chassis extends SubsystemBase{
         lEncoder.setPosition(0);
         rEncoder.setPosition(0);
         imu.zeroYaw();
+        
         Rotation2d yaw = new Rotation2d(imu.yaw);
         m_odometry = new DifferentialDriveOdometry(yaw);
         //Neccessary for advanced auto new Pose2d(0,0 new Rotation2d())
@@ -270,7 +263,7 @@ public class Chassis extends SubsystemBase{
 
     public Pose2d updateOdometry()
     {
-        return m_odometry.update(new Rotation2d((imu.yaw) * (Math.PI/180)), (lEncoder.getPosition()), (rEncoder.getPosition()));
+        return m_odometry.update(new Rotation2d(imu.yaw), (lEncoder.getPosition()), (rEncoder.getPosition()));
     }
 
     public Pose2d getPose() {
@@ -278,7 +271,8 @@ public class Chassis extends SubsystemBase{
       }
 
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-        return new DifferentialDriveWheelSpeeds(R2M(lEncoder.getVelocity())/60, R2M(rEncoder.getVelocity())/60);
+        return new DifferentialDriveWheelSpeeds(lEncoder.getVelocity(), rEncoder.getVelocity());
+        //return new DifferentialDriveWheelSpeeds(R2M(lEncoder.getVelocity())/60, R2M(rEncoder.getVelocity())/60);
     }
     public void tankDriveVolts(double leftVolts, double rightVolts) {
         sparkMax1.setVoltage(leftVolts);

@@ -28,12 +28,12 @@ public class Robot extends TimedRobot{
 //these are changable
   private String AutoNavPathSelector = "example";// barrel racing is "barrel" , slolum is "slolum", and bounce path is "bounce" and example is "example" 
   private boolean doReverse = true;
-  private String autoSelector = "autoNav"; 
+  private String autoSelector = "basic"; 
   //in order to switch auto modes change what is in the quotes "basic" for basic auto, "advanced" for advanced auto, "autoNav" for vision auto, and "none" for no auto
  
   // feature flags booleans
   //change these to disable unused subsystems.
-  private boolean loggingEnable = false;
+  private boolean loggingEnable = true;
   private boolean chassisEnable = true;
   private boolean ImuEnable = true;
   private boolean climberEnable = true;

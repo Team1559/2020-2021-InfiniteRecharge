@@ -35,18 +35,14 @@ import java.util.List;
  */
 public class RobotContainer {
   // The robot's subsystems
-  public static final double ksVolts = (0.166);
-    public static final double kvVoltSecondsPerMeter = (0.126);
-    public static final double kaVoltSecondsSquaredPerMeter = (0.00993);
-    public static final double kPDriveVel = (0.43);
-
-
-    public static final double kTrackwidthMeters = 32.35950316516879;
+  public static final double ksVolts = (0.171);
+    public static final double kvVoltSecondsPerMeter = (0.127);
+    public static final double kaVoltSecondsSquaredPerMeter = (0.00991);
+    public static final double kPDriveVel = (0.439);
+    public static final double kTrackwidthMeters = 32.655838622156374;
     public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
-
     public static final double kMaxSpeedMetersPerSecond = 1;
     public static final double kMaxAccelerationMetersPerSecondSquared = 1;
-
     // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;

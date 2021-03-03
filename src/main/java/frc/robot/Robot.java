@@ -21,14 +21,13 @@ import frc.robot.subsystems.AutoNav;
 import frc.robot.subsystems.BasicAuto;
 import frc.robot.components.CompressorControl;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.AutoNav;
 import frc.robot.Logging;
 
 public class Robot extends TimedRobot{
 //these are changable
   private String AutoNavPathSelector = "example";// barrel racing is "barrel" , slolum is "slolum", and bounce path is "bounce" and example is "example" 
   private boolean doReverse = true;
-  private String autoSelector = "basic"; 
+  private String autoSelector = "test"; 
   //in order to switch auto modes change what is in the quotes "basic" for basic auto, "advanced" for advanced auto, "autoNav" for vision auto, and "none" for no auto
  
   // feature flags booleans
@@ -90,7 +89,7 @@ public class Robot extends TimedRobot{
     initialize();
   
     //sets the feautre flag boolean for advanced auto
-    if(autoSelector == "autoNav"){
+    if(autoSelector == "test"){
       driveTrain.initOdometry();
       // robotContainer.init(driveTrain);
       // autoNav.AutoInit(driveTrain, AutoNavPathSelector, robotContainer);
@@ -137,12 +136,12 @@ public class Robot extends TimedRobot{
     }
     
     //autoNav
-    // if(autoSelector == "autoNav"){
-    //   autoNav.AutoPeriodic(driveTrain, powerCell, doReverse);
-    // }
+    if(autoSelector == "test"){
+      CommandScheduler.getInstance().run();
+    }
 
     //advanced auto
-    else if(autoSelector == "advanced" && imu.isYawValid()){
+    if(autoSelector == "advanced" && imu.isYawValid()){
       advancedAuto.AutoPeriodic(driveTrain, powerCell, doReverse);
     }
 
@@ -150,10 +149,7 @@ public class Robot extends TimedRobot{
     else if(autoSelector == "basic" && imu.isYawValid()){
       basicAuto.AutoPeriodic(driveTrain, powerCell, doReverse);
     }
-    //autoNav
-    else if(autoSelector == "autoNav" && imu.isYawValid()){
-      autoNav.AutoPeriodic(driveTrain, powerCell);
-    }
+
 
     //stop the drivetrain
     else{
@@ -175,8 +171,8 @@ public class Robot extends TimedRobot{
   public void teleopInit()
   {
     initialize();
-    if (autoNav.m_autonomousCommand != null) {
-      autoNav.m_autonomousCommand.cancel();
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
     }
     //runs the initalize method
     

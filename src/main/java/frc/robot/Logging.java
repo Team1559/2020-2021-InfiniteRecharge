@@ -59,6 +59,11 @@ public class Logging{
             // System.out.println("Roll " + imu.roll);
             System.out.println();
         }
+        if(printLogs && printCompressorLogs){
+            for(int i=0; i<4; i++){
+                System.out.println("Motor " + (i+1) + " Temp: " + driveTrain.getMotorTemps()[i]);
+            }
+        }
         if(smartDasboardLogs && imuSmartDashboardLogs){
             SmartDashboard.putNumber("Imu yaw", imu.yaw);
         }

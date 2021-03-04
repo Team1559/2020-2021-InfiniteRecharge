@@ -51,7 +51,7 @@ public class Chassis extends SubsystemBase{
     private double rightVelocity;
 
     private double kP = 0.0002; //0.0001
-    private double kI = 0.000000; //0.0 (We don't really need I for now, maybe later)
+    private double kI = 0.000000; //0.0 (We don't really need kI for now, maybe later)
     private double kD = 0.0000;
     private double kF = 0.00018; //0.000125
     private double deadband = 0.01;

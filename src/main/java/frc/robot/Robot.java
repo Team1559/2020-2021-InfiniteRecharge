@@ -9,6 +9,7 @@ package frc.robot;
 
 import frc.robot.subsystems.PowerCell;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Spinner;
@@ -63,7 +64,7 @@ public class Robot extends TimedRobot{
   private Camera camera2 = new Camera(1);
   private AdvancedAuto advancedAuto = new AdvancedAuto();
   private BasicAuto basicAuto = new BasicAuto();
-
+  private Pose2d pose;
   
 
 
@@ -136,6 +137,7 @@ public class Robot extends TimedRobot{
     //autoNav
     if(autoSelector == "test"){
       CommandScheduler.getInstance().run();
+      pose = driveTrain.updateOdometry();
     }
 
     //advanced auto

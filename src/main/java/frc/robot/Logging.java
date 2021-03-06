@@ -28,7 +28,7 @@ public class Logging{
 
     //Class pPrint Booleans
     private boolean printCompressorLogs = false;
-    private boolean printImuLogs = true;
+    private boolean printImuLogs = false;
     private boolean printautoNavLogs = false;
 
     //Class Smart Dashboard Logs

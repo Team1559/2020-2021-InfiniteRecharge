@@ -263,7 +263,7 @@ public class Chassis extends SubsystemBase{
 
     public Pose2d updateOdometry()
     {
-        return m_odometry.update(new Rotation2d(imu.yaw), (lEncoder.getPosition()), (-rEncoder.getPosition()));
+        return m_odometry.update(new Rotation2d(imu.yaw), R2M(lEncoder.getPosition()), R2M(-rEncoder.getPosition()));
     }
 
     public Pose2d getPose() {

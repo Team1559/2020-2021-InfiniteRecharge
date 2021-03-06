@@ -99,6 +99,7 @@ public class Chassis extends SubsystemBase{
         sparkMax4.restoreFactoryDefaults();
         lEncoder = sparkMax1.getEncoder(); //old  new CANEncoder(sparkMax1);
         rEncoder = sparkMax2.getEncoder(); //old  new CANEncoder(sparkMax2);
+        rEncoder.setInverted(true);
         sparkMax3.follow(sparkMax1);
         sparkMax4.follow(sparkMax2);
 
@@ -271,8 +272,8 @@ public class Chassis extends SubsystemBase{
       }
 
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-        return new DifferentialDriveWheelSpeeds(lEncoder.getVelocity(), rEncoder.getVelocity());
-        //return new DifferentialDriveWheelSpeeds(R2M(lEncoder.getVelocity())/60, R2M(rEncoder.getVelocity())/60);
+        //return new DifferentialDriveWheelSpeeds(lEncoder.getVelocity(), rEncoder.getVelocity());
+        return new DifferentialDriveWheelSpeeds(R2M(lEncoder.getVelocity())/60, R2M(rEncoder.getVelocity())/60);
     }
     public void tankDriveVolts(double leftVolts, double rightVolts) {
         sparkMax1.setVoltage(leftVolts);

@@ -41,8 +41,8 @@ public class RobotContainer {
     public static final double kPDriveVel = (0.439);
     public static final double kTrackwidthMeters = 0.8; //32.655838622156374;
     public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
-    public static final double kMaxSpeedMetersPerSecond = 1;// 1
-    public static final double kMaxAccelerationMetersPerSecondSquared = 1; //1
+    public static final double kMaxSpeedMetersPerSecond = 1;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 1;
     // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
@@ -59,9 +59,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
-  private void configureButtonBindings() {
 
-  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -96,7 +94,7 @@ public class RobotContainer {
             // Start at the origin facing the +X direction
             new Pose2d(0, 0, new Rotation2d(0)),
             // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(8, 0), new Translation2d(12,1)),
+            List.of(new Translation2d(6, 0), new Translation2d(12,1)),
             // End 3 meters straight ahead of where we started, facing forward
             new Pose2d(12, 1, new Rotation2d(0)),
             // Pass config

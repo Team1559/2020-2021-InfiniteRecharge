@@ -72,7 +72,7 @@ public class Chassis extends SubsystemBase{
     }
    
     public double distance(){
-        return (Math.abs(lEncoder.getPosition()) + Math.abs(rEncoder.getPosition())) / 2;
+        return (Math.abs(lEncoder.getPosition()) + Math.abs(-rEncoder.getPosition())) / 2;
     }
 
     public void LogEncoders() {
@@ -99,7 +99,6 @@ public class Chassis extends SubsystemBase{
         sparkMax4.restoreFactoryDefaults();
         lEncoder = sparkMax1.getEncoder(); //old  new CANEncoder(sparkMax1);
         rEncoder = sparkMax2.getEncoder(); //old  new CANEncoder(sparkMax2);
-        rEncoder.setInverted(true);
         sparkMax3.follow(sparkMax1);
         sparkMax4.follow(sparkMax2);
 
@@ -185,7 +184,7 @@ public class Chassis extends SubsystemBase{
             forwardInputSpeed = 0.25;
             turningInputSpeed = 0.25;
             leftVelocity = lEncoder.getVelocity();
-            rightVelocity = -(rEncoder.getVelocity());
+            rightVelocity = -(-rEncoder.getVelocity());
             //System.out.println("R: " + rightVelocity + " " + "L: " + leftVelocity);
             robotSpeed = Math.max(Math.abs(leftVelocity),Math.abs(rightVelocity));
             if(robotSpeed < 0.60042069 * 5600)
@@ -264,7 +263,7 @@ public class Chassis extends SubsystemBase{
 
     public Pose2d updateOdometry()
     {
-        return m_odometry.update(new Rotation2d(imu.yaw), (lEncoder.getPosition()), (rEncoder.getPosition()));
+        return m_odometry.update(new Rotation2d(imu.yaw), (lEncoder.getPosition()), (-rEncoder.getPosition()));
     }
 
     public Pose2d getPose() {
@@ -273,7 +272,7 @@ public class Chassis extends SubsystemBase{
 
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
         //return new DifferentialDriveWheelSpeeds(lEncoder.getVelocity(), rEncoder.getVelocity());
-        return new DifferentialDriveWheelSpeeds(R2M(lEncoder.getVelocity())/60, R2M(rEncoder.getVelocity())/60);
+        return new DifferentialDriveWheelSpeeds(R2M(lEncoder.getVelocity())/60, R2M(-rEncoder.getVelocity())/60);
     }
     public void tankDriveVolts(double leftVolts, double rightVolts) {
         sparkMax1.setVoltage(leftVolts);
@@ -295,7 +294,7 @@ public class Chassis extends SubsystemBase{
 
     
       public double getAverageEncoderDistance() {
-        return (Math.abs(lEncoder.getPosition()) + Math.abs(rEncoder.getPosition())) / 2.0; 
+        return (Math.abs(lEncoder.getPosition()) + Math.abs(-rEncoder.getPosition())) / 2.0; 
       }
     
       /**

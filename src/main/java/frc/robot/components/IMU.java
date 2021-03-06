@@ -51,7 +51,7 @@ public  class IMU{
     z_acceleration = ahrs.getWorldLinearAccelZ();
     roll = ahrs.getPitch();
     pitch = ahrs.getRoll();
-    yaw = -(ahrs.getYaw()*Math.PI/180.0);
+    yaw = -(ahrs.getYaw()*Math.PI/180.0);// normally negated
     turnRate = ahrs.getRate(); 
     y_angularVelocity = ahrs.getRate();
    }

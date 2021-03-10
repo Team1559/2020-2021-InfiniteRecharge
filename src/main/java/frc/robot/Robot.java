@@ -20,6 +20,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.AdvancedAuto;
 import frc.robot.subsystems.BasicAuto;
 import frc.robot.components.CompressorControl;
+import frc.robot.BORROWINGDriverControls;
 import frc.robot.RobotContainer;
 import frc.robot.Logging;
 
@@ -64,6 +65,7 @@ public class Robot extends TimedRobot{
   private Camera camera2 = new Camera(1);
   private AdvancedAuto advancedAuto = new AdvancedAuto();
   private BasicAuto basicAuto = new BasicAuto();
+  private BORROWINGDriverControls bdc = new BORROWINGDriverControls();
   private Pose2d pose;
   
 
@@ -268,6 +270,7 @@ public class Robot extends TimedRobot{
     //chassis
     if(chassisEnable && chassisInitialized == false){
       driveTrain.Init(oi, imu);
+      bdc.init(driveTrain);
       chassisInitialized = true;
     }
 

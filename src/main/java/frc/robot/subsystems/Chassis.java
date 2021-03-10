@@ -55,8 +55,8 @@ public class Chassis extends SubsystemBase{
     private double kD = 0.0000;
     private double kF = 0.00018; //0.000125
     private double deadband = 0.01;
-    private double forwardSpeed = 0;
-    private double sideSpeed = 0;
+    public double forwardSpeed = 0;
+    public double sideSpeed = 0;
     private double currentRampRate = 0;
     private boolean highGear = false;
     public int timer = 0;

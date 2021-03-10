@@ -39,7 +39,7 @@ public class RobotContainer {
     public static final double kvVoltSecondsPerMeter = (0.127);
     public static final double kaVoltSecondsSquaredPerMeter = (0.00991);
     public static final double kPDriveVel = (0.439);
-    public static final double kTrackwidthMeters = 0.8; //32.655838622156374;
+    public static final double kTrackwidthMeters = 0.4; //32.655838622156374;
     public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
     public static final double kMaxSpeedMetersPerSecond = 1;
     public static final double kMaxAccelerationMetersPerSecondSquared = 1;
@@ -92,11 +92,11 @@ public class RobotContainer {
     Trajectory exampleTrajectory =
         TrajectoryGenerator.generateTrajectory(
             // Start at the origin facing the +X direction
-            new Pose2d(0, 0, new Rotation2d(0)),
+            new Pose2d(0, 0, new Rotation2d(0.0)),
             // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(6, 0), new Translation2d(12,1)),
+            List.of(),//(new Translation2d(6, 1)),// new Translation2d(12,1),
             // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(12, 1, new Rotation2d(0)),
+            new Pose2d(4, 4, new Rotation2d(0.0)),
             // Pass config
             config);
 

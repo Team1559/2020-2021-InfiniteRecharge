@@ -255,6 +255,7 @@ public class Robot extends TimedRobot{
     //imu
     if(ImuEnable && ImuInitialized == false){
       imu.init();
+      imu.zeroYaw();
       ImuInitialized = true;
     }
 

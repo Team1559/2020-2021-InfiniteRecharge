@@ -23,8 +23,8 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 public class Chassis extends SubsystemBase{
 
     
-    private CANEncoder lEncoder;
-    private CANEncoder rEncoder;
+    public CANEncoder lEncoder;
+    public CANEncoder rEncoder;
     private CANSparkMax sparkMax1; // TBD
     private CANPIDController sparkMax1PID;
     private CANSparkMax sparkMax2;
@@ -60,6 +60,8 @@ public class Chassis extends SubsystemBase{
     private double currentRampRate = 0;
     private boolean highGear = false;
     public int timer = 0;
+    public double LeftVolts;
+    public double RightVolts;
 
     public void setRampRate(double rr){
         if(rr != currentRampRate){
@@ -277,6 +279,8 @@ public class Chassis extends SubsystemBase{
     public void tankDriveVolts(double leftVolts, double rightVolts) {
         sparkMax1.setVoltage(leftVolts);
         sparkMax2.setVoltage(-rightVolts);
+        LeftVolts = leftVolts;
+        RightVolts = rightVolts;
         driveTrain.feed();
       }
     public void resetOdometry(Pose2d pose) {
@@ -327,9 +331,7 @@ public class Chassis extends SubsystemBase{
       /**
        * Zeroes the heading of the robot.
        */
-      public void zeroHeading() {
-        imu.zeroYaw();
-      }
+
     
       /**
        * Returns the heading of the robot.

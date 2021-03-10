@@ -23,17 +23,16 @@ public class Logging{
     private BasicAuto basicAuto;
     
     //Master Booleans
-    private boolean printLogs = true; //master boolean disable to kill all print logs
-    private boolean smartDasboardLogs = false; //master boolean disable to kill all smart dashboard logs
+    private boolean printLogs = false; //master boolean disable to kill all print logs
+    private boolean smartDasboardLogs = true; //master boolean disable to kill all smart dashboard logs
 
     //Class pPrint Booleans
     private boolean printCompressorLogs = false;
     private boolean printImuLogs = false;
-    private boolean printautoNavLogs = false;
 
     //Class Smart Dashboard Logs
-    private boolean ChassisSmartdashboardLogs = false;
-    private boolean imuSmartDashboardLogs = false;
+    private boolean ChassisSmartdashboardLogs = true;
+    private boolean imuSmartDashboardLogs = true;
 
     public void init(IMU Imu, Chassis DriveTrain, PowerCell powerCelL, Climber climbeR, Spinner spinneR, CompressorControl compressorControL, AdvancedAuto advancedAutO, BasicAuto basicAutO, RobotContainer robotContaineR){
         imu = Imu;
@@ -70,6 +69,10 @@ public class Logging{
         if(smartDasboardLogs && ChassisSmartdashboardLogs){
             for(int i=0; i<4; i++){
                 SmartDashboard.putNumber("Motor " + (i+1) + " Temp: ", driveTrain.getMotorTemps()[i]);
+                SmartDashboard.putNumber("Right Encoder velocity ", -driveTrain.rEncoder.getVelocity());
+                SmartDashboard.putNumber("left Encoder velocity ", driveTrain.lEncoder.getVelocity());
+                SmartDashboard.putNumber("left motor voltage ",driveTrain.LeftVolts);
+                SmartDashboard.putNumber("right motor voltage ",driveTrain.RightVolts);
             }
         }
 

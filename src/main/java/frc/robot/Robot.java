@@ -67,12 +67,12 @@ public class Robot extends TimedRobot{
   private BasicAuto basicAuto = new BasicAuto();
   private BORROWINGDriverControls bdc = new BORROWINGDriverControls();
   private Pose2d pose;
-  private double BRForwardSpeed[] = {};
-  private double BRSidespeed[] = {};
-  private double BForwardSpeed[] = {};
-  private double BSidespeed[] = {};
-  private double SForwardSpeed[] = {};
-  private double SSidespeed[] = {};
+  private double BRForwardSpeed[] = {};//barrel racing forward
+  private double BRSidespeed[] = {};//barrel racing side
+  private double BForwardSpeed[] = {};//bounce forward
+  private double BSidespeed[] = {};//bounce side
+  private double SForwardSpeed[] = {};//slolum forward
+  private double SSidespeed[] = {};//slolum side
   public int counter = 0;
   
   private double forwardSpeed[] = BRForwardSpeed;

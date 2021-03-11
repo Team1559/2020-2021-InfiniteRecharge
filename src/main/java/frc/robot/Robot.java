@@ -75,6 +75,9 @@ public class Robot extends TimedRobot{
   private double SSidespeed[] = {};
   public int counter = 0;
   
+  private double forwardSpeed[] = BRForwardSpeed;
+  private double sidespeed[] = BRSidespeed;
+  
 
 
   @Override
@@ -150,8 +153,8 @@ public class Robot extends TimedRobot{
       pose = driveTrain.updateOdometry();
     }
     if(autoSelector == "learning"){
-      if(counter<=BRForwardSpeed.length){
-        driveTrain.move(BRForwardSpeed[counter], BRSidespeed[counter]);
+      if(counter<=forwardSpeed.length){
+        driveTrain.move(forwardSpeed[counter], sidespeed[counter]);
         counter++;
       }
       else{

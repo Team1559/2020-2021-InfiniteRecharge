@@ -11,20 +11,19 @@ public class BORROWINGDriverControls{
         drivetrain = Drivetrain;
     }
     public void periodic(Double _forwardSpeed, Double _sideSpeed){
-        if(forwardSpeed.size()<= 3000){
+        if(forwardSpeed.size() <= 3000){
             forwardSpeed.add(_forwardSpeed);
             sideSpeed.add(_sideSpeed);
         }
     }
     public void printAll() {
-        for(int i=0; i<forwardSpeed.size(); i++){
+        for(int i = 0; i < forwardSpeed.size(); i++){
         //System.out.print(forwardSpeed.get(i) +" "+ sideSpeed.get(i));
         System.out.print(forwardSpeed.get(i) +", ");
         }
         System.out.println();
         System.out.println();
-        for(int i=0; i<forwardSpeed.size(); i++){
-        //System.out.print(forwardSpeed.get(i) +" "+ sideSpeed.get(i));
+        for(int i = 0; i < sideSpeed.size(); i++){
         System.out.print(sideSpeed.get(i) +", ");
         }
 }

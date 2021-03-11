@@ -29,7 +29,7 @@ public class Robot extends TimedRobot{
   private String AutoNavPathSelector = "example";// barrel racing is "barrel" , slolum is "slolum", and bounce path is "bounce" and example is "example" 
   private boolean doReverse = true;
   private String autoSelector = "learning";// learning is the good one 
-  //in order to switch auto modes change what is in the quotes "basic" for basic auto, "advanced" for advanced auto, "autoNav" for vision auto, and "none" for no auto
+  //in order to switch auto modes change what is in the quotes "basic" for basic auto, "advanced" for advanced auto, "autoNav" for bad auto, learning for machine learning auto, and "none" for no auto
  
   // feature flags booleans
   //change these to disable unused subsystems.
@@ -98,8 +98,9 @@ public class Robot extends TimedRobot{
   public void autonomousInit()
   {
     initialize();
+    if(autoSelector == "learning"){
     counter = 0;
-  
+    }
     //sets the feautre flag boolean for advanced auto
     if(autoSelector == "test"){
       driveTrain.initOdometry();

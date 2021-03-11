@@ -201,6 +201,7 @@ public class Robot extends TimedRobot{
   @Override
   public void teleopPeriodic()
   {
+    bdc.periodic(driveTrain.forwardSpeed, driveTrain.sideSpeed);
     //logging
     if(loggingEnable && loggingInitialized){
       logging.Log();
@@ -261,6 +262,7 @@ public class Robot extends TimedRobot{
     if(chassisEnable && chassisInitialized){
       driveTrain.disabled();
     }
+    bdc.printAll();
   }
 
   @Override

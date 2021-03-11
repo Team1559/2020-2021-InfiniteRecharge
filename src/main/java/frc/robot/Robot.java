@@ -41,7 +41,7 @@ public class Robot extends TimedRobot{
   private boolean colorEnable = true;
   private boolean powerCellEnable = true;
 
-  //DON'T TOUCH THESE, they are used to determine if the specifies subsystem has been initialised as to not call it's init method more than once, causiing errors.
+  //DON'T TOUCH THESE, they are used to determine if a specifiec subsystem has been initialised as to not call it's init method more than once, causing errors.
   private boolean loggingInitialized = false;
   private boolean chassisInitialized = false;
   private boolean ImuInitialized = false;

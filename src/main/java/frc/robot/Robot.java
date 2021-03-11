@@ -67,6 +67,13 @@ public class Robot extends TimedRobot{
   private BasicAuto basicAuto = new BasicAuto();
   private BORROWINGDriverControls bdc = new BORROWINGDriverControls();
   private Pose2d pose;
+  private double BRForwardSpeed[] = {};
+  private double BRSidespeed[] = {};
+  private double BForwardSpeed[] = {};
+  private double BSidespeed[] = {};
+  private double SForwardSpeed[] = {};
+  private double SSidespeed[] = {};
+  public int counter = 0;
   
 
 
@@ -88,6 +95,7 @@ public class Robot extends TimedRobot{
   public void autonomousInit()
   {
     initialize();
+    counter = 0;
   
     //sets the feautre flag boolean for advanced auto
     if(autoSelector == "test"){
@@ -140,6 +148,16 @@ public class Robot extends TimedRobot{
     if(autoSelector == "test"){
       CommandScheduler.getInstance().run();
       pose = driveTrain.updateOdometry();
+    }
+    if(autoSelector == "learning"){
+      if(counter<=BRForwardSpeed.length){
+        driveTrain.move(BRForwardSpeed[counter], BRSidespeed[counter]);
+        counter++;
+      }
+      else{
+        driveTrain.move(0, 0);
+      }
+      
     }
 
     //advanced auto

@@ -78,6 +78,7 @@ public class Robot extends TimedRobot{
   private double forwardSpeed[] = BRForwardSpeed;
   private double sidespeed[] = BRSidespeed;
   
+  private boolean teachTheAI = true;
 
 
   @Override
@@ -205,7 +206,9 @@ public class Robot extends TimedRobot{
   @Override
   public void teleopPeriodic()
   {
-    bdc.periodic(driveTrain.forwardSpeed, driveTrain.sideSpeed);
+    if(teachTheAI){
+      bdc.periodic(driveTrain.forwardSpeed, driveTrain.sideSpeed);
+    }
     //logging
     if(loggingEnable && loggingInitialized){
       logging.Log();
@@ -266,7 +269,9 @@ public class Robot extends TimedRobot{
     if(chassisEnable && chassisInitialized){
       driveTrain.disabled();
     }
-    bdc.printAll();
+    if(teachTheAI){
+      bdc.printAll();
+    }
   }
 
   @Override

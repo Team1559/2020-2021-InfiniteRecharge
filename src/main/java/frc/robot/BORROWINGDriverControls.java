@@ -18,7 +18,7 @@ public class BORROWINGDriverControls{
     }
     public void printAll() {
         for(int i = 0; i < forwardSpeed.size(); i++){
-        //System.out.print(forwardSpeed.get(i) +" "+ sideSpeed.get(i));
+        //System.out.print(forwardSpeed.get(i) +" "+ sideSpeed.get(i)+ " ");
         System.out.print(forwardSpeed.get(i) +", ");
         }
         System.out.println();

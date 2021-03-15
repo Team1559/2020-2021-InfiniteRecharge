@@ -158,9 +158,9 @@ public class Robot extends TimedRobot{
       CommandScheduler.getInstance().run();
       pose = driveTrain.updateOdometry();
     }
-    
+
     else if(autoSelector == "learning"){
-      if(counter<=forwardSpeed.length){
+      if(counter < forwardSpeed.length){
         driveTrain.move(forwardSpeed[counter], sidespeed[counter]);
         counter++;
       }

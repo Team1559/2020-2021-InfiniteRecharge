@@ -25,14 +25,14 @@ public class Chassis extends SubsystemBase{
     
     public CANEncoder lEncoder;
     public CANEncoder rEncoder;
-    private CANSparkMax sparkMax1; // TBD
-    private CANPIDController sparkMax1PID;
-    private CANSparkMax sparkMax2;
-    private CANPIDController sparkMax2PID;
-    private CANSparkMax sparkMax3;
-    private CANPIDController sparkMax3PID;
-    private CANSparkMax sparkMax4;
-    private CANPIDController sparkMax4PID;
+    public CANSparkMax sparkMax1; // TBD
+    public CANPIDController sparkMax1PID;
+    public CANSparkMax sparkMax2;
+    public CANPIDController sparkMax2PID;
+    public CANSparkMax sparkMax3;
+    public CANPIDController sparkMax3PID;
+    public CANSparkMax sparkMax4;
+    public CANPIDController sparkMax4PID;
     private double forwardInputSpeed = 1;
     private double turningInputSpeed = 0.65;
     public double robotSpeed = 0;
@@ -167,6 +167,16 @@ public class Chassis extends SubsystemBase{
 
     public void setControltype(ControlType controlTypE){
         driveTrain.controlType = controlTypE;
+    }
+    public void init2(){
+        sparkMax1.setIdleMode(IdleMode.kBrake);
+        sparkMax2.setIdleMode(IdleMode.kBrake);
+        sparkMax3.setIdleMode(IdleMode.kBrake);
+        sparkMax4.setIdleMode(IdleMode.kBrake);
+        sparkMax1PID.setReference(0, ControlType.kVelocity);
+        sparkMax2PID.setReference(0, ControlType.kVelocity);
+        sparkMax3PID.setReference(0, ControlType.kVelocity);
+        sparkMax4PID.setReference(0, ControlType.kVelocity);
     }
 
     public void setKF(double kF){

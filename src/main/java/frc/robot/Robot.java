@@ -99,6 +99,9 @@ public class Robot extends TimedRobot{
   public void autonomousInit()
   {
     initialize();
+    if(chassisEnable && chassisInitialized){
+      driveTrain.init2();
+    }
     if(autoSelector == "learning"){
     counter = 0;
     }
@@ -149,12 +152,14 @@ public class Robot extends TimedRobot{
       logging.Log();
     }
     
+
     //autoNav
     if(autoSelector == "test"){
       CommandScheduler.getInstance().run();
       pose = driveTrain.updateOdometry();
     }
-    if(autoSelector == "learning"){
+    
+    else if(autoSelector == "learning"){
       if(counter<=forwardSpeed.length){
         driveTrain.move(forwardSpeed[counter], sidespeed[counter]);
         counter++;
@@ -166,7 +171,7 @@ public class Robot extends TimedRobot{
     }
 
     //advanced auto
-    if(autoSelector == "advanced" && imu.isYawValid()){
+    else if(autoSelector == "advanced" && imu.isYawValid()){
       advancedAuto.AutoPeriodic(driveTrain, powerCell, doReverse);
     }
 
@@ -196,6 +201,9 @@ public class Robot extends TimedRobot{
   public void teleopInit()
   {
     initialize();
+    if(chassisEnable && chassisInitialized){
+      driveTrain.init2();
+    }
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -207,7 +215,7 @@ public class Robot extends TimedRobot{
   public void teleopPeriodic()
   {
     if(teachTheAI){
-      bdc.periodic(driveTrain.forwardSpeed, driveTrain.sideSpeed);
+      bdc.periodic(driveTrain.forwardSpeed, driveTrain.sideSpeed, driveTrain.lEncoder.getPosition(), driveTrain.lEncoder.getVelocity(), driveTrain.rEncoder.getPosition(), driveTrain.rEncoder.getVelocity());
     }
     //logging
     if(loggingEnable && loggingInitialized){

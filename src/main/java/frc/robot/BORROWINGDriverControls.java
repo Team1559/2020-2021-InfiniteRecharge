@@ -11,8 +11,14 @@ public class BORROWINGDriverControls{
     private ArrayList<Double> LeftEncodervelocity = new ArrayList<Double>();
     private ArrayList<Double> rightEncoderPosition = new ArrayList<Double>();
     private ArrayList<Double> rightEncodervelocity = new ArrayList<Double>();
-    public void init(Chassis Drivetrain){
-        drivetrain = Drivetrain;
+    public void init(){
+        forwardSpeed.clear();
+            sideSpeed.clear();;
+            leftEncoderPosition.clear();;
+            LeftEncodervelocity.clear();;
+            rightEncoderPosition.clear();
+            rightEncodervelocity.clear();
+
     }
     public void periodic(Double _forwardSpeed, Double _sideSpeed, Double lep, Double lev, Double rep, Double rev ){
         if(forwardSpeed.size() <= 3000){
@@ -28,6 +34,7 @@ public class BORROWINGDriverControls{
         for(int i = 0; i < forwardSpeed.size(); i++){
         System.out.println(forwardSpeed.get(i) +" "+ sideSpeed.get(i)+ " "+leftEncoderPosition.get(i) +" "+ LeftEncodervelocity.get(i)+ " "+rightEncoderPosition.get(i) +" "+ rightEncodervelocity.get(i));
         }
+
 }
 
 

@@ -62,6 +62,8 @@ public class Chassis extends SubsystemBase{
     public int timer = 0;
     public double LeftVolts;
     public double RightVolts;
+    public double loggingForwardSpeed;
+    public double loggingSideSpeed;
 
     public void setRampRate(double rr){
         if(rr != currentRampRate){
@@ -248,6 +250,8 @@ public class Chassis extends SubsystemBase{
 
     public void move(double speed, double rotation){
             driveTrain.arcadeDrive(speed,rotation,false);
+            loggingForwardSpeed = speed;
+            loggingSideSpeed = rotation;
     }
     public void resetEncoders(){
         lEncoder.setPosition(0);

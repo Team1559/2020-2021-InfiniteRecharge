@@ -99,6 +99,9 @@ public class Robot extends TimedRobot{
   public void autonomousInit()
   {
     initialize();
+    if(teachTheAI){
+      bdc.init();
+    }
     if(chassisEnable && chassisInitialized){
       driveTrain.init2();
     }
@@ -151,7 +154,9 @@ public class Robot extends TimedRobot{
     if(loggingEnable && loggingInitialized){
       logging.Log();
     }
-    
+    if(teachTheAI){
+      bdc.periodic(driveTrain.loggingForwardSpeed, driveTrain.loggingSideSpeed, driveTrain.lEncoder.getPosition(), driveTrain.lEncoder.getVelocity(), driveTrain.rEncoder.getPosition(), driveTrain.rEncoder.getVelocity());
+    }
 
     //autoNav
     if(autoSelector == "test"){
@@ -201,6 +206,9 @@ public class Robot extends TimedRobot{
   public void teleopInit()
   {
     initialize();
+    if(teachTheAI){
+      bdc.init();
+    }
     if(chassisEnable && chassisInitialized){
       driveTrain.init2();
     }
@@ -307,7 +315,6 @@ public class Robot extends TimedRobot{
     //chassis
     if(chassisEnable && chassisInitialized == false){
       driveTrain.Init(oi, imu);
-      bdc.init(driveTrain);
       chassisInitialized = true;
     }
 

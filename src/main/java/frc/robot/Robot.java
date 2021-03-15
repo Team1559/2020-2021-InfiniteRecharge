@@ -101,6 +101,7 @@ public class Robot extends TimedRobot{
     initialize();
     if(teachTheAI){
       bdc.init();
+      driveTrain.initOdometry();
     }
     if(chassisEnable && chassisInitialized){
       driveTrain.init2();
@@ -208,6 +209,7 @@ public class Robot extends TimedRobot{
     initialize();
     if(teachTheAI){
       bdc.init();
+      driveTrain.initOdometry();
     }
     if(chassisEnable && chassisInitialized){
       driveTrain.init2();

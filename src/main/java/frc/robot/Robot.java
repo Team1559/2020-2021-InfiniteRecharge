@@ -8,6 +8,10 @@
 package frc.robot;
 
 import frc.robot.subsystems.PowerCell;
+
+import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,6 +27,8 @@ import frc.robot.components.CompressorControl;
 import frc.robot.BORROWINGDriverControls;
 import frc.robot.RobotContainer;
 import frc.robot.Logging;
+import frc.robot.Test;
+import frc.robot.*;
 
 public class Robot extends TimedRobot{
 //these are changable
@@ -33,7 +39,7 @@ public class Robot extends TimedRobot{
  
   // feature flags booleans
   //change these to disable unused subsystems.
-  private boolean loggingEnable = true;
+  private boolean loggingEnable = false;
   private boolean chassisEnable = true;
   private boolean ImuEnable = true;
   private boolean climberEnable = true;
@@ -53,6 +59,8 @@ public class Robot extends TimedRobot{
   private Command m_autonomousCommand;
   //constructors
   //private RobotContainer robotContainer = new RobotContainer();
+  private Test test = new Test();
+  private Test2 t2 = new Test2();
   private Logging logging = new Logging();
   public Climber climber = new Climber();
   public PowerCell powerCell = new PowerCell();
@@ -67,19 +75,15 @@ public class Robot extends TimedRobot{
   private BasicAuto basicAuto = new BasicAuto();
   private BORROWINGDriverControls bdc = new BORROWINGDriverControls();
   private Pose2d pose;
-  private double BRForwardSpeed[] = {};//barrel racing forward
-  private double BRSidespeed[] = {};//barrel racing side
-  private double BForwardSpeed[] = {};//bounce forward
-  private double BSidespeed[] = {};//bounce side
-  private double SForwardSpeed[] = {};//slolum forward
-  private double SSidespeed[] = {};//slolum side
   public int counter = 0;
   
-  private double forwardSpeed[] = BRForwardSpeed;
-  private double sidespeed[] = BRSidespeed;
+  private double forwardSpeed[] = t2.generated_Velocities;
+  private double sideSpeed[] = t2.generated_Rotations;
+  private double forwardSpeedLog[] = t2.generated_Velocities;
+  private double sideSpeedLog[] = t2.generated_Rotations;
   
   private boolean teachTheAI = true;
-
+  private int loopCounter = 0;
 
   @Override
   public void robotInit() {
@@ -101,6 +105,11 @@ public class Robot extends TimedRobot{
     initialize();
     if(autoSelector == "learning"){
     counter = 0;
+    driveTrain.setControltype(ControlType.kVelocity);
+    driveTrain.sparkMax1.setIdleMode(IdleMode.kBrake);
+    driveTrain.sparkMax2.setIdleMode(IdleMode.kBrake);
+    driveTrain.sparkMax3.setIdleMode(IdleMode.kBrake);
+    driveTrain.sparkMax4.setIdleMode(IdleMode.kBrake);
     }
     //sets the feautre flag boolean for advanced auto
     if(autoSelector == "test"){
@@ -144,6 +153,7 @@ public class Robot extends TimedRobot{
   @Override
   public void autonomousPeriodic()
   {
+    loopCounter ++;
     //logging
     if(loggingEnable && loggingInitialized){
       logging.Log();
@@ -154,9 +164,12 @@ public class Robot extends TimedRobot{
       CommandScheduler.getInstance().run();
       pose = driveTrain.updateOdometry();
     }
-    if(autoSelector == "learning"){
-      if(counter<=forwardSpeed.length){
-        driveTrain.move(forwardSpeed[counter], sidespeed[counter]);
+    
+    else if(autoSelector == "learning"){
+      if(counter<forwardSpeed.length){
+        System.out.println("im sentient" + forwardSpeed[counter]);
+        driveTrain.move(forwardSpeed[counter], sideSpeed[counter]);
+          //System.out.print(forwardSpeed[counter] - driveTrain.forwardSpeed +" "+ sideSpeed[counter] - driveTrain.sideSpeed);
         counter++;
       }
       else{
@@ -166,7 +179,7 @@ public class Robot extends TimedRobot{
     }
 
     //advanced auto
-    if(autoSelector == "advanced" && imu.isYawValid()){
+    else if(autoSelector == "advanced" && imu.isYawValid()){
       advancedAuto.AutoPeriodic(driveTrain, powerCell, doReverse);
     }
 
@@ -196,6 +209,13 @@ public class Robot extends TimedRobot{
   public void teleopInit()
   {
     initialize();
+    if(chassisEnable && chassisInitialized){
+      driveTrain.setControltype(ControlType.kVelocity);
+      driveTrain.sparkMax1.setIdleMode(IdleMode.kBrake);
+      driveTrain.sparkMax2.setIdleMode(IdleMode.kBrake);
+      driveTrain.sparkMax3.setIdleMode(IdleMode.kBrake);
+      driveTrain.sparkMax4.setIdleMode(IdleMode.kBrake);
+    }
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -206,6 +226,7 @@ public class Robot extends TimedRobot{
   @Override
   public void teleopPeriodic()
   {
+    loopCounter++;
     if(teachTheAI){
       bdc.periodic(driveTrain.forwardSpeed, driveTrain.sideSpeed);
     }
@@ -272,6 +293,7 @@ public class Robot extends TimedRobot{
     if(teachTheAI){
       bdc.printAll();
     }
+    //System.out.println(loopCounter);
   }
 
   @Override

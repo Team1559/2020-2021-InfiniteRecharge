@@ -27,7 +27,7 @@ import frc.robot.components.CompressorControl;
 import frc.robot.BORROWINGDriverControls;
 import frc.robot.RobotContainer;
 import frc.robot.Logging;
-import frc.robot.Test;
+//import frc.robot.Test;
 import frc.robot.*;
 
 public class Robot extends TimedRobot{
@@ -59,8 +59,8 @@ public class Robot extends TimedRobot{
   private Command m_autonomousCommand;
   //constructors
   //private RobotContainer robotContainer = new RobotContainer();
-  private Test test = new Test();
-  private Test2 t2 = new Test2();
+  //private Test test = new Test();
+  //private Test2 t2 = new Test2();
   private Logging logging = new Logging();
   public Climber climber = new Climber();
   public PowerCell powerCell = new PowerCell();
@@ -77,10 +77,10 @@ public class Robot extends TimedRobot{
   private Pose2d pose;
   public int counter = 0;
   
-  private double forwardSpeed[] = t2.generated_Velocities;
-  private double sideSpeed[] = t2.generated_Rotations;
-  private double forwardSpeedLog[] = t2.generated_Velocities;
-  private double sideSpeedLog[] = t2.generated_Rotations;
+  private double forwardSpeed[] ;//= t2.generated_Velocities;
+  private double sideSpeed[]; //= t2.generated_Rotations;
+  private double forwardSpeedLog[];// = t2.generated_Velocities;
+  private double sideSpeedLog[];// = t2.generated_Rotations;
   
   private boolean teachTheAI = true;
   private int loopCounter = 0;
@@ -177,7 +177,7 @@ public class Robot extends TimedRobot{
 
     else if(autoSelector == "learning"){
       if(counter < forwardSpeed.length){
-        driveTrain.move(forwardSpeed[counter], sidespeed[counter]);
+        driveTrain.move(forwardSpeed[counter], sideSpeed[counter]);
         counter++;
       }
       else{

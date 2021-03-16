@@ -8,11 +8,13 @@ rotations = []
 with open(fileName) as f:
 	for line in f.readlines():
 		for entry in line.strip().split(" "):
-			if i%2==0:
+			if i = 0:
 				velocities.append(entry)
-			else:
+			if i == 1:
 				rotations.append(entry)
+			else:
 			i+=1
+		i = 0
 
 velocityArray = ",\n\t\t".join(velocities)
 rotationsArray = ",\n\t\t".join(rotations)

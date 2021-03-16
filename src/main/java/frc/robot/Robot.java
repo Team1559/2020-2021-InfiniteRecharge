@@ -103,6 +103,13 @@ public class Robot extends TimedRobot{
   public void autonomousInit()
   {
     initialize();
+    if(teachTheAI){
+      bdc.init();
+      driveTrain.initOdometry();
+    }
+    if(chassisEnable && chassisInitialized){
+      driveTrain.init2();
+    }
     if(autoSelector == "learning"){
     counter = 0;
     driveTrain.setControltype(ControlType.kVelocity);
@@ -158,18 +165,19 @@ public class Robot extends TimedRobot{
     if(loggingEnable && loggingInitialized){
       logging.Log();
     }
-    
+    if(teachTheAI){
+      bdc.periodic(driveTrain.loggingForwardSpeed, driveTrain.loggingSideSpeed, driveTrain.lEncoder.getPosition(), driveTrain.lEncoder.getVelocity(), driveTrain.rEncoder.getPosition(), driveTrain.rEncoder.getVelocity());
+    }
+
     //autoNav
     if(autoSelector == "test"){
       CommandScheduler.getInstance().run();
       pose = driveTrain.updateOdometry();
     }
-    
+
     else if(autoSelector == "learning"){
-      if(counter<forwardSpeed.length){
-        System.out.println("im sentient" + forwardSpeed[counter]);
-        driveTrain.move(forwardSpeed[counter], sideSpeed[counter]);
-          //System.out.print(forwardSpeed[counter] - driveTrain.forwardSpeed +" "+ sideSpeed[counter] - driveTrain.sideSpeed);
+      if(counter < forwardSpeed.length){
+        driveTrain.move(forwardSpeed[counter], sidespeed[counter]);
         counter++;
       }
       else{
@@ -209,12 +217,12 @@ public class Robot extends TimedRobot{
   public void teleopInit()
   {
     initialize();
+    if(teachTheAI){
+      bdc.init();
+      driveTrain.initOdometry();
+    }
     if(chassisEnable && chassisInitialized){
-      driveTrain.setControltype(ControlType.kVelocity);
-      driveTrain.sparkMax1.setIdleMode(IdleMode.kBrake);
-      driveTrain.sparkMax2.setIdleMode(IdleMode.kBrake);
-      driveTrain.sparkMax3.setIdleMode(IdleMode.kBrake);
-      driveTrain.sparkMax4.setIdleMode(IdleMode.kBrake);
+      driveTrain.init2();
     }
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
@@ -228,7 +236,7 @@ public class Robot extends TimedRobot{
   {
     loopCounter++;
     if(teachTheAI){
-      bdc.periodic(driveTrain.forwardSpeed, driveTrain.sideSpeed);
+      bdc.periodic(driveTrain.forwardSpeed, driveTrain.sideSpeed, driveTrain.lEncoder.getPosition(), driveTrain.lEncoder.getVelocity(), driveTrain.rEncoder.getPosition(), driveTrain.rEncoder.getVelocity());
     }
     //logging
     if(loggingEnable && loggingInitialized){
@@ -321,7 +329,6 @@ public class Robot extends TimedRobot{
     //chassis
     if(chassisEnable && chassisInitialized == false){
       driveTrain.Init(oi, imu);
-      bdc.init(driveTrain);
       chassisInitialized = true;
     }
 

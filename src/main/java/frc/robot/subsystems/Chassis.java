@@ -170,7 +170,7 @@ public class Chassis extends SubsystemBase{
     public void setControltype(ControlType controlTypE){
         driveTrain.controlType = controlTypE;
     }
-    public void init2(){
+    public void teleopInit(){
         sparkMax1.setIdleMode(IdleMode.kBrake);
         sparkMax2.setIdleMode(IdleMode.kBrake);
         sparkMax3.setIdleMode(IdleMode.kBrake);
@@ -179,6 +179,21 @@ public class Chassis extends SubsystemBase{
         sparkMax2PID.setReference(0, ControlType.kVelocity);
         sparkMax3PID.setReference(0, ControlType.kVelocity);
         sparkMax4PID.setReference(0, ControlType.kVelocity);
+    }
+    public void autoInit(double kp){
+        sparkMax1.setIdleMode(IdleMode.kBrake);
+        sparkMax2.setIdleMode(IdleMode.kBrake);
+        sparkMax3.setIdleMode(IdleMode.kBrake);
+        sparkMax4.setIdleMode(IdleMode.kBrake);
+        sparkMax1PID.setReference(0, ControlType.kPosition);
+        sparkMax2PID.setReference(0, ControlType.kPosition);
+        sparkMax3PID.setReference(0, ControlType.kPosition);
+        sparkMax4PID.setReference(0, ControlType.kPosition);
+        sparkMax1PID.setP(kp);
+        sparkMax2PID.setP(kp);
+        sparkMax3PID.setP(kp);
+        sparkMax4PID.setP(kp);
+
     }
 
     public void setKF(double kF){
@@ -248,10 +263,12 @@ public class Chassis extends SubsystemBase{
             highGear = false;        }
     }
 
-    public void move(double speed, double rotation){
-            driveTrain.arcadeDrive(speed,rotation,false);
-            loggingForwardSpeed = speed;
-            loggingSideSpeed = rotation;
+    public void move(double leftPosition, double rightPosition){
+           sparkMax1PID.setReference(rightPosition, ControlType.kPosition);
+           sparkMax2PID.setReference(leftPosition, ControlType.kPosition)
+
+            // loggingForwardSpeed = speed;
+            // loggingSideSpeed = rotation;
     }
     public void resetEncoders(){
         lEncoder.setPosition(0);

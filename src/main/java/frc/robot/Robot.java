@@ -77,8 +77,8 @@ public class Robot extends TimedRobot{
   private Pose2d pose;
   public int counter = 0;
   
-  private double forwardSpeed[] = t1.generated_Velocities;
-  private double sideSpeed[]= t1.generated_Rotations;
+  private double rightSpeed[] = t1.generated_rightEncoderPositons;
+  private double leftSpeed[]= t1.generated_leftEncoderPositions;
   private double forwardSpeedLog[]= t1.generated_Velocities;
   private double sideSpeedLog[]= t1.generated_Rotations;
   
@@ -108,15 +108,10 @@ public class Robot extends TimedRobot{
       driveTrain.initOdometry();
     }
     if(chassisEnable && chassisInitialized){
-      driveTrain.init2();
+      driveTrain.autoInit(0.0001);
     }
     if(autoSelector == "learning"){
     counter = 0;
-    driveTrain.setControltype(ControlType.kVelocity);
-    driveTrain.sparkMax1.setIdleMode(IdleMode.kBrake);
-    driveTrain.sparkMax2.setIdleMode(IdleMode.kBrake);
-    driveTrain.sparkMax3.setIdleMode(IdleMode.kBrake);
-    driveTrain.sparkMax4.setIdleMode(IdleMode.kBrake);
     }
     //sets the feautre flag boolean for advanced auto
     if(autoSelector == "test"){
@@ -176,8 +171,8 @@ public class Robot extends TimedRobot{
     }
 
     else if(autoSelector == "learning"){
-      if(loopCounter > 60 && counter < forwardSpeed.length){
-        driveTrain.move(forwardSpeed[counter], sideSpeed[counter]);
+      if(loopCounter > 60 && counter < leftSpeed.length){
+        driveTrain.move(leftSpeed[counter], rightSpeed[counter]);
         counter++;
       }
       else{
@@ -222,7 +217,7 @@ public class Robot extends TimedRobot{
       driveTrain.initOdometry();
     }
     if(chassisEnable && chassisInitialized){
-      driveTrain.init2();
+      driveTrain.teleopInit();
     }
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

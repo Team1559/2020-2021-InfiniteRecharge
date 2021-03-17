@@ -265,7 +265,7 @@ public class Chassis extends SubsystemBase{
 
     public void move(double leftPosition, double rightPosition){
            sparkMax1PID.setReference(rightPosition, ControlType.kPosition);
-           sparkMax2PID.setReference(leftPosition, ControlType.kPosition)
+           sparkMax2PID.setReference(leftPosition, ControlType.kPosition);
 
             // loggingForwardSpeed = speed;
             // loggingSideSpeed = rotation;

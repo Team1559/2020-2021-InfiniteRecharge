@@ -7,28 +7,12 @@
 
 package frc.robot;
 
-import frc.robot.subsystems.PowerCell;
-
-import com.revrobotics.ControlType;
-import com.revrobotics.CANSparkMax.IdleMode;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.Spinner;
-import frc.robot.components.Camera;
-import frc.robot.components.IMU;
-import frc.robot.subsystems.Chassis;
-import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.AdvancedAuto;
-import frc.robot.subsystems.BasicAuto;
-import frc.robot.components.CompressorControl;
-import frc.robot.BORROWINGDriverControls;
-import frc.robot.RobotContainer;
-import frc.robot.Logging;
-//import frc.robot.Test;
-import frc.robot.*;
+import frc.robot.subsystems.*;
+import frc.robot.components.*;
 
 public class Robot extends TimedRobot{
 //these are changable
@@ -79,8 +63,6 @@ public class Robot extends TimedRobot{
   
   private double rightSpeed[] = t1.generated_rightEncoderPositions;
   private double leftSpeed[]= t1.generated_leftEncoderPositions;
-  private double forwardSpeedLog[]= t1.generated_Velocities;
-  private double sideSpeedLog[]= t1.generated_Rotations;
   
   private boolean teachTheAI = true;
   private int loopCounter = 0;

@@ -1,14 +1,7 @@
 package frc.robot;
 //imports
-import frc.robot.subsystems.PowerCell;
-import frc.robot.subsystems.Spinner;
-import frc.robot.components.IMU;
-import frc.robot.subsystems.Chassis;
-import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.AdvancedAuto;
-import frc.robot.subsystems.BasicAuto;
-import frc.robot.components.CompressorControl;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.*;
+import frc.robot.components.*;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Logging{

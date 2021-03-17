@@ -77,7 +77,7 @@ public class Robot extends TimedRobot{
   private Pose2d pose;
   public int counter = 0;
   
-  private double rightSpeed[] = t1.generated_rightEncoderPositons;
+  private double rightSpeed[] = t1.generated_rightEncoderPositions;
   private double leftSpeed[]= t1.generated_leftEncoderPositions;
   private double forwardSpeedLog[]= t1.generated_Velocities;
   private double sideSpeedLog[]= t1.generated_Rotations;
@@ -108,7 +108,7 @@ public class Robot extends TimedRobot{
       driveTrain.initOdometry();
     }
     if(chassisEnable && chassisInitialized){
-      driveTrain.autoInit(0.0001);
+      driveTrain.autoInit(0.0002);
     }
     if(autoSelector == "learning"){
     counter = 0;

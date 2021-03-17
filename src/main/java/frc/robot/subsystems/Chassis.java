@@ -193,6 +193,10 @@ public class Chassis extends SubsystemBase{
         sparkMax2PID.setP(kp);
         sparkMax3PID.setP(kp);
         sparkMax4PID.setP(kp);
+        sparkMax1PID.setFF(0);
+        sparkMax2PID.setFF(0);
+        sparkMax3PID.setFF(0);
+        sparkMax4PID.setFF(0);
 
     }
 

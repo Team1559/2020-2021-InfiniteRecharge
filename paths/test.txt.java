@@ -6,7 +6,7 @@ package frc.robot;
 
 public class stuff {
 	public double[] generated_Velocities = {
-		﻿-0.5234375,
+		-0.5234375,
 		0.0,
 		-0.3671875,
 		-0.375,
@@ -17,7 +17,7 @@ public class stuff {
 		-0.453125,
 		-0.453125,
 		-0.4765625,
-		﻿-0.4765625,
+		-0.4765625,
 		-0.4765625,
 		-0.4765625,
 		-0.4765625,

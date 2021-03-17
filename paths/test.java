@@ -6,7 +6,7 @@ package frc.robot;
 
 public class Test {
 	public double[] generated_Velocities = {
-		﻿0.0
+		0.0
 	};
 	public double[] generated_Rotations = {
 		0.0

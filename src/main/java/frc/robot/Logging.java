@@ -9,7 +9,7 @@ import frc.robot.subsystems.AdvancedAuto;
 import frc.robot.subsystems.BasicAuto;
 import frc.robot.components.CompressorControl;
 import frc.robot.RobotContainer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Logging{
     private RobotContainer robotContainer;
@@ -64,15 +64,15 @@ public class Logging{
             }
         }
         if(smartDasboardLogs && imuSmartDashboardLogs){
-            SmartDashboard.putNumber("Imu yaw", imu.yaw);
+            // SmartDashboard.putNumber("Imu yaw", imu.yaw);
         }
         if(smartDasboardLogs && ChassisSmartdashboardLogs){
             for(int i=0; i<4; i++){
-                SmartDashboard.putNumber("Motor " + (i+1) + " Temp: ", driveTrain.getMotorTemps()[i]);
-                SmartDashboard.putNumber("Right Encoder velocity ", -driveTrain.rEncoder.getVelocity());
-                SmartDashboard.putNumber("left Encoder velocity ", driveTrain.lEncoder.getVelocity());
-                SmartDashboard.putNumber("left motor voltage ",driveTrain.LeftVolts);
-                SmartDashboard.putNumber("right motor voltage ",driveTrain.RightVolts);
+                // SmartDashboard.putNumber("Motor " + (i+1) + " Temp: ", driveTrain.getMotorTemps()[i]);
+                // SmartDashboard.putNumber("Right Encoder velocity ", -driveTrain.rEncoder.getVelocity());
+                // SmartDashboard.putNumber("left Encoder velocity ", driveTrain.lEncoder.getVelocity());
+                // SmartDashboard.putNumber("left motor voltage ",driveTrain.LeftVolts);
+                // SmartDashboard.putNumber("right motor voltage ",driveTrain.RightVolts);
             }
         }
 

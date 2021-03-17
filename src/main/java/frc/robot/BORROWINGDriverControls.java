@@ -13,9 +13,9 @@ public class BORROWINGDriverControls{
     private ArrayList<Double> rightEncodervelocity = new ArrayList<Double>();
     public void init(){
         forwardSpeed.clear();
-            sideSpeed.clear();;
-            leftEncoderPosition.clear();;
-            LeftEncodervelocity.clear();;
+            sideSpeed.clear();
+            leftEncoderPosition.clear();
+            LeftEncodervelocity.clear();
             rightEncoderPosition.clear();
             rightEncodervelocity.clear();
 

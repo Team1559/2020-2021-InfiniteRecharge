@@ -24,7 +24,7 @@ public class Logging{
     
     //Master Booleans
     private boolean printLogs = false; //master boolean disable to kill all print logs
-    private boolean smartDasboardLogs = true; //master boolean disable to kill all smart dashboard logs
+    private boolean smartDasboardLogs = false; //master boolean disable to kill all smart dashboard logs
 
     //Class pPrint Booleans
     private boolean printCompressorLogs = false;

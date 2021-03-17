@@ -1,19 +1,24 @@
 import sys
 
 fileName = sys.argv[1]
-
+outputFile = sys.argv[2]
 i = 0
 velocities = []
 rotations = []
-with open(fileName) as f:
+with open(fileName) as f, open(outputFile, "w") as out:
 	for line in f.readlines():
 		for entry in line.strip().split(" "):
-			if i = 0:
+			if i == 0:
 				velocities.append(entry)
 			if i == 1:
 				rotations.append(entry)
+
+			out.write(entry + " ")
 			i+=1
-		i = 0
+			if i == 6:
+				i = 0
+				out.write("\n")
+		
 
 velocityArray = ",\n\t\t".join(velocities)
 rotationsArray = ",\n\t\t".join(rotations)

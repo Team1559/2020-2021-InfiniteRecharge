@@ -15,9 +15,9 @@ with open(fileName) as f, open(outputFile, "w") as out:
 				velocities.append(entry)
 			if i == 1:
 				rotations.append(entry)
-			if i == 4:
+			if i == 2:
 				leftEncoderPositions.append(entry)
-			if i ==5:
+			if i ==4:
 				rightEncoderPositions.append(entry)
 
 

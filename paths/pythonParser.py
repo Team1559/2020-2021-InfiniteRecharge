@@ -5,6 +5,9 @@ outputFile = sys.argv[2]
 i = 0
 velocities = []
 rotations = []
+leftEncoderPositions = []
+rightEncoderPositions = []
+
 with open(fileName) as f, open(outputFile, "w") as out:
 	for line in f.readlines():
 		for entry in line.strip().split(" "):
@@ -12,6 +15,11 @@ with open(fileName) as f, open(outputFile, "w") as out:
 				velocities.append(entry)
 			if i == 1:
 				rotations.append(entry)
+			if i == 4:
+				leftEncoderPositions.append(entry)
+			if i ==5:
+				rightEncoderPositions.append(entry)
+
 
 			out.write(entry + " ")
 			i+=1
@@ -22,6 +30,9 @@ with open(fileName) as f, open(outputFile, "w") as out:
 
 velocityArray = ",\n\t\t".join(velocities)
 rotationsArray = ",\n\t\t".join(rotations)
+leftEncoderPositionArray = ",\n\t\t".join(leftEncoderPositions)
+rightEncoderPositionArray = ",\n\t\t".join(rightEncoderPositions)
+
 
 content = """
 /*
@@ -36,9 +47,16 @@ public class stuff {
 	public double[] generated_Rotations = {
 		%s
 	};
+	public double[] generated_leftEncoderPositions = {
+		%s
+	};
+	public double[] generated_rightEncoderPositions = {
+		%s
+	};
+
 }
 
-""" % (velocityArray, rotationsArray)
+""" % (velocityArray, rotationsArray, leftEncoderPositionArray, rightEncoderPositionArray)
 
 with open(fileName + ".java", "w") as f:
 	f.write(content)

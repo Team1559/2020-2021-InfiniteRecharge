@@ -1,8 +1,5 @@
 package frc.robot.subsystems;
-
-import frc.robot.subsystems.Chassis;
-import frc.robot.subsystems.PowerCell;
-import frc.robot.components.IMU;
+import frc.robot.components.*;
 import edu.wpi.first.wpilibj.geometry.*;
 
 public class AdvancedAuto {

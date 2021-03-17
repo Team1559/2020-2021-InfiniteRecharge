@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import frc.robot.subsystems.Chassis;
-import frc.robot.subsystems.PowerCell;
 import edu.wpi.first.wpilibj.geometry.*;
 
 public class BasicAuto{

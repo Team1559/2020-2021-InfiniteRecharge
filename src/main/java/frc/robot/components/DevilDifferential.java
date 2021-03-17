@@ -1,10 +1,8 @@
 package frc.robot.components;
 
 import java.util.StringJoiner;
-import com.revrobotics.CANPIDController;
-import com.revrobotics.ControlType;
-import edu.wpi.first.hal.FRCNetComm.tInstances;
-import edu.wpi.first.hal.FRCNetComm.tResourceType;
+import com.revrobotics.*;
+import edu.wpi.first.hal.FRCNetComm.*;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase;

@@ -102,6 +102,7 @@ public class Robot extends TimedRobot{
   @Override
   public void autonomousInit()
   {
+    loopCounter = 0;
     initialize();
     if(teachTheAI){
       bdc.init();
@@ -155,14 +156,11 @@ public class Robot extends TimedRobot{
   @Override
   public void autonomousPeriodic()
   {
-    loopCounter ++;
     //logging
     if(loggingEnable && loggingInitialized){
       logging.Log();
     }
-    if(teachTheAI){
-      bdc.periodic(driveTrain.loggingForwardSpeed, driveTrain.loggingSideSpeed, driveTrain.lEncoder.getPosition(), driveTrain.lEncoder.getVelocity(), driveTrain.rEncoder.getPosition(), driveTrain.rEncoder.getVelocity());
-    }
+    
 
     //autoNav
     if(autoSelector == "test"){
@@ -206,11 +204,16 @@ public class Robot extends TimedRobot{
     if(compressorEnable && compressorInitialized){
       compressorControl.run();
     }
+    if(teachTheAI){
+      bdc.periodic(driveTrain.loggingForwardSpeed, driveTrain.loggingSideSpeed, driveTrain.lEncoder.getPosition(), driveTrain.lEncoder.getVelocity(), driveTrain.rEncoder.getPosition(), driveTrain.rEncoder.getVelocity());
+    }
+    loopCounter ++;
   }
   
   @Override
   public void teleopInit()
   {
+    loopCounter = 0;
     initialize();
     if(teachTheAI){
       bdc.init();
@@ -229,10 +232,7 @@ public class Robot extends TimedRobot{
   @Override
   public void teleopPeriodic()
   {
-    loopCounter++;
-    if(teachTheAI){
-      bdc.periodic(driveTrain.forwardSpeed, driveTrain.sideSpeed, driveTrain.lEncoder.getPosition(), driveTrain.lEncoder.getVelocity(), driveTrain.rEncoder.getPosition(), driveTrain.rEncoder.getVelocity());
-    }
+    
     //logging
     if(loggingEnable && loggingInitialized){
       logging.Log();
@@ -267,8 +267,12 @@ public class Robot extends TimedRobot{
     if(chassisEnable && chassisInitialized){    
       driveTrain.DriveSystem(oi.pilot);
     }
+    if(teachTheAI){
+      bdc.periodic(driveTrain.forwardSpeed, driveTrain.sideSpeed, driveTrain.lEncoder.getPosition(), driveTrain.lEncoder.getVelocity(), driveTrain.rEncoder.getPosition(), driveTrain.rEncoder.getVelocity());
+    }
+    loopCounter++;
   }
- 
+  
   @Override
   public void testInit()
   {

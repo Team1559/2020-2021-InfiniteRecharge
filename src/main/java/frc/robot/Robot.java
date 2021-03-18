@@ -160,7 +160,7 @@ public class Robot extends TimedRobot{
             counter+=2;
           }
           else{
-            driveTrain.move(leftSpeed[(int)counter],rightSpeed[int)counter]);
+            driveTrain.move(leftSpeed[(int)counter],rightSpeed[(int)counter]);
             counter++;
           }
         //}

@@ -17,7 +17,7 @@ with open(fileName) as f, open(outputFile, "w") as out:
 				rotations.append(entry)
 			if i == 2:
 				leftEncoderPositions.append(entry)
-			if i ==4:
+			if i == 4:
 				rightEncoderPositions.append(entry)
 
 

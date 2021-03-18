@@ -65,6 +65,7 @@ public class Robot extends TimedRobot{
   private double leftSpeed[]= t1.generated_leftEncoderPositions;
   
   private boolean teachTheAI = true;
+  private boolean doDoubleSpeed = false;
   private int loopCounter = 0;
 
   @Override
@@ -91,7 +92,7 @@ public class Robot extends TimedRobot{
       driveTrain.initOdometry();
     }
     if(chassisEnable && chassisInitialized){
-      driveTrain.autoInit(0.0002);
+      driveTrain.autoInit(0.02);
     }
     if(autoSelector == "learning"){
     counter = 0;
@@ -151,12 +152,22 @@ public class Robot extends TimedRobot{
     }
 
     else if(autoSelector == "learning"){
-      if(loopCounter > 60 && counter < leftSpeed.length){
-        driveTrain.move(leftSpeed[counter], rightSpeed[counter]);
-        counter++;
+      if(counter < leftSpeed.length){
+        driveTrain.move(leftSpeed[counter],rightSpeed[counter]);
+        //if(Math.abs(driveTrain.lEncoder.getPosition() - (5.5 * leftSpeed[counter])) <= 10){
+          if(doDoubleSpeed){
+            counter+=2;
+          }
+          else{
+            counter++;
+          }
+        //}
       }
       else{
-        driveTrain.move(0, 0);
+       
+        // driveTrain.teleopInit();
+        // driveTrain.stopMove();
+        driveTrain.move(leftSpeed[leftSpeed.length -1],rightSpeed[rightSpeed.length -1]);
       }
       
     }

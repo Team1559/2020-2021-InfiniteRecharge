@@ -92,8 +92,8 @@ public class Chassis extends SubsystemBase{
         sparkMax2.restoreFactoryDefaults();
         sparkMax3.restoreFactoryDefaults();
         sparkMax4.restoreFactoryDefaults();
-        lEncoder = sparkMax1.getEncoder(); //old  new CANEncoder(sparkMax1);
-        rEncoder = sparkMax2.getEncoder(); //old  new CANEncoder(sparkMax2);
+        lEncoder = sparkMax2.getEncoder(); //old  new CANEncoder(sparkMax1);
+        rEncoder = sparkMax1.getEncoder(); //old  new CANEncoder(sparkMax2);
         sparkMax3.follow(sparkMax1);
         sparkMax4.follow(sparkMax2);
 
@@ -170,6 +170,34 @@ public class Chassis extends SubsystemBase{
         sparkMax2PID.setReference(0, ControlType.kVelocity);
         sparkMax3PID.setReference(0, ControlType.kVelocity);
         sparkMax4PID.setReference(0, ControlType.kVelocity);
+        sparkMax1PID.setP(kP);
+        sparkMax1PID.setI(kI);
+        sparkMax1PID.setD(kD);
+        sparkMax1PID.setFF(kF);
+        sparkMax1PID.setIZone(10, 0);
+        sparkMax1PID.setIMaxAccum(20, 0);
+        sparkMax1PID.setIAccum(0); //may need to be set\\
+
+        sparkMax2PID.setP(kP);
+        sparkMax2PID.setI(kI);
+        sparkMax2PID.setD(kD);
+        sparkMax2PID.setFF(kF);
+        sparkMax2PID.setIZone(10, 0);
+        sparkMax2PID.setIMaxAccum(20, 0);
+
+        sparkMax3PID.setP(kP);
+        sparkMax3PID.setI(kI);
+        sparkMax3PID.setD(kD);
+        sparkMax3PID.setFF(kF);
+        sparkMax3PID.setIZone(10, 0);
+        sparkMax3PID.setIMaxAccum(20, 0);
+
+        sparkMax4PID.setP(kP);
+        sparkMax4PID.setI(kI);
+        sparkMax4PID.setD(kD);
+        sparkMax4PID.setFF(kF);
+        sparkMax4PID.setIZone(10, 0);
+        sparkMax4PID.setIMaxAccum(20, 0);
     }
     public void autoInit(double kp){
         sparkMax1.setIdleMode(IdleMode.kBrake);
@@ -265,6 +293,13 @@ public class Chassis extends SubsystemBase{
             // loggingForwardSpeed = speed;
             // loggingSideSpeed = rotation;
     }
+    public void stopMove(){
+        sparkMax1PID.setReference(0, ControlType.kVelocity);
+        sparkMax2PID.setReference(0, ControlType.kVelocity);
+
+         // loggingForwardSpeed = speed;
+         // loggingSideSpeed = rotation;
+ }
     public void resetEncoders(){
         lEncoder.setPosition(0);
         rEncoder.setPosition(0);

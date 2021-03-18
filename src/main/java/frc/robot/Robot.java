@@ -60,7 +60,7 @@ public class Robot extends TimedRobot{
   private BasicAuto basicAuto = new BasicAuto();
   private BORROWINGDriverControls bdc = new BORROWINGDriverControls();
   private Pose2d pose;
-  public int counter = 0;
+  public double counter = 0;
   
   private double rightSpeed[] = t1.generated_rightEncoderPositions;
   private double leftSpeed[]= t1.generated_leftEncoderPositions;
@@ -156,11 +156,11 @@ public class Robot extends TimedRobot{
       if(counter < leftSpeed.length){
         //if(Math.abs(driveTrain.lEncoder.getPosition() - (5.5 * leftSpeed[counter])) <= 10 || Math.abs(driveTrain.rEncoder.getPosition() - (5.5 * rightSpeed[counter])) <= 10){
           if(doDoubleSpeed){
-            driveTrain.move(leftSpeed[counter],rightSpeed[counter]);
+            driveTrain.move(bdc.interpolate(counter, leftSpeed), bdc.interpolate(counter, rightSpeed));
             counter+=2;
           }
           else{
-            driveTrain.move(bdc.interpolate(counter, leftSpeed), bdc.interpolate(counter, rightSpeed));
+            driveTrain.move(leftSpeed[(int)counter],rightSpeed[int)counter]);
             counter++;
           }
         //}

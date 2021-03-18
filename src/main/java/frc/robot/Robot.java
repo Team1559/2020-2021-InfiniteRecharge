@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.*;
 import frc.robot.components.*;
+import java.util.*;
 
 public class Robot extends TimedRobot{
 //these are changable
@@ -153,21 +154,25 @@ public class Robot extends TimedRobot{
 
     else if(autoSelector == "learning"){
       if(counter < leftSpeed.length){
-        driveTrain.move(leftSpeed[counter],rightSpeed[counter]);
-        //if(Math.abs(driveTrain.lEncoder.getPosition() - (5.5 * leftSpeed[counter])) <= 10){
+        //if(Math.abs(driveTrain.lEncoder.getPosition() - (5.5 * leftSpeed[counter])) <= 10 || Math.abs(driveTrain.rEncoder.getPosition() - (5.5 * rightSpeed[counter])) <= 10){
           if(doDoubleSpeed){
+            driveTrain.move(leftSpeed[counter],rightSpeed[counter]);
             counter+=2;
           }
           else{
+            driveTrain.move(bdc.interpolate(counter, leftSpeed), bdc.interpolate(counter, rightSpeed));
             counter++;
           }
         //}
       }
       else{
-       
-        // driveTrain.teleopInit();
-        // driveTrain.stopMove();
-        driveTrain.move(leftSpeed[leftSpeed.length -1],rightSpeed[rightSpeed.length -1]);
+        // if(Math.abs(driveTrain.lEncoder.getPosition() - (5.5 * leftSpeed[counter])) <= 10 || Math.abs(driveTrain.rEncoder.getPosition() - (5.5 * rightSpeed[counter])) <= 10){ 
+        //   driveTrain.teleopInit();
+        //  driveTrain.stopMove();
+        // }
+        // else{
+          driveTrain.move(leftSpeed[leftSpeed.length -1],rightSpeed[rightSpeed.length -1]);
+        //}
       }
       
     }

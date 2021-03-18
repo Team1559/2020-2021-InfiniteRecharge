@@ -34,8 +34,14 @@ public class BORROWINGDriverControls{
         for(int i = 0; i < forwardSpeed.size(); i++){
         System.out.print(forwardSpeed.get(i) +" "+ sideSpeed.get(i)+ " "+leftEncoderPosition.get(i) +" "+ LeftEncodervelocity.get(i)+ " "+rightEncoderPosition.get(i) +" "+ rightEncodervelocity.get(i)+ " ");
         }
+        
 
 }
-
+public double interpolate(double counter, double[] value){
+    int intCounter = (int)counter;
+    double percent = (counter -intCounter) * 100; 
+    double interpolatedValue = (value[intCounter] + (percent * (value[intCounter] - value[intCounter+1])));
+    return interpolatedValue;
+}
 
 }

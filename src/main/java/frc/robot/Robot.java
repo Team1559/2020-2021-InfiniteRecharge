@@ -79,25 +79,29 @@ public class Robot extends TimedRobot{
   @Override
   public void robotPeriodic()
   {
-    CommandScheduler.getInstance().run();
-
+    //CommandScheduler.getInstance().run();
   }
 
   @Override
   public void autonomousInit()
   {
     loopCounter = 0;
+    //runs the initialize method
     initialize();
+
     if(teachTheAI){
       bdc.init();
       driveTrain.initOdometry();
     }
+
     if(chassisEnable && chassisInitialized){
       driveTrain.autoInit(0.02);
     }
+
     if(autoSelector == "learning"){
     counter = 0;
     }
+
     //sets the feautre flag boolean for advanced auto
     if(autoSelector == "test"){
       driveTrain.initOdometry();
@@ -118,6 +122,7 @@ public class Robot extends TimedRobot{
         m_autonomousCommand.schedule();
       }
     }
+
     //sets the feautre flag boolean for advanced auto
     else if(autoSelector =="advanced"){
       advancedAuto.AutoInit(driveTrain, imu, powerCell);
@@ -127,10 +132,7 @@ public class Robot extends TimedRobot{
     else if(autoSelector == "basic"){
       basicAuto.AutoInit(driveTrain);
     }
-
-    //runs the initialize method
     
-
     //zeros the imu
     if(ImuEnable && ImuInitialized){
       imu.zeroYaw();
@@ -145,13 +147,13 @@ public class Robot extends TimedRobot{
       logging.Log();
     }
     
-
     //autoNav
     if(autoSelector == "test"){
       CommandScheduler.getInstance().run();
       pose = driveTrain.updateOdometry();
     }
 
+    //learning auto
     else if(autoSelector == "learning"){
       if(counter < leftSpeed.length){
         //if(Math.abs(driveTrain.lEncoder.getPosition() - (5.5 * leftSpeed[counter])) <= 10 || Math.abs(driveTrain.rEncoder.getPosition() - (5.5 * rightSpeed[counter])) <= 10){
@@ -174,7 +176,6 @@ public class Robot extends TimedRobot{
           driveTrain.move(leftSpeed[leftSpeed.length -1],rightSpeed[rightSpeed.length -1]);
         //}
       }
-      
     }
 
     //advanced auto

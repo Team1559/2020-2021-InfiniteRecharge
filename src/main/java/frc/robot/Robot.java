@@ -43,7 +43,8 @@ public class Robot extends TimedRobot{
   private Command m_autonomousCommand;
   //constructors
   //private RobotContainer robotContainer = new RobotContainer();
-  private Test t1 = new Test();
+  private DriversEd t1 = new DriversEd();
+  private BouncePath bp = new BouncePath();
   //private Test2 t2 = new Test2();
   private Logging logging = new Logging();
   public Climber climber = new Climber();
@@ -61,8 +62,8 @@ public class Robot extends TimedRobot{
   private Pose2d pose;
   public int counter = 0;
   
-  private double rightSpeed[] = t1.generated_rightEncoderPositions;
-  private double leftSpeed[]= t1.generated_leftEncoderPositions;
+  private double rightSpeed[] = bp.generated_rightEncoderPositions;
+  private double leftSpeed[]= bp.generated_leftEncoderPositions;
   
   private boolean teachTheAI = true;
   private boolean doDoubleSpeed = false;
@@ -92,7 +93,7 @@ public class Robot extends TimedRobot{
       driveTrain.initOdometry();
     }
     if(chassisEnable && chassisInitialized){
-      driveTrain.autoInit(0.02);
+      driveTrain.autoInit(0.16);
     }
     if(autoSelector == "learning"){
     counter = 0;
@@ -290,16 +291,16 @@ public class Robot extends TimedRobot{
     if(chassisEnable && chassisInitialized){
       driveTrain.disabled();
     }
-    if(teachTheAI){
-      bdc.printAll();
-    }
+    
     //System.out.println(loopCounter);
   }
 
   @Override
   public void disabledPeriodic()
   {
-    
+    if(teachTheAI){
+      bdc.printAll();
+    }
   }
   
   public void initialize()

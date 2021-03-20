@@ -24,8 +24,8 @@ public class Chassis extends SubsystemBase{
     public CANPIDController sparkMax3PID;
     public CANSparkMax sparkMax4;
     public CANPIDController sparkMax4PID;
-    private double forwardInputSpeed = 1;
-    private double turningInputSpeed = 0.65;
+    private double forwardInputSpeed = 0.25; //1;
+    private double turningInputSpeed = 0.65;//0.65;
     public double robotSpeed = 0;
 
     
@@ -36,7 +36,7 @@ public class Chassis extends SubsystemBase{
     private IMU imu;
     private DifferentialDriveOdometry m_odometry;
 
-    public double rampRate = 0.7;
+    public double rampRate = 0.6;
 
     private double leftVelocity;
     private double rightVelocity;
@@ -110,7 +110,7 @@ public class Chassis extends SubsystemBase{
         sparkMax4PID = sparkMax4.getPIDController();
         sparkMax4PID.setReference(0, ControlType.kVelocity);
 
-       setRampRate(0.7);
+       setRampRate(0.6);
 
         sparkMax1PID.setP(kP);
         sparkMax1PID.setI(kI);
@@ -246,8 +246,8 @@ public class Chassis extends SubsystemBase{
             }
         }
         else{
-            turningInputSpeed = 0.75;
-            forwardInputSpeed = 1;
+            turningInputSpeed = 0.65;
+            forwardInputSpeed = 0.25;
             highGear = true;
             setRampRate(rampRate);
             gearShift();

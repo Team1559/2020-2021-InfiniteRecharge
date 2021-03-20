@@ -167,7 +167,7 @@ public class Robot extends TimedRobot{
             driveTrain.move(leftSpeed[(int)counter],rightSpeed[(int)counter]);
             counter++;
           //}
-        //}
+        }
       }
       else{
         // if(Math.abs(driveTrain.lEncoder.getPosition() - (5.5 * leftSpeed[counter])) <= 10 || Math.abs(driveTrain.rEncoder.getPosition() - (5.5 * rightSpeed[counter])) <= 10){ 

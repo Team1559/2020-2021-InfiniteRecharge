@@ -45,8 +45,8 @@ public class BORROWINGDriverControls{
 
     public double interpolate(double counter, double[] value){
         int intCounter = (int)counter;
-        double percent = (counter -intCounter) * 100; 
-        double interpolatedValue = (value[intCounter] + (percent * (value[intCounter] - value[intCounter+1])));
+        double percent = (counter -intCounter); 
+        double interpolatedValue = (value[intCounter] + (percent * (value[intCounter+1] - value[intCounter])));
         return interpolatedValue;
     }
             // if(counter < forwardSpeed.size()){

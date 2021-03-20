@@ -44,7 +44,9 @@ public class Robot extends TimedRobot{
   private Command m_autonomousCommand;
   //constructors
   //private RobotContainer robotContainer = new RobotContainer();
-  private Test t1 = new Test();
+  private DriversEd t1 = new DriversEd();
+  private BouncePath bp = new BouncePath();
+  private SlolumPath sp = new SlolumPath();
   //private Test2 t2 = new Test2();
   private Logging logging = new Logging();
   public Climber climber = new Climber();
@@ -62,8 +64,8 @@ public class Robot extends TimedRobot{
   private Pose2d pose;
   public double counter = 0;
   
-  private double rightSpeed[] = t1.generated_rightEncoderPositions;
-  private double leftSpeed[]= t1.generated_leftEncoderPositions;
+  private double rightSpeed[] = sp.generated_rightEncoderPositions;
+  private double leftSpeed[]= sp.generated_leftEncoderPositions;
   
   private boolean teachTheAI = true;
   private boolean doDoubleSpeed = false;
@@ -95,7 +97,7 @@ public class Robot extends TimedRobot{
     }
 
     if(chassisEnable && chassisInitialized){
-      driveTrain.autoInit(0.02);
+      driveTrain.autoInit(0.04);//0.08
     }
 
     if(autoSelector == "learning"){
@@ -164,7 +166,7 @@ public class Robot extends TimedRobot{
           else{
             driveTrain.move(leftSpeed[(int)counter],rightSpeed[(int)counter]);
             counter++;
-          }
+          //}
         //}
       }
       else{
@@ -296,17 +298,17 @@ public class Robot extends TimedRobot{
     if(chassisEnable && chassisInitialized){
       driveTrain.disabled();
     }
-    if(teachTheAI){
-      bdc.printAll();
-    }
+    
     //System.out.println(loopCounter);
   }
 
   @Override
   public void disabledPeriodic()
   {
-    
-  }
+    if(teachTheAI){
+      bdc.printAll();
+    }
+ }
   
   public void initialize()
   {

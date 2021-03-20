@@ -45,6 +45,7 @@ public class Robot extends TimedRobot{
   //private RobotContainer robotContainer = new RobotContainer();
   private DriversEd t1 = new DriversEd();
   private BouncePath bp = new BouncePath();
+  private SlolumPath sp = new SlolumPath();
   //private Test2 t2 = new Test2();
   private Logging logging = new Logging();
   public Climber climber = new Climber();
@@ -62,8 +63,8 @@ public class Robot extends TimedRobot{
   private Pose2d pose;
   public int counter = 0;
   
-  private double rightSpeed[] = bp.generated_rightEncoderPositions;
-  private double leftSpeed[]= bp.generated_leftEncoderPositions;
+  private double rightSpeed[] = sp.generated_rightEncoderPositions;
+  private double leftSpeed[]= sp.generated_leftEncoderPositions;
   
   private boolean teachTheAI = true;
   private boolean doDoubleSpeed = false;
@@ -93,7 +94,7 @@ public class Robot extends TimedRobot{
       driveTrain.initOdometry();
     }
     if(chassisEnable && chassisInitialized){
-      driveTrain.autoInit(0.16);
+      driveTrain.autoInit(0.04);//0.08
     }
     if(autoSelector == "learning"){
     counter = 0;
@@ -156,12 +157,12 @@ public class Robot extends TimedRobot{
       if(counter < leftSpeed.length){
         driveTrain.move(leftSpeed[counter],rightSpeed[counter]);
         //if(Math.abs(driveTrain.lEncoder.getPosition() - (5.5 * leftSpeed[counter])) <= 10){
-          if(doDoubleSpeed){
-            counter+=2;
-          }
-          else{
+          // if(doDoubleSpeed){
+          //   counter+=2;
+          // }
+          //else{
             counter++;
-          }
+          //}
         //}
       }
       else{
@@ -301,7 +302,7 @@ public class Robot extends TimedRobot{
     if(teachTheAI){
       bdc.printAll();
     }
-  }
+ }
   
   public void initialize()
   {

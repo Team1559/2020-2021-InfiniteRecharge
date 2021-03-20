@@ -247,7 +247,7 @@ public class Chassis extends SubsystemBase{
         }
         else{
             turningInputSpeed = 0.65;
-            forwardInputSpeed = 0.25;
+            forwardInputSpeed =1; //0.25;
             highGear = true;
             setRampRate(rampRate);
             gearShift();

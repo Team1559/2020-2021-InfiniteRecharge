@@ -68,7 +68,7 @@ public class Robot extends TimedRobot{
   private double leftSpeed[]= sp.generated_leftEncoderPositions;
   
   private boolean teachTheAI = true;
-  private boolean doDoubleSpeed = false;
+  private boolean doDoubleSpeed = true;
   private int loopCounter = 0;
 
   @Override
@@ -159,15 +159,15 @@ public class Robot extends TimedRobot{
     else if(autoSelector == "learning"){
       if(counter < leftSpeed.length){
         //if(Math.abs(driveTrain.lEncoder.getPosition() - (5.5 * leftSpeed[counter])) <= 10 || Math.abs(driveTrain.rEncoder.getPosition() - (5.5 * rightSpeed[counter])) <= 10){
-          if(doDoubleSpeed){
+          // if(doDoubleSpeed){
             driveTrain.move(bdc.interpolate(counter, leftSpeed), bdc.interpolate(counter, rightSpeed));
-            counter+=2;
-          }
-          else{
-            driveTrain.move(leftSpeed[(int)counter],rightSpeed[(int)counter]);
-            counter++;
-          //}
-        }
+            counter+=0.58;
+        //   }
+        //   else{
+        //     driveTrain.move(leftSpeed[(int)counter],rightSpeed[(int)counter]);
+        //     counter++;
+        //   //}
+        // }
       }
       else{
         // if(Math.abs(driveTrain.lEncoder.getPosition() - (5.5 * leftSpeed[counter])) <= 10 || Math.abs(driveTrain.rEncoder.getPosition() - (5.5 * rightSpeed[counter])) <= 10){ 

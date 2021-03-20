@@ -9,24 +9,28 @@ leftEncoderPositions = []
 rightEncoderPositions = []
 
 with open(fileName) as f, open(outputFile, "w") as out:
-	for line in f.readlines():
-		for entry in line.strip().split(" "):
-			if i == 0:
-				velocities.append(entry)
-			if i == 1:
-				rotations.append(entry)
-			if i == 2:
-				leftEncoderPositions.append(entry)
-			if i == 4:
-				rightEncoderPositions.append(entry)
+    for line in f.readlines():
+    	if line.startsWith(" ") or line[0].isdigit():
+	        for entry in line.strip().split(" "):
+	        	try:
+					Float(entry)
+				except:
+					continue
+	            if i == 0:
+	                velocities.append(entry)
+	            if i == 1:
+	                rotations.append(entry)
+	            if i == 2:
+	                leftEncoderPositions.append(entry)
+	            if i == 4:
+	                rightEncoderPositions.append(entry)
 
+	            out.write(entry + " ")
+	            i += 1
+	            if i == 6:
+	                i = 0
+	                out.write("\n")
 
-			out.write(entry + " ")
-			i+=1
-			if i == 6:
-				i = 0
-				out.write("\n")
-		
 
 velocityArray = ",\n\t\t".join(velocities)
 rotationsArray = ",\n\t\t".join(rotations)
@@ -56,7 +60,12 @@ public class Test {
 
 }
 
-""" % (velocityArray, rotationsArray, leftEncoderPositionArray, rightEncoderPositionArray)
+""" % (
+    velocityArray,
+    rotationsArray,
+    leftEncoderPositionArray,
+    rightEncoderPositionArray,
+)
 
 with open(fileName + ".java", "w") as f:
-	f.write(content)
+    f.write(content)

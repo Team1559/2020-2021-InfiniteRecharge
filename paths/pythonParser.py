@@ -10,7 +10,7 @@ velocities = []
 rotations = []
 leftEncoderPositions = []
 rightEncoderPositions = []
-bad_chars = ['ï»¿']
+bad_chars = ['ï»¿', 'Ã¯Â»Â¿']
 
 with open(fileName) as f, open(outputFile, "w") as out:
     fileName.encode('ascii', 'remove')

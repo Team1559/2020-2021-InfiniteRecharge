@@ -1,6 +1,6 @@
 import sys
 import unicodedata
-from io import TextIOWrapper
+from io import StringIO, TextIOWrapper
 
 fileName = sys.argv[1]
 outputFile = sys.argv[2]
@@ -14,10 +14,10 @@ bad_chars = ['ï»¿']
 
 with open(fileName) as f, open(outputFile, "w") as out:
     fileName.encode('ascii', 'remove')
-    f_str = f.name
+    f_str = f.read()
     for a in bad_chars :
            f_str = f_str.replace(a, '')
-    g = TextIOWrapper(f_str)
+    g = StringIO(f_str)
     for line in g.readlines():
         if line.startswith("ï»¿") or line.startswith(" ") or line[0].isdigit():
             for entry in line.strip().split(" "):

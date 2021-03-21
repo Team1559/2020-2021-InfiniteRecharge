@@ -15,7 +15,7 @@ with open(fileName) as f, open(fileName +'GraphData.txt', "w") as out:
     fileName.encode('ascii', 'remove')
     f_str = f.read()
     for a in bad_chars :
-           f_str = f_str.replace(a, '')
+        f_str = f_str.replace(a, '')
     g = StringIO(f_str)
     for line in g.readlines():
         if line.startswith("ï»¿") or line.startswith(" ") or line[0].isdigit():

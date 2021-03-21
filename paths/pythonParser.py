@@ -1,7 +1,9 @@
 import sys
+import unicodedata
 
 fileName = sys.argv[1]
 outputFile = sys.argv[2]
+user = sys.argv[3]
 i = 0
 velocities = []
 rotations = []
@@ -9,6 +11,7 @@ leftEncoderPositions = []
 rightEncoderPositions = []
 
 with open(fileName) as f, open(outputFile, "w") as out:
+    # unicodeData.encode('ascii', 'ignore')
     for line in f.readlines():
         if line.startswith(" ") or line[0].isdigit():
             for entry in line.strip().split(" "):
@@ -64,5 +67,5 @@ public class %s {
     rightEncoderPositionArray,
 )
 
-with open(fileName + ".java", "w") as f:
+with open("C:/Users/" + user + "/Documents/GitHub/2020-2021-InfiniteRecharge/src/main/java/frc/robot/" + fileName + ".java", "w") as f:
     f.write(content)

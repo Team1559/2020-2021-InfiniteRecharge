@@ -1,6 +1,5 @@
 import sys
 import unicodedata
-import re
 
 fileName = sys.argv[1]
 outputFile = sys.argv[2]

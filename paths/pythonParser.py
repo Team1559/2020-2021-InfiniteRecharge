@@ -3,8 +3,7 @@ import unicodedata
 from io import StringIO, TextIOWrapper
 
 fileName = sys.argv[1]
-outputFile = sys.argv[2]
-user = sys.argv[3]
+user = sys.argv[2]
 i = 0
 velocities = []
 rotations = []
@@ -12,7 +11,7 @@ leftEncoderPositions = []
 rightEncoderPositions = []
 bad_chars = ['ï»¿', 'Ã¯Â»Â¿']
 
-with open(fileName) as f, open(outputFile, "w") as out:
+with open(fileName) as f, open(fileName +'Graphdata.txt', "w") as out:
     fileName.encode('ascii', 'remove')
     f_str = f.read()
     for a in bad_chars :

@@ -1,5 +1,6 @@
 import sys
 import unicodedata
+import re
 
 fileName = sys.argv[1]
 outputFile = sys.argv[2]
@@ -11,9 +12,9 @@ leftEncoderPositions = []
 rightEncoderPositions = []
 
 with open(fileName) as f, open(outputFile, "w") as out:
-    # unicodeData.encode('ascii', 'ignore')
+    fileName.encode('ascii', 'ignore')
     for line in f.readlines():
-        if line.startswith(" ") or line[0].isdigit():
+        if line.startswith("ï»¿") or line.startswith(" ") or line[0].isdigit():
             for entry in line.strip().split(" "):
                 try:
                     float(entry)

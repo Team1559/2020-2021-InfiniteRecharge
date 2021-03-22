@@ -1,5 +1,4 @@
 import sys
-import unicodedata
 from io import StringIO
 
 fileName = sys.argv[1]

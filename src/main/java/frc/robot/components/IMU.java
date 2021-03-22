@@ -1,8 +1,7 @@
 package frc.robot.components;
 //imports
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.*;
 
 public  class IMU{
     AHRS ahrs;
@@ -31,6 +30,8 @@ public  class IMU{
     //sets the yaw to zero
     public void zeroYaw(){
       ahrs.zeroYaw();
+      ahrs.reset();
+      yaw = 0;
     }
 
     //returns true if the yaw is between the valid range
@@ -50,7 +51,7 @@ public  class IMU{
     z_acceleration = ahrs.getWorldLinearAccelZ();
     roll = ahrs.getPitch();
     pitch = ahrs.getRoll();
-    yaw = ahrs.getYaw();
+    yaw = (ahrs.getYaw()) * (Math.PI/180);// normally negated
     turnRate = ahrs.getRate(); 
     y_angularVelocity = ahrs.getRate();
    }

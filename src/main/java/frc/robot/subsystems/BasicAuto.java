@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import frc.robot.subsystems.Chassis;
-import frc.robot.subsystems.PowerCell;
 import edu.wpi.first.wpilibj.geometry.*;
 
 public class BasicAuto{
@@ -44,7 +42,7 @@ public class BasicAuto{
             driveTrain.move(-driveSpeed, 0);
             powerCell.startShooter();
             powerCell.startStorage();
-            if (odometry.getTranslation().getX() <= -driveForward || timer / 50.0 >= 4.5) {
+            if (driveTrain.R2M(odometry.getTranslation().getX()) <= -driveForward || timer / 50.0 >= 4.5) {
                 timer = 0;
                 state = State.Shoot;
             }
@@ -67,10 +65,9 @@ public class BasicAuto{
             //System.out.println("Moving Back");
             if(doReverse){
                 driveTrain.move(driveSpeed, 0);
-                if (odometry.getTranslation().getX() >= driveBackward || timer/50.0 >= 4.5) {
+                if (driveTrain.R2M(odometry.getTranslation().getX()) >= driveBackward || timer/50.0 >= 4.5) {
                     timer = 0;
-                    state = State.Stop;
-                    
+                    state = State.Stop;  
                 }
             }   
         else{

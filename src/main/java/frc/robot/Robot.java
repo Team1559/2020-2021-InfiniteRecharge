@@ -7,42 +7,32 @@
 
 package frc.robot;
 
-import frc.robot.subsystems.PowerCell;
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.robot.subsystems.Spinner;
-import frc.robot.components.Camera;
-import frc.robot.components.IMU;
-import frc.robot.subsystems.Chassis;
-import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.AdvancedAuto;
-import frc.robot.subsystems.AutoNav;
-import frc.robot.subsystems.BasicAuto;
-import frc.robot.components.CompressorControl;
-import edu.wpi.first.wpilibj.AnalogInput;
-import frc.robot.subsystems.AutoNav;
-import frc.robot.Logging;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.*;
+import frc.robot.components.*;
+import java.util.*;
 
 public class Robot extends TimedRobot{
 //these are changable
-  private int AutoNavPathSelector = 0;//0 is normanl vision auto, barrel racing is one, slolums is 2, and bounce path is 3
-  private double targetDistance = 3;// distance in inches
+  private String AutoNavPathSelector = "example";// barrel racing is "barrel" , slolum is "slolum", and bounce path is "bounce" and example is "example" 
   private boolean doReverse = true;
-  private String autoSelector = "autoNav"; 
-  //in order to switch auto modes change what is in the quotes "basic" for basic auto, "advanced" for advanced auto, "autoNav" for vision auto, and "none" for no auto
-  //                                                            -----                   --------                      ------                        ----
-   
+  private String autoSelector = "learning";// learning is the good one 
+  //in order to switch auto modes change what is in the quotes "basic" for basic auto, "advanced" for advanced auto, "autoNav" for bad auto, learning for machine learning auto, and "none" for no auto
+ 
   // feature flags booleans
   //change these to disable unused subsystems.
   private boolean loggingEnable = false;
   private boolean chassisEnable = true;
   private boolean ImuEnable = true;
-  private boolean climberEnable = false;
+  private boolean climberEnable = true;
   private boolean compressorEnable = true;
-  private boolean colorEnable = false;
+  private boolean colorEnable = true;
   private boolean powerCellEnable = true;
-  private boolean visionEnable = false;  
 
-  //DON'T TOUCH THESE, they are used to determine if the specifies subsystem has been initialised as to not call it's init method more than once, causiing errors.
+  //DON'T TOUCH THESE, they are used to determine if a specifiec subsystem has been initialised as to not call it's init method more than once, causing errors.
   private boolean loggingInitialized = false;
   private boolean chassisInitialized = false;
   private boolean ImuInitialized = false;
@@ -50,11 +40,15 @@ public class Robot extends TimedRobot{
   private boolean compressorInitialized = false;
   private boolean colorInitialized = false;
   private boolean powerCellInitialized = false;
-
+  private RobotContainer m_robotContainer;
+  private Command m_autonomousCommand;
   //constructors
-  private AutoNav autoNav = new AutoNav();
+  //private RobotContainer robotContainer = new RobotContainer();
+  private DriversEd t1 = new DriversEd();
+  private BouncePath bp = new BouncePath();
+  private SlolumPath sp = new SlolumPath();
+  //private Test2 t2 = new Test2();
   private Logging logging = new Logging();
-  private AnalogInput ai = new AnalogInput(Wiring.distSensorPort);
   public Climber climber = new Climber();
   public PowerCell powerCell = new PowerCell();
   private CompressorControl compressorControl = new CompressorControl();
@@ -66,29 +60,71 @@ public class Robot extends TimedRobot{
   private Camera camera2 = new Camera(1);
   private AdvancedAuto advancedAuto = new AdvancedAuto();
   private BasicAuto basicAuto = new BasicAuto();
-
+  private BORROWINGDriverControls bdc = new BORROWINGDriverControls();
+  private Pose2d pose;
+  public double counter = 0;
   
-
+  private double rightSpeed[] = sp.generated_rightEncoderPositions;
+  private double leftSpeed[]= sp.generated_leftEncoderPositions;
+  
+  private boolean teachTheAI = true;
+  private boolean doDoubleSpeed = true;
+  private int loopCounter = 0;
 
   @Override
   public void robotInit() {
   camera1.init();
   camera2.init();
+  m_robotContainer = new RobotContainer(driveTrain);
   }
 
   @Override
   public void robotPeriodic()
   {
-
+    //CommandScheduler.getInstance().run();
   }
 
   @Override
   public void autonomousInit()
   {
-    //sets the feautre flag boolean for advanced auto
-    if(autoSelector == "autoNav"){
-      autoNav.AutoInit(driveTrain, imu);
+    loopCounter = 0;
+    //runs the initialize method
+    initialize();
+
+    if(teachTheAI){
+      bdc.init();
+      driveTrain.initOdometry();
     }
+
+    if(chassisEnable && chassisInitialized){
+      driveTrain.autoInit(0.04);//0.08
+    }
+
+    if(autoSelector == "learning"){
+    counter = 0;
+    }
+
+    //sets the feautre flag boolean for advanced auto
+    if(autoSelector == "test"){
+      driveTrain.initOdometry();
+      // robotContainer.init(driveTrain);
+      // autoNav.AutoInit(driveTrain, AutoNavPathSelector, robotContainer);
+    
+      m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+      /*
+       * String autoSelected = SmartDashboard.getString("Auto Selector",
+       * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
+       * = new MyAutoCommand(); break; case "Default Auto": default:
+       * autonomousCommand = new ExampleCommand(); break; }
+       */
+  
+      // schedule the autonomous command (example)
+      if (m_autonomousCommand != null) {
+        m_autonomousCommand.schedule();
+      }
+    }
+
     //sets the feautre flag boolean for advanced auto
     else if(autoSelector =="advanced"){
       advancedAuto.AutoInit(driveTrain, imu, powerCell);
@@ -98,10 +134,7 @@ public class Robot extends TimedRobot{
     else if(autoSelector == "basic"){
       basicAuto.AutoInit(driveTrain);
     }
-
-    //runs the initialize method
-    initialize();
-
+    
     //zeros the imu
     if(ImuEnable && ImuInitialized){
       imu.zeroYaw();
@@ -113,14 +146,39 @@ public class Robot extends TimedRobot{
   {
     //logging
     if(loggingEnable && loggingInitialized){
-      logging.printLogs();
-      logging.smartDashboardLogs();
+      logging.Log();
     }
     
     //autoNav
-    // if(autoSelector == "autoNav"){
-    //   autoNav.AutoPeriodic(driveTrain, powerCell, doReverse);
-    // }
+    if(autoSelector == "test"){
+      CommandScheduler.getInstance().run();
+      pose = driveTrain.updateOdometry();
+    }
+
+    //learning auto
+    else if(autoSelector == "learning"){
+      if(counter < leftSpeed.length){
+        //if(Math.abs(driveTrain.lEncoder.getPosition() - (5.5 * leftSpeed[counter])) <= 10 || Math.abs(driveTrain.rEncoder.getPosition() - (5.5 * rightSpeed[counter])) <= 10){
+          // if(doDoubleSpeed){
+            driveTrain.move(bdc.interpolate(counter, leftSpeed), bdc.interpolate(counter, rightSpeed));
+            counter+=0.58;
+        //   }
+        //   else{
+        //     driveTrain.move(leftSpeed[(int)counter],rightSpeed[(int)counter]);
+        //     counter++;
+        //   //}
+        // }
+      }
+      else{
+        // if(Math.abs(driveTrain.lEncoder.getPosition() - (5.5 * leftSpeed[counter])) <= 10 || Math.abs(driveTrain.rEncoder.getPosition() - (5.5 * rightSpeed[counter])) <= 10){ 
+        //   driveTrain.teleopInit();
+        //  driveTrain.stopMove();
+        // }
+        // else{
+          driveTrain.move(leftSpeed[leftSpeed.length -1],rightSpeed[rightSpeed.length -1]);
+        //}
+      }
+    }
 
     //advanced auto
     else if(autoSelector == "advanced" && imu.isYawValid()){
@@ -131,10 +189,7 @@ public class Robot extends TimedRobot{
     else if(autoSelector == "basic" && imu.isYawValid()){
       basicAuto.AutoPeriodic(driveTrain, powerCell, doReverse);
     }
-    //autoNav
-    else if(autoSelector == "autoNav" && imu.isYawValid()){
-      autoNav.AutoPeriodic(driveTrain, powerCell, doReverse);
-    }
+
 
     //stop the drivetrain
     else{
@@ -150,22 +205,38 @@ public class Robot extends TimedRobot{
     if(compressorEnable && compressorInitialized){
       compressorControl.run();
     }
+    if(teachTheAI){
+      bdc.periodic(driveTrain.loggingForwardSpeed, driveTrain.loggingSideSpeed, driveTrain.lEncoder.getPosition(), driveTrain.lEncoder.getVelocity(), driveTrain.rEncoder.getPosition(), driveTrain.rEncoder.getVelocity());
+    }
+    loopCounter ++;
   }
   
   @Override
   public void teleopInit()
   {
-    //runs the initalize method
+    loopCounter = 0;
     initialize();
+    if(teachTheAI){
+      bdc.init();
+      driveTrain.initOdometry();
+    }
+    if(chassisEnable && chassisInitialized){
+      driveTrain.teleopInit();
+    }
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
+    //runs the initalize method
+    
      
   }
   @Override
   public void teleopPeriodic()
   {
+    
     //logging
     if(loggingEnable && loggingInitialized){
-      logging.smartDashboardLogs();
-      logging.printLogs();
+      logging.Log();
     }
 
     //imu
@@ -194,11 +265,15 @@ public class Robot extends TimedRobot{
     }
 
     //Chassis code
-    else if(chassisEnable && chassisInitialized){    
+    if(chassisEnable && chassisInitialized){    
       driveTrain.DriveSystem(oi.pilot);
     }
+    if(teachTheAI){
+      bdc.periodic(driveTrain.forwardSpeed, driveTrain.sideSpeed, driveTrain.lEncoder.getPosition(), driveTrain.lEncoder.getVelocity(), driveTrain.rEncoder.getPosition(), driveTrain.rEncoder.getVelocity());
+    }
+    loopCounter++;
   }
- 
+  
   @Override
   public void testInit()
   {
@@ -223,13 +298,17 @@ public class Robot extends TimedRobot{
     if(chassisEnable && chassisInitialized){
       driveTrain.disabled();
     }
+    
+    //System.out.println(loopCounter);
   }
 
   @Override
   public void disabledPeriodic()
   {
-    
-  }
+    if(teachTheAI){
+      bdc.printAll();
+    }
+ }
   
   public void initialize()
   {
@@ -237,6 +316,7 @@ public class Robot extends TimedRobot{
     //imu
     if(ImuEnable && ImuInitialized == false){
       imu.init();
+      imu.zeroYaw();
       ImuInitialized = true;
     }
 
@@ -272,7 +352,7 @@ public class Robot extends TimedRobot{
     
     //logging
     if(loggingEnable && loggingInitialized == false){
-      logging.init(imu, driveTrain, powerCell, climber, spinner, compressorControl, advancedAuto, basicAuto, autoNav);
+      logging.init(imu, driveTrain, powerCell, climber, spinner, compressorControl, advancedAuto, basicAuto, m_robotContainer);
       loggingInitialized = true;
     }
   }

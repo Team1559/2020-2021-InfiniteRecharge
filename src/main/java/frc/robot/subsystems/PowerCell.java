@@ -1,16 +1,9 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.*;
+import com.ctre.phoenix.motorcontrol.can.*;
 import edu.wpi.first.wpilibj.Solenoid;
-import frc.robot.Buttons;
-import frc.robot.OperatorInterface;
-import frc.robot.Wiring;
+import frc.robot.*;
 
 //intake has to go double the speed the shooter goes
 public class PowerCell{
@@ -96,7 +89,7 @@ public class PowerCell{
         // Shooter Motor Config
         shooter.set(TalonFXControlMode.Velocity, 0);
         shooter.configClosedloopRamp(cLR, TIMEOUT);
-        shooter.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        shooter.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         shooter.config_kF(0, shooter_kF);
         shooter.config_kP(0, shooter_kP);
         shooter.config_kD(0, shooter_kD);
@@ -113,7 +106,7 @@ public class PowerCell{
         // Feeder motor config
         feederMotor.set(ControlMode.PercentOutput, 0);
         feederMotor.configClosedloopRamp(cLR, TIMEOUT);
-        feederMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        feederMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         feederMotor.config_kF(0, feederP_kF);
         feederMotor.config_kP(0, feederP_kP);
         feederMotor.config_kD(0, feederP_kD);
@@ -193,6 +186,7 @@ public class PowerCell{
 
     public void startShooter(){
         shooter.set(ControlMode.Velocity, -shooterRpms);
+       // shooter.set(ControlMode.PercentOutput, -1);
     }
     public void lowerGatherer(){
         gatherer.set(true);

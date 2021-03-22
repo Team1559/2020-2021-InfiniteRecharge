@@ -12,8 +12,8 @@ rightEncoderPositions = []
 bad_chars = ['ï»¿', 'Ã¯Â»Â¿']
 
 with open(fileName) as f, open(fileName +'GraphData.txt', "w") as out:
-    fileName.encode('ascii', 'remove')
     f_str = f.read()
+    f_str.encode('ascii', 'replace')
     for a in bad_chars:
         f_str = f_str.replace(a, '')
     g = StringIO(f_str)

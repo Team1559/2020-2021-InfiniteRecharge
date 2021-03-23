@@ -72,14 +72,15 @@ public class %s {
         %s
     };
 /*
-ROBOTS RUN THE WORLD YOU JUST DON'T KNOW IT YET
+ROBOTS RUN THE WORLD, YOU JUST DON'T KNOW IT YET
+PYTHON PARSER IS 476f64
 */
     public double[] generated_rightEncoderPositions = {
         %s
     };
 }
 /*
-COPYRIGHT YOUR MOM 2021
+COPYRIGHT UR MOM 2021
 */
 """ % (
     fileName,

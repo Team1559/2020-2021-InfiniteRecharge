@@ -58,7 +58,7 @@ velocityArray = ",\n\t\t".join(velocities)
 rotationsArray = ",\n\t\t".join(rotations)
 leftEncoderPositionArray = ",\n\t\t".join(leftEncoderPositions)
 rightEncoderPositionArray = ",\n\t\t".join(rightEncoderPositions)
-
+print("Python Parser Loves You" + user)
 
 content = """
 /*

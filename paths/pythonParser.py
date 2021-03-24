@@ -31,7 +31,7 @@ with open(fileName) as f, open(fileName +'GraphData.txt', "w") as out, open(file
     time.sleep(0.25)
     print(" Python Parser saved the java arrays to\n C:/Users/" + user + "/Documents/GitHub/2021-InfiniteRecharge/src/main/java/frc/robot/" + fileName + ".java\n and the graph to C:/Users/" + user + "/Documents/GitHub/2020-2021-InfiniteRecharge/paths/"+ fileName +'GraphData.txt')
     for line in g.readlines():
-        if line.startswith("ï»¿") or line.startswith(" ") or line[0].isdigit():
+        if line.startswith("-") or line.startswith(" ") or line[0].isdigit():
             for entry in line.strip().split(" "):
                 try:
                     float(entry)

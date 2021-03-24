@@ -29,8 +29,7 @@ with open(fileName) as f, open(fileName +'GraphData.txt', "w") as out:
     time.sleep(0.5)
     print("Python Parser Parsed in Python Succsesfully")
     time.sleep(0.25)
-    print("Python Parser saved the java arrays to\nC:/Users/" + user + "/Documents/GitHub/2020-2021-InfiniteRecharge/src/main/java/frc/robot/" + fileName + ".java\nand the graph to C:/Users/" + user + "/Documents/GitHub/2020-2021-InfiniteRecharge/paths/"+ fileName +'GraphData.txt')
-    print("        _______________________________________\n       |                                       |\n       |                                       |\n       |                                       |\n       |       __                       __     |\n       |      |  |                     |  |    |\n       |      |__|                     |__|    |\n       |                                       |\n       |         |_____________________|       |\n       |                                       |\n       |                                       |\n       |_______________________________________|")
+    print("Python Parser saved the java arrays to\nC:/Users/" + user + "/Documents/GitHub/2021-InfiniteRecharge/src/main/java/frc/robot/" + fileName + ".java\nand the graph to C:/Users/" + user + "/Documents/GitHub/2020-2021-InfiniteRecharge/paths/"+ fileName +'GraphData.txt')
     for line in g.readlines():
         if line.startswith("ï»¿") or line.startswith(" ") or line[0].isdigit():
             for entry in line.strip().split(" "):
@@ -60,6 +59,7 @@ velocityArray = ",\n\t\t".join(velocities)
 rotationsArray = ",\n\t\t".join(rotations)
 leftEncoderPositionArray = ",\n\t\t".join(leftEncoderPositions)
 rightEncoderPositionArray = ",\n\t\t".join(rightEncoderPositions)
+print("        _______________________________________\n       |                                       |\n       |                                       |\n       |                                       |\n       |       __                       __     |\n       |      |  |                     |  |    |\n       |      |__|                     |__|    |\n       |                                       |\n       |         |_____________________|       |\n       |                                       |\n       |                                       |\n       |_______________________________________|")
 print("Python Parser loves You " + user+ " ;)")
 content = """
 /*
@@ -89,5 +89,5 @@ COPYRIGHT UR MOM 2021
     rightEncoderPositionArray,
 )
 
-with open("C:/Users/" + user + "/Documents/GitHub/2020-2021-InfiniteRecharge/src/main/java/frc/robot/" + fileName + ".java", "w") as f:
+with open("C:/Users/" + user + "/Documents/GitHub/2021-InfiniteRecharge/src/main/java/frc/robot/" + fileName + ".java", "w") as f:
     f.write(content)

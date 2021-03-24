@@ -154,7 +154,7 @@ public class Chassis extends SubsystemBase{
 
         
         driveTrain = new DevilDifferential(sparkMax2PID, sparkMax1PID);
-        driveTrain.setMaxOutput(5600); //NEO free speed 5700 RPM
+        driveTrain.setMaxOutput(2800);//5600 //NEO free speed 5700 RPM
         driveTrain.setExpiration(2.0);
     }
 
@@ -246,8 +246,8 @@ public class Chassis extends SubsystemBase{
             }
         }
         else{
-            turningInputSpeed = 0.65;
-            forwardInputSpeed =1; //0.25;
+            turningInputSpeed = 0.65;//0.65
+            forwardInputSpeed = 1; //1;
             highGear = true;
             setRampRate(rampRate);
             gearShift();

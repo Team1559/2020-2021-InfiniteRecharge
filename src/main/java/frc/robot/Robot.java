@@ -65,8 +65,8 @@ public class Robot extends TimedRobot{
   private Pose2d pose;
   public double counter = 0;
   
-  private double rightSpeed[] = br.generated_rightEncoderPositions;
-  private double leftSpeed[]= br.generated_leftEncoderPositions;
+  private double rightSpeed[] = bp.generated_rightEncoderPositions;
+  private double leftSpeed[]= bp.generated_leftEncoderPositions;
   
   private boolean teachTheAI = true;
   private boolean doDoubleSpeed = true;

@@ -51,7 +51,7 @@ public class BORROWINGDriverControls{
             return interpolatedValue;
         }
         else{ 
-            return value[intCounter - 1];
+            return value[value.length-1];
         }
     }
             // if(counter < forwardSpeed.size()){

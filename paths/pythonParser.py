@@ -71,7 +71,7 @@ rotationsArray = ",\n\t\t".join(rotations)
 leftEncoderPositionArray = ",\n\t\t".join(leftEncoderPositions)
 rightEncoderPositionArray = ",\n\t\t".join(rightEncoderPositions)
 if sadness == 5 or sadness == 6:
-    print("        _______________________________________\n       |                                       |\n       |                                       |\n       |                                       |\n       |       __                       __     |\n       |      |  |                     |  |    |\n       |      |__|                     |__|    |\n       |        |                        |     |\n       |       |  _____________________   |    |\n       |         |                     |       |\n       |                                       |\n       |_______________________________________|")
+    print("        _______________________________________\n       |                                       |\n       |                                       |\n       |                                       |\n       |       __                       __     |\n       |      |  |                     |  |    |\n       |      |__|                     |__|    |\n       |       |                         |     |\n       |      |   _____________________   |    |\n       |         |                     |       |\n       |                                       |\n       |_______________________________________|")
     print("")
     print(" Python Parser is Sad " + user+ " :(")
 else:

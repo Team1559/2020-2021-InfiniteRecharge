@@ -1,8 +1,38 @@
 ﻿ï»¿ 
 Warning  1  Loop time of 0.02s overrun
- edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:301) Warning at edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:301): Loop time of 0.02s overrun  Warning  1  	teleopPeriodic(): 0.015578s
- 	SmartDashboard.updateValues(): 0.000015s
- 	robotPeriodic(): 0.000012s
- 	LiveWindow.updateValues(): 0.014884s
- 	Shuffleboard.update(): 0.000012s
- edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:63) Warning at edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:63): 	teleopPeriodic(): 0.015578s SmartDashboard.updateValues(): 0.000015s robotPeriodic(): 0.000012s LiveWindow.updateValues(): 0.014884s Shuffleboard.update(): 0.000012s  
+ 
+edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:301) 
+Warning 
+at 
+edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:301): 
+Loop 
+time 
+of 
+0.02s 
+overrun 
+ 
+Warning  1  	teleopPeriodic(): 0.015578s
+ 
+	SmartDashboard.updateValues(): 0.000015s
+ 
+	robotPeriodic(): 0.000012s
+ 
+	LiveWindow.updateValues(): 0.014884s
+ 
+	Shuffleboard.update(): 0.000012s
+ 
+edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:63) 
+Warning 
+at 
+edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:63): 
+	teleopPeriodic(): 
+0.015578s 
+SmartDashboard.updateValues(): 
+0.000015s 
+robotPeriodic(): 
+0.000012s 
+LiveWindow.updateValues(): 
+0.014884s 
+Shuffleboard.update(): 
+0.000012s 
+ 

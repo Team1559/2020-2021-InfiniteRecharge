@@ -304,6 +304,9 @@ public class Robot extends TimedRobot{
   @Override
   public void disabledInit()
   {
+    if(teachTheAI){
+      bdc.printAll();
+    }
     //turns off the compresser
     if(compressorEnable && compressorInitialized){
       compressorControl.disable();
@@ -320,9 +323,7 @@ public class Robot extends TimedRobot{
   @Override
   public void disabledPeriodic()
   {
-    if(teachTheAI){
-      bdc.printAll();
-    }
+
  }
   
   public void initialize()

@@ -64,7 +64,7 @@ velocityArray = ",\n\t\t".join(velocities)
 rotationsArray = ",\n\t\t".join(rotations)
 leftEncoderPositionArray = ",\n\t\t".join(leftEncoderPositions)
 rightEncoderPositionArray = ",\n\t\t".join(rightEncoderPositions)
-if sadness == 1:
+if sadness >= 5:
     print("        _______________________________________\n       |                                       |\n       |                                       |\n       |                                       |\n       |       __                       __     |\n       |      |  |                     |  |    |\n       |      |__|                     |__|    |\n       |        |                        |     |\n       |       |  _____________________   |    |\n       |         |                     |       |\n       |                                       |\n       |_______________________________________|")
     print(" Python Parser is Happy You " + user+ " :)")
 else:

@@ -53,7 +53,7 @@ with open(fileName) as f, open(fileName +'GraphData.txt', "w") as out, open(file
                     i = 0
                     out.write("\n")
         else:
-            print(line)
+            # print(line)
             out.write(line + " ")
 
 velocityArray = ",\n\t\t".join(velocities)

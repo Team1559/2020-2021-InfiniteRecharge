@@ -62,6 +62,7 @@ public class Robot extends TimedRobot{
   private BasicAuto basicAuto = new BasicAuto();
   private BORROWINGDriverControls bdc = new BORROWINGDriverControls();
   private Pose2d pose;
+  private double skip[] = {0};
   public double counter = 0;
   private double kP = 0;
   private String selector = "barrel";
@@ -105,6 +106,12 @@ public class Robot extends TimedRobot{
       rightSpeed = bp.generated_rightEncoderPositions;
       leftSpeed= bp.generated_leftEncoderPositions;
       counterSpeed = 1.0;
+    }
+    else{
+      kP = 0.0;
+      rightSpeed = skip;
+      leftSpeed = skip;
+      counterSpeed = 0.0;
     }
     //runs the initialize method
     initialize();
@@ -324,7 +331,7 @@ public class Robot extends TimedRobot{
   public void disabledPeriodic()
   {
 
- }
+  }
   
   public void initialize()
   {

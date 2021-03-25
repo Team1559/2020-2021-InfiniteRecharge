@@ -11,7 +11,7 @@ rotations = []
 leftEncoderPositions = []
 rightEncoderPositions = []
 bad_chars = ['ï»¿', 'Ã¯Â»Â¿']
-splashText= ["The Robot Revolution Has Began", "The Router Has Become Sentient", "Enter The Matrix", "Sky Net Is Here", "CIMS Is Better Than POE", "Its DE Friday", "Auto Works"]
+splashText= ["The Robot Revolution Has Began", "The Router Has Become Sentient", "Enter The Matrix", "Sky Net is Here", "CIMS Is Better Than POE", "It's DE Friday", "Auto Works!", "2 + 3 is 5", "Interpolating is hard", "The Meaning of Life is 42", "Don't Use Do While loops"]
 
 
 with open(fileName) as f, open(fileName +'GraphData.txt', "w") as out, open(fileName +'DiscardedData.txt', "w") as trash:

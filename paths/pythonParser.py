@@ -11,13 +11,15 @@ rotations = []
 leftEncoderPositions = []
 rightEncoderPositions = []
 bad_chars = ['ï»¿', 'Ã¯Â»Â¿']
-splashText= ["The Robot Revolution Has Began", "The Router Has Become Sentient", "Enter The Matrix", "Sky Net is Here", "CIMS Is Better Than POE", "It's DE Friday", "Auto Works!", "2 + 3 is 5", "Interpolating is hard", "The Meaning of Life is 42", "Don't Use Do While loops"]
-
+splashText = ["The Robot Revolution Has Began", "The Router Has Become Sentient", "Enter The Matrix", "Sky Net is Here", "CIMS Is Better Than POE", "It's DE Friday", "Auto Works!", "2 + 3 is 5", "Interpolating is hard", "The Meaning of Life is 42", "Don't Use Do While loops"]
+copyright = ["UR MOM", "UR DAD", "HOWARD THE DUCK", "THE FIRST ORDER", "THANOS"]
 
 with open(fileName) as f, open(fileName +'GraphData.txt', "w") as out, open(fileName +'DiscardedData.txt', "w") as trash:
     sadness = random.randint(1,10)
     text = random.randint(0,len(splashText)-1)
     lol = random.randint(0,len(splashText)-1)
+    ree = random.randint(0,len(copyright)-1)
+    year = random.randint(1945, 3099)
     f_str = f.read()
     f_str.encode('ascii', 'replace')
     for a in bad_chars:
@@ -63,7 +65,7 @@ with open(fileName) as f, open(fileName +'GraphData.txt', "w") as out, open(file
         else:
             # print(line)
             trash.write(line + " ")
-
+years = str(year)
 velocityArray = ",\n\t\t".join(velocities)
 rotationsArray = ",\n\t\t".join(rotations)
 leftEncoderPositionArray = ",\n\t\t".join(leftEncoderPositions)
@@ -105,13 +107,15 @@ ROBOTS RUN THE WORLD, YOU JUST DON'T KNOW IT YET
     };
 }
 /*
-COPYRIGHT UR MOM 2021
+Copyright %s %s
 */
 """ % (
     splashText[lol],
     fileName,
     leftEncoderPositionArray,
     rightEncoderPositionArray,
+    copyright[ree],
+    years
 )
 
 with open("C:/Users/" + user + "/Documents/GitHub/2021-InfiniteRecharge/src/main/java/frc/robot/" + fileName + ".java", "w") as f:

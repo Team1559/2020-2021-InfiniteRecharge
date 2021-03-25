@@ -21,6 +21,7 @@ with open(fileName) as f, open(fileName +'GraphData.txt', "w") as out, open(file
     f_str = f.read()
     f_str.encode('ascii', 'replace')
     for a in bad_chars:
+        trash.write(a)
         f_str = f_str.replace(a, '')
     g = StringIO(f_str)
     print(" Python Parser is about to Parse in Python")

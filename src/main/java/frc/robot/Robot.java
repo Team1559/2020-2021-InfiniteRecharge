@@ -98,7 +98,7 @@ public class Robot extends TimedRobot{
     }
 
     if(chassisEnable && chassisInitialized){
-      driveTrain.autoInit(0.04);//0.08
+      driveTrain.autoInit(0.03);//0.08
     }
 
     if(autoSelector == "learning"){
@@ -162,7 +162,7 @@ public class Robot extends TimedRobot{
         //if(Math.abs(driveTrain.lEncoder.getPosition() - (5.5 * leftSpeed[counter])) <= 10 || Math.abs(driveTrain.rEncoder.getPosition() - (5.5 * rightSpeed[counter])) <= 10){
           // if(doDoubleSpeed){
             driveTrain.move(bdc.interpolate(counter, leftSpeed), bdc.interpolate(counter, rightSpeed));
-            counter += 1.0;
+            counter += 1.5; //good at 1.5 with .03 kp ONLY FOR BR PATH
         //   }
         //   else{
         //     driveTrain.move(leftSpeed[(int)counter],rightSpeed[(int)counter]);

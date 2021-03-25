@@ -92,19 +92,19 @@ public class Robot extends TimedRobot{
     if(selector == "barrel"){
       kP = 0.03;
       rightSpeed = br.generated_rightEncoderPositions;
-      leftSpeed= br.generated_leftEncoderPositions;
+      leftSpeed = br.generated_leftEncoderPositions;
       counterSpeed = 1.5;
     }
     else if(selector == "slalom"){
       kP = 0.04;
       rightSpeed = sp.generated_rightEncoderPositions;
-      leftSpeed= sp.generated_leftEncoderPositions;
+      leftSpeed = sp.generated_leftEncoderPositions;
       counterSpeed = 0.58;
     }
     else if(selector == "bounce"){
       kP = 0.04;
       rightSpeed = bp.generated_rightEncoderPositions;
-      leftSpeed= bp.generated_leftEncoderPositions;
+      leftSpeed = bp.generated_leftEncoderPositions;
       counterSpeed = 1.0;
     }
     else{

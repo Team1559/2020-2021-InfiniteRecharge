@@ -15,10 +15,10 @@ splashText = ["The Robot Revolution Has Began", "The Router Has Become Sentient"
 copyright = ["UR MOM", "UR DAD", "HOWARD THE DUCK", "THE FIRST ORDER", "THANOS"]
 
 with open(fileName) as f, open(fileName +'GraphData.txt', "w") as out, open(fileName +'DiscardedData.txt', "w") as trash:
-    sadness = random.randint(1,10)
-    text = random.randint(0,len(splashText)-1)
-    lol = random.randint(0,len(splashText)-1)
-    ree = random.randint(0,len(copyright)-1)
+    sadness = random.randint(1, 100)
+    text = random.randint(0, len(splashText)-1)
+    lol = random.randint(0, len(splashText)-1)
+    ree = random.randint(0, len(copyright)-1)
     year = random.randint(1945, 3099)
     f_str = f.read()
     f_str.encode('ascii', 'replace')
@@ -70,7 +70,7 @@ velocityArray = ",\n\t\t".join(velocities)
 rotationsArray = ",\n\t\t".join(rotations)
 leftEncoderPositionArray = ",\n\t\t".join(leftEncoderPositions)
 rightEncoderPositionArray = ",\n\t\t".join(rightEncoderPositions)
-if sadness == 5 or sadness == 6:
+if sadness == 5:
     print("        _______________________________________\n       |                                       |\n       |                                       |\n       |                                       |\n       |       __                       __     |\n       |      |  |                     |  |    |\n       |      |__|                     |__|    |\n       |       |                         |     |\n       |      |   _____________________   |    |\n       |         |                     |       |\n       |                                       |\n       |_______________________________________|")
     print("")
     print(" Python Parser is Sad " + user+ " :(")

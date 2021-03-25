@@ -11,6 +11,7 @@ leftEncoderPositions = []
 rightEncoderPositions = []
 bad_chars = ['ï»¿', 'Ã¯Â»Â¿']
 
+
 with open(fileName) as f, open(fileName +'GraphData.txt', "w") as out, open(fileName +'DiscardedData.txt', "w") as trash:
     f_str = f.read()
     f_str.encode('ascii', 'replace')
@@ -36,7 +37,7 @@ with open(fileName) as f, open(fileName +'GraphData.txt', "w") as out, open(file
                 try:
                     float(entry)
                 except:
-                    out.write(entry + " ")
+                    trash.write(entry + " ")
                     continue
                 if i == 0:
                     velocities.append(entry)
@@ -54,7 +55,7 @@ with open(fileName) as f, open(fileName +'GraphData.txt', "w") as out, open(file
                     out.write("\n")
         else:
             # print(line)
-            out.write(line + " ")
+            trash.write(line + " ")
 
 velocityArray = ",\n\t\t".join(velocities)
 rotationsArray = ",\n\t\t".join(rotations)

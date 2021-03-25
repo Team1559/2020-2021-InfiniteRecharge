@@ -497,13 +497,7 @@
 -1.000 -0.650 -399.305 -2754.285 223.820 1011.428 
 -1.000 -0.650 -400.235 -2754.285 224.153 1011.428 
 -1.000 -0.650 -401.140 -2754.285 224.510 1011.428 
-Warning  1  Loop time of 0.02s overrun
- edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:301) Warning at edu.wpi.first.wpilibj.IterativeRobotBase.printLoopOverrunMessage(IterativeRobotBase.java:301): Loop time of 0.02s overrun  Warning  1  	teleopPeriodic(): 0.015578s
- 	SmartDashboard.updateValues(): 0.000015s
- 	robotPeriodic(): 0.000012s
- 	LiveWindow.updateValues(): 0.014884s
- 	Shuffleboard.update(): 0.000012s
- edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:63) Warning at edu.wpi.first.wpilibj.Tracer.lambda$printEpochs$0(Tracer.java:63): 	teleopPeriodic(): 0.015578s SmartDashboard.updateValues(): 0.000015s robotPeriodic(): 0.000012s LiveWindow.updateValues(): 0.014884s Shuffleboard.update(): 0.000012s  -1.000 -0.650 -402.951 -2742.857 225.534 1017.143 
+-1.000 -0.650 -402.951 -2742.857 225.534 1017.143 
 -1.000 -0.650 -403.857 -2742.857 225.534 1017.143 
 -1.000 -0.650 -404.762 -2742.857 225.867 1017.143 
 -1.000 -0.650 -404.762 -2742.857 225.867 1017.143 

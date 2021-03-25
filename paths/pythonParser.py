@@ -11,10 +11,11 @@ rotations = []
 leftEncoderPositions = []
 rightEncoderPositions = []
 bad_chars = ['ï»¿', 'Ã¯Â»Â¿']
-sadness = random.randint(1,10)
+
 
 
 with open(fileName) as f, open(fileName +'GraphData.txt', "w") as out, open(fileName +'DiscardedData.txt', "w") as trash:
+    sadness = random.randint(1,10)
     f_str = f.read()
     f_str.encode('ascii', 'replace')
     for a in bad_chars:
@@ -64,10 +65,10 @@ rotationsArray = ",\n\t\t".join(rotations)
 leftEncoderPositionArray = ",\n\t\t".join(leftEncoderPositions)
 rightEncoderPositionArray = ",\n\t\t".join(rightEncoderPositions)
 if sadness == 1:
-    print("        _______________________________________\n       |                                       |\n       |                                       |\n       |                                       |\n       |       __                       __     |\n       |      |  |                     |  |    |\n       |      |__|                     |__|    |\n       |                                       |\n       |         |_____________________|       |\n       |                                       |\n       |                                       |\n       |_______________________________________|")
+    print("        _______________________________________\n       |                                       |\n       |                                       |\n       |                                       |\n       |       __                       __     |\n       |      |  |                     |  |    |\n       |      |__|                     |__|    |\n       |        |                        |     |\n       |       |  _____________________   |    |\n       |         |                     |       |\n       |                                       |\n       |_______________________________________|")
     print(" Python Parser is Happy You " + user+ " :)")
 else:
-    print("        _______________________________________\n       |                                       |\n       |                                       |\n       |                                       |\n       |       __                       __     |\n       |      |  |                     |  |    |\n       |      |__|                     |__|    |\n       |        |                        |     |\n       |       |  _____________________   |    |\n       |         |                     |       |\n       |                                       |\n       |_______________________________________|")
+    print("        _______________________________________\n       |                                       |\n       |                                       |\n       |                                       |\n       |       __                       __     |\n       |      |  |                     |  |    |\n       |      |__|                     |__|    |\n       |                                       |\n       |         |_____________________|       |\n       |                                       |\n       |                                       |\n       |_______________________________________|")
     print(" Python Parser is Sad " + user+ " :(")
 content = """
 /*

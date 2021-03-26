@@ -15,7 +15,7 @@ splashText = ["The Robot Revolution Has Began", "The Router Has Become Sentient"
 copyright = ["UR MOM", "UR DAD", "HOWARD THE DUCK", "THE FIRST ORDER", "THANOS"]
 
 with open(fileName) as f, open(fileName +'GraphData.txt', "w") as out, open(fileName +'DiscardedData.txt', "w") as trash:
-    sadness = random.randint(1, 100)
+    sadness = random.randint(1, 1000000)
     text = random.randint(0, len(splashText)-1)
     lol = random.randint(0, len(splashText)-1)
     ree = random.randint(0, len(copyright)-1)
@@ -70,14 +70,19 @@ velocityArray = ",\n\t\t".join(velocities)
 rotationsArray = ",\n\t\t".join(rotations)
 leftEncoderPositionArray = ",\n\t\t".join(leftEncoderPositions)
 rightEncoderPositionArray = ",\n\t\t".join(rightEncoderPositions)
-if sadness == 5:
+if sadness < 1000:
     print("        _______________________________________\n       |                                       |\n       |                                       |\n       |                                       |\n       |       __                       __     |\n       |      |  |                     |  |    |\n       |      |__|                     |__|    |\n       |       |                         |     |\n       |      |   _____________________   |    |\n       |         |                     |       |\n       |                                       |\n       |_______________________________________|")
     print("")
     print(" Python Parser is Sad " + user+ " :(")
-else:
-    print("        _______________________________________\n       |                                       |\n       |                                       |\n       |                                       |\n       |       __                       __     |\n       |      |  |                     |  |    |\n       |      |__|                     |__|    |\n       |                                       |\n       |         |_____________________|       |\n       |                                       |\n       |                                       |\n       |_______________________________________|")
-    print("")
-    print(" Python Parser is Happy " + user+ " :)")
+else: 
+    if sadness == 9000:
+        print("        _______________________________________         _______________________________________\n       |                                       |       |                                       |\n       |                                       |       |                                       |\n       |                                       |       |                                       |\n       |                                       |       |                                       |\n       |       __                       __     |       |       __                       __     |\n       |      |  |                     |  |    |       |      |  |                     |  |    |\n       |      |__|                     |__|    |       |      |__|                     |__|    |\n       |                                       |       |                                       |\n       |          _____________________        |       |         |_____________________|       |\n       |         |                     |       |       |                                       |\n       |                                       |       |                                       |\n       |_______________________________________|       |_______________________________________|")
+        print("")
+        print(" Python Parser is confused on how to feel " + user+ " (: :(")
+    else:
+        print("        _______________________________________\n       |                                       |\n       |                                       |\n       |                                       |\n       |       __                       __     |\n       |      |  |                     |  |    |\n       |      |__|                     |__|    |\n       |                                       |\n       |         |_____________________|       |\n       |                                       |\n       |                                       |\n       |_______________________________________|")
+        print("")
+        print(" Python Parser is Happy " + user+ " :)")
 print("")
 print("")
 print("")

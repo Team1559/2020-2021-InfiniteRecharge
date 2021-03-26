@@ -65,7 +65,7 @@ public class Robot extends TimedRobot{
   private double skip[] = {0};
   public double counter = 0;
   private double kP = 0;
-  private String selector = "barrel";
+  private String selector = "barrel"; //barrel, slalom, bounce
   
   
   private boolean teachTheAI = true;

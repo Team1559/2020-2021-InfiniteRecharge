@@ -65,7 +65,7 @@ public class Robot extends TimedRobot{
   private double skip[] = {0};
   public double counter = 0;
   private double kP = 0;
-  private String selector = "barrel"; //barrel, slalom, bounce
+  private String selector = "bounce"; //barrel, slalom, bounce
   
   
   private boolean teachTheAI = true;
@@ -90,10 +90,10 @@ public class Robot extends TimedRobot{
   public void autonomousInit()
   {
     if(selector == "barrel"){
-      kP = 0.03;
+      kP = 0.025; //.03
       rightSpeed = br.generated_rightEncoderPositions;
       leftSpeed = br.generated_leftEncoderPositions;
-      counterSpeed = 1.5;
+      counterSpeed = 1.7; //1.5
     }
     else if(selector == "slalom"){
       kP = 0.04;
@@ -105,7 +105,7 @@ public class Robot extends TimedRobot{
       kP = 0.04;
       rightSpeed = bp.generated_rightEncoderPositions;
       leftSpeed = bp.generated_leftEncoderPositions;
-      counterSpeed = 1.0;
+      counterSpeed = 1.6;
     }
     else{
       kP = 0.0;

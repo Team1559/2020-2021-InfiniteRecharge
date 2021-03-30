@@ -89,7 +89,7 @@ public class PowerCell{
         // Shooter Motor Config
         shooter.set(TalonFXControlMode.Velocity, 0);
         shooter.configClosedloopRamp(cLR, TIMEOUT);
-        shooter.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        shooter.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder); //shooter.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         shooter.config_kF(0, shooter_kF);
         shooter.config_kP(0, shooter_kP);
         shooter.config_kD(0, shooter_kD);
@@ -106,7 +106,7 @@ public class PowerCell{
         // Feeder motor config
         feederMotor.set(ControlMode.PercentOutput, 0);
         feederMotor.configClosedloopRamp(cLR, TIMEOUT);
-        feederMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        feederMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);//feederMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         feederMotor.config_kF(0, feederP_kF);
         feederMotor.config_kP(0, feederP_kP);
         feederMotor.config_kD(0, feederP_kD);

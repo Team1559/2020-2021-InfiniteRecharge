@@ -154,7 +154,7 @@ public class Chassis extends SubsystemBase{
 
         
         driveTrain = new DevilDifferential(sparkMax2PID, sparkMax1PID);
-        driveTrain.setMaxOutput(2800);//5600 //NEO free speed 5700 RPM
+        driveTrain.setMaxOutput(5600);//5600 //NEO free speed 5700 RPM
         driveTrain.setExpiration(2.0);
     }
 

@@ -19,6 +19,7 @@ public class BORROWINGDriverControls{
         LeftEncodervelocity.clear();
         rightEncoderPosition.clear();
         rightEncodervelocity.clear();
+        System.out.println("This is the start of the path plannning");
     }
 
     public void periodic(Double _forwardSpeed, Double _sideSpeed, Double lep, Double lev, Double rep, Double rev ){
@@ -38,6 +39,7 @@ public class BORROWINGDriverControls{
     }
 
     public void printAll() {
+        System.out.println("This is the end of the trajectory");
         // for(int i = 0; i < forwardSpeed.size(); i++){
         // System.out.print(forwardSpeed.get(i) +" "+ sideSpeed.get(i)+ " "+leftEncoderPosition.get(i) +" "+ LeftEncodervelocity.get(i)+ " "+rightEncoderPosition.get(i) +" "+ rightEncodervelocity.get(i)+ " ");
         // }
@@ -46,8 +48,13 @@ public class BORROWINGDriverControls{
     public double interpolate(double counter, double[] value){
         int intCounter = (int)counter;
         double percent = (counter -intCounter); 
-        double interpolatedValue = (value[intCounter] + (percent * (value[intCounter+1] - value[intCounter])));
-        return interpolatedValue;
+        if(intCounter < value.length-1){
+            double interpolatedValue = (value[intCounter] + (percent * (value[intCounter+1] - value[intCounter])));
+            return interpolatedValue;
+        }
+        else{ 
+            return value[value.length-1];
+        }
     }
             // if(counter < forwardSpeed.size()){
             //     System.out.print(forwardSpeed.get(counter) +" "+ sideSpeed.get(counter)+ " "+leftEncoderPosition.get(counter) +" "+ LeftEncodervelocity.get(counter)+ " "+rightEncoderPosition.get(counter) +" "+ rightEncodervelocity.get(counter)+ " ");

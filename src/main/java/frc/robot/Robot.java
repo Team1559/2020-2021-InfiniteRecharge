@@ -17,7 +17,6 @@ import java.util.*;
 
 public class Robot extends TimedRobot{
 //these are changable
-  private String AutoNavPathSelector = "example";// barrel racing is "barrel" , slolum is "slolum", and bounce path is "bounce" and example is "example" 
   private boolean doReverse = true;
   private String autoSelector = "learning";// learning is the good one 
   //in order to switch auto modes change what is in the quotes "basic" for basic auto, "advanced" for advanced auto, "autoNav" for bad auto, learning for machine learning auto, and "none" for no auto
@@ -47,6 +46,7 @@ public class Robot extends TimedRobot{
   private DriversEd t1 = new DriversEd();
   private BouncePath bp = new BouncePath();
   private SlolumPath sp = new SlolumPath();
+  private BarrelRacing br = new BarrelRacing();
   //private Test2 t2 = new Test2();
   private Logging logging = new Logging();
   public Climber climber = new Climber();
@@ -62,14 +62,16 @@ public class Robot extends TimedRobot{
   private BasicAuto basicAuto = new BasicAuto();
   private BORROWINGDriverControls bdc = new BORROWINGDriverControls();
   private Pose2d pose;
+  private double skip[] = {0};
   public double counter = 0;
+  private double kP = 0;
+  private String selector = "bounce"; //barrel, slalom, bounce
   
-  private double rightSpeed[] = sp.generated_rightEncoderPositions;
-  private double leftSpeed[]= sp.generated_leftEncoderPositions;
   
   private boolean teachTheAI = true;
-  private boolean doDoubleSpeed = true;
-  private int loopCounter = 0;
+  private double counterSpeed;
+  private double rightSpeed[] = {};
+  private double leftSpeed[] = {};
 
   @Override
   public void robotInit() {
@@ -87,7 +89,30 @@ public class Robot extends TimedRobot{
   @Override
   public void autonomousInit()
   {
-    loopCounter = 0;
+    if(selector == "barrel"){
+      kP = 0.025; //.03
+      rightSpeed = br.generated_rightEncoderPositions;
+      leftSpeed = br.generated_leftEncoderPositions;
+      counterSpeed = 1.7; //1.5
+    }
+    else if(selector == "slalom"){
+      kP = 0.04;
+      rightSpeed = sp.generated_rightEncoderPositions;
+      leftSpeed = sp.generated_leftEncoderPositions;
+      counterSpeed = 0.58;
+    }
+    else if(selector == "bounce"){
+      kP = 0.04;
+      rightSpeed = bp.generated_rightEncoderPositions;
+      leftSpeed = bp.generated_leftEncoderPositions;
+      counterSpeed = 1.6;
+    }
+    else{
+      kP = 0.0;
+      rightSpeed = skip;
+      leftSpeed = skip;
+      counterSpeed = 0.0;
+    }
     //runs the initialize method
     initialize();
 
@@ -97,7 +122,7 @@ public class Robot extends TimedRobot{
     }
 
     if(chassisEnable && chassisInitialized){
-      driveTrain.autoInit(0.04);//0.08
+      driveTrain.autoInit(kP);//0.08
     }
 
     if(autoSelector == "learning"){
@@ -161,7 +186,7 @@ public class Robot extends TimedRobot{
         //if(Math.abs(driveTrain.lEncoder.getPosition() - (5.5 * leftSpeed[counter])) <= 10 || Math.abs(driveTrain.rEncoder.getPosition() - (5.5 * rightSpeed[counter])) <= 10){
           // if(doDoubleSpeed){
             driveTrain.move(bdc.interpolate(counter, leftSpeed), bdc.interpolate(counter, rightSpeed));
-            counter+=0.58;
+            counter += counterSpeed; //good at 1.5 with .03 kp ONLY FOR BR PATH
         //   }
         //   else{
         //     driveTrain.move(leftSpeed[(int)counter],rightSpeed[(int)counter]);
@@ -208,13 +233,11 @@ public class Robot extends TimedRobot{
     if(teachTheAI){
       bdc.periodic(driveTrain.loggingForwardSpeed, driveTrain.loggingSideSpeed, driveTrain.lEncoder.getPosition(), driveTrain.lEncoder.getVelocity(), driveTrain.rEncoder.getPosition(), driveTrain.rEncoder.getVelocity());
     }
-    loopCounter ++;
   }
   
   @Override
   public void teleopInit()
   {
-    loopCounter = 0;
     initialize();
     if(teachTheAI){
       bdc.init();
@@ -271,7 +294,6 @@ public class Robot extends TimedRobot{
     if(teachTheAI){
       bdc.periodic(driveTrain.forwardSpeed, driveTrain.sideSpeed, driveTrain.lEncoder.getPosition(), driveTrain.lEncoder.getVelocity(), driveTrain.rEncoder.getPosition(), driveTrain.rEncoder.getVelocity());
     }
-    loopCounter++;
   }
   
   @Override
@@ -289,6 +311,9 @@ public class Robot extends TimedRobot{
   @Override
   public void disabledInit()
   {
+    if(teachTheAI){
+      bdc.printAll();
+    }
     //turns off the compresser
     if(compressorEnable && compressorInitialized){
       compressorControl.disable();
@@ -305,10 +330,8 @@ public class Robot extends TimedRobot{
   @Override
   public void disabledPeriodic()
   {
-    if(teachTheAI){
-      bdc.printAll();
-    }
- }
+
+  }
   
   public void initialize()
   {

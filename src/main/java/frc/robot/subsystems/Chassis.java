@@ -232,7 +232,7 @@ public class Chassis extends SubsystemBase{
             setControltype(ControlType.kVelocity);
             timer++;
         }
-        if(oi.pilot.getRawButton(Buttons.X)){
+        if(oi.pilot.getRawButton(Buttons.right_Bumper)){
             forwardInputSpeed = 0.25;
             turningInputSpeed = 0.25;
             leftVelocity = lEncoder.getVelocity();

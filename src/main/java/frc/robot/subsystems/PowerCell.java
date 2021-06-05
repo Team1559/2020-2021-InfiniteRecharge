@@ -186,7 +186,7 @@ public class PowerCell{
 
     public void startShooter(){
         shooter.set(ControlMode.Velocity, -shooterRpms);
-       // shooter.set(ControlMode.PercentOutput, -1);
+        //shooter.set(ControlMode.PercentOutput, -1);
     }
     public void lowerGatherer(){
         gatherer.set(true);

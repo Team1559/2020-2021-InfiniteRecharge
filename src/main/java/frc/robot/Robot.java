@@ -17,7 +17,7 @@ import java.util.*;
 
 public class Robot extends TimedRobot{
 //these are changable
-  private boolean doReverse = true;
+  private boolean doReverse = false;
   private String autoSelector = "learning";// learning is the good one 
   //in order to switch auto modes change what is in the quotes "basic" for basic auto, "advanced" for advanced auto, "autoNav" for bad auto, learning for machine learning auto, and "none" for no auto
  
@@ -56,8 +56,8 @@ public class Robot extends TimedRobot{
   public Chassis driveTrain = new Chassis();
   public OperatorInterface oi = new OperatorInterface();
   private IMU imu = new IMU();
-  private Camera camera1 = new Camera(0);
-  private Camera camera2 = new Camera(1);
+  // private Camera camera1 = new Camera(0);
+  // private Camera camera2 = new Camera(1);
   private AdvancedAuto advancedAuto = new AdvancedAuto();
   private BasicAuto basicAuto = new BasicAuto();
   private BORROWINGDriverControls bdc = new BORROWINGDriverControls();
@@ -65,7 +65,7 @@ public class Robot extends TimedRobot{
   private double skip[] = {0};
   public double counter = 0;
   private double kP = 0;
-  private String selector = "none"; //barrel, slalom, bounce
+  private String selector = "advanced"; //barrel, slalom, bounce
   
   
   private boolean teachTheAI = false;
@@ -75,8 +75,8 @@ public class Robot extends TimedRobot{
 
   @Override
   public void robotInit() {
-  camera1.init();
-  camera2.init();
+  // camera1.init();
+  // camera2.init();
   m_robotContainer = new RobotContainer(driveTrain);
   }
 
@@ -89,6 +89,8 @@ public class Robot extends TimedRobot{
   @Override
   public void autonomousInit()
   {
+    initialize();
+
     if(selector == "barrel"){
       kP = 0.025; //.03
       rightSpeed = br.generated_rightEncoderPositions;
@@ -107,6 +109,10 @@ public class Robot extends TimedRobot{
       leftSpeed = bp.generated_leftEncoderPositions;
       counterSpeed = 1.6;
     }
+    else if(selector == "basic")
+      basicAuto.AutoInit(driveTrain);
+    else if(selector == "advanced")
+      advancedAuto.AutoInit(driveTrain, imu, powerCell);
     else{
       kP = 0.0;
       rightSpeed = skip;
@@ -114,7 +120,6 @@ public class Robot extends TimedRobot{
       counterSpeed = 0.0;
     }
     //runs the initialize method
-    initialize();
 
     if(teachTheAI){
       bdc.init();
@@ -179,7 +184,10 @@ public class Robot extends TimedRobot{
       CommandScheduler.getInstance().run();
       pose = driveTrain.updateOdometry();
     }
-
+    else if(selector == "basic")
+      basicAuto.AutoPeriodic(driveTrain, powerCell, doReverse);
+    else if(selector == "advanced")
+      advancedAuto.AutoPeriodic(driveTrain, powerCell, doReverse);
     //learning auto
     else if(autoSelector == "learning"){
       if(counter < leftSpeed.length){
